@@ -1,0 +1,15 @@
+{
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "prettier",
+    "plugin:cypress/recommended"
+  ],
+  "ignorePatterns": [
+    "**/plugins/*.ts",
+    "**/support/*.ts"
+  ]
+}

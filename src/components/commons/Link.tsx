@@ -23,18 +23,19 @@ interface LinkProps extends NextLinkProps {
  * @param {PropsWithChildren<LinkProps>} props
  */
 export function Link(props: PropsWithChildren<LinkProps>): JSX.Element {
-  const connection = useNetwork().connection;
+  const { connection } = useNetwork();
+  const { href, children } =  props
 
   if (!getEnvironment().isDefaultConnection(connection)) {
-    props.href.query = {
-      ...(props.href.query ?? {}),
+    href.query = {
+      ...(href.query ?? {}),
       network: connection,
     };
   }
 
   return (
     <NextLink passHref {...props}>
-      {props.children}
+      {children}
     </NextLink>
   );
 }

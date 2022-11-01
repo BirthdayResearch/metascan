@@ -1,8 +1,11 @@
-import { NetworkConnection } from "@contexts/NetworkContext";
-
 /**
  * Environment specific static resolution utility.
  */
+
+ export enum NetworkConnection {
+  MainNet = "MainNet",
+  TestNet = "TestNet",
+}
 class Environment {
   constructor(
     public readonly name: "Production" | "Development",
@@ -48,14 +51,4 @@ export function getEnvironment(): Environment {
         NetworkConnection.TestNet,
       ]);
   }
-}
-
-/**
- * @param {NetworkConnection} connection to check if it is a playground network
- */
-export function isPlayground(connection: NetworkConnection): boolean {
-  return [
-    NetworkConnection.LocalPlayground,
-    NetworkConnection.RemotePlayground,
-  ].includes(connection);
 }

@@ -1,4 +1,4 @@
-import { getEnvironment } from "@contexts/Environment";
+import { getEnvironment, NetworkConnection } from "@contexts/Environment";
 import { useRouter } from "next/router";
 import { createContext, PropsWithChildren, useContext } from "react";
 import {
@@ -10,12 +10,6 @@ import {
  * What connection is Meta Scan connected to.
  * This is different from NetworkName, and should not be used as NetworkName.
  */
-export enum NetworkConnection {
-  LocalPlayground = "Local",
-  RemotePlayground = "Playground",
-  MainNet = "MainNet",
-  TestNet = "TestNet",
-}
 
 export type NetworkName = NetworkObject["name"];
 
@@ -30,7 +24,7 @@ export function useNetwork(): NetworkContextObject {
 }
 
 export function NetworkProvider(
-  props: PropsWithChildren<any>
+  { children }: PropsWithChildren<any>
 ): JSX.Element | null {
   const router = useRouter();
   const env = getEnvironment();
@@ -38,7 +32,7 @@ export function NetworkProvider(
 
   return (
     <NetworkContext.Provider value={mapNetworkObject(connection)}>
-      {props.children}
+      {children}
     </NetworkContext.Provider>
   );
 }
@@ -46,12 +40,9 @@ export function NetworkProvider(
 function mapNetworkObject(connection: NetworkConnection): NetworkContextObject {
   switch (connection) {
     case NetworkConnection.MainNet:
-      return { connection: connection, ...getNetwork("mainnet") };
+      return { connection, ...getNetwork("mainnet") };
     case NetworkConnection.TestNet:
-      return { connection: connection, ...getNetwork("testnet") };
-    case NetworkConnection.RemotePlayground:
-    case NetworkConnection.LocalPlayground:
-      return { connection: connection, ...getNetwork("regtest") };
+      return { connection, ...getNetwork("testnet") };
     default:
       throw new Error(`${connection as string} network not found`);
   }

@@ -1,7 +1,7 @@
 import { useNetwork } from "@contexts/NetworkContext";
 import { getEnvironment } from "@contexts/Environment";
 import { Menu, Transition } from "@headlessui/react";
-import { CgChevronDown, CgChevronUp } from "react-icons/cg";
+import { CgChevronDown } from "react-icons/cg";
 import { MdCheckCircle } from "react-icons/md";
 import React, { Fragment, useState } from "react";
 import { NetworkIcon } from "@components/icons/NetworkIcon";
@@ -23,10 +23,7 @@ export function HeaderNetworkMenu(): JSX.Element {
                 {connection}
               </div>
             </div>
-            {open
-              ? <CgChevronUp className="h-6 w-6 text-white-700" />
-              : <CgChevronDown className="h-6 w-6 text-white-700" />
-            }
+            <CgChevronDown className={clsx("h-6 w-6 text-white-700 transition-[transform]", { "rotate-180": open })} />
           </Menu.Button>
 
           <Transition
@@ -83,10 +80,7 @@ export function HeaderNetworkMenuMobile(): JSX.Element {
               {connection}
             </div>
           </div>
-          {open
-            ? <CgChevronUp className="h-6 w-6 text-white-700" />
-            : <CgChevronDown className="h-6 w-6 text-white-700" />
-          }
+          <CgChevronDown className={clsx("h-6 w-6 text-white-700 transition-[transform]", { "rotate-180": open })} />
         </div>
       </button>
       <div

@@ -2,10 +2,10 @@ import clsx from "clsx";
 import { Link } from "@components/commons/Link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { Container } from "@components/commons/Container";
-import { HeaderNetworkMenu, HeaderNetworkMenuMobile } from "./HeaderNetworkMenu";
+import Container from "@components/commons/Container";
 import { FiXCircle, FiMenu } from "react-icons/fi";
 import Image from "next/image";
+import { HeaderNetworkMenu, HeaderNetworkMenuMobile } from "./HeaderNetworkMenu";
 
 const MenuItems = [
   {
@@ -59,7 +59,7 @@ export function Header(): JSX.Element {
             <DesktopNavbar />
           </div>
           <div className="flex">
-            <div className="hidden md:flex">
+            <div className="hidden lg:flex">
               <HeaderNetworkMenu />
             </div>
             <div className="lg:hidden">

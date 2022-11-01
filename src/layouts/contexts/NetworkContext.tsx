@@ -7,7 +7,7 @@ import {
 } from "@defichain/jellyfish-network";
 
 /**
- * What connection is DeFi Scan connected to.
+ * What connection is Meta Scan connected to.
  * This is different from NetworkName, and should not be used as NetworkName.
  */
 export enum NetworkConnection {

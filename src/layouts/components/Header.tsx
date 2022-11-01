@@ -169,7 +169,7 @@ function HeaderLink({
   return (
     <Link href={{ pathname }}>
       <div
-        className="inline-block text-base cursor-pointer p-4 text-black-900"
+        className="inline-block font-medium text-base cursor-pointer p-4 text-black-900"
         data-testid={testId}
       >
         {label}

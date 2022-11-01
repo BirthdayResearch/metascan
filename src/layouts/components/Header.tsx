@@ -84,7 +84,7 @@ export function Header(): JSX.Element {
 
 function DesktopNavbar(): JSX.Element {
   return (
-    <div className="bg-white-50 px-4 rounded-[30px]">
+    <div className="bg-white-50 rounded-[30px]">
       {MenuItems.map(item => (
         <HeaderLink
           label={item.label}
@@ -168,11 +168,51 @@ function HeaderLink({
 }): JSX.Element {
   return (
     <Link href={{ pathname }}>
-      <div
-        className="inline-block font-medium text-base cursor-pointer p-4 text-black-900"
+      <div 
+        className="
+          inline-block
+          px-8
+          font-medium
+          text-base
+          py-4
+          group
+          cursor-pointer
+          relative
+          before:cta-border
+          before:bg-white-50
+          before:opacity-100
+          hover:before:opacity-0
+          after:cta-border
+          after:brand-gradient-1
+          after:opacity-0
+          hover:after:opacity-100
+        "
         data-testid={testId}
       >
-        {label}
+        <span
+          data-label={label}
+          className="
+            text-transparent
+            font-medium
+            before:bg-black-900
+            relative
+            before:gradient-text
+            before:font-medium
+            before:opacity-100
+            group-hover:before:opacity-0
+            before:leading-[20.8px]
+            after:leading-[20.8px]
+            after:gradient-text
+            after:font-medium
+            after:brand-gradient-1
+            after:opacity-0
+            group-hover:after:opacity-100
+            before:content-[attr(data-label)]
+            after:content-[attr(data-label)]
+          "
+        >
+          {label}
+        </span>
       </div>
     </Link>
   );

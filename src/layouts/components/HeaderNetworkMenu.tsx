@@ -8,7 +8,7 @@ import { NetworkIcon } from "@components/icons/NetworkIcon";
 import clsx from "clsx";
 
 export function HeaderNetworkMenu(): JSX.Element {
-  const connection = useNetwork().connection;
+  const {connection} = useNetwork();
   const { networks } = getEnvironment();
 
   return (
@@ -40,19 +40,18 @@ export function HeaderNetworkMenu(): JSX.Element {
           >
             <Menu.Items
               static
-              className="origin-top-center top-10 w-48 -left-5 absolute black-gradient-1 p-5 rounded-[15px] border-[0.5px] backdrop-blur-[6px] white-gradient-1-shadow" 
+              className="origin-top-center top-10 w-40 left-2.5 absolute black-gradient-1 p-5 rounded-[15px] border-[0.5px] backdrop-blur-[6px] white-gradient-1-shadow" 
             >
               {networks.map((item) => (
                 <Menu.Item key={item}>
                   <a
-                    className='flex items-center cursor-pointer py-1.5 mb-1'
+                    className='flex items-center cursor-pointer py-1.5 mb-1 justify-between'
                     href={`/?network=${item}`}
                   >
-                    <NetworkIcon className="fill-[#00AD1D]" />
-                    <div className="text-xl ml-2 text-white-50">
+                    <div className="text-xl text-white-50">
                       {item}
                     </div>
-                    {connection === item && <MdCheckCircle className="h-6 w-6 ml-2 text-green-800"/>}
+                    {connection === item && <MdCheckCircle className="h-6 w-6 ml-3 text-green-800"/>}
                   </a>
                 </Menu.Item>
               ))}
@@ -66,7 +65,7 @@ export function HeaderNetworkMenu(): JSX.Element {
 }
 
 export function HeaderNetworkMenuMobile(): JSX.Element {
-  const connection = useNetwork().connection;
+  const {connection} = useNetwork();
   const { networks } = getEnvironment();
   const [open, setOpen] = useState(false)
 
@@ -92,7 +91,7 @@ export function HeaderNetworkMenuMobile(): JSX.Element {
       </button>
       <div
         className={clsx(
-          "absolute left-0 transition-[max-height] duration-300 overflow-hidden pl-12 pr-4 w-full",
+          "absolute left-0 transition-[max-height] duration-300 overflow-hidden pl-12 pr-5 mr-0.5 w-full",
           { "max-h-0": !open, "max-h-screen": open }
         )}
       >
@@ -105,11 +104,8 @@ export function HeaderNetworkMenuMobile(): JSX.Element {
             )}
             href={`/?network=${item}`}
           >
-            <div className="flex items-center">
-              <NetworkIcon className="fill-[#00AD1D]" />
-                <div className="text-xl ml-2 text-white-50">
-                  {item}
-                </div>
+            <div className="text-xl text-white-50">
+              {item}
             </div>
             {connection === item && <MdCheckCircle className="h-6 w-6 text-green-800"/>}
           </a>

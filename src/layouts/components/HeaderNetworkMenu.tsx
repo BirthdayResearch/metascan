@@ -71,7 +71,7 @@ export function HeaderNetworkMenuMobile(): JSX.Element {
   const [open, setOpen] = useState(false)
 
   return  (
-    <div className="absolute bottom-20 left-0 pl-8 pr-4 w-full">
+    <div className="absolute bottom-10 left-0 pl-8 pr-4 w-full">
       <button
         className="py-5 flex w-full items-center justify-between transition"
         onClick={() => setOpen(!open)}
@@ -96,23 +96,24 @@ export function HeaderNetworkMenuMobile(): JSX.Element {
           { "max-h-0": !open, "max-h-screen": open }
         )}
       >
-        <div className="pb-24">
-          {networks.map((item) => (
-            <a
-              key={item}
-              className='flex items-center justify-between cursor-pointer py-3 justify-between flex-1'
-              href={`/?network=${item}`}
-            >
-              <div className="flex items-center">
-                <NetworkIcon className="fill-[#00AD1D]" />
-                  <div className="text-xl ml-2.5 text-white-50">
-                    {item}
-                  </div>
-              </div>
-              {connection === item && <MdCheckCircle className="h-6 w-6 text-green-800"/>}
-            </a>
-          ))}
-        </div>
+        {networks.map((item, index) => (
+          <a
+            key={item}
+            className={clsx(
+              'flex items-center justify-between cursor-pointer py-3 justify-between flex-1', 
+              { 'mb-16': index === networks.length-1 }
+            )}
+            href={`/?network=${item}`}
+          >
+            <div className="flex items-center">
+              <NetworkIcon className="fill-[#00AD1D]" />
+                <div className="text-xl ml-2.5 text-white-50">
+                  {item}
+                </div>
+            </div>
+            {connection === item && <MdCheckCircle className="h-6 w-6 text-green-800"/>}
+          </a>
+        ))}
       </div>
     </div>
   )

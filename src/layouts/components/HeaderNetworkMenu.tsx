@@ -19,7 +19,7 @@ export function HeaderNetworkMenu(): JSX.Element {
           <Menu.Button className="flex items-center w-full justify-between">
             <div className="flex items-center mr-3.5">
               <NetworkIcon className="fill-[#00AD1D]" />
-              <div className="text-xl ml-2.5 leading-none text-white-50">
+              <div className="text-xl ml-2 leading-none text-white-50">
                 {connection}
               </div>
             </div>
@@ -49,7 +49,7 @@ export function HeaderNetworkMenu(): JSX.Element {
                     href={`/?network=${item}`}
                   >
                     <NetworkIcon className="fill-[#00AD1D]" />
-                    <div className="text-xl ml-2.5 text-white-50">
+                    <div className="text-xl ml-2 text-white-50">
                       {item}
                     </div>
                     {connection === item && <MdCheckCircle className="h-6 w-6 ml-2 text-green-800"/>}
@@ -78,9 +78,9 @@ export function HeaderNetworkMenuMobile(): JSX.Element {
         type="button"
       >
         <div className="flex items-center w-full justify-between">
-          <div className="flex items-center mr-3.5">
+          <div className="flex items-center">
             <NetworkIcon className="fill-[#00AD1D]" />
-            <div className="text-xl ml-2.5 leading-none text-white-50">
+            <div className="text-xl ml-2 leading-none text-white-50">
               {connection}
             </div>
           </div>
@@ -107,7 +107,7 @@ export function HeaderNetworkMenuMobile(): JSX.Element {
           >
             <div className="flex items-center">
               <NetworkIcon className="fill-[#00AD1D]" />
-                <div className="text-xl ml-2.5 text-white-50">
+                <div className="text-xl ml-2 text-white-50">
                   {item}
                 </div>
             </div>

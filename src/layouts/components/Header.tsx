@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Container } from "@components/commons/Container";
 import { HeaderNetworkMenu, HeaderNetworkMenuMobile } from "./HeaderNetworkMenu";
-import { FiXCircle, FiMenu } from "react-icons/Fi";
+import { FiXCircle, FiMenu } from "react-icons/fi";
 import Image from "next/image";
 
 const MenuItems = [

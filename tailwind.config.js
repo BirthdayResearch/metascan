@@ -97,7 +97,7 @@ module.exports = {
         500: "#02B31B",
         600: "#12BB41",
         700: "#028614",
-        800: "#42f9c2"
+        800: "#42f9c2",
       },
       blue: {
         50: "#F7FBFE",
@@ -114,32 +114,32 @@ module.exports = {
         "2.5xl": "1.25rem",
       },
       screens: {
-        '2.5xl': '1440px'
+        "2.5xl": "1440px",
       },
       keyframes: {
-        'fade-in': {
-          '0%': { opacity: 0 },
-          '100%': { opacity: 1 }
+        "fade-in": {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
         },
-        'fade-out': {
-          '0%': { opacity: 1 },
-          '100%': { opacity: 0 }
+        "fade-out": {
+          "0%": { opacity: 1 },
+          "100%": { opacity: 0 },
         },
-        'fade-in-out': {
-          '0%, 100%': { opacity: 0 },
-          '35%, 65%': { opacity: 1 }
+        "fade-in-out": {
+          "0%, 100%": { opacity: 0 },
+          "35%, 65%": { opacity: 1 },
         },
-        'fade-out-in': {
-          '0%, 100%': { opacity: 1 },
-          '35%, 65%': { opacity: 0 }
-        }
+        "fade-out-in": {
+          "0%, 100%": { opacity: 1 },
+          "35%, 65%": { opacity: 0 },
+        },
       },
       animation: {
-        'fade-in': 'fade-in 150ms ease-in-out',
-        'fade-out': 'fade-out 150ms ease-in-out',
-        'infinite-fade-in': 'fade-in-out 10s ease-in-out infinite',
-        'infinite-fade-out': 'fade-out-in 10s ease-in-out infinite'
-      }
+        "fade-in": "fade-in 150ms ease-in-out",
+        "fade-out": "fade-out 150ms ease-in-out",
+        "infinite-fade-in": "fade-in-out 10s ease-in-out infinite",
+        "infinite-fade-out": "fade-out-in 10s ease-in-out infinite",
+      },
     },
   },
   plugins: [require("@tailwindcss/line-clamp")],

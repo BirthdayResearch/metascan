@@ -5,26 +5,29 @@ import React, { useEffect, useState } from "react";
 import Container from "@components/commons/Container";
 import { FiXCircle, FiMenu } from "react-icons/fi";
 import Image from "next/image";
-import { HeaderNetworkMenu, HeaderNetworkMenuMobile } from "./HeaderNetworkMenu";
+import {
+  HeaderNetworkMenu,
+  HeaderNetworkMenuMobile,
+} from "./HeaderNetworkMenu";
 
 const MenuItems = [
   {
     label: "Blocks",
     pathname: "/blocks",
     testId: "Desktop.HeaderLink.Blocks",
-    imagePath: "/menu/Blocks.svg"
+    imagePath: "/menu/Blocks.svg",
   },
   {
     label: "Transactions",
     pathname: "/transactions",
     testId: "Desktop.HeaderLink.Transactions",
-    imagePath: "/menu/Transactions.svg"
+    imagePath: "/menu/Transactions.svg",
   },
   {
     label: "Verified Contracts",
     pathname: "/contracts",
     testId: "Desktop.HeaderLink.VerifiedContracts",
-    imagePath: "/menu/VerifiedContracts.svg"
+    imagePath: "/menu/VerifiedContracts.svg",
   },
 ];
 
@@ -74,10 +77,7 @@ export function Header(): JSX.Element {
           </div>
         </div>
       </Container>
-      <MobileNavbar
-        isOpen={menu}
-        onClose={() => setMenu(false)} 
-      />
+      <MobileNavbar isOpen={menu} onClose={() => setMenu(false)} />
     </header>
   );
 }
@@ -85,7 +85,7 @@ export function Header(): JSX.Element {
 function DesktopNavbar(): JSX.Element {
   return (
     <div className="bg-white-50 rounded-[30px]">
-      {MenuItems.map(item => (
+      {MenuItems.map((item) => (
         <HeaderLink
           label={item.label}
           pathname={item.pathname}
@@ -141,15 +141,15 @@ function MobileNavbar({
           />
         </div>
         <div className="mt-4">
-          {MenuItems.map(item => (
+          {MenuItems.map((item) => (
             <HeaderMobileLink
               label={item.label}
               imagePath={item.imagePath}
               pathname={item.pathname}
               testId={item.testId}
               key={item.testId}
-            />)
-          )}
+            />
+          ))}
         </div>
         <HeaderNetworkMenuMobile />
       </div>
@@ -168,7 +168,7 @@ function HeaderLink({
 }): JSX.Element {
   return (
     <Link href={{ pathname }}>
-      <div 
+      <div
         className="
           inline-block
           px-8
@@ -222,7 +222,7 @@ function HeaderMobileLink({
   label,
   imagePath,
   pathname,
-  testId
+  testId,
 }: {
   label: string;
   imagePath: string;

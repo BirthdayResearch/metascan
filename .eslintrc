@@ -8,9 +8,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "plugins": [
-    "prettier"
-  ],
+  "plugins": ["prettier"],
   "rules": {
     "react/jsx-uses-react": "off",
     "import/prefer-default-export": "off",
@@ -18,10 +16,7 @@
     "react/jsx-filename-extension": [
       1,
       {
-        "extensions": [
-          ".ts",
-          ".tsx"
-        ]
+        "extensions": [".ts", ".tsx"]
       }
     ],
     "react/prop-types": "off",
@@ -44,7 +39,23 @@
         "allowExpressionValues": true
       }
     ],
-    "react/no-unknown-property": ["error", { "ignore": ["intensity", "position", "rotation", "dispose", "rotation", "geometry", "material"] }],
-    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }]
+    "react/no-unknown-property": [
+      "error",
+      {
+        "ignore": [
+          "intensity",
+          "position",
+          "rotation",
+          "dispose",
+          "rotation",
+          "geometry",
+          "material"
+        ]
+      }
+    ],
+    "no-param-reassign": [
+      "error",
+      { "props": true, "ignorePropertyModificationsFor": ["state"] }
+    ]
   }
 }

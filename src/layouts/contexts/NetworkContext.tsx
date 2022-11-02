@@ -23,9 +23,9 @@ export function useNetwork(): NetworkContextObject {
   return useContext(NetworkContext);
 }
 
-export function NetworkProvider(
-  { children }: PropsWithChildren<any>
-): JSX.Element | null {
+export function NetworkProvider({
+  children,
+}: PropsWithChildren<any>): JSX.Element | null {
   const router = useRouter();
   const env = getEnvironment();
   const connection = env.resolveConnection(router.query.network);

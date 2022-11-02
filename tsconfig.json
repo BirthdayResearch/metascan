@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -21,30 +17,13 @@
     "incremental": true,
     "baseUrl": "src",
     "paths": {
-      "@content/*": [
-        "../content/*"
-      ],
-      "@contexts/*": [
-        "layouts/contexts/*"
-      ],
-      "@components/*": [
-        "components/*"
-      ],
-      "@store/*": [
-        "store/*"
-      ],
-      "@public/*": [
-        "../public/*"
-      ]
+      "@content/*": ["../content/*"],
+      "@contexts/*": ["layouts/contexts/*"],
+      "@components/*": ["components/*"],
+      "@store/*": ["store/*"],
+      "@public/*": ["../public/*"]
     }
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules",
-    "cypress"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "cypress"]
 }

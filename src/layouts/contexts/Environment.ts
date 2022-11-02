@@ -2,7 +2,7 @@
  * Environment specific static resolution utility.
  */
 
- export enum NetworkConnection {
+export enum NetworkConnection {
   MainNet = "MainNet",
   TestNet = "TestNet",
 }

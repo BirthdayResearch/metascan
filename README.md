@@ -1,4 +1,4 @@
-[![CI](https://github.com/DeFiCh/metascan/actions/workflows/ci.yml/badge.svg)](https://github.com/DeFiCh/defimetachain.org/actions/workflows/ci.yml)
+[![CI](https://github.com/WavesHQ/metascan/actions/workflows/ci.yml/badge.svg)](https://github.com/WavesHQ/metascan/actions/workflows/ci.yml)
 
 # Metascan
 

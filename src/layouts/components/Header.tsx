@@ -42,14 +42,14 @@ export function Header(): JSX.Element {
   }, []);
 
   return (
-    <header>
+    <header data-testid="Header.Container">
       <Container className="p-4 sm:py-5 md:py-6 sm:px-10">
         <div className="flex items-center justify-between">
           <Link href={{ pathname: "/" }} passHref>
             <div className="relative w-[135px] h-[24px] sm:w-[202px] sm:h-[36px]">
               <Image
                 fill
-                data-testid="dmc_logo"
+                data-testid="dmc_explorer_logo"
                 src="/logo.svg"
                 alt="DeFi Meta Chain Logo"
               />

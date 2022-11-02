@@ -24,7 +24,8 @@ interface LinkProps extends NextLinkProps {
  */
 export function Link(props: PropsWithChildren<LinkProps>): JSX.Element {
   const { connection } = useNetwork();
-  const { href, children } = props;
+
+  const { href, children } = props
 
   if (!getEnvironment().isDefaultConnection(connection)) {
     href.query = {

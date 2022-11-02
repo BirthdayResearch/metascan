@@ -1,6 +1,6 @@
 {
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./cypress/tsconfig.json"
   },
   "extends": [
     "airbnb",

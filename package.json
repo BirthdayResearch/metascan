@@ -15,7 +15,6 @@
   "dependencies": {
     "@defichain/jellyfish-network": "^2.67.2",
     "@headlessui/react": "^1.7.3",
-    "classnames": "^2.3.2",
     "clsx": "^1.2.1",
     "next": "13.0.0",
     "react": "18.2.0",

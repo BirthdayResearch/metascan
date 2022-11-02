@@ -46,10 +46,10 @@ export function Header(): JSX.Element {
 
   return (
     <header data-testid="Header.Container">
-      <Container className="p-4 sm:py-5 md:py-6 sm:px-10">
+      <Container className="p-4 md:py-5 md:py-6 md:px-10">
         <div className="flex items-center justify-between">
           <Link href={{ pathname: "/" }} passHref>
-            <div className="relative w-[135px] h-[24px] sm:w-[202px] sm:h-[36px]">
+            <div className="relative w-[135px] h-[24px] md:w-[202px] md:h-[36px]">
               <Image
                 fill
                 data-testid="dmc_explorer_logo"
@@ -120,7 +120,7 @@ function MobileNavbar({
       <div
         className={clsx(
           "h-full fixed top-0 right-0 z-10 bg-black-900 backdrop-blur-[28px] transition-[width] duration-300 overflow-y-auto",
-          { "w-full sm:w-[360px]": isOpen, "w-0": !isOpen }
+          { "w-full md:w-[360px]": isOpen, "w-0": !isOpen }
         )}
       >
         <div className="flex items-center justify-between p-4">

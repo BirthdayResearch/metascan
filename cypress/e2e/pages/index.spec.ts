@@ -4,7 +4,8 @@ context("/ on iphone-x", () => {
     cy.viewport("iphone-x");
   });
 
-  it("should have Metascan on home page", () => {
-    cy.findByTestId("home").contains('Metascan')
+  it("should have header on home page", () => {
+    cy.findByTestId("Header.Container").should("exist");
+    cy.findByTestId("dmc_explorer_logo").should("exist");
   });
 });

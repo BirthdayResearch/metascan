@@ -1,7 +1,10 @@
+import { NetworkProvider } from "@contexts/NetworkContext";
+import { Header } from "layouts/components/Header";
+
 export default function Home() {
   return (
-    <h1 data-testid="home" className="text-center text-white-50">
-      Metascan
-    </h1>
+    <NetworkProvider>
+      <Header />
+    </NetworkProvider>
   );
 }

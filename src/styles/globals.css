@@ -72,7 +72,21 @@ body {
   }
 
   .white-gradient-1 {
-    background-image: linear-gradient(129.11deg, rgba(255, 255, 255, 0.4) 6.34%, rgba(255, 255, 255, 0) 45.98%);
+    background-image: linear-gradient(
+      129.11deg,
+      rgba(255, 255, 255, 0.4) 6.34%,
+      rgba(255, 255, 255, 0) 45.98%
+    );
+  }
+
+  .white-gradient-1-shadow {
+    border-image-source: linear-gradient(
+      129.11deg,
+      rgba(255, 255, 255, 0.4) 6.34%,
+      rgba(255, 255, 255, 0) 45.98%
+    );
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2),
+      0px 5px 20px -1px rgba(0, 0, 0, 0.2);
   }
 
   /* To style pseudo element to keep child menu open when hovering across a gap between parent and child menu */
@@ -117,15 +131,29 @@ video {
 }
 
 .brand-gradient-1 {
-  background-image: linear-gradient(103.45deg, #FF12AF 22.86%, #0821BB 74.53%, #42F9C2 105.23%);
+  background-image: linear-gradient(
+    103.45deg,
+    #ff12af 22.86%,
+    #0821bb 74.53%,
+    #42f9c2 105.23%
+  );
 }
 
 .brand-gradient-2 {
-  background-image: linear-gradient(103.45deg, #42F9C2 3.99%, #082FD4 105.23%);
+  background-image: linear-gradient(103.45deg, #42f9c2 3.99%, #082fd4 105.23%);
 }
 
 .black-gradient-1 {
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), linear-gradient(152.58deg, rgba(51, 51, 51, 0.4) -3.08%, rgba(128, 128, 128, 0.1) 77.78%);
+  background-image: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+    ),
+    linear-gradient(
+      152.58deg,
+      rgba(51, 51, 51, 0.4) -3.08%,
+      rgba(128, 128, 128, 0.1) 77.78%
+    );
 }
 
 .feather {

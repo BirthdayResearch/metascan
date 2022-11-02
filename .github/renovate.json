@@ -14,9 +14,7 @@
   "rangeStrategy": "bump",
   "packageRules": [
     {
-      "matchPackagePatterns": [
-        "eslint"
-      ],
+      "matchPackagePatterns": ["eslint"],
       "groupName": "eslint"
     }
   ]

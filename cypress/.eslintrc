@@ -8,8 +8,5 @@
     "prettier",
     "plugin:cypress/recommended"
   ],
-  "ignorePatterns": [
-    "**/plugins/*.ts",
-    "**/support/*.ts"
-  ]
+  "ignorePatterns": ["**/plugins/*.ts", "**/support/*.ts"]
 }

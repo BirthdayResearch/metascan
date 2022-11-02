@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import Container from "@components/commons/Container";
 import TrendLineChart, { LineData } from "./TrendLineChart";
-import mockData from "../data/TokenPriceHistory";
+import TokenStatsAndPriceHistory from "../api/TokenStatsAndPriceHistory";
 
 interface TokenStats {
   tokenPrice: number;
@@ -14,8 +14,9 @@ interface TokenStats {
 const DmxTokenSymbol = "DMXTc";
 
 export default function TokenStatsDisplay(): JSX.Element {
-  const stats: TokenStats = mockData.tokenStats;
-  const trendLineData: LineData[] = mockData.tokenPriceHistory.map((data) => ({
+  const stats: TokenStats = TokenStatsAndPriceHistory.useTokenStats();
+  const priceHistory = TokenStatsAndPriceHistory.useTokenPriceHistory();
+  const trendLineData: LineData[] = priceHistory.map((data) => ({
     value: data.price,
   }));
 
@@ -59,7 +60,7 @@ function TokenPriceSection({ data }: { data: TokenStats }) {
               data.percentChange < 0 ? "text-red-800" : "text-green-800"
             )}
           >
-            {data.percentChange < 0 ? `-` : `+`}
+            {data.percentChange >= 0 ? "+" : ""}
             {data.percentChange}%
           </div>
         </div>

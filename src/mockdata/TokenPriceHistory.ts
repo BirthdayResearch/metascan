@@ -10,7 +10,7 @@ const tokenStats = {
   marketCap: "11.21M",
 };
 
-const tokenPriceHistory = [
+const tokenPriceChangeHistory = [
   {
     id: 1,
     from: "12LJ8DzWUAdnwcSLbngJZGv2UetKXRjifE",
@@ -363,4 +363,4 @@ const tokenPriceHistory = [
   },
 ];
 
-export default { tokenStats, tokenPriceHistory };
+export default { tokenStats, tokenPriceChangeHistory };

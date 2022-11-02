@@ -7,7 +7,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      sans: ['"Space Grotesk"', "sans-serif"],
+      sans: ["Space Grotesk", "sans-serif"],
+      ibm: ["IBM Plex Sans", "sans-serif"],
     },
     colors: {
       transparent: "rgba(0, 0, 0 ,0)",
@@ -79,6 +80,7 @@ module.exports = {
         500: "#ED1414",
         600: "#E54545",
         700: "#A30000",
+        800: "#FF0000",
       },
       orange: {
         50: "#FFFAF4",
@@ -107,6 +109,7 @@ module.exports = {
         500: "#5AA9E6",
         600: "#5198CF",
         700: "#3A6C92",
+        800: "#082FD4",
       },
     },
     extend: {

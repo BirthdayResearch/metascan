@@ -1,5 +1,5 @@
 /**
- * TODO: Remove this file and `data` folder once api is available
+ * TODO: Remove this file and `mockdata` folder once api is available
  */
 
 const tokenStats = {

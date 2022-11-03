@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import Container from "@components/commons/Container";
+import TokenStatsApi from "@api/TokenStatsApi";
 import TrendLineChart, { LineData } from "./TrendLineChart";
-import TokenStatsAndPriceHistory from "../api/TokenStatsAndPriceHistory";
 
-interface TokenStats {
+export interface TokenStats {
   tokenPrice: number;
   percentChange: number;
   circulation: string;
@@ -14,8 +14,9 @@ interface TokenStats {
 const DmxTokenSymbol = "DMXTc";
 
 export default function TokenStatsDisplay(): JSX.Element {
-  const stats: TokenStats = TokenStatsAndPriceHistory.useTokenStats();
-  const priceHistory = TokenStatsAndPriceHistory.useTokenPriceHistory();
+  const stats: TokenStats = TokenStatsApi.useTokenStats();
+  const priceHistory = TokenStatsApi.useTokenPriceHistory();
+
   const trendLineData: LineData[] = priceHistory.map((data) => ({
     value: data.price,
   }));

@@ -44,7 +44,7 @@ function TokenPriceSection({ data }: { data: TokenStats }) {
       <div className="h-10 w-10 sm:h-[39px] sm:w-[39px] xl:h-[46px] xl:w-[46px] sm:mt-0 rounded-full bg-gradient-to-r from-green-800 to-blue-800" />
       <div className="flex flex-1 sm:flex-col xl:flex-row justify-between sm:justify-start xl:items-end ml-2 sm:ml-3">
         <div>
-          <div className="font-ibm text-white-700 text-xs sm:text-sm">
+          <div className="text-white-700 text-xs sm:text-sm">
             DefiMetaChain Token
           </div>
           <div className="text-white-50 font-bold text-2xl xl:text-[32px] xl:leading-10 pt-1 sm:pt-0">
@@ -84,8 +84,8 @@ function DetailsSection({ data }: { data: TokenStats }) {
 }
 
 function DetailRow({ label, value }: { label: string; value: string }) {
-  const labelStyle = "font-ibm text-white-700 sm:pr-2";
-  const valueStyle = "font-ibm text-right text-white-50";
+  const labelStyle = "text-white-700 sm:pr-2";
+  const valueStyle = "text-right text-white-50";
   return (
     <div className="flex justify-between sm:justify-end pt-2 sm:pt-3 xl:pt-2 first:pt-0">
       <div className={labelStyle}>{label}</div>

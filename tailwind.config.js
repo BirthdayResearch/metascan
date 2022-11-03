@@ -8,7 +8,6 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: ["Space Grotesk", "sans-serif"],
-      ibm: ["IBM Plex Sans", "sans-serif"],
     },
     colors: {
       transparent: "rgba(0, 0, 0 ,0)",

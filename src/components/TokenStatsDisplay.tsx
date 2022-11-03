@@ -24,7 +24,7 @@ export default function TokenStatsDisplay(): JSX.Element {
   return (
     <Container className="px-5 sm:py-5 sm:px-10 md:py-6">
       <section className="flex flex-col sm:flex-row sm:flex-wrap xl:flex-nowrap xl:items-center xl:justify-between p-5 pb-10 sm:p-10 xl:py-7 border-[0.5px] rounded-[15px]">
-        <section className="flex flex-1 xl:flex-1 xl:order-first xl:items-center">
+        <section className="flex flex-1 items-center sm:items-start xl:flex-1 xl:order-first xl:items-center">
           <TokenPriceSection data={stats} />
         </section>
         <section className="xl:order-last xl:ml-16">
@@ -41,7 +41,7 @@ export default function TokenStatsDisplay(): JSX.Element {
 function TokenPriceSection({ data }: { data: TokenStats }) {
   return (
     <>
-      <div className="h-10 w-10 sm:h-[39px] sm:w-[39px] xl:h-[46px] xl:w-[46px] sm:mt-0 rounded-full bg-gradient-to-r from-green-800 to-blue-800" />
+      <div className="h-10 w-10 mb-1 sm:mb-0 sm:mt-1 xl:mt-0 sm:h-[39px] sm:w-[39px] xl:h-[46px] xl:w-[46px] rounded-full bg-gradient-to-r from-green-800 to-blue-800" />
       <div className="flex flex-1 sm:flex-col xl:flex-row justify-between sm:justify-start xl:items-end ml-2 sm:ml-3">
         <div>
           <div className="text-white-700 text-xs sm:text-sm">
@@ -52,12 +52,12 @@ function TokenPriceSection({ data }: { data: TokenStats }) {
           </div>
         </div>
         <div className="flex-wrap sm:flex sm:items-baseline sm:pt-2 xl:pt-0 xl:pl-3">
-          <div className="text-white-50 text-lg sm:text-2xl xl:text-[28px] leading-5 sm:leading-10">
+          <div className="text-white-50 text-right text-lg sm:text-2xl xl:text-[28px] leading-5 sm:leading-10">
             ${data.tokenPrice}
           </div>
           <div
             className={clsx(
-              "text-sm pt-2 sm:pt-0 sm:pl-2",
+              "text-right text-sm pt-2 sm:pt-0 sm:pl-2",
               data.percentChange < 0 ? "text-red-800" : "text-green-800"
             )}
           >

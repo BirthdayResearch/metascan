@@ -125,7 +125,8 @@ export function SearchBar(): JSX.Element {
 }
 
 async function getSearchResults(query): Promise<SearchResult[]> {
-  // TODO remove test data
+  // TODO remove test data and timeout
+  await timeout(1000);
   return [
     {
       title: query,
@@ -138,4 +139,10 @@ async function getSearchResults(query): Promise<SearchResult[]> {
       url: `/block/${query}`,
     },
   ];
+}
+
+async function timeout(ms): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }

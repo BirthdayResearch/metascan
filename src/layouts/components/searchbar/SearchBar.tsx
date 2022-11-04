@@ -10,6 +10,7 @@ import { SearchResult, SearchResultTable } from "./SearchResult";
 export function SearchBar(): JSX.Element {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [searchString, setSearchString] = useState();
   const [searchResults, setSearchResults] = useState<
     SearchResult[] | undefined
   >(undefined);
@@ -38,14 +39,14 @@ export function SearchBar(): JSX.Element {
 
   async function changeHandler(value): Promise<void> {
     const query = value.trim();
+    setSearchString(query);
+    setSelected({ title: query, url: "", type: "Query" });
     if (query.length > 0) {
-      setSelected({ title: query, url: "", type: "Query" });
       setIsSearching(true);
       const results = await getSearchResults(query);
       setSearchResults(results);
       setIsSearching(false);
     } else {
-      setSelected(undefined);
       setSearchResults([]);
     }
   }
@@ -59,6 +60,7 @@ export function SearchBar(): JSX.Element {
     setSelected(result);
     // TODO add on select action
   };
+
   return (
     <Combobox value={selected} onChange={onSelect} nullable>
       <div className="flex w-full px-5 md:px-10 lg:px-[316px] items-center justify-self-center mx-auto my-10">
@@ -70,7 +72,7 @@ export function SearchBar(): JSX.Element {
           ref={reference}
         >
           <div className="flex w-full">
-            <Combobox.Button as="div" className="flex w-full">
+            <Combobox.Button as="div" className="flex w-full mr-2">
               <FiSearch size={24} className="text-white-50 mr-2 self-center" />
               <Combobox.Input
                 as="input"
@@ -87,14 +89,17 @@ export function SearchBar(): JSX.Element {
                 onChange={onChangeDebounceHandler}
               />
             </Combobox.Button>
-            <IoCloseCircleSharp
-              size={24}
-              onClick={() => changeHandler("")}
-              className="text-white-50 ml-2 self-center"
-            />
+            {((searchString !== undefined && searchString !== "") ||
+              isFocused) && (
+              <IoCloseCircleSharp
+                size={24}
+                onClick={() => changeHandler("")}
+                className="text-white-50 self-center"
+              />
+            )}
           </div>
         </div>
-        {selected !== undefined && (
+        {searchString !== undefined && searchString !== "" && (
           <Transition className="absolute">
             <div
               className="z-40 mt-1"

@@ -17,6 +17,7 @@
     "incremental": true,
     "baseUrl": "src",
     "paths": {
+      "@api/*": ["api/*"],
       "@content/*": ["../content/*"],
       "@contexts/*": ["layouts/contexts/*"],
       "@components/*": ["components/*"],

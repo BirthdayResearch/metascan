@@ -8,14 +8,13 @@ function GroupChainStatsCard() {
       cardTitle: "24h total transactions",
       cardBody: "32324000000",
       cardFooter: "+12.34% last 30 days",
-      classNames: "bg-gradient-to-br from-[#42F9C2] to-[#082FD4]",
+      classNames: "brand-gradient-2",
     },
     {
       cardTitle: "24h total volume liquidity",
       cardBody: "3232400000",
       cardFooter: "+2.34% last 24H",
-      classNames:
-        "bg-gradient-to-r from-[#BE0000] via-[#FF12AF] via-[#B117B3] via-[#0821BB] to-[#42F9C2]",
+      classNames: "brand-gradient-1",
     },
   ];
   return (
@@ -24,9 +23,9 @@ function GroupChainStatsCard() {
         {groupStatsCardContent.map((card) => (
           <ChainStatsCard
             key={card.cardTitle}
-            cardTitle={card.cardTitle}
-            cardBody={card.cardBody}
-            cardFooter={card.cardFooter}
+            title={card.cardTitle}
+            body={card.cardBody}
+            footer={card.cardFooter}
             classNames={card.classNames}
           />
         ))}

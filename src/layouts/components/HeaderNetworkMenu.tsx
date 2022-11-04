@@ -42,7 +42,7 @@ export function HeaderNetworkMenu(): JSX.Element {
             >
               <Menu.Items
                 static
-                className="origin-top-center top-10 w-40 left-2.5 absolute black-gradient-1 p-5 rounded-[15px] border-[0.5px] backdrop-blur-[6px] white-gradient-1-shadow"
+                className="origin-top-center top-10 w-40 left-2.5 absolute black-gradient-1 p-5 rounded-lg border-[0.5px] backdrop-blur-[6px] black-gradient-1-shadow white-gradient-1-image-shadow"
               >
                 {networks.map((item) => (
                   <Menu.Item key={item}>

@@ -84,7 +84,7 @@ export function Header(): JSX.Element {
 
 function DesktopNavbar(): JSX.Element {
   return (
-    <div className="bg-white-50 rounded-[30px]">
+    <div className="bg-white-50 rounded-3xl">
       {MenuItems.map((item) => (
         <HeaderLink
           label={item.label}

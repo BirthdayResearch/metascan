@@ -14,8 +14,10 @@
   },
   "dependencies": {
     "@defichain/jellyfish-network": "^2.67.2",
+    "@floating-ui/react-dom": "^1.0.0",
     "@headlessui/react": "^1.7.3",
     "clsx": "^1.2.1",
+    "lodash": "^4.17.21",
     "next": "13.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

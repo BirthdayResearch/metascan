@@ -8,7 +8,7 @@ export function DMCSectionHeader(): JSX.Element {
           leading-[56px]
           md:text-[56px]
           md:leading-[72px]
-          lg:text-[64px]
+          lg:text-[84px]
           lg:leading-[82px]
           text-white-50
         "

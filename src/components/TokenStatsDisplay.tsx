@@ -2,6 +2,7 @@ import clsx from "clsx";
 import Container from "@components/commons/Container";
 import TokenStatsApi from "@api/TokenStatsApi";
 import TrendLineChart, { LineData } from "./TrendLineChart";
+import GradientCardContainer from "./commons/GradientCardContainer";
 
 export interface TokenStats {
   tokenPrice: number;
@@ -23,17 +24,19 @@ export default function TokenStatsDisplay(): JSX.Element {
 
   return (
     <Container className="px-5 sm:py-5 sm:px-10 md:py-6">
-      <section className="flex flex-col sm:flex-row sm:flex-wrap xl:flex-nowrap xl:items-center xl:justify-between p-5 pb-10 sm:p-10 xl:py-7 border-[0.5px] rounded-[15px]">
-        <section className="flex flex-1 items-center sm:items-start xl:flex-1 xl:order-first xl:items-center">
-          <TokenPriceSection data={stats} />
+      <GradientCardContainer>
+        <section className="flex flex-col sm:flex-row sm:flex-wrap xl:flex-nowrap xl:items-center xl:justify-between p-5 pb-10 sm:p-10 xl:py-7 rounded-[15px]">
+          <section className="flex flex-1 items-center sm:items-start xl:flex-1 xl:order-first xl:items-center">
+            <TokenPriceSection data={stats} />
+          </section>
+          <section className="xl:order-last xl:ml-16">
+            <DetailsSection data={stats} />
+          </section>
+          <section className="mt-8 sm:mt-12 xl:mt-0 h-[88px] sm:basis-full xl:order-2 xl:basis-auto xl:w-[304px]">
+            <TrendLineChart data={trendLineData} />
+          </section>
         </section>
-        <section className="xl:order-last xl:ml-16">
-          <DetailsSection data={stats} />
-        </section>
-        <section className="mt-8 sm:mt-12 xl:mt-0 h-[88px] sm:basis-full xl:order-2 xl:basis-auto xl:w-[304px]">
-          <TrendLineChart data={trendLineData} />
-        </section>
-      </section>
+      </GradientCardContainer>
     </Container>
   );
 }

@@ -5,9 +5,9 @@
 const tokenStats = {
   tokenPrice: 10.94,
   percentChange: 3.23,
-  circulation: "32.23K",
-  last24hVolume: "1.21M",
-  marketCap: "11.21M",
+  circulation: "32230",
+  last24hVolume: "1210000",
+  marketCap: "1530000000",
 };
 
 const tokenPriceChangeHistory = [

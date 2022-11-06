@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import TokenStatsApi from "@api/TokenStatsApi";
+import { useUnitSuffix } from "hooks/useUnitSuffix";
 import TrendLineChart, { LineData } from "./TrendLineChart";
 import GradientCardContainer from "./commons/GradientCardContainer";
 
@@ -73,14 +74,17 @@ function TokenPriceSection({ data }: { data: TokenStats }) {
 }
 
 function DetailsSection({ data }: { data: TokenStats }) {
+  const circulation = useUnitSuffix(data.circulation);
+  const last24hVolume = useUnitSuffix(data.last24hVolume);
+  const marketCap = useUnitSuffix(data.marketCap);
   return (
     <div className="pt-10 md:pt-0">
       <DetailRow
         label="Circulation"
-        value={`${data.circulation} ${DmxTokenSymbol}`}
+        value={`${circulation} ${DmxTokenSymbol}`}
       />
-      <DetailRow label="24h Volume" value={data.last24hVolume} />
-      <DetailRow label="Market Cap" value={`$${data.marketCap}`} />
+      <DetailRow label="24h Volume" value={last24hVolume} />
+      <DetailRow label="Market Cap" value={`$${marketCap}`} />
     </div>
   );
 }

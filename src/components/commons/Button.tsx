@@ -39,7 +39,7 @@ export default function Button({
     >
       <span
         data-label={label}
-        className="text-white-50 group-hover:brand-gradient-1"
+        className="text-white-50 group-hover:brand-gradient-1 group-hover:bg-clip-text group-hover:text-transparent"
       >
         {label}
       </span>

@@ -8,7 +8,11 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 import Container from "@components/commons/Container";
 import { SearchResult, SearchResultTable } from "./SearchResult";
 
-export function SearchBar(): JSX.Element {
+interface SearchBarProps {
+  containerClass?: string;
+}
+
+export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [searchString, setSearchString] = useState();
@@ -65,11 +69,14 @@ export function SearchBar(): JSX.Element {
   return (
     <Container>
       <Combobox value={selected} onChange={onSelect} nullable>
-        <div className="flex w-full px-5 md:px-10 lg:px-[316px] items-center justify-self-center mx-auto my-10">
+        <div
+          className={clsx(
+            "flex w-full items-center justify-self-center mx-auto my-10",
+            containerClass
+          )}
+        >
           <div
-            className={clsx(
-              "flex w-full px-8 py-[22px] rounded-lg border-[0.5px] black-gradient-1 border-black-500 focus-within:border-lightBlue black-gradient-1-shadow backdrop-blur-[6px]"
-            )}
+            className="flex w-full px-8 py-[22px] rounded-lg border-[0.5px] black-gradient-1 border-black-500 focus-within:border-lightBlue black-gradient-1-shadow backdrop-blur-[6px]"
             data-testid="SearchBar"
             ref={reference}
           >

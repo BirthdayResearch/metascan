@@ -43,7 +43,7 @@ export function HeaderNetworkMenu(): JSX.Element {
             >
               <Menu.Items
                 static
-                className="origin-top-center top-10 w-40 left-2.5 absolute rounded-lg"
+                className="origin-top-center z-10 top-10 w-40 left-2.5 absolute rounded-lg"
               >
                 <GradientCardContainer>
                   <div className="p-5">

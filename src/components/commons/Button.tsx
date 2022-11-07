@@ -1,5 +1,3 @@
-import GradientText from "./GradientText";
-
 type ButtonSize = "small" | "medium" | "big";
 
 interface ButtonProps {
@@ -33,15 +31,18 @@ export default function Button({
   return (
     <button
       type="button"
-      className={`${btnPadding} rounded-[28px] relative bg-black-900 group before:button-border before:bg-white-50 before:opacity-100 hover:before:opacity-0 hover:before:animate-none after:button-border after:opacity-0 after:brand-gradient-1 hover:after:opacity-100 hover:after:animate-none ${
-        customStyle ?? ""
-      }`}
+      className={`flex items-center rounded-[28px] bg-black-900 group border border-white-50
+                  hover:brand-bg-gradient-1 hover:border-transparent
+                  ${btnPadding} ${customStyle ?? ""}`}
       onClick={onClick}
       disabled={disabled}
     >
-      <div className="flex items-center ">
-        <GradientText label={label} customStyle="font-medium" />
-      </div>
+      <span
+        data-label={label}
+        className="text-white-50 group-hover:brand-gradient-1"
+      >
+        {label}
+      </span>
     </button>
   );
 }

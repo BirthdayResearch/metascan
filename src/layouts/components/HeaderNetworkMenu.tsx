@@ -6,6 +6,7 @@ import { MdCheckCircle } from "react-icons/md";
 import React, { Fragment, useState } from "react";
 import { NetworkIcon } from "@components/icons/NetworkIcon";
 import clsx from "clsx";
+import GradientCardContainer from "@components/commons/GradientCardContainer";
 
 export function HeaderNetworkMenu(): JSX.Element {
   const { connection } = useNetwork();
@@ -42,21 +43,25 @@ export function HeaderNetworkMenu(): JSX.Element {
             >
               <Menu.Items
                 static
-                className="origin-top-center top-10 w-40 left-2.5 absolute black-gradient-1 p-5 rounded-lg border-[0.5px] backdrop-blur-[6px] black-gradient-1-shadow white-gradient-1-image-shadow"
+                className="origin-top-center top-10 w-40 left-2.5 absolute rounded-lg"
               >
-                {networks.map((item) => (
-                  <Menu.Item key={item}>
-                    <a
-                      className="flex items-center cursor-pointer py-1.5 mb-1 justify-between"
-                      href={`/?network=${item}`}
-                    >
-                      <div className="text-xl text-white-50">{item}</div>
-                      {connection === item && (
-                        <MdCheckCircle className="h-6 w-6 ml-3 text-green-800" />
-                      )}
-                    </a>
-                  </Menu.Item>
-                ))}
+                <GradientCardContainer>
+                  <div className="p-5">
+                    {networks.map((item) => (
+                      <Menu.Item key={item}>
+                        <a
+                          className="flex items-center cursor-pointer py-1.5 mb-1 justify-between"
+                          href={`/?network=${item}`}
+                        >
+                          <div className="text-xl text-white-50">{item}</div>
+                          {connection === item && (
+                            <MdCheckCircle className="h-6 w-6 ml-3 text-green-800" />
+                          )}
+                        </a>
+                      </Menu.Item>
+                    ))}
+                  </div>
+                </GradientCardContainer>
               </Menu.Items>
             </Transition>
           </>

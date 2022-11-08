@@ -89,7 +89,7 @@ function Footer() {
           <div className="flex flex-row relative lg:w-[202px] lg:h-[36px] md:w-[168px] md:h-[30] w-[135px] h-[24px] ">
             <Image
               fill
-              data-testid="dmc_explorer_logo"
+              data-testid="footer_dmc_explorer_logo"
               src="/logo.svg"
               alt="DeFi Meta Chain Logo"
             />

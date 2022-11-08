@@ -8,19 +8,19 @@ const MenuItems = [
     childLink: [
       {
         imagePath: "/menu/dmc-explorer.svg",
-        altLabel: "DeFiMetaChain",
+        testId: "DeFiMetaChain",
         label: "DeFiMetaChain",
         href: "https://defimetachain.org/",
       },
       {
         imagePath: "/menu/defichain-com.svg",
-        altLabel: "DeFiChain.com",
+        testId: "DeFiChain.com",
         label: "DeFiChain.com",
         href: "https://defichain.com",
       },
       {
         imagePath: "/menu/VerifiedContracts.svg",
-        altLabel: "Verified Contracts",
+        testId: "Verified Contracts",
         label: "Verified Contracts",
         href: "",
       },
@@ -31,13 +31,13 @@ const MenuItems = [
     childLink: [
       {
         imagePath: "/menu/twitter.svg",
-        altLabel: "Twitter",
+        testId: "Twitter",
         label: "Twitter",
         href: "https://twitter.com/defichain",
       },
       {
         imagePath: "/menu/telegram.svg",
-        altLabel: "Telegram",
+        testId: "Telegram",
         label: "Telegram",
         href: "https://t.me/defiblockchain",
       },
@@ -49,13 +49,13 @@ const MenuItems = [
     childLink: [
       {
         imagePath: "/menu/whitepaper.svg",
-        altLabel: "Whitepaper",
+        testId: "Whitepaper",
         label: "Whitepaper",
         href: "",
       },
       {
         imagePath: "/menu/github.svg",
-        altLabel: "GitHub",
+        testId: "GitHub",
         label: "GitHub",
         href: "https://github.com/DeFiCh/metachain",
       },
@@ -114,6 +114,7 @@ interface FooterColumnProps {
 interface FooterLinkItemProps {
   label: string;
   href?: string;
+  testId?: string;
 }
 
 function FooterColumn({ category, childLinks }: FooterColumnProps) {
@@ -121,19 +122,25 @@ function FooterColumn({ category, childLinks }: FooterColumnProps) {
     <div className="flex flex-col gap-4 w-full">
       <div className="font-medium text-white-50">{category}</div>
       {childLinks.map((link) => (
-        <FooterLinkItem href={link.href} label={link.label} key={link.label} />
+        <FooterLinkItem
+          href={link.href}
+          label={link.label}
+          key={link.label}
+          testId={link.testId}
+        />
       ))}
     </div>
   );
 }
 
-function FooterLinkItem({ href, label }: FooterLinkItemProps) {
+function FooterLinkItem({ href, label, testId }: FooterLinkItemProps) {
   return (
     <a
       href={href}
       target="_blank"
       rel="noreferrer"
       className="text-white-50/60"
+      data-testid={testId}
     >
       {label}
     </a>

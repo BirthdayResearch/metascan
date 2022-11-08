@@ -2,6 +2,7 @@ type ButtonSize = "small" | "medium" | "big";
 
 interface ButtonProps {
   label: string;
+  href: string;
   size?: ButtonSize;
   onClick?: () => void;
   disabled?: boolean;
@@ -23,19 +24,29 @@ const getButtonPadding = (size: ButtonSize): string => {
 export default function Button({
   size = "medium",
   label,
+  href,
   onClick,
   disabled = false,
   customStyle,
 }: ButtonProps): JSX.Element {
   const btnPadding = getButtonPadding(size);
+
+  const handleButtonClick = () => {
+    if (onClick) {
+      onClick();
+      return;
+    }
+    window.open(href, "_blank", "noreferrer");
+  };
+
   return (
     <button
       type="button"
       className={`flex items-center rounded-[28px] bg-black-900 group border border-white-50
                   hover:brand-bg-gradient-1 hover:border-transparent
                   ${btnPadding} ${customStyle ?? ""}`}
-      onClick={onClick}
       disabled={disabled}
+      onClick={handleButtonClick}
     >
       <span
         data-label={label}

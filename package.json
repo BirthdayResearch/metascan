@@ -15,7 +15,7 @@
   "dependencies": {
     "@defichain/jellyfish-network": "^2.67.2",
     "@floating-ui/react-dom": "^1.0.0",
-    "@headlessui/react": "^1.7.3",
+    "@headlessui/react": "^1.7.4",
     "bignumber.js": "^9.1.0",
     "clsx": "^1.2.1",
     "lodash": "^4.17.21",

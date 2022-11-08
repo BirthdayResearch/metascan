@@ -67,7 +67,7 @@ function Footer() {
   return (
     <footer className="w-full relative pb-[40px] lg:pb-[70px] md:pb-[52px] sm:pb-[57.05] lg:pt-[104px] md:pt-[66px] pt-[79px] bottom-0 right-0">
       <Container className="px-4 sm:px-10 md:px-10">
-        <div className="black-gradient-1-shadow backdrop-blur-[6px] bg-opacity-70 bg-black-900 flex flex-col sm:flex-row py-10 px-5 md:px-10 lg:px-[86px] rounded-[30px] black-gradient-1 gap-y-10 md:gap-0">
+        <div className="black-gradient-1-shadow backdrop-blur-[6px] bg-opacity-70 bg-black-900 flex flex-col sm:flex-row py-10 px-5 md:px-10 lg:px-[86px] rounded-[30px] black-gradient-1 gap-y-10 sm:gap-0">
           <div className="flex flex-row grow">
             <FooterColumn
               category={MenuItems[0].category}
@@ -86,7 +86,7 @@ function Footer() {
               childLinks={MenuItems[2].childLink}
             />
           </div>
-          <div className="flex flex-row relative lg:w-[202px] lg:h-[36px] md:w-[168px] md:h-[30] w-[135px] h-[24px] ">
+          <div className="flex flex-row mt-[56px] sm:mt-0 relative lg:w-[202px] lg:h-[36px] md:w-[168px] md:h-[30] w-[135px] h-[24px]">
             <Image
               fill
               data-testid="footer_dmc_explorer_logo"
@@ -108,7 +108,7 @@ interface FooterColumnProps {
 interface FooterLinkItemProps {
   label: string;
   href?: string;
-  testId?: string;
+  testId: string;
 }
 
 function FooterColumn({ category, childLinks }: FooterColumnProps) {

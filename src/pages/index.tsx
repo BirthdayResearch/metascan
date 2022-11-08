@@ -13,8 +13,6 @@ export default function Home() {
         <TokenStatsDisplay />
         <GroupStatisticCard />
       </Container>
-      <div className="w-full h-screen absolute z-[-1] mix-blend-screen top-0 left-0 bg-no-repeat lg:bg-cover bg-contain lg:bg-[url('/background/gradient-purple.png')] md:bg-[url('/background/gradient-purple-tablet.png')] bg-[url('/background/gradient-purple-mobile.png')]" />
-      <div className="w-full h-screen absolute top-[210px] z-[-1] mix-blend-screen bg-no-repeat bg-contain bg-right sm:bg-[url('/background/gradient-blue-mobile.png')] bg-[url('/background/gradient-blue-mobile.png')]" />
     </>
   );
 }

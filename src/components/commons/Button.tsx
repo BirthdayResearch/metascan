@@ -3,6 +3,7 @@ type ButtonSize = "small" | "medium" | "large";
 interface ButtonProps {
   label: string;
   href: string;
+  testId: string;
   size?: ButtonSize;
   onClick?: () => void;
   disabled?: boolean;
@@ -25,6 +26,7 @@ export default function Button({
   size = "medium",
   label,
   href,
+  testId,
   onClick,
   disabled = false,
   customStyle,
@@ -41,6 +43,7 @@ export default function Button({
 
   return (
     <button
+      data-testid={`${testId}_button`}
       type="button"
       className={`flex items-center rounded-[28px] bg-black-900 group border border-white-50
                   hover:brand-bg-gradient-1 hover:border-transparent hover:transition hover:duration-300 hover:ease-in-out 

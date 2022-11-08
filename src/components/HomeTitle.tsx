@@ -1,4 +1,4 @@
-export function DMCSectionHeader(): JSX.Element {
+export function HomeTitle(): JSX.Element {
   return (
     <div className="flex flex-col items-center text-center mt-[88px] md:mt-24 mx-5 md:mx-[188px]">
       <span

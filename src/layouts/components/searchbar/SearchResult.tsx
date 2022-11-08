@@ -6,6 +6,7 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 import { TbLoaderQuarter } from "react-icons/tb";
 import { Link } from "@components/commons/Link";
 import { TransactionsIcon } from "@components/icons/Transactions";
+import { IconType } from "react-icons";
 
 export interface SearchResult {
   url: string;
@@ -40,7 +41,9 @@ export function SearchResultTable({
   );
 }
 
-const iconMapping = {
+type SearchResultType = "Block" | "Transaction";
+
+const iconMapping: Record<SearchResultType, IconType> = {
   Block: FiBox,
   Transaction: TransactionsIcon,
 };

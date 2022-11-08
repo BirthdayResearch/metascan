@@ -50,7 +50,7 @@ export default function Button({
       disabled={disabled}
       onClick={handleButtonClick}
     >
-      <span className="text-white-50 brand-gradient-1 bg-clip-text group-hover:text-transparent transition-all ease-in-out duration-300">
+      <span className="text-white-50 brand-gradient-1 bg-clip-text group-hover:text-transparent transition-all ease-in duration-300">
         {label}
       </span>
     </button>

@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.0",
-    "@netlify/plugin-lighthouse": "^4.0.1",
+    "@netlify/plugin-lighthouse": "^4.0.2",
     "@netlify/plugin-nextjs": "^4.28.2",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@testing-library/cypress": "^8.0.3",

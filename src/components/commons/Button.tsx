@@ -43,14 +43,14 @@ export default function Button({
     <button
       type="button"
       className={`flex items-center rounded-[28px] bg-black-900 group border border-white-50
-                  hover:brand-bg-gradient-1 hover:border-transparent
+                  hover:brand-bg-gradient-1 hover:border-transparent hover:transition hover:duration-300 hover:ease-in-out 
                   ${btnPadding} ${customStyle ?? ""}`}
       disabled={disabled}
       onClick={handleButtonClick}
     >
       <span
         data-label={label}
-        className="text-white-50 group-hover:brand-gradient-1 group-hover:bg-clip-text group-hover:text-transparent"
+        className="text-white-50 group-hover:brand-gradient-1 group-hover:bg-clip-text group-hover:text-transparent group-hover:transition group-hover:duration-300 group-hover:ease-in-out "
       >
         {label}
       </span>

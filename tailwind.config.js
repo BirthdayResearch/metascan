@@ -110,10 +110,16 @@ module.exports = {
         700: "#3A6C92",
         800: "#082FD4",
       },
+      lightBlue: "#0964F4"
     },
     extend: {
       borderRadius: {
-        "2.5xl": "1.25rem",
+        DEFAULT: '5px',
+        'md': '10px',
+        'lg': '15px',
+        "xl": "20px",
+        "2xl": "25px",
+        "3xl": "30px",
       },
       screens: {
         "2.5xl": "1440px",

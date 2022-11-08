@@ -1,4 +1,4 @@
-type ButtonSize = "small" | "medium" | "big";
+type ButtonSize = "small" | "medium" | "large";
 
 interface ButtonProps {
   label: string;
@@ -13,7 +13,7 @@ const getButtonPadding = (size: ButtonSize): string => {
   switch (size) {
     case "small":
       return "py-2 px-5";
-    case "big":
+    case "large":
       return "py-4 px-8";
     case "medium":
     default:
@@ -49,8 +49,8 @@ export default function Button({
       onClick={handleButtonClick}
     >
       <span
-        data-label={label}
-        className="text-white-50 group-hover:brand-gradient-1 group-hover:bg-clip-text group-hover:text-transparent group-hover:transition group-hover:duration-300 group-hover:ease-in-out "
+        className="text-white-50 group-hover:brand-gradient-1 group-hover:bg-clip-text group-hover:text-transparent
+                  group-hover:transition group-hover:duration-300 group-hover:ease-in-out"
       >
         {label}
       </span>

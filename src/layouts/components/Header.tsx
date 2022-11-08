@@ -191,7 +191,7 @@ function HeaderLink({
       >
         <span
           data-label={label}
-          className="font-medium text-black-900 group-hover:brand-gradient-1 group-hover:bg-clip-text group-hover:text-transparent"
+          className="font-medium brand-gradient-1 group-hover:text-transparent bg-clip-text transition-all ease-in duration-300"
         >
           {label}
         </span>

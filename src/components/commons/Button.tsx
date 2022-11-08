@@ -45,16 +45,12 @@ export default function Button({
     <button
       data-testid={`${testId}_button`}
       type="button"
-      className={`flex items-center rounded-[28px] bg-black-900 group border border-white-50
-                  hover:brand-bg-gradient-1 hover:border-transparent hover:transition hover:duration-300 hover:ease-in-out 
+      className={`flex items-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 hover:border-transparent
                   ${btnPadding} ${customStyle ?? ""}`}
       disabled={disabled}
       onClick={handleButtonClick}
     >
-      <span
-        className="text-white-50 group-hover:brand-gradient-1 group-hover:bg-clip-text group-hover:text-transparent
-                  group-hover:transition group-hover:duration-300 group-hover:ease-in-out"
-      >
+      <span className="text-white-50 brand-gradient-1 bg-clip-text group-hover:text-transparent transition-all ease-in-out duration-300">
         {label}
       </span>
     </button>

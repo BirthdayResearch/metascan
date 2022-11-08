@@ -1,6 +1,5 @@
 import React from "react";
 import clsx from "clsx";
-import BigNumber from "bignumber.js";
 import { useUnitSuffix } from "hooks/useUnitSuffix";
 import GradientCardContainer from "./GradientCardContainer";
 
@@ -12,15 +11,7 @@ interface StatsCardProps {
 }
 
 function ChainStatsCard({ title, body, footer, classNames }: StatsCardProps) {
-  const isSuffixRequired = new BigNumber(body ?? 0).gte(new BigNumber(1000000));
-  const valueToUnitSuffix = useUnitSuffix(
-    {
-      6: "M",
-      9: "B",
-      12: "T",
-    },
-    body
-  );
+  const valueToUnitSuffix = useUnitSuffix(body);
 
   return (
     <GradientCardContainer>
@@ -29,7 +20,7 @@ function ChainStatsCard({ title, body, footer, classNames }: StatsCardProps) {
           {title}
         </div>
         <div className="text-white-50 text-2xl font-light tracking-wider py-2">
-          {isSuffixRequired ? valueToUnitSuffix : body}
+          {valueToUnitSuffix}
         </div>
         <div
           className={clsx(

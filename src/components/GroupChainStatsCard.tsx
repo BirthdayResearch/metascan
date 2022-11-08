@@ -1,6 +1,5 @@
 import React from "react";
 import ChainStatsCard from "@components/commons/ChainStatsCard";
-import Container from "@components/commons/Container";
 
 function GroupChainStatsCard() {
   const groupStatsCardContent = [
@@ -18,19 +17,17 @@ function GroupChainStatsCard() {
     },
   ];
   return (
-    <Container className=" px-4 sm:px-10 md:px-10">
-      <div className="flex flex-col space-y-2 sm:space-y-0 sm:space-x-2 sm:flex-row ">
-        {groupStatsCardContent.map((card) => (
-          <ChainStatsCard
-            key={card.cardTitle}
-            title={card.cardTitle}
-            body={card.cardBody}
-            footer={card.cardFooter}
-            classNames={card.classNames}
-          />
-        ))}
-      </div>
-    </Container>
+    <div className="flex flex-col space-y-2 sm:space-y-0 sm:space-x-2 sm:flex-row ">
+      {groupStatsCardContent.map((card) => (
+        <ChainStatsCard
+          key={card.cardTitle}
+          title={card.cardTitle}
+          body={card.cardBody}
+          footer={card.cardFooter}
+          classNames={card.classNames}
+        />
+      ))}
+    </div>
   );
 }
 

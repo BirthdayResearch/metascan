@@ -67,9 +67,6 @@ function Footer() {
   return (
     <footer className="w-full relative pb-[40px] lg:pb-[70px] md:pb-[52px] sm:pb-[57.05] lg:pt-[104px] md:pt-[66px] pt-[79px] bottom-0 right-0">
       <Container className="px-4 sm:px-10 md:px-10">
-        {/* <div className="rounded-[30px] w-full h-full p-[0.5px] white-gradient-1 drop-shadow-[0_5px_20px_rgba(0,0,0,0.2)] opacity-70">
-                <div className="black-gradient-1 rounded-[30px] w-full h-full bg-opacity-25"> */}
-
         <div className="black-gradient-1-shadow backdrop-blur-[6px] bg-opacity-70 bg-black-900 flex flex-col sm:flex-row py-10 px-5 md:px-10 lg:px-[86px] rounded-[30px] black-gradient-1 gap-y-10 md:gap-0">
           <div className="flex flex-row grow">
             <FooterColumn
@@ -98,9 +95,6 @@ function Footer() {
             />
           </div>
         </div>
-
-        {/* </div>
-            </div> */}
       </Container>
     </footer>
   );

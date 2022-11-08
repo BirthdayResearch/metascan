@@ -89,9 +89,11 @@ function NoResultsMessage(): JSX.Element {
           No results
         </span>
       </div>
-      <span className="text-center text-white-700 ml-8 mt-2 text-base">
-        Search for Hash, block, Vault ID ...
-      </span>
+      <div className="ml-8 mt-2">
+        <span className="text-center text-white-700 text-base">
+          Search for Hash, block, Vault ID ...
+        </span>
+      </div>
     </div>
   );
 }

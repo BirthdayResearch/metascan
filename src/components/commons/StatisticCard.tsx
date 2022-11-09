@@ -7,15 +7,15 @@ interface StatsCardProps {
   title: string;
   body: string;
   footer: string;
-  classNames?: string;
+  testId: string;
 }
 
-function ChainStatsCard({ title, body, footer, classNames }: StatsCardProps) {
+function StatisticCard({ title, body, footer, testId }: StatsCardProps) {
   const valueToUnitSuffix = useUnitSuffix(body);
 
   return (
-    <GradientCardContainer>
-      <div className="rounded-[15px] flex flex-col justify-center px-5 sm:px-10 py-8">
+    <GradientCardContainer data-testid={testId}>
+      <div className="rounded-[15px] flex flex-col justify-center px-5 lg:px-10 md:px-10 py-8">
         <div className="text-white-700 font-medium text-xs tracking-wider uppercase ">
           {title}
         </div>
@@ -24,8 +24,8 @@ function ChainStatsCard({ title, body, footer, classNames }: StatsCardProps) {
         </div>
         <div
           className={clsx(
-            "text-transparent bg-clip-text font-medium text-xs tracking-wider uppercase max-w-[146px]",
-            classNames
+            "text-transparent bg-clip-text font-medium text-xs tracking-wider uppercase max-w-[60px]",
+            footer.includes("-") ? "brand-gradient-1" : "brand-gradient-2"
           )}
         >
           {footer}
@@ -35,4 +35,4 @@ function ChainStatsCard({ title, body, footer, classNames }: StatsCardProps) {
   );
 }
 
-export default ChainStatsCard;
+export default StatisticCard;

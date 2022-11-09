@@ -1,3 +1,4 @@
+import Footer from "@components/Footer";
 import { NetworkProvider } from "@contexts/NetworkContext";
 import Head from "next/head";
 import { PropsWithChildren, useEffect, useState } from "react";
@@ -54,6 +55,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
         <NetworkProvider>
           <Header />
           <main className="flex-grow">{children}</main>
+          <Footer />
         </NetworkProvider>
       )}
     </div>

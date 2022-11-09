@@ -67,7 +67,7 @@ function Footer() {
   return (
     <footer className="w-full relative pb-[40px] lg:pb-[70px] md:pb-[52px] sm:pb-[57.05] lg:pt-[104px] md:pt-[66px] pt-[79px] bottom-0 right-0">
       <Container className="px-4 sm:px-10 md:px-10">
-        <div className="black-gradient-1-shadow backdrop-blur-[6px] bg-opacity-70 bg-black-900 flex flex-col sm:flex-row py-10 px-5 md:px-10 lg:px-[86px] rounded-[30px] black-gradient-1 gap-y-10 sm:gap-0">
+        <div className="black-gradient-1-shadow backdrop-blur-[6px] bg-opacity-70 bg-black-900 flex flex-col sm:flex-row sm:py-10 py-8 px-5 md:px-10 lg:px-[86px] rounded-[30px] black-gradient-1 gap-y-10 sm:gap-0">
           <div className="flex flex-row grow">
             <FooterColumn
               category={MenuItems[0].category}

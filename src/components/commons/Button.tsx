@@ -41,16 +41,19 @@ export default function Button({
     window.open(href, "_blank", "noreferrer");
   };
 
+  const transitionStyle = "transition-all ease-in duration-300";
   return (
     <button
       data-testid={`${testId}_button`}
       type="button"
       className={`flex items-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 hover:border-transparent
-                  ${btnPadding} ${customStyle ?? ""}`}
+                  ${transitionStyle} ${btnPadding} ${customStyle ?? ""}`}
       disabled={disabled}
       onClick={handleButtonClick}
     >
-      <span className="text-white-50 brand-gradient-1 bg-clip-text group-hover:text-transparent transition-all ease-in duration-300">
+      <span
+        className={`text-white-50 brand-gradient-1 bg-clip-text group-hover:text-transparent ${transitionStyle}`}
+      >
         {label}
       </span>
     </button>

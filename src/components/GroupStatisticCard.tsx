@@ -17,7 +17,7 @@ function GroupStatisticCard() {
     },
   ];
   return (
-    <div className="flex flex-col space-y-2 sm:space-y-0 sm:space-x-2 sm:flex-row">
+    <div className="flex flex-col space-y-2 lg:space-y-0 md:space-y-0 lg:space-x-2 md:space-x-2 lg:flex-row md:flex-row">
       {groupStatsCardContent.map((card) => (
         <StatisticCard
           key={card.cardTitle}

@@ -15,7 +15,7 @@ function StatisticCard({ title, body, footer, testId }: StatsCardProps) {
 
   return (
     <GradientCardContainer data-testid={testId}>
-      <div className="rounded-[15px] flex flex-col justify-center px-5 sm:px-10 py-8">
+      <div className="rounded-[15px] flex flex-col justify-center px-5 lg:px-10 md:px-10 py-8">
         <div className="text-white-700 font-medium text-xs tracking-wider uppercase ">
           {title}
         </div>

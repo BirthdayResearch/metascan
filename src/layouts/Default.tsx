@@ -54,7 +54,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
       {mounted && (
         <NetworkProvider>
           <Header />
-          <main>{children}</main>
+          <main className="flex-grow">{children}</main>
           <div className="w-full h-screen absolute z-[-1] bg-no-repeat top-0 left-0 lg:bg-[url('/background/gradient-purple.png')] md:bg-[url('/background/gradient-purple-tablet.png')] bg-[url('/background/gradient-purple-mobile.png')]" />
           <div className="w-full h-screen absolute lg:top-[210px] md:top-[476px] top-[836px] z-[-1] mix-blend-screen bg-no-repeat bg-contain bg-right lg:bg-[url('/background/gradient-blue)] md:bg-[url('/background/gradient-blue-tablet.png')] bg-[url('/background/gradient-blue-mobile.png')]" />
           <div className="relative w-full h-full">

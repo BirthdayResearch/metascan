@@ -5,7 +5,7 @@ context("/ on iphone-x", () => {
   });
 
   it("should have header on home page", () => {
-    cy.findByTestId("Header.Container").should("exist");
-    cy.findByTestId("dmc_explorer_logo").should("exist");
+    cy.findByTestId("header-container").should("exist");
+    cy.findByTestId("dmc-explorer-logo").should("exist");
   });
 });

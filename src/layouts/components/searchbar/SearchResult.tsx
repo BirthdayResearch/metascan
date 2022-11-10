@@ -1,8 +1,7 @@
 import { Combobox } from "@headlessui/react";
 import { Fragment } from "react";
 import clsx from "clsx";
-import { FiBox } from "react-icons/fi";
-import { IoCloseCircleSharp } from "react-icons/io5";
+import { FiBox, FiSlash } from "react-icons/fi";
 import { TbLoaderQuarter } from "react-icons/tb";
 import { Link } from "@components/commons/Link";
 import { TransactionsIcon } from "@components/icons/Transactions";
@@ -59,7 +58,7 @@ function SearchResultRow({
       {({ active }) => (
         <Link
           href={{ pathname: searchResults.url }}
-          data-testid={`SearchResultRow.${searchResults.type}.${searchResults.title}`}
+          data-testid={`searchResultRow-${searchResults.type}-${searchResults.title}`}
         >
           <div className="w-full px-8 py-5 cursor-pointer">
             <div className="w-full flex items-center">
@@ -87,7 +86,7 @@ function NoResultsMessage(): JSX.Element {
   return (
     <div className="w-full px-8 py-5">
       <div className="w-full flex items-center">
-        <IoCloseCircleSharp size={20} className="text-red-600" />
+        <FiSlash size={20} className="text-red-600" />
         <span className="text-center text-xl font-bold ml-3 text-white-50">
           No results
         </span>

@@ -44,7 +44,7 @@ export default function Button({
   const transitionStyle = "transition-all ease-in duration-300";
   return (
     <button
-      data-testid={`${testId}_button`}
+      data-testid={`${testId}-button`}
       type="button"
       className={`flex items-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 hover:border-transparent
                   ${transitionStyle} ${btnPadding} ${customStyle ?? ""}`}

@@ -54,6 +54,18 @@ body {
     color: transparent;
   }
 
+  /* To style button/container without using :before and :after to have color transition */
+  .brand-bg-gradient-1 {
+    background: linear-gradient(#000000, #000000) padding-box,
+      linear-gradient(
+          103.45deg,
+          #ff12af 22.86%,
+          #0821bb 74.53%,
+          #42f9c2 105.23%
+        )
+        border-box;
+  }
+
   .brand-gradient-1 {
     background-image: linear-gradient(
       103.45deg,

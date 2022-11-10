@@ -1,3 +1,4 @@
+import Container from "@components/commons/Container";
 import Footer from "@components/Footer";
 import { NetworkProvider } from "@contexts/NetworkContext";
 import Head from "next/head";
@@ -21,7 +22,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen px-4 md:px-10 lg:px-[120px]">
+    <div className="flex flex-col min-h-screen">
       <Head>
         <meta charSet="UTF-8" />
         <title key="title">{title}</title>
@@ -54,7 +55,9 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
       {mounted && (
         <NetworkProvider>
           <Header />
-          <main className="flex-grow">{children}</main>
+          <Container className="px-4 md:px-10 lg:px-[120px]">
+            <main className="flex-grow">{children}</main>
+          </Container>
           <div
             data-testid="bg-purple-gradient"
             className="w-full h-screen absolute z-[-1] bg-no-repeat top-0 left-0 lg:bg-[url('/background/gradient-purple.png')] md:bg-[url('/background/gradient-purple-tablet.png')] bg-[url('/background/gradient-purple-mobile.png')]"

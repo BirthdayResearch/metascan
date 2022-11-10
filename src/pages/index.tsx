@@ -9,7 +9,7 @@ export default function Home() {
     <>
       <HomeTitle />
       <SearchBar containerClass="px-1 md:px-0 lg:px-[196px] my-10" />
-      <Container className="px-5 md:px-10">
+      <Container className="px-1 md:px-0">
         <TokenStatsDisplay />
         <GroupStatisticCard />
       </Container>

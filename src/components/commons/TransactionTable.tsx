@@ -1,4 +1,3 @@
-import { blockTimeInSec } from "mockdata/LatestData";
 import MiddleEllipsis from "react-middle-ellipsis";
 import Button from "./Button";
 import GradientCardContainer from "./GradientCardContainer";
@@ -132,7 +131,7 @@ function BlockInfoDisplay({
         />
       </div>
       <div className="flex pt-1.5 lg:pt-0">
-        &nbsp;{`in ${blockTimeInSec} sec`}
+        &nbsp;{`in ${blockInfo.blockTimeInSec} sec`}
       </div>
     </>
   );

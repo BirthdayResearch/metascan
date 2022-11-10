@@ -5,7 +5,7 @@ import { Default } from "../layouts/Default";
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Default {...pageProps}>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </Default>
   );
 }

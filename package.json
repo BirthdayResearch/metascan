@@ -23,6 +23,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
+    "react-middle-ellipsis": "^1.2.1",
     "recharts": "^2.1.16"
   },
   "devDependencies": {
@@ -35,6 +36,7 @@
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
     "@types/recharts": "^1.8.24",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
     "autoprefixer": "^10.4.13",
     "cypress": "^10.11.0",
     "eslint": "8.27.0",

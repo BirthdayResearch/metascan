@@ -1,6 +1,6 @@
 export function HomeTitle(): JSX.Element {
   return (
-    <div className="flex flex-col items-center text-center mt-[88px] md:mt-24 mx-1 md:mx-36	">
+    <div className="flex flex-col items-center text-center mt-[88px] md:mt-24 mx-1 md:mx-36">
       <span
         className="
           font-bold

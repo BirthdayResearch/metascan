@@ -18,7 +18,7 @@ function GroupChainStatsCard() {
     },
   ];
   return (
-    <Container className=" px-4 sm:px-10 md:px-10">
+    <Container className="px-1 md:px-0 lg:px-[196px]">
       <div className="flex flex-col space-y-2 sm:space-y-0 sm:space-x-2 sm:flex-row ">
         {groupStatsCardContent.map((card) => (
           <ChainStatsCard

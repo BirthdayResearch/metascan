@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       <HomeTitle />
-      <SearchBar containerClass="px-5 md:px-10 lg:px-[316px] my-10" />
+      <SearchBar containerClass="px-1 md:px-0 lg:px-[196px] my-10" />
       <TokenStatsDisplay />
       <GroupChainStatsCard />
     </>

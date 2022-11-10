@@ -20,7 +20,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen px-4 md:px-10 lg:px-[120px]">
       <Head>
         <meta charSet="UTF-8" />
         <title key="title">{title}</title>

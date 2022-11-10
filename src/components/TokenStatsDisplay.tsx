@@ -23,7 +23,7 @@ export default function TokenStatsDisplay(): JSX.Element {
   }));
 
   return (
-    <Container className="px-5 sm:py-5 sm:px-10 md:py-6">
+    <Container className="px-1 md:px-0 lg:px-[196px] pb-2 sm:py-5 md:py-6">
       <GradientCardContainer>
         <section className="flex flex-col sm:flex-row sm:flex-wrap xl:flex-nowrap xl:items-center xl:justify-between p-5 pb-10 sm:p-10 xl:py-7 rounded-[15px]">
           <section className="flex flex-1 items-center sm:items-start xl:flex-1 xl:order-first xl:items-center">

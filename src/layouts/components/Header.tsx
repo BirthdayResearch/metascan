@@ -46,7 +46,7 @@ export function Header(): JSX.Element {
 
   return (
     <header data-testid="Header.Container">
-      <Container className="p-4 md:py-5 md:py-6 md:px-10">
+      <Container className="py-4 md:py-6 md:px-10 lg:px-[120px]">
         <div className="flex items-center justify-between">
           <Link href={{ pathname: "/" }} passHref>
             <div className="relative w-[135px] h-[24px] md:w-[202px] md:h-[36px]">

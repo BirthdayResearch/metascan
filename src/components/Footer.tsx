@@ -66,7 +66,7 @@ const MenuItems = [
 function Footer() {
   return (
     <footer className="w-full relative lg:pb-[70px] md:pb-[52px] pb-[57.05px] lg:pt-[104px] md:pt-[66px] pt-[79px]">
-      <Container className="px-4 lg:px-10 md:px-10">
+      <Container className="px-5 md:px-10 lg:px-[120px]">
         <div className="black-gradient-1-shadow backdrop-blur-[6px] bg-opacity-70 bg-black-900 flex flex-col lg:flex-row md:flex-row lg:py-10 md:py-10 py-8 lg:px-[126px] md:px-10 px-5 rounded-[30px] black-gradient-1 gap-y-10 lg:gap-0 md:gap-0">
           <div className="flex flex-row grow">
             <FooterColumn
@@ -89,7 +89,7 @@ function Footer() {
           <div className="flex flex-row lg:mt-0 md:mt-0 mt-[56px] relative lg:w-[202px] md:w-[168px] w-[135px] lg:h-[36px] md:h-[30px] h-[24px] ">
             <Image
               fill
-              data-testid="footer_dmc_explorer_logo"
+              data-testid="footer-dmc-explorer-logo"
               src="/logo.svg"
               alt="DeFi Meta Chain Logo"
             />

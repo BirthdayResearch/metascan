@@ -45,14 +45,14 @@ export function Header(): JSX.Element {
   }, []);
 
   return (
-    <header data-testid="Header.Container">
-      <Container className="p-4 md:py-5 md:py-6 md:px-10">
+    <header data-testid="header-container">
+      <Container className="p-4 md:py-6 md:px-10 lg:px-[120px]">
         <div className="flex items-center justify-between">
           <Link href={{ pathname: "/" }} passHref>
             <div className="relative w-[135px] h-[24px] md:w-[202px] md:h-[36px]">
               <Image
                 fill
-                data-testid="dmc_explorer_logo"
+                data-testid="dmc-explorer-logo"
                 src="/logo.svg"
                 alt="DeFi Meta Chain Logo"
               />
@@ -66,11 +66,11 @@ export function Header(): JSX.Element {
               <HeaderNetworkMenu />
             </div>
             <div className="lg:hidden">
-              <div className="ml-4 pl-0.5">
+              <div className="mr-1.5 md:mr-0">
                 <FiMenu
                   className="w-6 h-6 stroke-white-50"
                   onClick={() => setMenu(true)}
-                  data-testid="Header.OpenMenu"
+                  data-testid="header-openMenu"
                 />
               </div>
             </div>
@@ -128,7 +128,7 @@ function MobileNavbar({
             <div className="relative w-[135px] h-[25px]">
               <Image
                 fill
-                data-testid="dmc_logo"
+                data-testid="dmc-logo"
                 src="/logo.svg"
                 alt="DeFi Meta Chain Logo"
               />
@@ -137,7 +137,7 @@ function MobileNavbar({
           <FiXCircle
             className="!stroke-1 w-10 h-10 stroke-white-50"
             onClick={onClose}
-            data-testid="Header.CloseMenu"
+            data-testid="header-closeMenu"
           />
         </div>
         <div className="mt-4">

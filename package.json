@@ -35,7 +35,6 @@
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
     "@types/recharts": "^1.8.24",
-    "@typescript-eslint/eslint-plugin": "^5.42.1",
     "autoprefixer": "^10.4.13",
     "cypress": "^10.11.0",
     "eslint": "8.27.0",

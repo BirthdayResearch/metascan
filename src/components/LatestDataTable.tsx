@@ -1,4 +1,5 @@
 import { DMX_TOKEN_SYMBOL } from "shared/contants";
+import { truncateTextFromMiddle } from "shared/textHelper";
 import Button from "./commons/Button";
 import GradientCardContainer from "./commons/GradientCardContainer";
 import LinkText from "./commons/LinkText";
@@ -79,14 +80,6 @@ export default function LatestDataTable({
     </div>
   );
 }
-
-const truncateTextFromMiddle = (text: string, length = 5): string => {
-  const truncatedText = `${text.substring(0, length)}...${text.substring(
-    text.length - length,
-    text.length
-  )}`;
-  return truncatedText;
-};
 
 function RowItem({
   type,

@@ -104,7 +104,7 @@ function RowItem({
   return (
     <div
       data-testid={`latest-${type}-row-${rowIndex}`}
-      className="text-white-50 py-5 border-b border-gray-1000/50 md:flex md:flex-wrap md:items-start lg:flex-nowrap xl:gap-5"
+      className="text-white-50 py-5 border-b border-black-600/50 md:flex md:flex-wrap md:items-start lg:flex-nowrap xl:gap-5"
     >
       <div
         data-testid={

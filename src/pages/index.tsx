@@ -17,16 +17,16 @@ export default function Home() {
         <TokenStatsDisplay />
         <GroupStatisticCard />
         <LatestDataTable
+          type="transactions"
+          title="Latest transactions"
+          data={latestTransactions}
+          containerClass="pt-8 md:pt-20"
+        />
+        <LatestDataTable
           type="blocks"
           title="Latest blocks"
           data={latestBlocks}
           amountPrefix="Reward:"
-          containerClass="pt-8 md:pt-20"
-        />
-        <LatestDataTable
-          type="transactions"
-          title="Latest transactions"
-          data={latestTransactions}
           containerClass="pt-5 md:pt-6 lg:pt-5"
         />
       </div>

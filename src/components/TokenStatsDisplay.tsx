@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import TokenStatsApi from "@api/TokenStatsApi";
 import { useUnitSuffix } from "hooks/useUnitSuffix";
+import { DMX_TOKEN_SYMBOL } from "shared/contants";
 import TrendLineChart, { LineData } from "./TrendLineChart";
 import GradientCardContainer from "./commons/GradientCardContainer";
 
@@ -11,8 +12,6 @@ export interface TokenStats {
   last24hVolume: string;
   marketCap: string;
 }
-
-const DmxTokenSymbol = "DMXTc";
 
 export default function TokenStatsDisplay(): JSX.Element {
   const stats: TokenStats = TokenStatsApi.useTokenStats();
@@ -51,7 +50,7 @@ function TokenPriceSection({ data }: { data: TokenStats }) {
             DefiMetaChain Token
           </div>
           <div className="text-white-50 font-bold text-2xl xl:text-[32px] xl:leading-10 pt-1 md:pt-0">
-            {DmxTokenSymbol}
+            {DMX_TOKEN_SYMBOL}
           </div>
         </div>
         <div className="flex-wrap md:flex md:items-baseline md:pt-2 xl:pt-0 xl:pl-3">
@@ -81,7 +80,7 @@ function DetailsSection({ data }: { data: TokenStats }) {
     <div className="pt-10 md:pt-0">
       <DetailRow
         label="Circulation"
-        value={`${circulation} ${DmxTokenSymbol}`}
+        value={`${circulation} ${DMX_TOKEN_SYMBOL}`}
       />
       <DetailRow label="24h Volume" value={last24hVolume} />
       <DetailRow label="Market Cap" value={`$${marketCap}`} />

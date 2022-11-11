@@ -1,3 +1,4 @@
+import { DMX_TOKEN_SYMBOL } from "shared/contants";
 import Button from "./commons/Button";
 import GradientCardContainer from "./commons/GradientCardContainer";
 import LinkText from "./commons/LinkText";
@@ -87,7 +88,6 @@ const truncateTextFromMiddle = (text: string, length = 5): string => {
   return truncatedText;
 };
 
-const DmxTokenSymbol = "DMXTc";
 function RowItem({
   type,
   rowData,
@@ -142,7 +142,7 @@ function RowItem({
         {amountPrefix && (
           <span className="text-white-700">{amountPrefix}&nbsp;</span>
         )}
-        {tokenAmount} {DmxTokenSymbol}
+        {tokenAmount} {DMX_TOKEN_SYMBOL}
       </div>
     </div>
   );

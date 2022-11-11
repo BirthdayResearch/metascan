@@ -4,9 +4,8 @@
  */
 export function IconGradient(): JSX.Element {
   return (
-    <svg fill="none">
+    <svg height={0} width={0} viewBox="0 0 0 0" fill="none">
       <defs>
-        {/* ConfirmCheck */}
         <linearGradient
           id="brand-gradient-2"
           x1="4.7452"
@@ -18,7 +17,6 @@ export function IconGradient(): JSX.Element {
           <stop stopColor="#42F9C2" />
           <stop offset="1" stopColor="#082FD4" />
         </linearGradient>
-        {/* RejectedCross */}
         <linearGradient
           id="red-gradient-1"
           x1="5.55129"

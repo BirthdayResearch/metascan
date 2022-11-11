@@ -39,7 +39,7 @@ export default function TransactionTable({
   containerClass = "",
 }: Props): JSX.Element {
   return (
-    <div className={`pb-2 pt-6 lg:pb-6 ${containerClass ?? ""}`}>
+    <div className={`${containerClass ?? ""}`}>
       <GradientCardContainer>
         <div className="p-5 py-6 md:p-10">
           <div className="flex flex-col md:grid md:grid-cols-6 md:items-center">
@@ -130,7 +130,7 @@ function BlockInfoDisplay({
           label={`${blockInfo.transactionsPerBlock} Transactions`}
         />
       </div>
-      <div className="flex pt-1.5 lg:pt-0">
+      <div className="flex pt-1.5 md:pt-2.5 lg:pt-0">
         &nbsp;{`in ${blockInfo.blockTimeInSec} sec`}
       </div>
     </>
@@ -152,7 +152,7 @@ function TxnWalletInfoDisplay({
           </MiddleEllipsis>
         </div>
       </div>
-      <div className="flex pt-1.5 lg:pt-0 lg:w-48  xl:ml-11">
+      <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:w-48  xl:ml-11">
         <span className="pr-1">To: </span>
         <div className="w-4/5 lg:w-36">
           <MiddleEllipsis>

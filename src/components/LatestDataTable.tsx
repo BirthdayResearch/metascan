@@ -1,6 +1,6 @@
-import Button from "./Button";
-import GradientCardContainer from "./GradientCardContainer";
-import LinkText from "./LinkText";
+import Button from "./commons/Button";
+import GradientCardContainer from "./commons/GradientCardContainer";
+import LinkText from "./commons/LinkText";
 
 type DataType = "blocks" | "transactions";
 
@@ -30,7 +30,7 @@ interface Props {
   amountPrefix?: string;
 }
 
-export default function TransactionTable({
+export default function LatestDataTable({
   type,
   title,
   data,

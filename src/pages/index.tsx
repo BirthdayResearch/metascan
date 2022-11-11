@@ -2,7 +2,7 @@ import TokenStatsDisplay from "@components/TokenStatsDisplay";
 import { HomeTitle } from "@components/HomeTitle";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import GroupStatisticCard from "@components/GroupStatisticCard";
-import TransactionTable from "@components/commons/TransactionTable";
+import LatestDataTable from "@components/LatestDataTable";
 import LatestDataApi from "@api/LatestDataApi";
 
 export default function Home() {
@@ -16,14 +16,14 @@ export default function Home() {
         <SearchBar containerClass="lg:px-[196px] my-10" />
         <TokenStatsDisplay />
         <GroupStatisticCard />
-        <TransactionTable
+        <LatestDataTable
           type="blocks"
           title="Latest blocks"
           data={latestBlocks}
           amountPrefix="Reward:"
           containerClass="pt-8 md:pt-20"
         />
-        <TransactionTable
+        <LatestDataTable
           type="transactions"
           title="Latest transactions"
           data={latestTransactions}

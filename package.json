@@ -23,7 +23,6 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.6.0",
-    "react-middle-ellipsis": "^1.2.1",
     "recharts": "^2.1.16"
   },
   "devDependencies": {

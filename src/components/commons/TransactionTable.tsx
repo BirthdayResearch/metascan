@@ -1,4 +1,3 @@
-import MiddleEllipsis from "react-middle-ellipsis";
 import Button from "./Button";
 import GradientCardContainer from "./GradientCardContainer";
 import LinkText from "./LinkText";
@@ -80,6 +79,14 @@ export default function TransactionTable({
   );
 }
 
+const truncateTextFromMiddle = (text: string, length = 5): string => {
+  const truncatedText = `${text.substring(0, length)}...${text.substring(
+    text.length - length,
+    text.length
+  )}`;
+  return truncatedText;
+};
+
 const DmxTokenSymbol = "DMXTc";
 function RowItem({
   type,
@@ -105,18 +112,20 @@ function RowItem({
         }
         className="w-2/4 inline-flex items-center md:w-32 lg:w-36"
       >
-        <MiddleEllipsis>
-          <LinkText
-            testId={`details-page-link-${rowIndex}`}
-            href={detailsPageLink}
-            label={transactionId}
-          />
-        </MiddleEllipsis>
+        <LinkText
+          testId={`details-page-link-${rowIndex}`}
+          href={detailsPageLink}
+          label={
+            type === "blocks"
+              ? transactionId
+              : truncateTextFromMiddle(transactionId, 5)
+          }
+        />
       </div>
       <div className="w-2/4 inline-flex items-center justify-end text-white-700 text-right md:order-last md:grow md:-mt-6 lg:mt-0 lg:w-20 xl:w-32 lg:pl-5 xl:pl-0">
         {datetime}
       </div>
-      <div className="md:w-4/12 lg:flex lg:w-96 lg:pl-12">
+      <div className="md:w-4/12 md:pl-5 lg:flex lg:w-96 lg:pl-12">
         {type === "blocks" ? (
           <BlockInfoDisplay
             block={transactionId}
@@ -172,25 +181,21 @@ function TxnWalletInfoDisplay({
       <div className="flex pt-5 md:pt-0 lg:w-48">
         <span className="pr-1">From: </span>
         <div className="w-4/5 lg:w-36">
-          <MiddleEllipsis>
-            <LinkText
-              testId={`from-address-link-${txnInfo.from}`}
-              href={`/address/${txnInfo.from}`}
-              label={txnInfo.from}
-            />
-          </MiddleEllipsis>
+          <LinkText
+            testId={`from-address-link-${txnInfo.from}`}
+            href={`/address/${txnInfo.from}`}
+            label={truncateTextFromMiddle(txnInfo.from)}
+          />
         </div>
       </div>
       <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:w-48  xl:ml-11">
         <span className="pr-1">To: </span>
         <div className="w-4/5 lg:w-36">
-          <MiddleEllipsis>
-            <LinkText
-              testId={`to-address-link-${txnInfo.to}`}
-              href={`/address/${txnInfo.to}`}
-              label={txnInfo.to}
-            />
-          </MiddleEllipsis>
+          <LinkText
+            testId={`to-address-link-${txnInfo.to}`}
+            href={`/address/${txnInfo.to}`}
+            label={truncateTextFromMiddle(txnInfo.to)}
+          />
         </div>
       </div>
     </>

@@ -1,4 +1,4 @@
-import { FiBox } from "react-icons/fi";
+import { FiFileText } from "react-icons/fi";
 import { TransactionsIcon } from "@components/icons/Transactions";
 import { NumericFormat } from "react-number-format";
 import BigNumber from "bignumber.js";
@@ -7,26 +7,21 @@ import { secondsToDhmsDisplay } from "@components/helpers/DurationHelper";
 import { Link } from "@components/commons/Link";
 import { RejectedCross } from "@components/icons/RejectedCross";
 import clsx from "clsx";
+import {
+  TransactionI,
+  TransactionStatus,
+  TransactionType,
+} from "./TransactionData";
 
 const iconMapping = {
-  Block: FiBox,
-  Transaction: TransactionsIcon,
+  [TransactionType.ContractCall]: FiFileText,
+  [TransactionType.Transaction]: TransactionsIcon,
 };
-interface Transaction {
-  type: string;
-  hash: string;
-  amount: string;
-  symbol: string;
-  from: string;
-  to: string;
-  status: string;
-  time: number;
-}
 
-export default function TransactionRow({ data }: { data: Transaction }) {
-  const Icon = iconMapping[data.type];
+export default function TransactionRow({ data }: { data: TransactionI }) {
+  const Icon = iconMapping[data.transactionType];
   return (
-    <div className="">
+    <div>
       {/* for desktop and tablet */}
       <div className="hidden md:block">
         <div className="grid grid-cols-8 lg:grid-cols-12 gap-5 py-3.5 lg:py-4">
@@ -34,7 +29,7 @@ export default function TransactionRow({ data }: { data: Transaction }) {
             <div className="flex flex-row">
               <Icon size={24} className="text-white-50 stroke-white-50" />
               <div className="flex flex-col overflow-hidden ml-2 lg:ml-4 text-base">
-                <span className="text-white-50">{data.type}</span>
+                <span className="text-white-50">{data.transactionType}</span>
               </div>
             </div>
             <TransactionLinkRow
@@ -71,16 +66,16 @@ export default function TransactionRow({ data }: { data: Transaction }) {
       </div>
 
       {/* For mobile */}
-      <div className="md:hidden py-6 z-10">
+      <div className="md:hidden py-6 z-10 mt-2">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
             <Icon size={24} className="text-white-50 stroke-white-50" />
             <div className="flex flex-col overflow-hidden ml-2 text-base">
-              <span className="text-white-50">{data.type}</span>
+              <span className="text-white-50">{data.transactionType}</span>
             </div>
           </div>
           <div className="text-right">
-            <StatusComponent status="Confirmed" />
+            <StatusComponent status={data.status} />
           </div>
         </div>
         <div className="ml-8">
@@ -116,14 +111,15 @@ export default function TransactionRow({ data }: { data: Transaction }) {
 }
 
 function StatusComponent({ status }: { status: string }): JSX.Element {
-  const Icon = status === "Confirmed" ? ConfirmCheck : RejectedCross;
+  const Icon =
+    status === TransactionStatus.Confirmed ? ConfirmCheck : RejectedCross;
   return (
     <div className="flex flex-row">
       <span className="text-white-700 text-base hidden lg:block">Status:</span>
       <span
         className={clsx(
           "hidden md:block text-base lg:ml-1 mr-2",
-          status === "Confirmed"
+          status === TransactionStatus.Confirmed
             ? "text-transparent bg-clip-text brand-gradient-2"
             : "text-red-800"
         )}

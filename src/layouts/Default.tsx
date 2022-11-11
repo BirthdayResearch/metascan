@@ -1,5 +1,6 @@
 import Container from "@components/commons/Container";
 import Footer from "@components/Footer";
+import { IconGradient } from "@components/icons/IconGradient";
 import { NetworkProvider } from "@contexts/NetworkContext";
 import Head from "next/head";
 import { PropsWithChildren, useEffect, useState } from "react";
@@ -55,6 +56,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
       {mounted && (
         <NetworkProvider>
           <Header />
+          <IconGradient />
           <Container className="px-4 md:px-10 lg:px-[120px]">
             <main className="flex-grow">{children}</main>
           </Container>

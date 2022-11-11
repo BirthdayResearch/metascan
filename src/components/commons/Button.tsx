@@ -46,13 +46,13 @@ export default function Button({
     <button
       data-testid={`${testId}-button`}
       type="button"
-      className={`flex items-center justify-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 hover:border-transparent
+      className={`flex items-center justify-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 focus:brand-bg-gradient-2 hover:border-transparent
                   ${transitionStyle} ${btnPadding} ${customStyle ?? ""}`}
       disabled={disabled}
       onClick={handleButtonClick}
     >
       <span
-        className={`text-white-50 brand-gradient-1 bg-clip-text group-hover:text-transparent ${transitionStyle}`}
+        className={`text-white-50 brand-gradient-1 group-focus:brand-gradient-2 bg-clip-text group-hover:text-transparent ${transitionStyle}`}
       >
         {label}
       </span>

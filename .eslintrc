@@ -57,5 +57,8 @@
       "error",
       { "props": true, "ignorePropertyModificationsFor": ["state"] }
     ]
+  },
+  "globals": {
+    "JSX": "readonly"
   }
 }

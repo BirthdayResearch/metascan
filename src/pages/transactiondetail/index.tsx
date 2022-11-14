@@ -23,7 +23,7 @@ function TransactionDetail() {
     <Container className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
-        <div className="p-10">
+        <div className="lg:p-10 md:p-10 p-5">
           <div className="flex flex-row py-4 mb-6">
             <span className="font-bold text-2xl text-white-50">
               Transaction details
@@ -48,10 +48,12 @@ function TransactionDetail() {
             gasPrice={data.transactions.gasPrice}
             gasLimit={data.gasLimit}
             gasUsed={data.gasUsed}
+            gasUsedPercentage={data.gasUsedPercentage}
             from={data.transactions.address.from}
             to={data.transactions.address.to}
             forToken={data.forToken}
             type={data.type}
+            hex={data.hex}
           />
         </div>
       </GradientCardContainer>
@@ -162,7 +164,7 @@ function TransactionDetailSegmentOne({
         <div className="flex flex-col gap-y-6 w-full">
           <div className="flex flex-col lg:flex-row md:flex-row gap-y-6">
             <div className="grow">
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-y-1">
                 <div className="text-white-700">{fixedTitle[0]}</div>
                 <div>
                   <NumericFormat
@@ -177,23 +179,22 @@ function TransactionDetailSegmentOne({
               </div>
             </div>
             <div className="grow">
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-y-1">
                 <div className="text-white-700">{fixedTitle[1]}</div>
                 <div className="flex flex-row gap-x-2.5 items-center">
                   <LinkText label={block} href="" />
-                  <FiCopy className="text-white-50" />
                 </div>
               </div>
             </div>
             <div className="grow">
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-y-1">
                 <div className="text-white-700">{fixedTitle[2]}</div>
                 <div className="text-white-50">{transactionType}</div>
               </div>
             </div>
           </div>
           <div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-1">
               <div className="text-white-700">{fixedTitle[3]}</div>
               <div className="text-white-50">{nonce}</div>
             </div>
@@ -201,7 +202,7 @@ function TransactionDetailSegmentOne({
         </div>
         <div className="flex flex-col lg:flex-row md:flex-row gap-y-4 lg:gap-y-0 md:gap-y-0 w-full">
           <div className="grow">
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-1">
               <div className="text-white-700">{fixedTitle[4]}</div>
               <div>
                 <div className="flex flex-row gap-x-2.5 items-center">
@@ -209,13 +210,13 @@ function TransactionDetailSegmentOne({
                     label={truncateTextFromMiddle(address.from)}
                     href=""
                   />
-                  <FiCopy className="text-white-50" />
+                  <FiCopy className="text-white-50 h-[22px]" />
                 </div>
               </div>
             </div>
           </div>
           <div className="grow">
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-1">
               <div className="text-white-700">{fixedTitle[5]}</div>
               <div>
                 <div className="flex flex-row gap-x-2.5 items-center">
@@ -223,13 +224,13 @@ function TransactionDetailSegmentOne({
                     label={truncateTextFromMiddle(address.to)}
                     href=""
                   />
-                  <FiCopy className="text-white-50" />
+                  <FiCopy className="text-white-50 h-[22px]" />
                 </div>
               </div>
             </div>
           </div>
           <div>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-1">
               <div className="text-white-700">{fixedTitle[6]}</div>
               <div>
                 <div className="flex flex-row gap-x-2.5 items-center">
@@ -237,7 +238,7 @@ function TransactionDetailSegmentOne({
                     label={truncateTextFromMiddle(address.contractAddress)}
                     href=""
                   />
-                  <FiCopy className="text-white-50" />
+                  <FiCopy className="text-white-50 h-[22px]" />
                 </div>
               </div>
             </div>
@@ -255,6 +256,7 @@ interface TransactionDetailSegmentTwoProps {
   };
   gasLimit: string;
   gasUsed: string;
+  gasUsedPercentage: string;
   from: string;
   to: string;
   forToken: {
@@ -262,16 +264,19 @@ interface TransactionDetailSegmentTwoProps {
     symbol: string;
   };
   type: string;
+  hex: string;
 }
 
 function TransactionDetailSegmentTwo({
   gasPrice,
   gasLimit,
   gasUsed,
+  gasUsedPercentage,
   from,
   to,
   forToken,
   type,
+  hex,
 }: TransactionDetailSegmentTwoProps) {
   const [hexClick, setHexClick] = useState(false);
 
@@ -295,46 +300,55 @@ function TransactionDetailSegmentTwo({
         <div className="flex flex-col gap-y-6 lg:w-1/2 md:w-1/2">
           <div className="text-white-50">{fixedTitle[7]}</div>
           <div className="flex flex-row">
-            <div className="text-white-700 w-[101px] grow">{fixedTitle[8]}</div>
-            <NumericFormat
-              displayType="text"
-              className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
-              thousandSeparator
-              value={BigNumber(gasPrice.value).toFixed(8)}
-              decimalScale={8}
-              suffix={` ${gasPrice.symbol}`}
-            />
+            <div className="grow">
+              <div className="text-white-700 w-[101px]">{fixedTitle[8]}</div>
+            </div>
+            <div className="flex lg:text-left md:text-left text-right">
+              <NumericFormat
+                displayType="text"
+                className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
+                thousandSeparator
+                value={BigNumber(gasPrice.value).toFixed(8)}
+                decimalScale={8}
+                suffix={` ${gasPrice.symbol}`}
+              />
+            </div>
           </div>
           <div className="flex flex-row">
-            <div className="flex flex-row grow items-center">
-              <div className="text-white-700 ">{fixedTitle[9]}</div>
+            <div className="flex flex-row items-center grow">
+              <div className="text-white-700 lg:w-[101px] md:w-[101px] w-[67px]">
+                {fixedTitle[9]}
+              </div>
               <Tooltip text={fixedTitle[9]}>
-                <InfoIcon className="ml-[9.33px]" />
+                <InfoIcon className="ml-[9.33px] mr-[8.67px]" />
               </Tooltip>
             </div>
-            <NumericFormat
-              displayType="text"
-              className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
-              thousandSeparator
-              value={gasLimit}
-            />
+
+            <div className="flex lg:text-left md:text-left text-right">
+              <NumericFormat
+                displayType="text"
+                className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
+                thousandSeparator
+                value={gasLimit}
+              />
+            </div>
           </div>
           <div className="flex flex-row">
-            <div className="text-white-700 w-[101px] grow">
-              {fixedTitle[10]}
+            <div className=" grow">
+              <div className="text-white-700 w-[101px]">{fixedTitle[10]}</div>
             </div>
             <div className="flex flex-col">
               <NumericFormat
                 displayType="text"
-                className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
+                className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px] lg:text-left md:text-left text-right"
                 thousandSeparator
                 value={useUnitSuffix(gasUsed)}
               />
               <NumericFormat
                 displayType="text"
-                className="text-white-700 text-xs mt-1 lg:w-[247px] md:w-[137px] w-[132px]"
+                className="text-white-700 text-xs mt-1 lg:w-[247px] md:w-[137px] w-[132px] lg:text-left md:text-left text-right"
                 thousandSeparator
-                value="79.7%"
+                value={BigNumber(gasUsedPercentage).toFixed(2)}
                 suffix="%"
               />
             </div>
@@ -344,12 +358,13 @@ function TransactionDetailSegmentTwo({
           <div className="flex flex-col gap-y-6 lg:w-1/2 md:w-1/2">
             <div className="text-white-50">{fixedTitle[11]}</div>
             <div className="flex flex-row">
-              <div className="text-white-700 w-[101px] grow">
-                {fixedTitle[12]}
+              <div className="grow">
+                <div className="text-white-700 w-[101px]">{fixedTitle[12]}</div>
               </div>
+
               <div className="flex flex-row gap-x-2.5 items-center lg:w-[247px] md:w-[137px] w-[132px]">
                 <LinkText label={truncateTextFromMiddle(from)} href="" />
-                <FiCopy className="text-white-50" />
+                <FiCopy className="text-white-50 h-[22px]" />
               </div>
             </div>
             <div className="flex flex-row">
@@ -358,7 +373,7 @@ function TransactionDetailSegmentTwo({
               </div>
               <div className="flex flex-row gap-x-2.5 items-center lg:w-[247px] md:w-[137px] w-[132px]">
                 <LinkText label={truncateTextFromMiddle(to)} href="" />
-                <FiCopy className="text-white-50" />
+                <FiCopy className="text-white-50 h-[22px]" />
               </div>
             </div>
             <div className="flex flex-row">
@@ -408,8 +423,8 @@ function TransactionDetailSegmentTwo({
         </div>
 
         {hexClick === true ? (
-          <div className="break-all py-6 px-10 border-[1px] border-black-600 rounded-lg text-white-50">
-            0x0000000400000000000000000000000001000000000000000080008000000000040000000000000000000002000000000000000000000000000000000000000000000000008000080000000800000000000180000000000800000008000000000000000002000000000000000000080000000000000000000000001000000040000000000000000000000000000000000000000000008000000000000000000000080000000000000000000000040000000002000000000000100080000000000000000200000000000000002084000000010000000000010000000000002000000000000000000000000000040c000000000000000000000000000000000000
+          <div className="break-all py-6 px-10 border-[1px] border-black-600 rounded-lg text-white-50 text-xs">
+            {hex}
           </div>
         ) : (
           <div />

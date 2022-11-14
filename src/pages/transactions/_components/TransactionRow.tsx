@@ -12,7 +12,7 @@ import {
   TransactionI,
   TransactionStatus,
   TransactionType,
-} from "./TransactionData";
+} from "../../../mockdata/TransactionData";
 
 const iconMapping = {
   [TransactionType.ContractCall]: FiFileText,

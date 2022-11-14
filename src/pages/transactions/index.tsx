@@ -2,7 +2,7 @@ import Container from "@components/commons/Container";
 import { CursorPagination } from "@components/commons/CursorPagination";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import { transactions, pages } from "./_components/TransactionData";
+import { transactions, pages } from "../../mockdata/TransactionData";
 import TransactionRow from "./_components/TransactionRow";
 
 export default function Transactions({ data }) {

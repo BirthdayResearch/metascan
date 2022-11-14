@@ -1,4 +1,6 @@
-/* eslint-disable import/prefer-default-export */
+/**
+ * TODO: Remove file once api is available
+ */
 
 export enum TransactionStatus {
   Confirmed = "Confirmed",

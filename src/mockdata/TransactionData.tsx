@@ -75,7 +75,7 @@ export const transactions: TransactionI[] = [
   {
     transactionType: TransactionType.Transaction,
     hash: "0xa4a8617cddbd0f9346e9427527601c3f3bffad85325e231f2fc2ef59599ff297",
-    amount: "11.00000012345",
+    amount: "11000230.00000012345",
     from: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
     to: "0xaab27b150451726sdsd738aa1d0a94505c8729bd1",
     status: TransactionStatus.Reverted,

@@ -24,7 +24,7 @@ interface CursorPaginationProps {
  * @example const pages = CursorPagination.getPages(GetServerSidePropsContext, ApiPagedResponse)
  *
  * To render the pagination
- * @example <CursorPaginationProps pages={pages} path='/...' />
+ * @example <CursorPagination pages={pages} path='/...' />
  *
  * @param {CursorPaginationProps} props
  */

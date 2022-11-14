@@ -1,13 +1,13 @@
 import { FiFileText } from "react-icons/fi";
 import { TransactionsIcon } from "@components/icons/Transactions";
-import { NumericFormat } from "react-number-format";
 import BigNumber from "bignumber.js";
 import { ConfirmCheck } from "@components/icons/ConfirmCheck";
-import { secondsToDhmsDisplay } from "@components/helpers/DurationHelper";
+import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { RejectedCross } from "@components/icons/RejectedCross";
 import clsx from "clsx";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import LinkText from "@components/commons/LinkText";
+import NumericFormat from "@components/commons/NumericFormat";
 import {
   TransactionI,
   TransactionStatus,
@@ -147,7 +147,6 @@ function AmountComponent({
         Amount:
       </span>
       <NumericFormat
-        displayType="text"
         className="text-white-50 text-base font-bold"
         thousandSeparator
         value={new BigNumber(amount).toFixed(8)}

@@ -1,0 +1,412 @@
+import Container from "@components/commons/Container";
+import GradientCardContainer from "@components/commons/GradientCardContainer";
+import { FiCopy } from "react-icons/fi";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import { NumericFormat } from "react-number-format";
+import { SearchBar } from "layouts/components/searchbar/SearchBar";
+import transactionDetailData from "mockdata/TransactionDetailData";
+import LinkText from "@components/commons/LinkText";
+import { truncateTextFromMiddle } from "shared/textHelper";
+import { useState } from "react";
+import BigNumber from "bignumber.js";
+import { useUnitSuffix } from "hooks/useUnitSuffix";
+import { InfoIcon } from "@components/icons/InfoIcon";
+import Tooltip from "@components/commons/Tooltip";
+
+const data = transactionDetailData.transactionDetailData;
+
+function TransactionDetail() {
+  return (
+    <Container className="px-1 md:px-0 mt-12">
+      <SearchBar containerClass="mt-1 mb-6" />
+      <GradientCardContainer>
+        <div className="p-10">
+          <div className="flex flex-row py-4 mb-10">
+            <span className="font-bold text-2xl text-white-50">
+              Transaction details
+            </span>
+          </div>
+          <TransactionDetailSegmentOne
+            transactionID={data.transactions.transactionID}
+            tokenPrice={data.transactions.tokenPrice}
+            valuePrice={data.transactions.valuePrice}
+            status={data.transactions.status}
+            blockNumber={data.number}
+            timestamp={data.timestamp}
+            transactionFee={data.transactions.transactionFee}
+            block={data.transactions.block}
+            transactionType={data.transactions.transactionType}
+            nonce={data.transactions.nonce}
+            address={data.transactions.address}
+          />
+          <div className="border-[1px] border-black-600 lg:my-11 md:mt-9 md:mb-11 mt-10 mb-[52px]" />
+          <TransactionDetailSegmentTwo
+            gasPrice={data.transactions.gasPrice}
+            gasLimit={data.gasLimit}
+            gasUsed={data.gasUsed}
+            from={data.transactions.address.from}
+            to={data.transactions.address.to}
+            forToken={data.forToken}
+            type={data.type}
+          />
+        </div>
+      </GradientCardContainer>
+    </Container>
+  );
+}
+
+interface TransactionDetailSegmentOneProp {
+  transactionID: string;
+  tokenPrice: {
+    value: string;
+    symbol: string;
+  };
+  valuePrice: string;
+  status: string;
+  blockNumber: string;
+  timestamp: string;
+  transactionFee: {
+    value: string;
+    symbol: string;
+  };
+  block: string;
+  transactionType: string;
+  nonce: string;
+  address: {
+    from: string;
+    to: string;
+    contractAddress: string;
+  };
+}
+
+function TransactionDetailSegmentOne({
+  transactionID,
+  tokenPrice,
+  valuePrice,
+  status,
+  blockNumber,
+  timestamp,
+  transactionFee,
+  block,
+  transactionType,
+  nonce,
+  address,
+}: TransactionDetailSegmentOneProp) {
+  return (
+    <div className="flex flex-col gap-y-6">
+      {/* first row */}
+      <div className="flex flex-col lg:flex-row md:flex-row gap-y-[41.5px]">
+        {/* 1st flex */}
+        <div className="flex flex-col grow gap-y-2">
+          <div className="flex flex-row gap-x-2.5 items-center">
+            <LinkText label={truncateTextFromMiddle(transactionID)} href="" />
+            <FiCopy className="text-white-50" />
+          </div>
+
+          <NumericFormat
+            displayType="text"
+            className="text-white-50 lg:text-[32px] md:text-2xl text-xl"
+            thousandSeparator
+            value={new BigNumber(tokenPrice.value).toFixed(8)}
+            decimalScale={8}
+            suffix={` ${tokenPrice.symbol}`}
+          />
+
+          <div className="text-white-700">{valuePrice}</div>
+        </div>
+        {/* 2nd flex */}
+        <div className="flex flex-col lg:items-end md:items-end items-start">
+          {status.toLowerCase() === "confirmed" ? (
+            <div className="text-green-800 lg:mb-[23px] md:mb-[14px] mb-[5.5px]">
+              {status}
+            </div>
+          ) : (
+            <div className="text-red-800 lg:mb-[23px] md:mb-[14px] mb-[5.5px]">
+              {status}
+            </div>
+          )}
+
+          <div className="text-white-700 lg:mb-2 md:mb-1 mb-1">
+            Confirmed by {blockNumber} blocks
+          </div>
+          <div className="text-white-700">{timestamp} seconds ago</div>
+        </div>
+      </div>
+      <div className="flex flex-col lg:flex-row md:flex-col lg:gap-y-0 md:gap-y-4 gap-y-14">
+        {/* 2nd row */}
+        <div className="flex flex-col gap-y-6 w-full">
+          <div className="flex flex-col lg:flex-row md:flex-row gap-y-6">
+            <div className="grow">
+              <div className="flex flex-col">
+                <div className="text-white-700">{fixedTitle[0]}</div>
+                <div>
+                  <NumericFormat
+                    displayType="text"
+                    className="text-white-50"
+                    thousandSeparator
+                    value={new BigNumber(transactionFee.value).toFixed(8)}
+                    decimalScale={8}
+                    suffix={` ${transactionFee.symbol}`}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="grow">
+              <div className="flex flex-col">
+                <div className="text-white-700">{fixedTitle[1]}</div>
+                <div className="flex flex-row gap-x-2.5 items-center">
+                  <LinkText label={block} href="" />
+                  <FiCopy className="text-white-50" />
+                </div>
+              </div>
+            </div>
+            <div className="grow">
+              <div className="flex flex-col">
+                <div className="text-white-700">{fixedTitle[2]}</div>
+                <div className="text-white-50">{transactionType}</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="flex flex-col">
+              <div className="text-white-700">{fixedTitle[3]}</div>
+              <div className="text-white-50">{nonce}</div>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col lg:flex-row md:flex-row gap-y-4 lg:gap-y-0 md:gap-y-0 w-full">
+          <div className="grow">
+            <div className="flex flex-col">
+              <div className="text-white-700">{fixedTitle[4]}</div>
+              <div>
+                <div className="flex flex-row gap-x-2.5 items-center">
+                  <LinkText
+                    label={truncateTextFromMiddle(address.from)}
+                    href=""
+                  />
+                  <FiCopy className="text-white-50" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="grow">
+            <div className="flex flex-col">
+              <div className="text-white-700">{fixedTitle[5]}</div>
+              <div>
+                <div className="flex flex-row gap-x-2.5 items-center">
+                  <LinkText
+                    label={truncateTextFromMiddle(address.to)}
+                    href=""
+                  />
+                  <FiCopy className="text-white-50" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="flex flex-col">
+              <div className="text-white-700">{fixedTitle[6]}</div>
+              <div>
+                <div className="flex flex-row gap-x-2.5 items-center">
+                  <LinkText
+                    label={truncateTextFromMiddle(address.contractAddress)}
+                    href=""
+                  />
+                  <FiCopy className="text-white-50" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface TransactionDetailSegmentTwoProps {
+  gasPrice: {
+    value: string;
+    symbol: string;
+  };
+  gasLimit: string;
+  gasUsed: string;
+  from: string;
+  to: string;
+  forToken: {
+    value: string;
+    symbol: string;
+  };
+  type: string;
+}
+
+function TransactionDetailSegmentTwo({
+  gasPrice,
+  gasLimit,
+  gasUsed,
+  from,
+  to,
+  forToken,
+  type,
+}: TransactionDetailSegmentTwoProps) {
+  const [hexClick, setHexClick] = useState(false);
+
+  const onHexClick = () => {
+    if (hexClick === false) {
+      setHexClick(true);
+    } else {
+      setHexClick(false);
+    }
+  };
+  console.log(gasPrice.value);
+
+  return (
+    <div>
+      <div className="flex flex-col lg:flex-row md:flex-row lg:gap-x-[143px] md:gap-x-10 gap-y-16">
+        <div className="flex flex-col gap-y-6 lg:w-1/2 md:w-1/2">
+          <div className="text-white-50">{fixedTitle[7]}</div>
+          <div className="flex flex-row">
+            <div className="text-white-700 w-[101px] grow">{fixedTitle[8]}</div>
+            <NumericFormat
+              displayType="text"
+              className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
+              thousandSeparator
+              value={BigNumber(gasPrice.value).toFixed(8)}
+              decimalScale={8}
+              suffix={` ${gasPrice.symbol}`}
+            />
+          </div>
+          <div className="flex flex-row">
+            <div className="flex flex-row grow items-center">
+              <div className="text-white-700 ">{fixedTitle[9]}</div>
+              <Tooltip text={fixedTitle[9]}>
+                <InfoIcon className="ml-[9.33px]" />
+              </Tooltip>
+            </div>
+            <NumericFormat
+              displayType="text"
+              className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
+              thousandSeparator
+              value={gasLimit}
+            />
+          </div>
+          <div className="flex flex-row">
+            <div className="text-white-700 w-[101px] grow">
+              {fixedTitle[10]}
+            </div>
+            <div className="flex flex-col">
+              <NumericFormat
+                displayType="text"
+                className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
+                thousandSeparator
+                value={useUnitSuffix(gasUsed)}
+              />
+              <NumericFormat
+                displayType="text"
+                className="text-white-700 text-xs mt-1 lg:w-[247px] md:w-[137px] w-[132px]"
+                thousandSeparator
+                value="79.7%"
+                suffix="%"
+              />
+            </div>
+          </div>
+        </div>
+        {type === "tokenized" ? (
+          <div className="flex flex-col gap-y-6 lg:w-1/2 md:w-1/2">
+            <div className="text-white-50">{fixedTitle[11]}</div>
+            <div className="flex flex-row">
+              <div className="text-white-700 w-[101px] grow">
+                {fixedTitle[12]}
+              </div>
+              <div className="flex flex-row gap-x-2.5 items-center lg:w-[247px] md:w-[137px] w-[132px]">
+                <LinkText label={truncateTextFromMiddle(from)} href="" />
+                <FiCopy className="text-white-50" />
+              </div>
+            </div>
+            <div className="flex flex-row">
+              <div className="text-white-700 w-[101px] grow">
+                {fixedTitle[13]}
+              </div>
+              <div className="flex flex-row gap-x-2.5 items-center lg:w-[247px] md:w-[137px] w-[132px]">
+                <LinkText label={truncateTextFromMiddle(to)} href="" />
+                <FiCopy className="text-white-50" />
+              </div>
+            </div>
+            <div className="flex flex-row">
+              <div className="text-white-700 w-[101px] grow">
+                {fixedTitle[14]}
+              </div>
+              <NumericFormat
+                displayType="text"
+                className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
+                thousandSeparator
+                value={BigNumber(forToken.value).toFixed(8)}
+                decimalScale={8}
+                suffix={` ${forToken.symbol}`}
+              />
+            </div>
+          </div>
+        ) : (
+          <div />
+        )}
+      </div>
+      <div>
+        <div className="text-white-50 lg:pb-6 lg:pt-14 md:pb-6 md:pt-14 pt-16 pb-6">
+          {fixedTitle[15]}
+        </div>
+        <div className="flex flex-row items-center mb-[14px] ">
+          <div
+            role="button"
+            tabIndex={0}
+            onKeyDown={onHexClick}
+            onClick={onHexClick}
+            className="text-white-50 brand-gradient-1 bg-clip-text hover:text-transparent transition-all ease-in duration-300 pr-[10.29px]"
+          >
+            {fixedTitle[16]}
+          </div>
+          <div
+            role="button"
+            tabIndex={0}
+            onKeyDown={onHexClick}
+            onClick={onHexClick}
+          >
+            {hexClick === true ? (
+              <AiOutlineDown className="text-white-700" />
+            ) : (
+              <AiOutlineUp className="text-white-700" />
+            )}
+          </div>
+        </div>
+
+        {hexClick === true ? (
+          <div className="break-all py-6 px-10 border-[1px] border-black-600 rounded-lg text-white-50">
+            0x0000000400000000000000000000000001000000000000000080008000000000040000000000000000000002000000000000000000000000000000000000000000000000008000080000000800000000000180000000000800000008000000000000000002000000000000000000080000000000000000000000001000000040000000000000000000000000000000000000000000008000000000000000000000080000000000000000000000040000000002000000000000100080000000000000000200000000000000002084000000010000000000010000000000002000000000000000000000000000040c000000000000000000000000000000000000
+          </div>
+        ) : (
+          <div />
+        )}
+      </div>
+    </div>
+  );
+}
+
+const fixedTitle = [
+  "Transaction fee",
+  "Block",
+  "Transaction Type",
+  "Nonce",
+  "From",
+  "To",
+  "Contract Address",
+  "Gas detail",
+  "Gas price",
+  "Gas limit",
+  "Gas used by transaction",
+  "Token transferred",
+  "From",
+  "To",
+  "For",
+  "Raw input",
+  "Hex (Default)",
+];
+
+export default TransactionDetail;

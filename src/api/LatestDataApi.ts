@@ -1,3 +1,4 @@
+import { transactions } from "mockdata/TransactionData";
 import mockData from "../mockdata/LatestData";
 
 export default {
@@ -5,19 +6,19 @@ export default {
     mockData.latestBlocks.map((b) => ({
       id: b.id,
       transactionId: b.blockHeight,
-      tokenAmount: b.rewardAmount, // TODO: Format amount to have commas accordingly
+      tokenAmount: b.rewardAmount,
       txnOrBlockInfo: {
         transactionsPerBlock: b.transactionsPerBlock,
         blockTimeInSec: mockData.blockTimeInSec,
       },
-      datetime: b.datetime, // TODO: Format time into 's ago, m ago, etc..' once real data is ready
+      time: b.time,
     })),
   useLatestTransactions: () =>
-    mockData.latestTransactions.map((t) => ({
-      id: t.id,
-      transactionId: t.transactionHash,
-      tokenAmount: t.amount, // TODO: Format amount to have commas accordingly
+    transactions.slice(0, 5).map((t, i) => ({
+      id: `${i + 1}`,
+      transactionId: t.hash,
+      tokenAmount: t.amount,
       txnOrBlockInfo: { from: t.from, to: t.to },
-      datetime: t.datetime, // TODO: Format time into 's ago, m ago, etc..' once real data is ready
+      time: t.time,
     })),
 };

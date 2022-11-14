@@ -25,7 +25,7 @@ const transactionDetailData = {
       value: "120000.430089324",
       symbol: "DMTCx",
     },
-    valuePrice: "$45,435.43",
+    valuePrice: "45435.43",
     transactionFee: {
       value: "0.0003291",
       symbol: "DMTCx",

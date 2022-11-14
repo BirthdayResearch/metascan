@@ -12,6 +12,7 @@ import BigNumber from "bignumber.js";
 import { useUnitSuffix } from "hooks/useUnitSuffix";
 import { InfoIcon } from "@components/icons/InfoIcon";
 import Tooltip from "@components/commons/Tooltip";
+import clsx from "clsx";
 
 const data = transactionDetailData.transactionDetailData;
 
@@ -21,7 +22,7 @@ function TransactionDetail() {
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
         <div className="p-10">
-          <div className="flex flex-row py-4 mb-10">
+          <div className="flex flex-row py-4 mb-6">
             <span className="font-bold text-2xl text-white-50">
               Transaction details
             </span>
@@ -38,6 +39,7 @@ function TransactionDetail() {
             transactionType={data.transactions.transactionType}
             nonce={data.transactions.nonce}
             address={data.transactions.address}
+            type={data.type}
           />
           <div className="border-[1px] border-black-600 lg:my-11 md:mt-9 md:mb-11 mt-10 mb-[52px]" />
           <TransactionDetailSegmentTwo
@@ -77,6 +79,7 @@ interface TransactionDetailSegmentOneProp {
     to: string;
     contractAddress: string;
   };
+  type: string;
 }
 
 function TransactionDetailSegmentOne({
@@ -91,6 +94,7 @@ function TransactionDetailSegmentOne({
   transactionType,
   nonce,
   address,
+  type,
 }: TransactionDetailSegmentOneProp) {
   return (
     <div className="flex flex-col gap-y-6">
@@ -107,12 +111,25 @@ function TransactionDetailSegmentOne({
             displayType="text"
             className="text-white-50 lg:text-[32px] md:text-2xl text-xl"
             thousandSeparator
-            value={new BigNumber(tokenPrice.value).toFixed(8)}
-            decimalScale={8}
+            value={
+              type === "tokenized"
+                ? BigNumber(tokenPrice.value).toFixed(8)
+                : BigNumber("0").toFixed(2)
+            }
             suffix={` ${tokenPrice.symbol}`}
           />
 
-          <div className="text-white-700">{valuePrice}</div>
+          <NumericFormat
+            displayType="text"
+            className="text-white-700"
+            thousandSeparator
+            value={
+              type === "tokenized"
+                ? BigNumber(valuePrice).toFixed(2)
+                : BigNumber("0").toFixed(2)
+            }
+            prefix="$ "
+          />
         </div>
         {/* 2nd flex */}
         <div className="flex flex-col lg:items-end md:items-end items-start">
@@ -261,7 +278,12 @@ function TransactionDetailSegmentTwo({
 
   return (
     <div>
-      <div className="flex flex-col lg:flex-row md:flex-row lg:gap-x-[143px] md:gap-x-10 gap-y-16">
+      <div
+        className={clsx(
+          "flex flex-col lg:flex-row md:flex-row lg:gap-x-[143px] md:gap-x-10 gap-y-16",
+          { "gap-y-0": type !== "tokenized" }
+        )}
+      >
         <div className="flex flex-col gap-y-6 lg:w-1/2 md:w-1/2">
           <div className="text-white-50">{fixedTitle[7]}</div>
           <div className="flex flex-row">

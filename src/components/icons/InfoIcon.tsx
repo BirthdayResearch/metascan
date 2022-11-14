@@ -4,7 +4,6 @@ interface InfoIconProps {
 }
 
 export function InfoIcon({ size = 16, className }: InfoIconProps): JSX.Element {
-  console.log(className);
   return (
     <svg
       width={size}

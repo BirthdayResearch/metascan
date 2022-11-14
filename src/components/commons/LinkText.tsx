@@ -15,7 +15,7 @@ export default function LinkText({
     <NextLink
       data-testid={testId}
       href={href}
-      className={`text-lightBlue brand-gradient-1 focus:brand-gradient-2 bg-clip-text hover:text-transparent transition-all ease-in duration-300 ${
+      className={`text-lightBlue brand-gradient-1 active:brand-gradient-2 bg-clip-text hover:text-transparent transition-all ease-in duration-300 ${
         customStyle ?? ""
       }`}
     >

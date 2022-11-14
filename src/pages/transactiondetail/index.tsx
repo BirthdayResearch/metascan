@@ -13,6 +13,8 @@ import { useUnitSuffix } from "hooks/useUnitSuffix";
 import { InfoIcon } from "@components/icons/InfoIcon";
 import Tooltip from "@components/commons/Tooltip";
 import clsx from "clsx";
+import { ConfirmCheck } from "@components/icons/ConfirmCheck";
+import { RejectedCross } from "@components/icons/RejectedCross";
 
 const data = transactionDetailData.transactionDetailData;
 
@@ -134,12 +136,18 @@ function TransactionDetailSegmentOne({
         {/* 2nd flex */}
         <div className="flex flex-col lg:items-end md:items-end items-start">
           {status.toLowerCase() === "confirmed" ? (
-            <div className="text-green-800 lg:mb-[23px] md:mb-[14px] mb-[5.5px]">
-              {status}
+            <div className="flex flex-row">
+              <div className="text-green-800 lg:mb-[23px] md:mb-[14px] mb-[5.5px] lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px]">
+                {status}
+              </div>
+              <ConfirmCheck />
             </div>
           ) : (
-            <div className="text-red-800 lg:mb-[23px] md:mb-[14px] mb-[5.5px]">
-              {status}
+            <div className="flex flex-row">
+              <div className="text-red-800 lg:mb-[23px] md:mb-[14px] mb-[5.5px]  lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px]">
+                {status}
+              </div>
+              <RejectedCross />
             </div>
           )}
 

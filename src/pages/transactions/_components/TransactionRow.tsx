@@ -4,9 +4,10 @@ import { NumericFormat } from "react-number-format";
 import BigNumber from "bignumber.js";
 import { ConfirmCheck } from "@components/icons/ConfirmCheck";
 import { secondsToDhmsDisplay } from "@components/helpers/DurationHelper";
-import { Link } from "@components/commons/Link";
 import { RejectedCross } from "@components/icons/RejectedCross";
 import clsx from "clsx";
+import { truncateTextFromMiddle } from "shared/textHelper";
+import LinkText from "@components/commons/LinkText";
 import {
   TransactionI,
   TransactionStatus,
@@ -36,7 +37,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
               label="Hash:"
               pathname={`/transactions/${data.hash}`}
               value={data.hash}
-              containerClass="flex flex-col lg:flex-row ml-10 mt-2 lg:mt-3"
+              containerClass="flex flex-col lg:flex-row ml-8 lg:ml-10 mt-2 lg:mt-3"
             />
           </div>
           <div className="col-start-3 col-end-7 lg:col-start-4 lg:col-end-10 text-white-50">
@@ -120,7 +121,7 @@ function StatusComponent({ status }: { status: string }): JSX.Element {
         className={clsx(
           "hidden md:block text-base lg:ml-1 mr-2",
           status === TransactionStatus.Confirmed
-            ? "text-transparent bg-clip-text brand-gradient-2"
+            ? "text-green-800"
             : "text-red-800"
         )}
       >
@@ -167,7 +168,7 @@ function TimeComponent({
   return (
     <div className={containerClass}>
       <span className="text-white-700 text-base">
-        {secondsToDhmsDisplay(time)}
+        {secondsToDhmsDisplay(time)} ago
       </span>
     </div>
   );
@@ -186,10 +187,14 @@ function TransactionLinkRow({
 }): JSX.Element {
   return (
     <div className={containerClass}>
-      <span className="text-white-700 text-base">{label}</span>
-      <span className="text-lightBlue ml-1 md:ml-0 lg:ml-1 overflow-ellipsis overflow-hidden text-base">
-        <Link href={{ pathname }}>{value}</Link>
+      <span className="text-white-700 text-base mr-1 md:mr-0 lg:mr-1">
+        {label}
       </span>
+      <LinkText
+        testId={`from-address-link-${value}`}
+        href={pathname}
+        label={truncateTextFromMiddle(value)}
+      />
     </div>
   );
 }

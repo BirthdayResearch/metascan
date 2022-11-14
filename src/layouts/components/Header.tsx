@@ -42,6 +42,7 @@ export function Header(): JSX.Element {
 
     router.events.on("routeChangeStart", routeChangeStart);
     return () => router.events.off("routeChangeStart", routeChangeStart);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

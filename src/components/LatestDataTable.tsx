@@ -1,8 +1,11 @@
+import BigNumber from "bignumber.js";
 import { DMX_TOKEN_SYMBOL } from "shared/contants";
+import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import Button from "./commons/Button";
 import GradientCardContainer from "./commons/GradientCardContainer";
 import LinkText from "./commons/LinkText";
+import NumericFormat from "./commons/NumericFormat";
 
 type DataType = "blocks" | "transactions";
 
@@ -21,7 +24,7 @@ export interface RowData {
   transactionId: string;
   tokenAmount: string;
   txnOrBlockInfo: TxnWalletInfo | BlockInfo;
-  datetime: string;
+  time: number;
 }
 
 interface Props {
@@ -92,7 +95,7 @@ function RowItem({
   amountPrefix: string;
   rowIndex: number;
 }): JSX.Element {
-  const { transactionId, tokenAmount, datetime, txnOrBlockInfo } = rowData;
+  const { transactionId, tokenAmount, time, txnOrBlockInfo } = rowData;
   const detailsPageLink = `/${type}/${transactionId}`;
   return (
     <div
@@ -116,7 +119,7 @@ function RowItem({
         />
       </div>
       <div className="w-2/4 inline-flex items-center justify-end text-white-700 text-right md:order-last md:grow md:-mt-6 lg:mt-0 lg:w-20 xl:w-32 lg:pl-5 xl:pl-0">
-        {datetime}
+        {secondsToDhmsDisplay(time)} ago
       </div>
       <div className="md:w-4/12 md:pl-5 lg:flex lg:w-96 lg:pl-12">
         {type === "blocks" ? (
@@ -135,7 +138,12 @@ function RowItem({
         {amountPrefix && (
           <span className="text-white-700">{amountPrefix}&nbsp;</span>
         )}
-        {tokenAmount} {DMX_TOKEN_SYMBOL}
+        <NumericFormat
+          thousandSeparator
+          value={new BigNumber(tokenAmount).toFixed(8)}
+          decimalScale={8}
+          suffix={` ${DMX_TOKEN_SYMBOL}`}
+        />
       </div>
     </div>
   );

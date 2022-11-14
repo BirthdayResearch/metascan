@@ -74,11 +74,16 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
         )}
       >
         <div
-          className="flex w-full px-8 py-[22px] rounded-lg border-[0.5px] black-gradient-1 border-black-500 focus-within:border-lightBlue black-gradient-1-shadow backdrop-blur-[6px]"
+          className={clsx(
+            "flex w-full rounded-lg p-[1px] bg-black-500 focus-within:bg-lightBlue black-gradient-1-shadow backdrop-blur-[6px]",
+            {
+              "hover:brand-gradient-1": !isFocused,
+            }
+          )}
           data-testid="searchBar"
           ref={reference}
         >
-          <div className="flex w-full">
+          <div className="flex w-full px-8 py-[22px] rounded-lg bg-black-500 black-gradient-1">
             <Combobox.Button as="div" className="flex w-full mr-2">
               <FiSearch size={24} className="text-white-50 mr-2 self-center" />
               <Combobox.Input

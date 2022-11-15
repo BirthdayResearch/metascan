@@ -157,10 +157,17 @@ function TransactionDetailSegmentOne({
               <RejectedCross />
             </div>
           )}
-
-          <div className="text-white-700 lg:mb-2 md:mb-1 mb-1">
-            Confirmed by {blockNumber} blocks
+          <div className="flex flex-row items-center lg:mb-2 md:mb-1 mb-1">
+            <div className="lg:order-first md:order-first order-last">
+              <Tooltip text={`Confirmed by ${blockNumber} blocks`}>
+                <InfoIcon className="lg:mr-[8.67px] md:mr-[8.67px] ml-[9.33px]" />
+              </Tooltip>
+            </div>
+            <div className="text-white-700 l">
+              Confirmed by {blockNumber} blocks
+            </div>
           </div>
+
           <div className="text-white-700">{timestamp} seconds ago</div>
         </div>
       </div>

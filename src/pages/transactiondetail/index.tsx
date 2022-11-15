@@ -7,7 +7,7 @@ import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import transactionDetailData from "mockdata/TransactionDetailData";
 import LinkText from "@components/commons/LinkText";
 import { truncateTextFromMiddle } from "shared/textHelper";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import BigNumber from "bignumber.js";
 import { useUnitSuffix } from "hooks/useUnitSuffix";
 import { InfoIcon } from "@components/icons/InfoIcon";
@@ -15,6 +15,7 @@ import Tooltip from "@components/commons/Tooltip";
 import clsx from "clsx";
 import { ConfirmCheck } from "@components/icons/ConfirmCheck";
 import { RejectedCross } from "@components/icons/RejectedCross";
+import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 
 const data = transactionDetailData.transactionDetailData;
 
@@ -100,8 +101,12 @@ function TransactionDetailSegmentOne({
   address,
   type,
 }: TransactionDetailSegmentOneProp) {
+  const [copyFromAddress, setCopyFromAddress] = useState(false);
+  const [copyToAddress, setCopyToAddress] = useState(false);
+  const [copyContractAddress, setCopyContractAddress] = useState(false);
+
   return (
-    <div className="flex flex-col gap-y-6">
+    <div className="flex flex-col gap-y-10">
       {/* first row */}
       <div className="flex flex-col lg:flex-row md:flex-row gap-y-[41.5px]">
         {/* 1st flex */}
@@ -159,7 +164,7 @@ function TransactionDetailSegmentOne({
           <div className="text-white-700">{timestamp} seconds ago</div>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row md:flex-col lg:gap-y-0 md:gap-y-4 gap-y-14">
+      <div className="flex flex-col lg:flex-row md:flex-col lg:gap-y-0 md:gap-y-4 gap-y-[52px]">
         {/* 2nd row */}
         <div className="flex flex-col gap-y-6 w-full">
           <div className="flex flex-col lg:flex-row md:flex-row gap-y-6">
@@ -206,11 +211,18 @@ function TransactionDetailSegmentOne({
               <div className="text-white-700">{fixedTitle[4]}</div>
               <div>
                 <div className="flex flex-row gap-x-2.5 items-center">
-                  <LinkText
+                  <CopyableText
                     label={truncateTextFromMiddle(address.from)}
-                    href=""
+                    onTextClick={setCopyFromAddress}
+                    textClicked={copyFromAddress}
                   />
-                  <FiCopy className="text-white-50 h-[22px]" />
+                  {copyFromAddress ? (
+                    <div>
+                      <GreenTickIcon />
+                    </div>
+                  ) : (
+                    <FiCopy className="text-white-50 h-[22px]" />
+                  )}
                 </div>
               </div>
             </div>
@@ -220,11 +232,18 @@ function TransactionDetailSegmentOne({
               <div className="text-white-700">{fixedTitle[5]}</div>
               <div>
                 <div className="flex flex-row gap-x-2.5 items-center">
-                  <LinkText
+                  <CopyableText
                     label={truncateTextFromMiddle(address.to)}
-                    href=""
+                    onTextClick={setCopyToAddress}
+                    textClicked={copyToAddress}
                   />
-                  <FiCopy className="text-white-50 h-[22px]" />
+                  {copyToAddress ? (
+                    <div>
+                      <GreenTickIcon />
+                    </div>
+                  ) : (
+                    <FiCopy className="text-white-50 h-[22px]" />
+                  )}
                 </div>
               </div>
             </div>
@@ -234,11 +253,18 @@ function TransactionDetailSegmentOne({
               <div className="text-white-700">{fixedTitle[6]}</div>
               <div>
                 <div className="flex flex-row gap-x-2.5 items-center">
-                  <LinkText
+                  <CopyableText
                     label={truncateTextFromMiddle(address.contractAddress)}
-                    href=""
+                    onTextClick={setCopyContractAddress}
+                    textClicked={copyContractAddress}
                   />
-                  <FiCopy className="text-white-50 h-[22px]" />
+                  {copyContractAddress ? (
+                    <div>
+                      <GreenTickIcon />
+                    </div>
+                  ) : (
+                    <FiCopy className="text-white-50 h-[22px]" />
+                  )}
                 </div>
               </div>
             </div>
@@ -279,6 +305,8 @@ function TransactionDetailSegmentTwo({
   hex,
 }: TransactionDetailSegmentTwoProps) {
   const [hexClick, setHexClick] = useState(false);
+  const [copyFromAddress, setCopyFromAddress] = useState(false);
+  const [copyToAddress, setCopyToAddress] = useState(false);
 
   const onHexClick = () => {
     if (hexClick === false) {
@@ -316,9 +344,7 @@ function TransactionDetailSegmentTwo({
           </div>
           <div className="flex flex-row">
             <div className="flex flex-row items-center grow">
-              <div className="text-white-700 lg:w-[101px] md:w-[101px] w-[67px]">
-                {fixedTitle[9]}
-              </div>
+              <div className="text-white-700 w-[67px]">{fixedTitle[9]}</div>
               <Tooltip text={fixedTitle[9]}>
                 <InfoIcon className="ml-[9.33px] mr-[8.67px]" />
               </Tooltip>
@@ -362,32 +388,68 @@ function TransactionDetailSegmentTwo({
                 <div className="text-white-700 w-[101px]">{fixedTitle[12]}</div>
               </div>
 
-              <div className="flex flex-row gap-x-2.5 items-center lg:w-[247px] md:w-[137px] w-[132px]">
-                <LinkText label={truncateTextFromMiddle(from)} href="" />
-                <FiCopy className="text-white-50 h-[22px]" />
+              <div
+                className={clsx(
+                  "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-[132px]",
+                  { "md:w-[155px] w-[151px] gap-x-0": copyFromAddress }
+                )}
+              >
+                <div className={clsx({ "mr-[10px]": copyFromAddress })}>
+                  <CopyableText
+                    label={truncateTextFromMiddle(from)}
+                    onTextClick={setCopyFromAddress}
+                    textClicked={copyFromAddress}
+                  />
+                </div>
+                {copyFromAddress ? (
+                  <div>
+                    <GreenTickIcon />
+                  </div>
+                ) : (
+                  <FiCopy className="text-white-50 h-[22px]" />
+                )}
               </div>
             </div>
             <div className="flex flex-row">
               <div className="text-white-700 w-[101px] grow">
                 {fixedTitle[13]}
               </div>
-              <div className="flex flex-row gap-x-2.5 items-center lg:w-[247px] md:w-[137px] w-[132px]">
-                <LinkText label={truncateTextFromMiddle(to)} href="" />
-                <FiCopy className="text-white-50 h-[22px]" />
+              <div
+                className={clsx(
+                  "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-[132px]",
+                  { "md:w-[155px] w-[151px] gap-x-0": copyFromAddress }
+                )}
+              >
+                <div className={clsx({ "mr-[10px]": copyFromAddress })}>
+                  <CopyableText
+                    label={truncateTextFromMiddle(to)}
+                    onTextClick={setCopyToAddress}
+                    textClicked={copyToAddress}
+                  />
+                </div>
+                {copyToAddress ? (
+                  <div>
+                    <GreenTickIcon />
+                  </div>
+                ) : (
+                  <FiCopy className="text-white-50 h-[22px]" />
+                )}
               </div>
             </div>
             <div className="flex flex-row">
-              <div className="text-white-700 w-[101px] grow">
-                {fixedTitle[14]}
+              <div className="grow">
+                <div className="text-white-700 w-[101px]">{fixedTitle[14]}</div>
               </div>
-              <NumericFormat
-                displayType="text"
-                className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
-                thousandSeparator
-                value={BigNumber(forToken.value).toFixed(8)}
-                decimalScale={8}
-                suffix={` ${forToken.symbol}`}
-              />
+              <div className="flex lg:text-left md:text-left text-right">
+                <NumericFormat
+                  displayType="text"
+                  className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
+                  thousandSeparator
+                  value={BigNumber(forToken.value).toFixed(8)}
+                  decimalScale={8}
+                  suffix={` ${forToken.symbol}`}
+                />
+              </div>
             </div>
           </div>
         ) : (
@@ -430,6 +492,38 @@ function TransactionDetailSegmentTwo({
           <div />
         )}
       </div>
+    </div>
+  );
+}
+
+interface CopyableTextProps {
+  onTextClick: Dispatch<SetStateAction<boolean>>;
+  label: string;
+  textClicked: boolean;
+}
+
+function CopyableText({ onTextClick, label, textClicked }: CopyableTextProps) {
+  const onTextClickAction = () => {
+    onTextClick(true);
+  };
+  if (textClicked) {
+    return (
+      <div className="flex flex-row">
+        <div className="text-lightBlue brand-gradient-1 bg-clip-text hover:text-transparent transition-all ease-in duration-300">
+          Address copied!
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onKeyDown={onTextClickAction}
+      onClick={onTextClickAction}
+      className="text-lightBlue brand-gradient-1 bg-clip-text hover:text-transparent transition-all ease-in duration-300"
+    >
+      {label}
     </div>
   );
 }

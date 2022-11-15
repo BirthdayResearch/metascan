@@ -5,9 +5,12 @@ import LinkTextWithIcon from "@components/commons/LinktextWithIcon";
 import NumericFormat from "@components/commons/NumericFormat";
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
+import useCopyToClipboard from "hooks/useCopyToClipboard";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
+import { MdCheckCircle } from "react-icons/md";
 import { DMX_TOKEN_SYMBOL } from "shared/contants";
 import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
@@ -162,35 +165,56 @@ function FeeRecipientRow({
   label: string;
   feeRecipient: string;
 }): JSX.Element {
+  const { copy } = useCopyToClipboard();
+  const [showCopyInfo, setShowCopyInfo] = useState(false);
+
+  useEffect(() => {
+    if (showCopyInfo) {
+      setTimeout(() => setShowCopyInfo(false), 3000);
+    }
+  }, [showCopyInfo]);
+
   return (
     <div className={clsx("justify-between md:justify-start", style.container)}>
       <div className={clsx("text-white-700", style.labelWidth)}>{label}</div>
-      <div className="flex">
-        <LinkText
-          testId="fee-recipient-mobile"
-          href={`/addresses/${feeRecipient}`}
-          label={truncateTextFromMiddle(feeRecipient, 4)}
-          customStyle={clsx("inline-flex md:hidden", style.valueWidth)}
-        />
-        <LinkText
-          testId="fee-recipient-tablet"
-          href={`/addresses/${feeRecipient}`}
-          label={truncateTextFromMiddle(feeRecipient, 5)}
-          customStyle={clsx(
-            "hidden md:inline-flex xl:hidden",
-            style.valueWidth
-          )}
-        />
-        <LinkText
-          testId="fee-recipient-desktop"
-          href={`/addresses/${feeRecipient}`}
-          label={truncateTextFromMiddle(feeRecipient, 13)}
-          customStyle={clsx("hidden xl:inline-flex", style.valueWidth)}
-        />
-        {/* TODO: Add icon hover and gradient */}
-        {/* TODO: Add  copy function */}
-        <FiCopy size={20} className="ml-2 self-center" />
-      </div>
+      {showCopyInfo ? (
+        <div className="flex items-center">
+          <span className="text-lightBlue">Copied!</span>
+          <MdCheckCircle size={20} className="ml-2 text-green-800" />
+        </div>
+      ) : (
+        <div className="flex">
+          <LinkText
+            testId="fee-recipient-mobile"
+            href={`/addresses/${feeRecipient}`}
+            label={truncateTextFromMiddle(feeRecipient, 4)}
+            customStyle={clsx("inline-flex md:hidden", style.valueWidth)}
+          />
+          <LinkText
+            testId="fee-recipient-tablet"
+            href={`/addresses/${feeRecipient}`}
+            label={truncateTextFromMiddle(feeRecipient, 5)}
+            customStyle={clsx(
+              "hidden md:inline-flex xl:hidden",
+              style.valueWidth
+            )}
+          />
+          <LinkText
+            testId="fee-recipient-desktop"
+            href={`/addresses/${feeRecipient}`}
+            label={truncateTextFromMiddle(feeRecipient, 13)}
+            customStyle={clsx("hidden xl:inline-flex", style.valueWidth)}
+          />
+          <FiCopy
+            size={20}
+            className="ml-2 self-center cursor-pointer"
+            onClick={() => {
+              copy(feeRecipient);
+              setShowCopyInfo(true);
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

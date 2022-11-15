@@ -22,7 +22,7 @@ interface Props {
 
 export default function Blocks({ block, ...data }: Props) {
   const router = useRouter();
-  const blockHeight = router.query.id;
+  const blockHeight = router.query.id as string;
 
   return (
     <Container className="px-1 md:px-0 mt-12">
@@ -56,7 +56,12 @@ export default function Blocks({ block, ...data }: Props) {
           {/* Block number, timestamp */}
           <div className="pt-6 pb-8 flex flex-col md:flex-row justify-between items-start">
             <div className="text-white-50 font-bold text-[32px]">
-              #{blockHeight}
+              <NumericFormat
+                thousandSeparator
+                value={blockHeight}
+                decimalScale={0}
+                prefix="#"
+              />
             </div>
             <div className="flex flex-col items-start md:items-end pt-6 md:pt-0">
               <div className="text-white-50 font-bold">
@@ -159,7 +164,7 @@ function FeeRecipientRow({
   feeRecipient: string;
 }): JSX.Element {
   return (
-    <div className={clsx(style.container)}>
+    <div className={clsx("justify-between md:justify-start", style.container)}>
       <div className={clsx("text-white-700", style.labelWidth)}>{label}</div>
       <div className="flex">
         <LinkText
@@ -207,7 +212,7 @@ function GasUsedRow({
         <div className="text-white-50">
           <NumericFormat
             thousandSeparator
-            value={new BigNumber(gasUsed).toFixed(0)}
+            value={new BigNumber(gasUsed)}
             decimalScale={0}
           />
         </div>

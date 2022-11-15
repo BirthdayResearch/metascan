@@ -130,8 +130,8 @@ export default function Blocks({ block, ...data }: Props) {
 
 const style = {
   container: "flex gap-5 py-3 md:gap-0",
-  labelWidth: "w-1/2 md:1/4 lg:w-1/3",
-  valueWidth: "flex-1 text-right md:flex-none md:text-left",
+  labelWidth: "w-1/2 md:shrink-0 lg:w-1/3",
+  valueWidth: "flex-1 text-right md:text-left",
 };
 
 function DetailRow({
@@ -188,16 +188,7 @@ function FeeRecipientRow({
             testId="fee-recipient-mobile"
             href={`/addresses/${feeRecipient}`}
             label={truncateTextFromMiddle(feeRecipient, 4)}
-            customStyle={clsx("inline-flex md:hidden", style.valueWidth)}
-          />
-          <LinkText
-            testId="fee-recipient-tablet"
-            href={`/addresses/${feeRecipient}`}
-            label={truncateTextFromMiddle(feeRecipient, 5)}
-            customStyle={clsx(
-              "hidden md:inline-flex xl:hidden",
-              style.valueWidth
-            )}
+            customStyle={clsx("inline-flex xl:hidden", style.valueWidth)}
           />
           <LinkText
             testId="fee-recipient-desktop"

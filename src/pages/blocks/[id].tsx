@@ -6,18 +6,28 @@ import BigNumber from "bignumber.js";
 import clsx from "clsx";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { useRouter } from "next/router";
-import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
 import { DMX_TOKEN_SYMBOL } from "shared/contants";
 import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
+import { transactions, pages } from "../../mockdata/TransactionData";
+import BlockTransactionList from "./_components/BlockTransactionList";
 
-export default function Blocks({ data }) {
+// TODO: Replace `any` with proper types
+interface Props {
+  block: any;
+  blockTransactions: any;
+  pages: any;
+}
+
+export default function Blocks({ block, ...data }: Props) {
   const router = useRouter();
   const blockHeight = router.query.id;
 
   return (
     <Container className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
+      {/* BLOCK DETAILS */}
       <GradientCardContainer>
         <div className="px-5 py-8 md:p-10">
           <div className="mb-6">
@@ -27,6 +37,7 @@ export default function Blocks({ data }) {
           {/* Prev/Next buttons */}
           <div className="flex justify-between items-center">
             <div className="flex items-center">
+              {/* TODO: Add icon hover and gradient style */}
               <FiArrowLeft
                 size={24}
                 className="text-lightBlue mr-2 self-center"
@@ -49,14 +60,14 @@ export default function Blocks({ data }) {
             </div>
             <div className="flex flex-col items-start md:items-end pt-6 md:pt-0">
               <div className="text-white-50 font-bold">
-                {data.transactionsPerBlock} Transactions
+                {block.transactionsPerBlock} Transactions
               </div>
               <div className="text-white-700 mt-1 flex flex-col md:flex-row">
                 <span className="order-last md:order-first pt-1 md:pt-0">
-                  {secondsToDhmsDisplay(data.time)} ago
+                  {secondsToDhmsDisplay(block.time)} ago
                 </span>
                 <span className="hidden md:inline">&nbsp;-&nbsp;</span>
-                <span>{data.datetime}</span>
+                <span>{block.datetime}</span>
               </div>
             </div>
           </div>
@@ -67,20 +78,20 @@ export default function Blocks({ data }) {
             <div className="w-full md:w-1/2">
               <FeeRecipientRow
                 label="Fee recipient"
-                feeRecipient={data.feeRecipient}
+                feeRecipient={block.feeRecipient}
               />
               <DetailRow
                 label="Reward"
-                value={new BigNumber(data.rewardAmount).toFixed(8)}
+                value={new BigNumber(block.rewardAmount).toFixed(8)}
               />
               <GasUsedRow
                 label="Gas used"
-                gasUsed={data.gasUsed}
-                gasPercentage={data.gasPercentage}
+                gasUsed={block.gasUsed}
+                gasPercentage={block.gasPercentage}
               />
               <DetailRow
                 label="Gas limit"
-                value={data.gasLimit}
+                value={block.gasLimit}
                 decimalScale={0}
               />
             </div>
@@ -88,16 +99,24 @@ export default function Blocks({ data }) {
             <div className="w-full md:w-1/2">
               <DetailRow
                 label="Base fee"
-                value={new BigNumber(data.baseFee).toFixed(8)}
+                value={new BigNumber(block.baseFee).toFixed(8)}
               />
               <DetailRow
                 label="Burnt fee"
-                value={new BigNumber(data.burntFee).toFixed(8)}
+                value={new BigNumber(block.burntFee).toFixed(8)}
               />
             </div>
           </div>
         </div>
       </GradientCardContainer>
+
+      {/* BLOCK TRANSACTIONS */}
+      <div className="mt-6">
+        <BlockTransactionList
+          blockTransactions={data.blockTransactions}
+          pages={data.pages}
+        />
+      </div>
     </Container>
   );
 }
@@ -105,7 +124,7 @@ export default function Blocks({ data }) {
 const style = {
   container: "flex gap-5 py-3 md:gap-0",
   labelWidth: "w-1/2 md:1/4 lg:w-1/3",
-  valueWidth: "flex-1 text-right md:flex-0 md:text-left",
+  valueWidth: "flex-1 text-right md:flex-none md:text-left",
 };
 
 function DetailRow({
@@ -142,18 +161,32 @@ function FeeRecipientRow({
   return (
     <div className={clsx(style.container)}>
       <div className={clsx("text-white-700", style.labelWidth)}>{label}</div>
-      <span className={clsx("inline-block md:hidden", style.valueWidth)}>
-        {truncateTextFromMiddle(feeRecipient, 4)}
-      </span>
-      <span
-        className={clsx("hidden md:inline-block xl:hidden", style.valueWidth)}
-      >
-        {truncateTextFromMiddle(feeRecipient, 5)}
-      </span>
-      <span className={clsx("hidden xl:inline-block", style.valueWidth)}>
-        {truncateTextFromMiddle(feeRecipient, 13)}
-      </span>
-      {/* TODO: Add copy icon and function */}
+      <div className="flex">
+        <LinkText
+          testId="fee-recipient-mobile"
+          href={`/addresses/${feeRecipient}`}
+          label={truncateTextFromMiddle(feeRecipient, 4)}
+          customStyle={clsx("inline-flex md:hidden", style.valueWidth)}
+        />
+        <LinkText
+          testId="fee-recipient-tablet"
+          href={`/addresses/${feeRecipient}`}
+          label={truncateTextFromMiddle(feeRecipient, 5)}
+          customStyle={clsx(
+            "hidden md:inline-flex xl:hidden",
+            style.valueWidth
+          )}
+        />
+        <LinkText
+          testId="fee-recipient-desktop"
+          href={`/addresses/${feeRecipient}`}
+          label={truncateTextFromMiddle(feeRecipient, 13)}
+          customStyle={clsx("hidden xl:inline-flex", style.valueWidth)}
+        />
+        {/* TODO: Add icon hover and gradient */}
+        {/* TODO: Add  copy function */}
+        <FiCopy size={20} className="ml-2 self-center" />
+      </div>
     </div>
   );
 }
@@ -186,7 +219,8 @@ function GasUsedRow({
 
 export async function getServerSideProps() {
   // TODO: Fetch data from external API
-  const data = {
+  // TODO: Use mockdata from blocks list later
+  const block = {
     blockHeight: 21002,
     transactionsPerBlock: 34,
     feeRecipient: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
@@ -200,6 +234,5 @@ export async function getServerSideProps() {
     burntFee: "0.13818798",
   };
 
-  // Pass data to the page via props
-  return { props: { data } };
+  return { props: { block, blockTransactions: transactions, pages } };
 }

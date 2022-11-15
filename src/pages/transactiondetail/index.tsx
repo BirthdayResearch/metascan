@@ -424,10 +424,10 @@ function TransactionDetailSegmentTwo({
               <div
                 className={clsx(
                   "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-[132px]",
-                  { "md:w-[155px] w-[151px] gap-x-0": copyFromAddress }
+                  { "md:w-[155px] w-[151px] gap-x-0": copyToAddress }
                 )}
               >
-                <div className={clsx({ "mr-[10px]": copyFromAddress })}>
+                <div className={clsx({ "mr-[10px]": copyToAddress })}>
                   <CopyableText
                     label={truncateTextFromMiddle(to)}
                     onTextClick={setCopyToAddress}

@@ -397,8 +397,8 @@ function TransactionDetailSegmentTwo({
 
               <div
                 className={clsx(
-                  "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-[132px]",
-                  { "md:w-[155px] w-[151px] gap-x-0": copyFromAddress }
+                  "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-auto",
+                  { "md:w-[155px] w-auto gap-x-0": copyFromAddress }
                 )}
               >
                 <div className={clsx({ "mr-[10px]": copyFromAddress })}>
@@ -423,8 +423,8 @@ function TransactionDetailSegmentTwo({
               </div>
               <div
                 className={clsx(
-                  "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-[132px]",
-                  { "md:w-[155px] w-[151px] gap-x-0": copyToAddress }
+                  "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-auto",
+                  { "md:w-[155px] w-auto gap-x-0": copyToAddress }
                 )}
               >
                 <div className={clsx({ "mr-[10px]": copyToAddress })}>
@@ -450,7 +450,7 @@ function TransactionDetailSegmentTwo({
               <div className="flex lg:text-left md:text-left text-right">
                 <NumericFormat
                   displayType="text"
-                  className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
+                  className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-auto"
                   thousandSeparator
                   value={BigNumber(forToken.value).toFixed(8)}
                   decimalScale={8}

@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Netlify - Deploy Preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3.1.0
+      - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
+        with:
+          node-version: 16
+          cache: "npm"
+
+      - run: npm ci
+      - run: tsc
+      - run: npm run lint
+
+  lint_prettier:
+    name: Lint - Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3.1.0
+
+      - uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516 # tag=v3.5.1
+        with:
+          node-version: 16
+          cache: npm
+
+      - run: npm ci
+      - run: npx --no-install prettier --check "src/**/*.{js,jsx,ts,tsx}"
+
+  build:
+    name: Build project
+    run: npm run build
+
+  deploy:
+    id: deploy-netlify
+    uses: netlify/actions/cli@master
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    with:
+      args: deploy --dir=dist
+
+  probe:
+    name: Wait For HTTP Responses
+    uses: cygnetdigital/wait_for_response@v2.0.0
+    with:
+      url: ${{ steps.deploy-netlify.outputs.NETLIFY_URL }}
+      responseCode: '200'
+      timeout: 2000 # retry for at most 4 times
+      interval: 500
+
+  comment:
+    name: Netlify Preview URL
+    uses: unsplash/comment-on-pr@master
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      OUTPUT: "This pull request is being automatically deployed to Netlify.\n\n🔍 Inspect: ${{ steps.deploy-netlify.outputs.NETLIFY_LOGS_URL }}\n✅ Preview: ${{ steps.deploy-netlify.outputs.NETLIFY_URL }}"
+    with:
+      msg: ${{ env.OUTPUT }}
+      check_for_duplicate_msg: true

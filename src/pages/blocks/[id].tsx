@@ -1,6 +1,7 @@
 import Container from "@components/commons/Container";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import LinkText from "@components/commons/LinkText";
+import LinkTextWithIcon from "@components/commons/LinktextWithIcon";
 import NumericFormat from "@components/commons/NumericFormat";
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
@@ -22,33 +23,35 @@ interface Props {
 
 export default function Blocks({ block, ...data }: Props) {
   const router = useRouter();
-  const blockHeight = router.query.id as string;
+  const blockNumber = new BigNumber(router.query.id as string);
+  const prevBlockNumber = blockNumber.minus(1);
+  const nextBlockNumber = blockNumber.plus(1); // TODO: check if nextBlockNumber exists when api is readys
 
   return (
     <Container className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
-      {/* BLOCK DETAILS */}
       <GradientCardContainer>
         <div className="px-5 py-8 md:p-10">
           <div className="mb-6">
             <h2 className="font-bold text-xl text-white-50">Block details</h2>
           </div>
 
-          {/* Prev/Next buttons */}
+          {/* Previous/Next buttons */}
           <div className="flex justify-between items-center">
             <div className="flex items-center">
-              {/* TODO: Add icon hover and gradient style */}
-              <FiArrowLeft
-                size={24}
-                className="text-lightBlue mr-2 self-center"
+              <LinkTextWithIcon
+                href={`/blocks/${prevBlockNumber}`}
+                label="Previous block"
+                customStyle="text-xs"
+                icon={{ Icon: FiArrowLeft, pos: "left", iconStyle: "pr-2" }}
               />
-              <LinkText href="#" label="Previous block" customStyle="text-xs" />
             </div>
             <div className="flex items-center">
-              <LinkText href="#" label="Next block" customStyle="text-xs" />
-              <FiArrowRight
-                size={24}
-                className="text-lightBlue ml-2 self-center"
+              <LinkTextWithIcon
+                href={`/blocks/${nextBlockNumber}`}
+                label="Next block"
+                customStyle="text-xs"
+                icon={{ Icon: FiArrowRight, pos: "right", iconStyle: "pl-2" }}
               />
             </div>
           </div>
@@ -58,7 +61,7 @@ export default function Blocks({ block, ...data }: Props) {
             <div className="text-white-50 font-bold text-[32px]">
               <NumericFormat
                 thousandSeparator
-                value={blockHeight}
+                value={blockNumber}
                 decimalScale={0}
                 prefix="#"
               />
@@ -71,15 +74,12 @@ export default function Blocks({ block, ...data }: Props) {
                 <span className="order-last md:order-first pt-1 md:pt-0">
                   {secondsToDhmsDisplay(block.time)} ago
                 </span>
-                <span className="hidden md:inline">&nbsp;-&nbsp;</span>
-                <span>{block.datetime}</span>
               </div>
             </div>
           </div>
 
           {/* Details */}
           <div className="border-t border-black-600 pt-8 text-white-50 flex flex-col md:flex-row md:gap-5">
-            {/* Left side */}
             <div className="w-full md:w-1/2">
               <FeeRecipientRow
                 label="Fee recipient"
@@ -100,7 +100,6 @@ export default function Blocks({ block, ...data }: Props) {
                 decimalScale={0}
               />
             </div>
-            {/* Right side */}
             <div className="w-full md:w-1/2">
               <DetailRow
                 label="Base fee"
@@ -115,7 +114,7 @@ export default function Blocks({ block, ...data }: Props) {
         </div>
       </GradientCardContainer>
 
-      {/* BLOCK TRANSACTIONS */}
+      {/* Block transaction list */}
       <div className="mt-6">
         <BlockTransactionList
           blockTransactions={data.blockTransactions}
@@ -226,7 +225,7 @@ export async function getServerSideProps() {
   // TODO: Fetch data from external API
   // TODO: Use mockdata from blocks list later
   const block = {
-    blockHeight: 21002,
+    blockNumber: 21002,
     transactionsPerBlock: 34,
     feeRecipient: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
     time: 2040,
@@ -238,6 +237,7 @@ export async function getServerSideProps() {
     baseFee: "0.00004242",
     burntFee: "0.13818798",
   };
+  const blockTransactions = transactions;
 
-  return { props: { block, blockTransactions: transactions, pages } };
+  return { props: { block, blockTransactions, pages } };
 }

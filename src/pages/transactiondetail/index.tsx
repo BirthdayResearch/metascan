@@ -492,7 +492,7 @@ function TransactionDetailSegmentTwo({
         </div>
 
         {hexClick === true ? (
-          <div className="break-all py-6 px-10 border-[1px] border-black-600 rounded-lg text-white-50 text-xs">
+          <div className="break-all py-6 lg:px-10 md:px-8 px-4 border-[1px] border-black-600 rounded-lg text-white-50 text-xs">
             {hex}
           </div>
         ) : (

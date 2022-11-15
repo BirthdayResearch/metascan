@@ -40,6 +40,8 @@ jobs:
       - run: npx --no-install prettier --check "src/**/*.{js,jsx,ts,tsx}"
 
   preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
     steps:
       - name: Build project
         run: npm run build

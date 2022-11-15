@@ -62,11 +62,10 @@ jobs:
           interval: 500
 
       - name: Netlify Preview URL
-        steps:
-          - uses: unsplash/comment-on-pr@bc79160dfc20ea0f151d47803638dc520190c815
-            env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              OUTPUT: "This pull request is being automatically deployed to Netlify.\n\n🔍 Inspect: ${{ steps.deploy-netlify.outputs.NETLIFY_LOGS_URL }}\n✅ Preview: ${{ steps.deploy-netlify.outputs.NETLIFY_URL }}"
-            with:
-              msg: ${{ env.OUTPUT }}
-              check_for_duplicate_msg: true
+        uses: unsplash/comment-on-pr@bc79160dfc20ea0f151d47803638dc520190c815
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OUTPUT: "This pull request is being automatically deployed to Netlify.\n\n🔍 Inspect: ${{ steps.deploy-netlify.outputs.NETLIFY_LOGS_URL }}\n✅ Preview: ${{ steps.deploy-netlify.outputs.NETLIFY_URL }}"
+        with:
+          msg: ${{ env.OUTPUT }}
+          check_for_duplicate_msg: true

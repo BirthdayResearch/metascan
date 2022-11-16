@@ -31,18 +31,27 @@ export default function Blocks({ block, ...data }: Props) {
   const nextBlockNumber = blockNumber.plus(1); // TODO: check if nextBlockNumber exists when api is readys
 
   return (
-    <Container className="px-1 md:px-0 mt-12">
+    <Container
+      data-testid={`block-${blockNumber}-details-page`}
+      className="px-1 md:px-0 mt-12"
+    >
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
-        <div className="px-5 py-8 md:p-10">
+        <div data-testid="block-details" className="px-5 py-8 md:p-10">
           <div className="mb-6">
-            <h2 className="font-bold text-xl text-white-50">Block details</h2>
+            <h2
+              data-testid="block-details-title"
+              className="font-bold text-xl text-white-50"
+            >
+              Block details
+            </h2>
           </div>
 
           {/* Previous/Next buttons */}
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <LinkTextWithIcon
+                testId="prev-block-link"
                 href={`/blocks/${prevBlockNumber}`}
                 label="Previous block"
                 customStyle="text-xs"
@@ -51,6 +60,7 @@ export default function Blocks({ block, ...data }: Props) {
             </div>
             <div className="flex items-center">
               <LinkTextWithIcon
+                testId="next-block-link"
                 href={`/blocks/${nextBlockNumber}`}
                 label="Next block"
                 customStyle="text-xs"
@@ -61,7 +71,10 @@ export default function Blocks({ block, ...data }: Props) {
 
           {/* Block number, timestamp */}
           <div className="pt-6 pb-8 flex flex-col md:flex-row justify-between items-start">
-            <div className="text-white-50 font-bold text-[32px]">
+            <div
+              data-testid="block-number"
+              className="text-white-50 font-bold text-[32px]"
+            >
               <NumericFormat
                 thousandSeparator
                 value={blockNumber}
@@ -70,11 +83,14 @@ export default function Blocks({ block, ...data }: Props) {
               />
             </div>
             <div className="flex flex-col items-start md:items-end pt-6 md:pt-0">
-              <div className="text-white-50 font-bold">
+              <div
+                data-testid="block-txn-count"
+                className="text-white-50 font-bold"
+              >
                 {block.transactionsPerBlock} Transactions
               </div>
               <div className="text-white-700 mt-1 flex flex-col md:flex-row">
-                <span className="order-last md:order-first pt-1 md:pt-0">
+                <span data-testid="block-time" className="pt-1 md:pt-0">
                   {secondsToDhmsDisplay(block.time)} ago
                 </span>
               </div>
@@ -89,6 +105,7 @@ export default function Blocks({ block, ...data }: Props) {
                 feeRecipient={block.feeRecipient}
               />
               <DetailRow
+                testId="block-reward-amount"
                 label="Reward"
                 value={new BigNumber(block.rewardAmount).toFixed(8)}
                 suffix={` ${DFI_TOKEN_SYMBOL}`}
@@ -99,6 +116,7 @@ export default function Blocks({ block, ...data }: Props) {
                 gasPercentage={block.gasPercentage}
               />
               <DetailRow
+                testId="gas-limit"
                 label="Gas limit"
                 value={block.gasLimit}
                 decimalScale={0}
@@ -106,11 +124,13 @@ export default function Blocks({ block, ...data }: Props) {
             </div>
             <div className="w-full md:w-1/2">
               <DetailRow
+                testId="base-fee"
                 label="Base fee"
                 value={new BigNumber(block.baseFee).toFixed(8)}
                 suffix={` ${DFI_TOKEN_SYMBOL}`}
               />
               <DetailRow
+                testId="burnt-fee"
                 label="Burnt fee"
                 value={new BigNumber(block.burntFee).toFixed(8)}
                 suffix={` ${DFI_TOKEN_SYMBOL}`}
@@ -121,7 +141,7 @@ export default function Blocks({ block, ...data }: Props) {
       </GradientCardContainer>
 
       {/* Block transaction list */}
-      <div className="mt-6">
+      <div data-testid="block-transaction-list" className="mt-6">
         <BlockTransactionList
           blockTransactions={data.blockTransactions}
           pages={data.pages}
@@ -138,11 +158,13 @@ const style = {
 };
 
 function DetailRow({
+  testId,
   label,
   value,
   decimalScale = 8,
   suffix = "",
 }: {
+  testId: string;
   label: string;
   value: string;
   decimalScale?: number;
@@ -150,8 +172,16 @@ function DetailRow({
 }): JSX.Element {
   return (
     <div className={clsx(style.container)}>
-      <div className={clsx("text-white-700", style.labelWidth)}>{label}</div>
-      <div className={clsx("text-white-50", style.valueWidth)}>
+      <div
+        data-testid={`${testId}-label`}
+        className={clsx("text-white-700", style.labelWidth)}
+      >
+        {label}
+      </div>
+      <div
+        data-testid={testId}
+        className={clsx("text-white-50", style.valueWidth)}
+      >
         <NumericFormat
           thousandSeparator
           value={value}
@@ -181,9 +211,14 @@ function FeeRecipientRow({
 
   return (
     <div className={clsx("justify-between md:justify-start", style.container)}>
-      <div className={clsx("text-white-700", style.labelWidth)}>{label}</div>
+      <div
+        data-testid="fee-recipient-label"
+        className={clsx("text-white-700", style.labelWidth)}
+      >
+        {label}
+      </div>
       {showSuccessCopy ? (
-        <div className="flex items-center">
+        <div data-testid="copy-success-msg" className="flex items-center">
           <span className="text-lightBlue">Copied!</span>
           <MdCheckCircle size={20} className="ml-2 text-green-800" />
         </div>
@@ -226,9 +261,14 @@ function GasUsedRow({
 }): JSX.Element {
   return (
     <div className={clsx(style.container)}>
-      <div className={clsx("text-white-700", style.labelWidth)}>{label}</div>
+      <div
+        data-testid="gas-used-label"
+        className={clsx("text-white-700", style.labelWidth)}
+      >
+        {label}
+      </div>
       <div className={clsx(style.valueWidth)}>
-        <div className="text-white-50">
+        <div data-testid="gas-used" className="text-white-50">
           <NumericFormat
             thousandSeparator
             value={new BigNumber(gasUsed)}
@@ -236,7 +276,9 @@ function GasUsedRow({
             suffix={` ${DMX_TOKEN_SYMBOL}`}
           />
         </div>
-        <div className="text-white-700 text-xs pt-1">{gasPercentage}%</div>
+        <div data-testid="gas-pct" className="text-white-700 text-xs pt-1">
+          {gasPercentage}%
+        </div>
       </div>
     </div>
   );

@@ -19,7 +19,12 @@ export default function BlockTransactionList({
     <GradientCardContainer>
       <div className="p-5 md:p-10">
         <div className="flex flex-col md:flex-row mb-6 justify-between md:items-center">
-          <h2 className="font-bold text-xl text-white-50">Transactions</h2>
+          <h2
+            data-testid="block-txn-list-title"
+            className="font-bold text-xl text-white-50"
+          >
+            Transactions
+          </h2>
           <CursorPagination
             pages={pages}
             path="/transactions"

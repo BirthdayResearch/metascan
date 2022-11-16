@@ -15,6 +15,9 @@ jobs:
     name: Deploy Preview
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
+
       - name: Build project
         run: npm run build
 

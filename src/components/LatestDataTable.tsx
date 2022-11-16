@@ -8,7 +8,7 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import Button from "./commons/Button";
 import GradientCardContainer from "./commons/GradientCardContainer";
 import LinkText from "./commons/LinkText";
-import NumericFormat, { formatNumberValue } from "./commons/NumericFormat";
+import NumericFormat from "./commons/NumericFormat";
 
 type DataType = "blocks" | "transactions";
 
@@ -129,12 +129,18 @@ function RowItem({
         <LinkText
           testId={`details-page-link-${rowIndex}`}
           href={detailsPageLink}
-          label={
-            type === "blocks"
-              ? `#${formatNumberValue({ value: transactionId })}`
-              : truncateTextFromMiddle(transactionId, 5)
-          }
-        />
+        >
+          {type === "blocks" ? (
+            <NumericFormat
+              thousandSeparator
+              value={transactionId}
+              decimalScale={0}
+              prefix="#"
+            />
+          ) : (
+            truncateTextFromMiddle(transactionId, 5)
+          )}
+        </LinkText>
       </div>
       <div className="w-2/4 inline-flex items-center justify-end text-white-700 text-right md:order-last md:grow md:-mt-6 lg:mt-0 lg:w-20 xl:w-32 lg:pl-5 xl:pl-0">
         {secondsToDhmsDisplay(time)} ago
@@ -174,17 +180,20 @@ function BlockInfoDisplay({
   block: string;
   blockInfo: BlockInfo;
 }): JSX.Element {
-  const formattedCount = formatNumberValue({
-    value: blockInfo.transactionsPerBlock,
-  });
   return (
     <>
       <div className="flex pt-5 md:pt-0">
         <LinkText
           testId={`block-details-link-${block}`}
           href={`/transactions?block=${block}`}
-          label={`${formattedCount} Transactions`}
-        />
+        >
+          <NumericFormat
+            thousandSeparator
+            value={blockInfo.transactionsPerBlock}
+            decimalScale={0}
+            suffix=" Transactions"
+          />
+        </LinkText>
       </div>
       <div className="flex pt-1.5 md:pt-2.5 lg:pt-0">
         &nbsp;{`in ${blockInfo.blockTimeInSec} sec`}

@@ -28,20 +28,3 @@ export default function NumericFormat({
     </span>
   );
 }
-
-export function formatNumberValue({
-  value,
-  prefix = "",
-  suffix = "",
-  thousandSeparator = true,
-  decimalScale = 0,
-}: NumericFormatProps): string {
-  const fmt: BigNumber.Format = {
-    prefix,
-    suffix,
-    decimalSeparator: ".",
-    groupSeparator: thousandSeparator ? "," : "",
-    groupSize: thousandSeparator ? 3 : 0,
-  };
-  return new BigNumber(value).toFormat(decimalScale, fmt);
-}

@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
-import { DMX_TOKEN_SYMBOL } from "shared/contants";
+import { DFI_TOKEN_SYMBOL, DMX_TOKEN_SYMBOL } from "shared/contants";
 import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { transactions, pages } from "../../mockdata/TransactionData";
@@ -91,6 +91,7 @@ export default function Blocks({ block, ...data }: Props) {
               <DetailRow
                 label="Reward"
                 value={new BigNumber(block.rewardAmount).toFixed(8)}
+                suffix={` ${DFI_TOKEN_SYMBOL}`}
               />
               <GasUsedRow
                 label="Gas used"
@@ -107,10 +108,12 @@ export default function Blocks({ block, ...data }: Props) {
               <DetailRow
                 label="Base fee"
                 value={new BigNumber(block.baseFee).toFixed(8)}
+                suffix={` ${DFI_TOKEN_SYMBOL}`}
               />
               <DetailRow
                 label="Burnt fee"
                 value={new BigNumber(block.burntFee).toFixed(8)}
+                suffix={` ${DFI_TOKEN_SYMBOL}`}
               />
             </div>
           </div>
@@ -138,10 +141,12 @@ function DetailRow({
   label,
   value,
   decimalScale = 8,
+  suffix = "",
 }: {
   label: string;
   value: string;
   decimalScale?: number;
+  suffix?: string;
 }): JSX.Element {
   return (
     <div className={clsx(style.container)}>
@@ -151,7 +156,7 @@ function DetailRow({
           thousandSeparator
           value={value}
           decimalScale={decimalScale}
-          suffix={` ${DMX_TOKEN_SYMBOL}`}
+          suffix={suffix}
         />
       </div>
     </div>
@@ -166,18 +171,18 @@ function FeeRecipientRow({
   feeRecipient: string;
 }): JSX.Element {
   const { copy } = useCopyToClipboard();
-  const [showCopyInfo, setShowCopyInfo] = useState(false);
+  const [showSuccessCopy, setShowSuccessCopy] = useState(false);
 
   useEffect(() => {
-    if (showCopyInfo) {
-      setTimeout(() => setShowCopyInfo(false), 3000);
+    if (showSuccessCopy) {
+      setTimeout(() => setShowSuccessCopy(false), 3000);
     }
-  }, [showCopyInfo]);
+  }, [showSuccessCopy]);
 
   return (
     <div className={clsx("justify-between md:justify-start", style.container)}>
       <div className={clsx("text-white-700", style.labelWidth)}>{label}</div>
-      {showCopyInfo ? (
+      {showSuccessCopy ? (
         <div className="flex items-center">
           <span className="text-lightBlue">Copied!</span>
           <MdCheckCircle size={20} className="ml-2 text-green-800" />
@@ -201,7 +206,7 @@ function FeeRecipientRow({
             className="ml-2 self-center cursor-pointer"
             onClick={() => {
               copy(feeRecipient);
-              setShowCopyInfo(true);
+              setShowSuccessCopy(true);
             }}
           />
         </div>
@@ -228,6 +233,7 @@ function GasUsedRow({
             thousandSeparator
             value={new BigNumber(gasUsed)}
             decimalScale={0}
+            suffix={` ${DMX_TOKEN_SYMBOL}`}
           />
         </div>
         <div className="text-white-700 text-xs pt-1">{gasPercentage}%</div>

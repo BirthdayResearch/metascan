@@ -99,7 +99,7 @@ function RewardComponent({
     <div className={clsx("flex flex-row", containerClass)}>
       <span className="text-white-700 text-base mr-1">Reward</span>
       <NumericFormat
-        className="text-white-50 text-base font-bold"
+        className="text-white-50 text-base"
         thousandSeparator
         value={new BigNumber(amount).toFixed(8)}
         decimalScale={8}

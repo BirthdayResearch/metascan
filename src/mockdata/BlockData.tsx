@@ -33,7 +33,7 @@ export interface BlocksI {
 export const blocks: BlocksI[] = [
   {
     blockHash:
-      "0xeebce709490d6d3354162127bfebd8112587220b2db8290ec5d11b8605f8c1b4",
+      "0xeebce709490d623354162127bfebd8112587220b2db8290ec5d11b8605f8c1b4",
     parentHash:
       "0x6c34caf76c58f547089e3ed81022e5edaa3792c70d7ccddb6f38255421acc689",
     sha3Uncles:
@@ -95,7 +95,7 @@ export const blocks: BlocksI[] = [
   },
   {
     blockHash:
-      "0xeebce709490d6d3354162127bfebd8112587220b2db8290ec5d11b8605f8c1b4",
+      "0xeebce709494d6d3354162127bfebd8112587220b2db8290ec5d11b8605f8c1b4",
     parentHash:
       "0x6c34caf76c58f547089e3ed81022e5edaa3792c70d7ccddb6f38255421acc689",
     sha3Uncles:
@@ -157,7 +157,7 @@ export const blocks: BlocksI[] = [
   },
   {
     blockHash:
-      "0xeebce709490d6d3354162127bfebd8112587220b2db8290ec5d11b8605f8c1b4",
+      "0xeebce70949346d3354162127bfebd8112587220b2db8290ec5d11b8605f8c1b4",
     parentHash:
       "0x6c34caf76c58f547089e3ed81022e5edaa3792c70d7ccddb6f38255421acc689",
     sha3Uncles:

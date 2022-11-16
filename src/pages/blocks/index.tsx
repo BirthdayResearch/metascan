@@ -20,7 +20,7 @@ export default function Blocks({ data }) {
             />
           </div>
           {data.blocks.map((item) => (
-            <BlockRow key={item.hash} data={item} />
+            <BlockRow key={item.blockHash} data={item} />
           ))}
           <CursorPagination
             pages={data.pages}

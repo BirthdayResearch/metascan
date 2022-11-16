@@ -18,14 +18,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
 
+      - name: Setup node
+        uses: actions/setup-node@6bc15ab23c9584a6fe2fdf1ae07fd5fb409d1dbc
+        with:
+          node-version: 16
+
+      - name: Install package
+        run: npm ci
+
       - name: Deploy to netlify preview
         id: deploy-netlify
-        run: |
-          npm ci
-          npm run preview
+        uses: netlify/actions/cli@375963b92b795c7b979927c580dd6f2a65ebcf28
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --build --context deploy-preview
 
       - name: Wait For HTTP Responses
         uses: cygnetdigital/wait_for_response@9d8fb6868dc2cb9ed88a6ea28100b830a838d003

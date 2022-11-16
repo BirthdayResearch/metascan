@@ -45,7 +45,7 @@ export default function BlockRow({ data }: { data: BlocksI }) {
       </div>
 
       {/* For mobile */}
-      <div className="md:hidden py-6 z-10 mt-2">
+      <div className="md:hidden py-6 mt-2">
         <BlockNumberComponent number={data.number} />
         <div className="ml-8">
           <RewardComponent

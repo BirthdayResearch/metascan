@@ -20,7 +20,6 @@ jobs:
 
       - name: Deploy to netlify preview
         id: deploy-netlify
-        uses: netlify/actions/cli@375963b92b795c7b979927c580dd6f2a65ebcf28
         run: |
           npm ci
           npm run preview

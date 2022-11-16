@@ -160,7 +160,7 @@ function RowItem({
         className="pt-5 pr-1 md:grow md:text-right md:p-0 lg:grow xl:w-2/5"
       >
         {amountLabel && (
-          <span className="text-white-700 mr-1">{amountLabel}&nbsp;</span>
+          <span className="text-white-700 mr-1">{amountLabel}</span>
         )}
         <NumericFormat
           thousandSeparator
@@ -195,8 +195,8 @@ function BlockInfoDisplay({
           />
         </LinkText>
       </div>
-      <div className="flex pt-1.5 md:pt-2.5 lg:pt-0">
-        &nbsp;{`in ${blockInfo.blockTimeInSec} sec`}
+      <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 ml-1">
+        {`in ${blockInfo.blockTimeInSec} sec`}
       </div>
     </>
   );

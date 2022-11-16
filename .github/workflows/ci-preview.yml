@@ -19,7 +19,9 @@ jobs:
         uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
 
       - name: Build project
-        run: npm run build
+        run: |
+          npm ci
+          npm run build
 
       - name: Deploy to netlify preview
         id: deploy-netlify

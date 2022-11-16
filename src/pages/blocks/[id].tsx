@@ -143,6 +143,7 @@ export default function Blocks({ block, ...data }: Props) {
       {/* Block transaction list */}
       <div data-testid="block-transaction-list" className="mt-6">
         <BlockTransactionList
+          blockNumber={blockNumber.toFixed(0)}
           blockTransactions={data.blockTransactions}
           pages={data.pages}
         />

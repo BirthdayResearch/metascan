@@ -7,11 +7,13 @@ import { TransactionI } from "mockdata/TransactionData";
 import TransactionRow from "pages/transactions/_components/TransactionRow";
 
 interface Props {
+  blockNumber: string;
   blockTransactions: TransactionI[];
   pages: CursorPage[];
 }
 
 export default function BlockTransactionList({
+  blockNumber,
   blockTransactions,
   pages,
 }: Props): JSX.Element {
@@ -27,7 +29,7 @@ export default function BlockTransactionList({
           </h2>
           <CursorPagination
             pages={pages}
-            path="/transactions"
+            path={`/blocks/${blockNumber}`}
             className="justify-end mt-5 md:mt-0"
           />
         </div>
@@ -36,7 +38,7 @@ export default function BlockTransactionList({
         ))}
         <CursorPagination
           pages={pages}
-          path="/transactions"
+          path={`/blocks/${blockNumber}`}
           className="flex w-full md:justify-end mt-12 md:mt-10"
         />
       </div>

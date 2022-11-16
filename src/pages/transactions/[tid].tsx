@@ -236,7 +236,11 @@ function TransactionDetailSegmentOne({
                   {fixedTitle.block}
                 </div>
                 <div className="flex flex-row gap-x-2.5 items-center">
-                  <LinkText testId="transaction-block" label={block} href="" />
+                  <LinkText
+                    testId="transaction-block"
+                    label={block}
+                    href={`/block/${block}`}
+                  />
                 </div>
               </div>
             </div>

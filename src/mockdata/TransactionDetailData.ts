@@ -21,7 +21,7 @@ const transactionDetailData = {
     symbol: "ETH",
   },
   transactions: {
-    transactionID: "97ddfbbae6b97ddfbbae6b97ddfbbae6b",
+    transactionId: "97ddfbbae6b97ddfbbae6b97ddfbbae6b",
     status: "Confirmed",
     tokenPrice: {
       value: "120000.430089324",

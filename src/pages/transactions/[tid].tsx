@@ -32,7 +32,7 @@ function Transaction() {
             </span>
           </div>
           <TransactionDetailSegmentOne
-            transactionID={data.transactions.transactionID}
+            transactionId={data.transactions.transactionId}
             tokenPrice={data.transactions.tokenPrice}
             valuePrice={data.transactions.valuePrice}
             status={data.transactions.status}
@@ -64,7 +64,7 @@ function Transaction() {
 }
 
 interface TransactionDetailSegmentOneProp {
-  transactionID: string;
+  transactionId: string;
   tokenPrice: {
     value: string;
     symbol: string;
@@ -89,7 +89,7 @@ interface TransactionDetailSegmentOneProp {
 }
 
 function TransactionDetailSegmentOne({
-  transactionID,
+  transactionId,
   tokenPrice,
   valuePrice,
   status,
@@ -102,9 +102,9 @@ function TransactionDetailSegmentOne({
   address,
   type,
 }: TransactionDetailSegmentOneProp) {
-  const [copyFromAddress, setCopyFromAddress] = useState(false);
-  const [copyToAddress, setCopyToAddress] = useState(false);
-  const [copyTransactionId, setCopyTransactionId] = useState(false);
+  const [isFromAddressCopied, setIsFromAddressCopied] = useState(false);
+  const [isToAddressCopied, setIsToAddressCopied] = useState(false);
+  const [isTransactionIdCopied, setIsTransationIdCopied] = useState(false);
 
   return (
     <div className="flex flex-col gap-y-10">
@@ -112,12 +112,12 @@ function TransactionDetailSegmentOne({
       <div className="flex flex-col lg:flex-row md:flex-row gap-y-[41.5px]">
         {/* 1st flex */}
         <div className="flex flex-col grow gap-y-2">
-          {copyTransactionId ? (
+          {isTransactionIdCopied ? (
             <div className="flex flex-row gap-x-2.5 items-center">
               <LinkText
                 testId="transaction-id-copied"
                 label={fixedTitle.copied}
-                href={`/address/${transactionID}`}
+                href={`/address/${transactionId}`}
               />
               <GreenTickIcon data-testid="transaction-id-copied-green-tick-icon" />
             </div>
@@ -125,13 +125,13 @@ function TransactionDetailSegmentOne({
             <div className="flex flex-row gap-x-2.5 items-center">
               <LinkText
                 testId="trasaction-id"
-                label={truncateTextFromMiddle(transactionID)}
-                href={`/address/${transactionID}`}
+                label={truncateTextFromMiddle(transactionId)}
+                href={`/address/${transactionId}`}
               />
               <FiCopy
                 data-testid="transaction-id-copy-icon"
                 onClick={() =>
-                  onCopyAddressIconClick(setCopyTransactionId, transactionID)
+                  onCopyAddressIconClick(setIsTransationIdCopied, transactionId)
                 }
                 className="text-white-50"
               />
@@ -278,7 +278,7 @@ function TransactionDetailSegmentOne({
                 {fixedTitle.from}
               </div>
               <div>
-                {copyFromAddress ? (
+                {isFromAddressCopied ? (
                   <div className="flex flex-row gap-x-2.5 items-center">
                     <LinkText
                       testId="transaction-details-from-copied"
@@ -296,7 +296,10 @@ function TransactionDetailSegmentOne({
                     />
                     <FiCopy
                       onClick={() =>
-                        onCopyAddressIconClick(setCopyFromAddress, address.from)
+                        onCopyAddressIconClick(
+                          setIsFromAddressCopied,
+                          address.from
+                        )
                       }
                       className="text-white-50 h-[22px]"
                     />
@@ -313,7 +316,7 @@ function TransactionDetailSegmentOne({
               >
                 {fixedTitle.to}
               </div>
-              {copyToAddress ? (
+              {isToAddressCopied ? (
                 <div className="flex flex-row gap-x-2.5 items-center">
                   <LinkText
                     testId="transaction-details-to-copied"
@@ -339,7 +342,7 @@ function TransactionDetailSegmentOne({
                   />
                   <FiCopy
                     onClick={() =>
-                      onCopyAddressIconClick(setCopyToAddress, address.to)
+                      onCopyAddressIconClick(setIsToAddressCopied, address.to)
                     }
                     className="text-white-50 h-[22px]"
                   />
@@ -383,8 +386,8 @@ function TransactionDetailSegmentTwo({
   hex,
 }: TransactionDetailSegmentTwoProps) {
   const [isRawInputExpanded, setIsRawInputExpanded] = useState(false);
-  const [copyFromAddress, setCopyFromAddress] = useState(false);
-  const [copyToAddress, setCopyToAddress] = useState(false);
+  const [isFromAddressCopied, setIsFromAddressCopied] = useState(false);
+  const [isToAddressCopied, setIsToAddressCopied] = useState(false);
 
   const onRawInputClick = () => {
     if (isRawInputExpanded === false) {
@@ -496,14 +499,14 @@ function TransactionDetailSegmentTwo({
                   {fixedTitle.from}
                 </div>
               </div>
-              {copyFromAddress ? (
+              {isFromAddressCopied ? (
                 <div
                   className={clsx(
                     "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[136px] w-auto",
-                    { "md:w-[155px] w-auto gap-x-0": copyFromAddress }
+                    { "md:w-[155px] w-auto gap-x-0": isFromAddressCopied }
                   )}
                 >
-                  <div className={clsx({ "mr-[10px]": copyFromAddress })}>
+                  <div className={clsx({ "mr-[10px]": isFromAddressCopied })}>
                     <LinkText
                       testId="transaction-token-transferred-from-copied"
                       label={fixedTitle.copied}
@@ -516,10 +519,10 @@ function TransactionDetailSegmentTwo({
                 <div
                   className={clsx(
                     "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-auto",
-                    { "md:w-[155px] w-auto gap-x-0": copyFromAddress }
+                    { "md:w-[155px] w-auto gap-x-0": isFromAddressCopied }
                   )}
                 >
-                  <div className={clsx({ "mr-[10px]": copyFromAddress })}>
+                  <div className={clsx({ "mr-[10px]": isFromAddressCopied })}>
                     <LinkText
                       testId="transaction-token-transferred-from"
                       label={truncateTextFromMiddle(from)}
@@ -529,7 +532,7 @@ function TransactionDetailSegmentTwo({
                   <FiCopy
                     data-testid="transaction-token-transferred-from-copy-icon"
                     onClick={() =>
-                      onCopyAddressIconClick(setCopyFromAddress, from)
+                      onCopyAddressIconClick(setIsFromAddressCopied, from)
                     }
                     className="text-white-50 h-[22px]"
                   />
@@ -541,14 +544,14 @@ function TransactionDetailSegmentTwo({
                 {fixedTitle.to}
               </div>
               <div>
-                {copyToAddress ? (
+                {isToAddressCopied ? (
                   <div
                     className={clsx(
                       "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[136px] w-auto",
-                      { "md:w-[155px] w-auto gap-x-0": copyToAddress }
+                      { "md:w-[155px] w-auto gap-x-0": isToAddressCopied }
                     )}
                   >
-                    <div className={clsx({ "mr-[10px]": copyToAddress })}>
+                    <div className={clsx({ "mr-[10px]": isToAddressCopied })}>
                       <LinkText
                         testId="transaction-token-transferred-to-copied"
                         label={fixedTitle.copied}
@@ -561,10 +564,10 @@ function TransactionDetailSegmentTwo({
                   <div
                     className={clsx(
                       "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-auto",
-                      { "md:w-[155px] w-auto gap-x-0": copyToAddress }
+                      { "md:w-[155px] w-auto gap-x-0": isToAddressCopied }
                     )}
                   >
-                    <div className={clsx({ "mr-[10px]": copyToAddress })}>
+                    <div className={clsx({ "mr-[10px]": isToAddressCopied })}>
                       <LinkText
                         testId="transaction-token-transferred-to"
                         label={truncateTextFromMiddle(to)}
@@ -574,7 +577,7 @@ function TransactionDetailSegmentTwo({
                     <FiCopy
                       data-testid="transaction-token-transferred-to-copy-icon"
                       onClick={() =>
-                        onCopyAddressIconClick(setCopyToAddress, to)
+                        onCopyAddressIconClick(setIsToAddressCopied, to)
                       }
                       className="text-white-50 h-[22px]"
                     />

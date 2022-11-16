@@ -1,17 +1,21 @@
 import BigNumber from "bignumber.js";
+import { TransactionType } from "mockdata/TransactionData";
+import { iconMapping as txnIconMapping } from "pages/transactions/_components/TransactionRow";
+import { IoCubeOutline } from "react-icons/io5";
 import { DMX_TOKEN_SYMBOL } from "shared/contants";
 import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import Button from "./commons/Button";
 import GradientCardContainer from "./commons/GradientCardContainer";
 import LinkText from "./commons/LinkText";
-import NumericFormat from "./commons/NumericFormat";
+import NumericFormat, { formatNumberValue } from "./commons/NumericFormat";
 
 type DataType = "blocks" | "transactions";
 
 export interface TxnWalletInfo {
   from: string;
   to: string;
+  transactionType: TransactionType;
 }
 
 export interface BlockInfo {
@@ -32,14 +36,14 @@ interface Props {
   title: string;
   data: RowData[];
   containerClass?: string;
-  amountPrefix?: string;
+  amountLabel?: string;
 }
 
 export default function LatestDataTable({
   type,
   title,
   data,
-  amountPrefix = "",
+  amountLabel = "",
   containerClass = "",
 }: Props): JSX.Element {
   return (
@@ -63,7 +67,7 @@ export default function LatestDataTable({
                   rowIndex={index}
                   type={type}
                   rowData={row}
-                  amountPrefix={amountPrefix}
+                  amountLabel={amountLabel}
                 />
               ))}
             </div>
@@ -87,16 +91,27 @@ export default function LatestDataTable({
 function RowItem({
   type,
   rowData,
-  amountPrefix,
+  amountLabel,
   rowIndex,
 }: {
   type: DataType;
   rowData: RowData;
-  amountPrefix: string;
+  amountLabel: string;
   rowIndex: number;
 }): JSX.Element {
   const { transactionId, tokenAmount, time, txnOrBlockInfo } = rowData;
   const detailsPageLink = `/${type}/${transactionId}`;
+
+  const iconMapping = {
+    ...txnIconMapping,
+    Block: IoCubeOutline,
+  };
+  const iconType =
+    type === "blocks"
+      ? "Block"
+      : (txnOrBlockInfo as TxnWalletInfo).transactionType;
+  const Icon = iconMapping[iconType];
+
   return (
     <div
       data-testid={`latest-${type}-row-${rowIndex}`}
@@ -108,12 +123,15 @@ function RowItem({
         }
         className="w-2/4 inline-flex items-center md:w-32 lg:w-36"
       >
+        <span className="mr-2">
+          <Icon size={24} className="text-white-50 stroke-white-50" />
+        </span>
         <LinkText
           testId={`details-page-link-${rowIndex}`}
           href={detailsPageLink}
           label={
             type === "blocks"
-              ? transactionId
+              ? `#${formatNumberValue({ value: transactionId })}`
               : truncateTextFromMiddle(transactionId, 5)
           }
         />
@@ -135,8 +153,8 @@ function RowItem({
         data-testid={`${type}-amount-${rowIndex}`}
         className="pt-5 pr-1 md:grow md:text-right md:p-0 lg:grow xl:w-2/5"
       >
-        {amountPrefix && (
-          <span className="text-white-700">{amountPrefix}&nbsp;</span>
+        {amountLabel && (
+          <span className="text-white-700">{amountLabel}&nbsp;</span>
         )}
         <NumericFormat
           thousandSeparator
@@ -156,13 +174,16 @@ function BlockInfoDisplay({
   block: string;
   blockInfo: BlockInfo;
 }): JSX.Element {
+  const formattedCount = formatNumberValue({
+    value: blockInfo.transactionsPerBlock,
+  });
   return (
     <>
       <div className="flex pt-5 md:pt-0">
         <LinkText
           testId={`block-details-link-${block}`}
           href={`/transactions?block=${block}`}
-          label={`${blockInfo.transactionsPerBlock} Transactions`}
+          label={`${formattedCount} Transactions`}
         />
       </div>
       <div className="flex pt-1.5 md:pt-2.5 lg:pt-0">
@@ -180,7 +201,7 @@ function TxnWalletInfoDisplay({
   return (
     <>
       <div className="flex pt-5 md:pt-0 lg:w-48">
-        <span className="pr-1">From: </span>
+        <span className="pr-1 lg:pr-2">From</span>
         <div className="w-4/5 lg:w-36">
           <LinkText
             testId={`from-address-link-${txnInfo.from}`}
@@ -190,7 +211,7 @@ function TxnWalletInfoDisplay({
         </div>
       </div>
       <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:w-48  xl:ml-11">
-        <span className="pr-1">To: </span>
+        <span className="pr-1 lg:pr-2">To</span>
         <div className="w-4/5 lg:w-36">
           <LinkText
             testId={`to-address-link-${txnInfo.to}`}

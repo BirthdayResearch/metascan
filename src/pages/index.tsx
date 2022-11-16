@@ -26,7 +26,7 @@ export default function Home() {
           type="blocks"
           title="Latest blocks"
           data={latestBlocks}
-          amountPrefix="Reward:"
+          amountLabel="Reward"
           containerClass="pt-5 md:pt-6 lg:pt-5"
         />
       </div>

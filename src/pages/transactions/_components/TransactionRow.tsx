@@ -14,7 +14,7 @@ import {
   TransactionType,
 } from "../../../mockdata/TransactionData";
 
-const iconMapping = {
+export const iconMapping = {
   [TransactionType.ContractCall]: FiFileText,
   [TransactionType.Transaction]: TransactionsIcon,
 };

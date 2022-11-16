@@ -40,7 +40,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
               containerClass="flex flex-col lg:flex-row ml-8 lg:ml-10 mt-2 lg:mt-3"
             />
           </div>
-          <div className="col-start-3 col-end-7 lg:col-start-4 lg:col-end-10 text-white-50">
+          <div className="col-start-3 col-end-7 lg:col-start-4 lg:col-end-10">
             <AmountComponent amount={data.amount} symbol={data.symbol} />
             <div className="grid grid-cols-4 lg:grid-cols-6 gap-5 mt-2 lg:mt-3">
               <TransactionLinkRow
@@ -57,7 +57,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
               />
             </div>
           </div>
-          <div className="col-start-7 col-end-9 lg:col-start-11 lg:col-end-13 text-white-50 justify-self-end">
+          <div className="col-start-7 col-end-9 lg:col-start-11 lg:col-end-13 justify-self-end">
             <StatusComponent status={data.status} />
             <div className="text-right mr-8 mt-2 lg:mt-3">
               <TimeComponent time={data.time} />

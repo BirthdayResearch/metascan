@@ -16,7 +16,7 @@ export default function BlockRow({ data }: { data: BlocksI }) {
           <div className="col-start-1 col-end-3">
             <BlockNumberComponent number={data.number} />
           </div>
-          <div className="col-start-3 col-end-7 lg:col-start-3 lg:col-end-9 text-white-50">
+          <div className="col-start-3 col-end-7 lg:col-start-3 lg:col-end-9">
             <div className="flex md:flex-col lg:flex-row">
               <RewardComponent
                 amount={data.extraData?.reward ?? "0"}
@@ -29,7 +29,7 @@ export default function BlockRow({ data }: { data: BlocksI }) {
               />
             </div>
           </div>
-          <div className="col-start-7 col-end-9 lg:col-start-9 lg:col-end-13 text-white-50">
+          <div className="col-start-7 col-end-9 lg:col-start-9 lg:col-end-13">
             <div className="flex flex-col lg:flex-row justify-between">
               <TxnCountComponent
                 count={data.transactions.length}

@@ -239,7 +239,7 @@ function TransactionDetailSegmentOne({
                   <LinkText
                     testId="transaction-block"
                     label={block}
-                    href={`/block/${block}`}
+                    href={`/blocks/${block}`}
                   />
                 </div>
               </div>

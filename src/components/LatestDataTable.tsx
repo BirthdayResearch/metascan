@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import { TransactionType } from "mockdata/TransactionData";
 import { iconMapping as txnIconMapping } from "pages/transactions/_components/TransactionRow";
-import { IoCubeOutline } from "react-icons/io5";
+import { FiBox } from "react-icons/fi";
 import { DMX_TOKEN_SYMBOL } from "shared/contants";
 import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
@@ -104,7 +104,7 @@ function RowItem({
 
   const iconMapping = {
     ...txnIconMapping,
-    Block: IoCubeOutline,
+    Block: FiBox,
   };
   const iconType =
     type === "blocks"
@@ -160,7 +160,7 @@ function RowItem({
         className="pt-5 pr-1 md:grow md:text-right md:p-0 lg:grow xl:w-2/5"
       >
         {amountLabel && (
-          <span className="text-white-700">{amountLabel}&nbsp;</span>
+          <span className="text-white-700 mr-1">{amountLabel}&nbsp;</span>
         )}
         <NumericFormat
           thousandSeparator
@@ -191,7 +191,7 @@ function BlockInfoDisplay({
             thousandSeparator
             value={blockInfo.transactionsPerBlock}
             decimalScale={0}
-            suffix=" Transactions"
+            suffix=" transactions"
           />
         </LinkText>
       </div>
@@ -210,7 +210,7 @@ function TxnWalletInfoDisplay({
   return (
     <>
       <div className="flex pt-5 md:pt-0 lg:w-48">
-        <span className="pr-1 lg:pr-2">From</span>
+        <span className="mr-1">From</span>
         <div className="w-4/5 lg:w-36">
           <LinkText
             testId={`from-address-link-${txnInfo.from}`}
@@ -220,7 +220,7 @@ function TxnWalletInfoDisplay({
         </div>
       </div>
       <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:w-48  xl:ml-11">
-        <span className="pr-1 lg:pr-2">To</span>
+        <span className="mr-1">To</span>
         <div className="w-4/5 lg:w-36">
           <LinkText
             testId={`to-address-link-${txnInfo.to}`}

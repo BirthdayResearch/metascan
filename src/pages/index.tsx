@@ -20,7 +20,7 @@ export default function Home() {
           type="transactions"
           title="Latest transactions"
           data={latestTransactions}
-          detailsPageBaseUrl="/txn"
+          detailsPageBaseUrl="/tx"
           containerClass="pt-8 md:pt-20"
         />
         <LatestDataTable

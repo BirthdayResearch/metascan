@@ -27,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: Deploy to netlify preview
-        id: deploy-netlify
+        id: deploy_netlify
         uses: South-Paw/action-netlify-cli@4fe22a64050cb7ef7cfb1a2ff896e6b002d0a822
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -38,7 +38,7 @@ jobs:
       - name: Wait For HTTP Responses
         uses: cygnetdigital/wait_for_response@9d8fb6868dc2cb9ed88a6ea28100b830a838d003
         with:
-          url: ${{ steps.deploy-netlify.outputs.NETLIFY_URL }}
+          url: ${{ steps.deploy_netlify.outputs.NETLIFY_URL }}
           responseCode: '200'
           timeout: 2000 # retry for at most 4 times
           interval: 500

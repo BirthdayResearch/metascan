@@ -151,7 +151,7 @@ async function getSearchResults(query): Promise<SearchResult[]> {
     {
       title: query,
       type: "Transaction",
-      url: `/tx/${query}`,
+      url: `/txs/${query}`,
     },
     {
       title: query,

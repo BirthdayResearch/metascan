@@ -15,6 +15,7 @@ import { RejectedCross } from "@components/icons/RejectedCross";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { useRouter } from "next/router";
+import { secondsToDhmsDisplay } from "shared/durationHelper";
 
 const data = transactionDetailData.transactionDetailData;
 
@@ -213,7 +214,7 @@ function TransactionDetailSegmentOne({
             data-testid="transaction-timestamp"
             className="text-white-700 tracking-[0.01em] h-[22px] leading-[22.4px]"
           >
-            {timestamp} seconds ago
+            {secondsToDhmsDisplay(Number(timestamp))} ago
           </div>
         </div>
       </div>
@@ -426,11 +427,7 @@ function TransactionDetailSegmentTwo({
   const windowDimension = useWindowDimensions().width;
 
   const onRawInputClick = () => {
-    if (!isRawInputExpanded) {
-      setIsRawInputExpanded(true);
-    } else {
-      setIsRawInputExpanded(false);
-    }
+    setIsRawInputExpanded(!isRawInputExpanded);
   };
 
   return (
@@ -734,6 +731,12 @@ function BoldedTitle({ title, testId, className }: BoldedTitleProps) {
       {title}
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  return {
+    props: {}, // will be passed to the page component as props
+  };
 }
 
 const fixedTitle = {

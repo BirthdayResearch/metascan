@@ -59,14 +59,14 @@ export function Header(): JSX.Element {
               />
             </div>
           </Link>
-          <div className="hidden lg:flex">
+          <div className="hidden xl:flex">
             <DesktopNavbar />
           </div>
           <div className="flex">
-            <div className="hidden lg:flex">
+            <div className="hidden xl:flex">
               <HeaderNetworkMenu />
             </div>
-            <div className="lg:hidden">
+            <div className="xl:hidden">
               <div className="mr-1.5 md:mr-0">
                 <FiMenu
                   className="w-6 h-6 stroke-white-50"

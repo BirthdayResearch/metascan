@@ -26,7 +26,7 @@ function Transaction() {
     <div>
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
-        <div className="p-5 pt-8 md:p-10 md:pb-[52px] pb-11">
+        <div className="p-5 pt-8 pb-8 md:p-10">
           <div
             className="flex flex-row lg:mb-8 md:mb-6 mb-6"
             data-testid="transaction-details-title"
@@ -661,9 +661,10 @@ function TransactionDetailSegmentTwo({
           title={fixedTitle.rawInput}
         />
         <div
-          className={clsx("flex flex-row items-center", {
-            "mb-[14px]": isRawInputExpanded,
-          })}
+          className={clsx(
+            "flex flex-row items-center lg:mb-[14px] md:mb-3 mb-1",
+            { "mb-3": isRawInputExpanded }
+          )}
         >
           <div
             data-testid="transaction-hex-title"
@@ -682,7 +683,7 @@ function TransactionDetailSegmentTwo({
             onKeyDown={onRawInputClick}
             onClick={onRawInputClick}
           >
-            {isRawInputExpanded === true ? (
+            {isRawInputExpanded ? (
               <FiChevronDown size={24} className="text-white-700" />
             ) : (
               <FiChevronUp size={24} className="text-white-700" />
@@ -690,7 +691,7 @@ function TransactionDetailSegmentTwo({
           </div>
         </div>
 
-        {isRawInputExpanded === true && (
+        {isRawInputExpanded && (
           <div
             data-testid="transaction-hex"
             className="font-space-mono tracking-[-0.04em] break-all lg:py-6 md:py-6 py-4 lg:px-10 md:px-8 px-4 border-[1px] border-black-600 rounded-lg text-white-50 text-xs"

@@ -1,0 +1,53 @@
+name: CI - Deploy Preview
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
+
+      - name: Setup node
+        uses: actions/setup-node@6bc15ab23c9584a6fe2fdf1ae07fd5fb409d1dbc
+        with:
+          node-version: 16
+
+      - name: Install package
+        run: npm ci
+
+      - name: Deploy to netlify preview
+        id: deploy_netlify
+        uses: South-Paw/action-netlify-cli@4fe22a64050cb7ef7cfb1a2ff896e6b002d0a822
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --json --build --context deploy-preview
+
+      - name: Wait For HTTP Responses
+        uses: cygnetdigital/wait_for_response@9d8fb6868dc2cb9ed88a6ea28100b830a838d003
+        with:
+          url: ${{ steps.deploy_netlify.outputs.NETLIFY_URL }}
+          responseCode: '200'
+          timeout: 2000 # retry for at most 4 times
+          interval: 500
+
+      - name: Netlify Preview URL
+        uses: unsplash/comment-on-pr@bc79160dfc20ea0f151d47803638dc520190c815
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OUTPUT: "This pull request is being automatically deployed to Netlify.\n\n🔍 Inspect: ${{ steps.deploy-netlify.outputs.NETLIFY_LOGS_URL }}\n✅ Preview: ${{ steps.deploy-netlify.outputs.NETLIFY_URL }}"
+        with:
+          msg: ${{ env.OUTPUT }}
+          check_for_duplicate_msg: true

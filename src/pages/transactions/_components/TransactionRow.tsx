@@ -67,7 +67,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
       </div>
 
       {/* For mobile */}
-      <div className="md:hidden py-6 mt-2">
+      <div className="md:hidden py-6">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
             <Icon size={24} className="text-white-50 stroke-white-50" />

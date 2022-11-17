@@ -45,7 +45,7 @@ export default function BlockRow({ data }: { data: BlocksI }) {
       </div>
 
       {/* For mobile */}
-      <div className="md:hidden py-6 mt-2">
+      <div className="md:hidden py-6">
         <BlockNumberComponent number={data.number} />
         <div className="ml-8">
           <RewardComponent
@@ -122,7 +122,7 @@ function RecipientComponent({
       <LinkText
         testId={`from-address-link-${value}`}
         href={`/address/${value}`}
-        label={truncateTextFromMiddle(value)}
+        label={truncateTextFromMiddle(value, 4)}
       />
     </div>
   );

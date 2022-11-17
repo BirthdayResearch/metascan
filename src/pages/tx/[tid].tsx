@@ -694,7 +694,7 @@ function TransactionDetailSegmentTwo({
         {isRawInputExpanded && (
           <div
             data-testid="transaction-hex"
-            className="font-space-mono tracking-[-0.04em] break-all lg:py-6 md:py-6 py-4 lg:px-10 md:px-8 px-4 border-[1px] border-black-600 rounded-lg text-white-50 text-xs"
+            className="font-space-mono tracking-[-0.04em] break-all lg:py-6 md:py-5 py-4 lg:px-10 md:px-8 px-4 border-[1px] border-black-600 rounded-lg text-white-50 text-xs"
           >
             {hex}
           </div>

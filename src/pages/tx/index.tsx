@@ -17,7 +17,7 @@ export default function Transactions({ data }) {
             </span>
             <CursorPagination
               pages={data.pages}
-              path="/transactions"
+              path="/tx"
               className="justify-end mt-5 md:mt-0"
             />
           </div>
@@ -26,7 +26,7 @@ export default function Transactions({ data }) {
           ))}
           <CursorPagination
             pages={data.pages}
-            path="/transactions"
+            path="/tx"
             className="flex w-full md:justify-end mt-12 md:mt-10"
           />
         </div>

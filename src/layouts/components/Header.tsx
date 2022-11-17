@@ -19,7 +19,7 @@ const MenuItems = [
   },
   {
     label: "Transactions",
-    pathname: "/transactions",
+    pathname: "/tx",
     testId: "Desktop.HeaderLink.Transactions",
     imagePath: "/menu/Transactions.svg",
   },

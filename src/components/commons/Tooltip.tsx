@@ -1,9 +1,9 @@
 import React from "react";
 
-export type TooltipProps = {
+interface TooltipProps {
   text: string;
   children?: JSX.Element;
-};
+}
 
 export default function Tooltip({ text, children }: TooltipProps) {
   return (

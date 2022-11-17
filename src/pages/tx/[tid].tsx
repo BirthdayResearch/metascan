@@ -14,10 +14,14 @@ import { ConfirmCheck } from "@components/icons/ConfirmCheck";
 import { RejectedCross } from "@components/icons/RejectedCross";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import useWindowDimensions from "hooks/useWindowDimensions";
+import { useRouter } from "next/router";
 
 const data = transactionDetailData.transactionDetailData;
 
 function Transaction() {
+  const router = useRouter();
+  const tid = router.query.tid?.toString()!;
+
   return (
     <div>
       <SearchBar containerClass="mt-1 mb-6" />
@@ -27,12 +31,13 @@ function Transaction() {
             className="flex flex-row lg:mb-8 md:mb-6 mb-6"
             data-testid="transaction-details-title"
           >
-            <span className="font-bold text-2xl text-white-50">
-              {fixedTitle.transactionDetails}
-            </span>
+            <BoldedTitle
+              className="text-2xl"
+              title={fixedTitle.transactionDetails}
+            />
           </div>
           <TransactionDetailSegmentOne
-            transactionId={data.transactions.transactionId}
+            transactionId={tid}
             tokenPrice={data.transactions.tokenPrice}
             valuePrice={data.transactions.valuePrice}
             status={data.transactions.status}
@@ -114,23 +119,25 @@ function TransactionDetailSegmentOne({
         {/* 1st flex */}
         <div className="flex flex-col grow">
           {isTransactionIdCopied ? (
-            <div className="flex flex-row gap-x-2.5 items-center mb-2">
+            <div className="flex flex-row gap-x-2.5 items-center mb-2 h-[22px]">
               <LinkText
                 testId="transaction-id-copied"
                 label={fixedTitle.copied}
                 href={`/address/${transactionId}`}
+                customStyle="tracking-[0.01em] leading-[22.4px]"
               />
               <GreenTickIcon data-testid="transaction-id-copied-green-tick-icon" />
             </div>
           ) : (
-            <div className="flex flex-row gap-x-2.5 items-center mb-2">
+            <div className="flex flex-row gap-x-2.5 items-center mb-2 h-[22px]">
               <LinkText
                 testId="trasaction-id"
                 label={truncateTextFromMiddle(transactionId, 11)}
                 href={`/address/${transactionId}`}
-                customStyle="tracking-[0.01em]"
+                customStyle="tracking-[0.01em] leading-[22.4px]"
               />
               <FiCopy
+                role="button"
                 data-testid="transaction-id-copy-icon"
                 onClick={() =>
                   onCopyAddressIconClick(setIsTransationIdCopied, transactionId)
@@ -140,21 +147,23 @@ function TransactionDetailSegmentOne({
             </div>
           )}
 
-          <NumericFormat
-            data-testid="transaction-token-price"
-            className="text-white-50 lg:text-[32px] md:text-2xl text-xl font-bold mb-1"
-            value={
-              type === "tokenized" || type === "contract"
-                ? tokenPrice.value
-                : "0"
-            }
-            decimalScale={type === "tokenized" || type === "contract" ? 8 : 2}
-            suffix={` ${tokenPrice.symbol}`}
-          />
+          <div className="lg:h-[42px] md:h-[31px] h-[26px] align-middle mb-1">
+            <NumericFormat
+              data-testid="transaction-token-price"
+              className="text-white-50 lg:text-[32px] md:text-2xl text-xl font-bold lg:leading-[41.6px] md:leading-[31.2px] leading-[26px]"
+              value={
+                type === "tokenized" || type === "contract"
+                  ? tokenPrice.value
+                  : "0"
+              }
+              decimalScale={type === "tokenized" || type === "contract" ? 8 : 2}
+              suffix={` ${tokenPrice.symbol}`}
+            />
+          </div>
 
           <NumericFormat
             data-testid="transaction-value-price"
-            className="text-white-700 tracking-[0.01em]"
+            className="text-white-700 tracking-[0.01em] h-[22px] leading-[22.4px]"
             thousandSeparator
             value={
               type === "tokenized" || type === "contract" ? valuePrice : "0"
@@ -166,27 +175,27 @@ function TransactionDetailSegmentOne({
         {/* 2nd flex */}
         <div className="flex flex-col lg:items-end md:items-end items-start">
           {status.toLowerCase() === "confirmed" ? (
-            <div className="flex flex-row">
+            <div className="flex flex-row items-center lg:mb-[23px] md:mb-[14px] mb-[5.5px] ">
               <div
                 data-testid="transaction-confirm-status"
-                className="text-green-800 font-bold lg:mb-[23px] md:mb-[14px] mb-[5.5px] lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px]"
+                className="text-green-800 font-bold lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px] leading-[20.8px] h-[21px]"
               >
                 {status}
               </div>
               <ConfirmCheck />
             </div>
           ) : (
-            <div className="flex flex-row">
+            <div className="flex flex-row lg:mb-[23px] md:mb-[14px] mb-[5.5px] ">
               <div
                 data-testid="transaction-revert-status"
-                className="text-red-800 font-bold lg:mb-[23px] md:mb-[14px] mb-[5.5px]  lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px]"
+                className="text-red-800 font-bold lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px] leading-[20.8px] h-[21px]"
               >
                 {status}
               </div>
               <RejectedCross />
             </div>
           )}
-          <div className="flex flex-row items-center lg:mb-2 md:mb-1 mb-1">
+          <div className="flex flex-row items-center mb-1 h-[22px]">
             <div className="lg:order-first md:order-first order-last">
               <Tooltip text={`Confirmed by ${blockNumber} blocks`}>
                 <InfoIcon className="lg:mr-[8.67px] md:mr-[8.67px] ml-[9.33px]" />
@@ -194,7 +203,7 @@ function TransactionDetailSegmentOne({
             </div>
             <div
               data-testid="transaction-confirmed-blocks"
-              className="text-white-700 tracking-[0.01em]"
+              className="text-white-700 tracking-[0.01em] leading-[22.4px]"
             >
               Confirmed by {blockNumber} blocks
             </div>
@@ -202,7 +211,7 @@ function TransactionDetailSegmentOne({
 
           <div
             data-testid="transaction-timestamp"
-            className="text-white-700 tracking-[0.01em]"
+            className="text-white-700 tracking-[0.01em] h-[22px] leading-[22.4px]"
           >
             {timestamp} seconds ago
           </div>
@@ -316,6 +325,7 @@ function TransactionDetailSegmentOne({
                       href={`/address/${address.from}`}
                     />
                     <FiCopy
+                      role="button"
                       onClick={() =>
                         onCopyAddressIconClick(
                           setIsFromAddressCopied,
@@ -365,6 +375,7 @@ function TransactionDetailSegmentOne({
                     href={`/address/${address.to}`}
                   />
                   <FiCopy
+                    role="button"
                     onClick={() =>
                       onCopyAddressIconClick(setIsToAddressCopied, address.to)
                     }
@@ -415,7 +426,7 @@ function TransactionDetailSegmentTwo({
   const windowDimension = useWindowDimensions().width;
 
   const onRawInputClick = () => {
-    if (isRawInputExpanded === false) {
+    if (!isRawInputExpanded) {
       setIsRawInputExpanded(true);
     } else {
       setIsRawInputExpanded(false);
@@ -431,12 +442,10 @@ function TransactionDetailSegmentTwo({
         )}
       >
         <div className="flex flex-col gap-y-6 lg:w-1/2 md:w-1/2">
-          <div
-            data-testid="transaction-gas-detail-title"
-            className="text-white-50"
-          >
-            {fixedTitle.gasDetail}
-          </div>
+          <BoldedTitle
+            title={fixedTitle.gasDetail}
+            testId="transaction-gas-detail-title"
+          />
           <div className="flex flex-row">
             <div className="grow">
               <div
@@ -509,12 +518,10 @@ function TransactionDetailSegmentTwo({
         </div>
         {type === "tokenized" && (
           <div className="flex flex-col gap-y-6 lg:w-1/2 md:w-1/2">
-            <div
-              data-testid="transaction-token-transferred-title"
-              className="text-white-50"
-            >
-              {fixedTitle.tokenTransferred}
-            </div>
+            <BoldedTitle
+              title={fixedTitle.tokenTransferred}
+              testId="transaction-token-transferred-title"
+            />
             <div className="flex flex-row">
               <div className="grow">
                 <div
@@ -559,6 +566,7 @@ function TransactionDetailSegmentTwo({
                     />
                   </div>
                   <FiCopy
+                    role="button"
                     data-testid="transaction-token-transferred-from-copy-icon"
                     onClick={() =>
                       onCopyAddressIconClick(setIsFromAddressCopied, from)
@@ -612,6 +620,7 @@ function TransactionDetailSegmentTwo({
                       />
                     </div>
                     <FiCopy
+                      role="button"
                       data-testid="transaction-token-transferred-to-copy-icon"
                       onClick={() =>
                         onCopyAddressIconClick(setIsToAddressCopied, to)
@@ -646,12 +655,11 @@ function TransactionDetailSegmentTwo({
         )}
       </div>
       <div>
-        <div
-          data-testid="transaction-raw-input-title"
-          className="text-white-50 lg:pt-14 md:pt-14 pt-16 pb-6"
-        >
-          {fixedTitle.rawInput}
-        </div>
+        <BoldedTitle
+          className="lg:pt-14 md:pt-14 pt-16 pb-6"
+          testId="transaction-raw-input-title"
+          title={fixedTitle.rawInput}
+        />
         <div
           className={clsx("flex flex-row items-center", {
             "mb-[14px]": isRawInputExpanded,
@@ -675,9 +683,9 @@ function TransactionDetailSegmentTwo({
             onClick={onRawInputClick}
           >
             {isRawInputExpanded === true ? (
-              <FiChevronDown className="text-white-700" />
+              <FiChevronDown size={24} className="text-white-700" />
             ) : (
-              <FiChevronUp className="text-white-700" />
+              <FiChevronUp size={24} className="text-white-700" />
             )}
           </div>
         </div>
@@ -709,6 +717,23 @@ const onCopyAddressIconClick = async (
   await sleep(2000);
   onTextClick(false);
 };
+
+interface BoldedTitleProps {
+  title: string;
+  testId?: string;
+  className?: string;
+}
+
+function BoldedTitle({ title, testId, className }: BoldedTitleProps) {
+  return (
+    <div
+      data-testid={testId}
+      className={clsx("text-white-50 font-bold", className)}
+    >
+      {title}
+    </div>
+  );
+}
 
 const fixedTitle = {
   transactionFee: "Transaction fee",

@@ -24,7 +24,7 @@ interface Props {
   pages: any;
 }
 
-export default function Blocks({ block, ...data }: Props) {
+export default function Block({ block, ...data }: Props) {
   const router = useRouter();
   const blockNumber = new BigNumber(router.query.id as string);
   const prevBlockNumber = blockNumber.minus(1);
@@ -52,7 +52,7 @@ export default function Blocks({ block, ...data }: Props) {
             <div className="flex items-center">
               <LinkTextWithIcon
                 testId="prev-block-link"
-                href={`/blocks/${prevBlockNumber}`}
+                href={`/block/${prevBlockNumber}`}
                 label="Previous block"
                 customStyle="text-xs"
                 icon={{ Icon: FiArrowLeft, pos: "left", iconStyle: "pr-2" }}
@@ -61,7 +61,7 @@ export default function Blocks({ block, ...data }: Props) {
             <div className="flex items-center">
               <LinkTextWithIcon
                 testId="next-block-link"
-                href={`/blocks/${nextBlockNumber}`}
+                href={`/block/${nextBlockNumber}`}
                 label="Next block"
                 customStyle="text-xs"
                 icon={{ Icon: FiArrowRight, pos: "right", iconStyle: "pl-2" }}

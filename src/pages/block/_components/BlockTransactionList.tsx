@@ -29,7 +29,7 @@ export default function BlockTransactionList({
           </h2>
           <CursorPagination
             pages={pages}
-            path={`/blocks/${blockNumber}`}
+            path={`/block/${blockNumber}`}
             className="justify-end mt-5 md:mt-0"
           />
         </div>
@@ -38,7 +38,7 @@ export default function BlockTransactionList({
         ))}
         <CursorPagination
           pages={pages}
-          path={`/blocks/${blockNumber}`}
+          path={`/block/${blockNumber}`}
           className="flex w-full md:justify-end mt-12 md:mt-10"
         />
       </div>

@@ -1,6 +1,6 @@
 import { padStart } from "lodash";
 
-function secondsToTime(s: number): {
+function secondsToTime(value: number): {
   y: number;
   m: number;
   d: number;
@@ -14,13 +14,25 @@ function secondsToTime(s: number): {
   const dInSec = hInSec * 24; // 86400 sec per day
   const mInSec = dInSec * 30.4167; // 2628002.88 sec per day, considering 30.4167 avg days in a month
   const yInSec = mInSec * 12; // 31536034.56 sec per year
+  let remainingTime = value;
+  const y = Math.floor(remainingTime / yInSec);
+  remainingTime -= y * yInSec;
+  const m = Math.floor(remainingTime / mInSec);
+  remainingTime -= m * mInSec;
+  const d = Math.floor(remainingTime / dInSec);
+  remainingTime -= d * dInSec;
+  const h = Math.floor(remainingTime / hInSec);
+  remainingTime -= h * hInSec;
+  const min = Math.floor(remainingTime / minInSec);
+  remainingTime -= min * minInSec;
+  const s = Math.floor(remainingTime);
   return {
-    y: Math.floor(s / yInSec),
-    m: Math.floor((s % yInSec) / mInSec),
-    d: Math.floor((s % mInSec) / dInSec),
-    h: Math.floor((s % dInSec) / hInSec),
-    min: Math.floor((s % hInSec) / minInSec),
-    s: s % 60,
+    y,
+    m,
+    d,
+    h,
+    min,
+    s,
   };
 }
 

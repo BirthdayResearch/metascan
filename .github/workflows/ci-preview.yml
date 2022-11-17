@@ -21,7 +21,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@6bc15ab23c9584a6fe2fdf1ae07fd5fb409d1dbc
         with:
-          node-version: 16
+          node-version: 14
 
       - name: Install package
         run: npm ci

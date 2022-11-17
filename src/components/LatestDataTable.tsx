@@ -35,6 +35,7 @@ interface Props {
   type: DataType;
   title: string;
   data: RowData[];
+  detailsPageBaseUrl: string;
   containerClass?: string;
   amountLabel?: string;
 }
@@ -43,6 +44,7 @@ export default function LatestDataTable({
   type,
   title,
   data,
+  detailsPageBaseUrl = "",
   amountLabel = "",
   containerClass = "",
 }: Props): JSX.Element {
@@ -68,6 +70,7 @@ export default function LatestDataTable({
                   type={type}
                   rowData={row}
                   amountLabel={amountLabel}
+                  detailsPageBaseUrl={detailsPageBaseUrl}
                 />
               ))}
             </div>
@@ -92,15 +95,17 @@ function RowItem({
   type,
   rowData,
   amountLabel,
+  detailsPageBaseUrl,
   rowIndex,
 }: {
   type: DataType;
   rowData: RowData;
   amountLabel: string;
+  detailsPageBaseUrl: string;
   rowIndex: number;
 }): JSX.Element {
   const { transactionId, tokenAmount, time, txnOrBlockInfo } = rowData;
-  const detailsPageLink = `/${type}/${transactionId}`;
+  const detailsPageLink = `${detailsPageBaseUrl}/${transactionId}`;
 
   const iconMapping = {
     ...txnIconMapping,

@@ -1,4 +1,3 @@
-import Container from "@components/commons/Container";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { FiCopy, FiChevronUp, FiChevronDown } from "react-icons/fi";
 import NumericFormat from "@components/commons/NumericFormat";
@@ -14,17 +13,18 @@ import clsx from "clsx";
 import { ConfirmCheck } from "@components/icons/ConfirmCheck";
 import { RejectedCross } from "@components/icons/RejectedCross";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
+import useWindowDimensions from "hooks/useWindowDimensions";
 
 const data = transactionDetailData.transactionDetailData;
 
 function Transaction() {
   return (
-    <Container className="px-1 md:px-0 mt-12">
+    <div>
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
-        <div className="lg:p-10 md:p-10 p-5">
+        <div className="p-5 pt-8 md:p-10 md:pb-[52px] pb-11">
           <div
-            className="flex flex-row py-4 mb-6"
+            className="flex flex-row lg:mb-8 md:mb-6 mb-6"
             data-testid="transaction-details-title"
           >
             <span className="font-bold text-2xl text-white-50">
@@ -45,7 +45,7 @@ function Transaction() {
             address={data.transactions.address}
             type={data.type}
           />
-          <div className="border-[1px] border-black-600 lg:my-11 md:mt-9 md:mb-11 mt-10 mb-[52px]" />
+          <div className="border-b border-black-600 lg:my-11 md:mt-9 md:mb-11 mt-10 mb-[52px]" />
           <TransactionDetailSegmentTwo
             gasPrice={data.transactions.gasPrice}
             gasLimit={data.gasLimit}
@@ -59,7 +59,7 @@ function Transaction() {
           />
         </div>
       </GradientCardContainer>
-    </Container>
+    </div>
   );
 }
 
@@ -105,15 +105,16 @@ function TransactionDetailSegmentOne({
   const [isFromAddressCopied, setIsFromAddressCopied] = useState(false);
   const [isToAddressCopied, setIsToAddressCopied] = useState(false);
   const [isTransactionIdCopied, setIsTransationIdCopied] = useState(false);
+  const windowDimension = useWindowDimensions().width;
 
   return (
     <div className="flex flex-col gap-y-10">
       {/* first row */}
       <div className="flex flex-col lg:flex-row md:flex-row gap-y-[41.5px]">
         {/* 1st flex */}
-        <div className="flex flex-col grow gap-y-2">
+        <div className="flex flex-col grow">
           {isTransactionIdCopied ? (
-            <div className="flex flex-row gap-x-2.5 items-center">
+            <div className="flex flex-row gap-x-2.5 items-center mb-2">
               <LinkText
                 testId="transaction-id-copied"
                 label={fixedTitle.copied}
@@ -122,11 +123,12 @@ function TransactionDetailSegmentOne({
               <GreenTickIcon data-testid="transaction-id-copied-green-tick-icon" />
             </div>
           ) : (
-            <div className="flex flex-row gap-x-2.5 items-center">
+            <div className="flex flex-row gap-x-2.5 items-center mb-2">
               <LinkText
                 testId="trasaction-id"
-                label={truncateTextFromMiddle(transactionId)}
+                label={truncateTextFromMiddle(transactionId, 11)}
                 href={`/address/${transactionId}`}
+                customStyle="tracking-[0.01em]"
               />
               <FiCopy
                 data-testid="transaction-id-copy-icon"
@@ -140,7 +142,7 @@ function TransactionDetailSegmentOne({
 
           <NumericFormat
             data-testid="transaction-token-price"
-            className="text-white-50 lg:text-[32px] md:text-2xl text-xl"
+            className="text-white-50 lg:text-[32px] md:text-2xl text-xl font-bold mb-1"
             value={
               type === "tokenized" || type === "contract"
                 ? tokenPrice.value
@@ -152,7 +154,7 @@ function TransactionDetailSegmentOne({
 
           <NumericFormat
             data-testid="transaction-value-price"
-            className="text-white-700"
+            className="text-white-700 tracking-[0.01em]"
             thousandSeparator
             value={
               type === "tokenized" || type === "contract" ? valuePrice : "0"
@@ -167,7 +169,7 @@ function TransactionDetailSegmentOne({
             <div className="flex flex-row">
               <div
                 data-testid="transaction-confirm-status"
-                className="text-green-800 lg:mb-[23px] md:mb-[14px] mb-[5.5px] lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px]"
+                className="text-green-800 font-bold lg:mb-[23px] md:mb-[14px] mb-[5.5px] lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px]"
               >
                 {status}
               </div>
@@ -177,7 +179,7 @@ function TransactionDetailSegmentOne({
             <div className="flex flex-row">
               <div
                 data-testid="transaction-revert-status"
-                className="text-red-800 lg:mb-[23px] md:mb-[14px] mb-[5.5px]  lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px]"
+                className="text-red-800 font-bold lg:mb-[23px] md:mb-[14px] mb-[5.5px]  lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px]"
               >
                 {status}
               </div>
@@ -192,13 +194,16 @@ function TransactionDetailSegmentOne({
             </div>
             <div
               data-testid="transaction-confirmed-blocks"
-              className="text-white-700"
+              className="text-white-700 tracking-[0.01em]"
             >
               Confirmed by {blockNumber} blocks
             </div>
           </div>
 
-          <div data-testid="transaction-timestamp" className="text-white-700">
+          <div
+            data-testid="transaction-timestamp"
+            className="text-white-700 tracking-[0.01em]"
+          >
             {timestamp} seconds ago
           </div>
         </div>
@@ -211,14 +216,14 @@ function TransactionDetailSegmentOne({
               <div className="flex flex-col gap-y-1">
                 <div
                   data-testid="transaction-fee-title"
-                  className="text-white-700"
+                  className="text-white-700 tracking-[0.01em]"
                 >
                   {fixedTitle.transactionFee}
                 </div>
                 <div>
                   <NumericFormat
                     data-testid="transaction-fee"
-                    className="text-white-50"
+                    className="text-white-50 tracking-[0.01em]"
                     thousandSeparator
                     value={transactionFee.value}
                     decimalScale={8}
@@ -231,12 +236,13 @@ function TransactionDetailSegmentOne({
               <div className="flex flex-col gap-y-1">
                 <div
                   data-testid="transaction-block-title"
-                  className="text-white-700"
+                  className="text-white-700 tracking-[0.01em]"
                 >
                   {fixedTitle.block}
                 </div>
                 <div className="flex flex-row gap-x-2.5 items-center">
                   <LinkText
+                    customStyle="tracking-[0.01em]"
                     testId="transaction-block"
                     label={block}
                     href={`/blocks/${block}`}
@@ -248,11 +254,14 @@ function TransactionDetailSegmentOne({
               <div className="flex flex-col gap-y-1">
                 <div
                   data-testid="transaction-type-title"
-                  className="text-white-700"
+                  className="text-white-700 tracking-[0.01em]"
                 >
                   {fixedTitle.trasactionType}
                 </div>
-                <div data-testid="transaction-type" className="text-white-50">
+                <div
+                  data-testid="transaction-type"
+                  className="text-white-50 tracking-[0.01em]"
+                >
                   {transactionType}
                 </div>
               </div>
@@ -262,11 +271,14 @@ function TransactionDetailSegmentOne({
             <div className="flex flex-col gap-y-1">
               <div
                 data-testid="transaction-nonce-title"
-                className="text-white-700"
+                className="text-white-700 tracking-[0.01em]"
               >
                 {fixedTitle.nonce}
               </div>
-              <div data-testid="transaction-nonce" className="text-white-50">
+              <div
+                data-testid="transaction-nonce"
+                className="text-white-50 tracking-[0.01em]"
+              >
                 {nonce}
               </div>
             </div>
@@ -277,7 +289,7 @@ function TransactionDetailSegmentOne({
             <div className="flex flex-col gap-y-1">
               <div
                 data-testid="transaction-details-from-title"
-                className="text-white-700"
+                className="text-white-700 tracking-[0.01em]"
               >
                 {fixedTitle.from}
               </div>
@@ -285,6 +297,7 @@ function TransactionDetailSegmentOne({
                 {isFromAddressCopied ? (
                   <div className="flex flex-row gap-x-2.5 items-center">
                     <LinkText
+                      customStyle="tracking-[0.01em]"
                       testId="transaction-details-from-copied"
                       label={fixedTitle.copied}
                       href={`/address/${address.from}`}
@@ -294,8 +307,12 @@ function TransactionDetailSegmentOne({
                 ) : (
                   <div className="flex flex-row gap-x-2.5 items-center">
                     <LinkText
+                      customStyle="tracking-[0.01em]"
                       testId="transaction-details-from"
-                      label={truncateTextFromMiddle(address.from)}
+                      label={truncateTextFromMiddle(
+                        address.from,
+                        windowDimension >= 900 ? 5 : 11
+                      )}
                       href={`/address/${address.from}`}
                     />
                     <FiCopy
@@ -316,7 +333,7 @@ function TransactionDetailSegmentOne({
             <div className="flex flex-col gap-y-1">
               <div
                 data-testid="transaction-details-to-title"
-                className="text-white-700"
+                className="text-white-700 tracking-[0.01em]"
               >
                 {fixedTitle.to}
               </div>
@@ -341,7 +358,10 @@ function TransactionDetailSegmentOne({
                   )}
                   <LinkText
                     testId="transaction-details-to"
-                    label={truncateTextFromMiddle(address.to)}
+                    label={truncateTextFromMiddle(
+                      address.to,
+                      windowDimension >= 900 ? 5 : 11
+                    )}
                     href={`/address/${address.to}`}
                   />
                   <FiCopy
@@ -392,6 +412,7 @@ function TransactionDetailSegmentTwo({
   const [isRawInputExpanded, setIsRawInputExpanded] = useState(false);
   const [isFromAddressCopied, setIsFromAddressCopied] = useState(false);
   const [isToAddressCopied, setIsToAddressCopied] = useState(false);
+  const windowDimension = useWindowDimensions().width;
 
   const onRawInputClick = () => {
     if (isRawInputExpanded === false) {
@@ -420,7 +441,7 @@ function TransactionDetailSegmentTwo({
             <div className="grow">
               <div
                 data-testid="transaction-gas-price-title"
-                className="text-white-700 w-[101px]"
+                className="text-white-700 w-[101px] tracking-[0.01em]"
               >
                 {fixedTitle.gasPrice}
               </div>
@@ -428,7 +449,7 @@ function TransactionDetailSegmentTwo({
             <div className="flex lg:text-left md:text-left text-right">
               <NumericFormat
                 data-testid="transaction-gas-price"
-                className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]"
+                className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px] tracking-[0.01em]"
                 thousandSeparator
                 value={gasPrice.value}
                 decimalScale={8}
@@ -440,7 +461,7 @@ function TransactionDetailSegmentTwo({
             <div className="flex flex-row items-center grow">
               <div
                 data-testid="transaction-gas-limit-title"
-                className="text-white-700 w-[67px]"
+                className="text-white-700 w-[67px] tracking-[0.01em]"
               >
                 {fixedTitle.gasLimit}
               </div>
@@ -453,7 +474,7 @@ function TransactionDetailSegmentTwo({
             </div>
 
             <div className="flex lg:text-left md:text-left text-right">
-              <div className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]">
+              <div className="text-white-50 tracking-[0.01em] whitespace-normal lg:w-[247px] md:w-[137px] w-[132px]">
                 {useUnitSuffix(gasLimit)}
               </div>
             </div>
@@ -462,7 +483,7 @@ function TransactionDetailSegmentTwo({
             <div className=" grow">
               <div
                 data-testid="transaction-gas-used-title"
-                className="text-white-700 w-[101px]"
+                className="text-white-700 w-[101px] tracking-[0.01em]"
               >
                 {fixedTitle.gasUsed}
               </div>
@@ -470,14 +491,14 @@ function TransactionDetailSegmentTwo({
             <div className="flex flex-col">
               <NumericFormat
                 data-testid="transaction-gas-used"
-                className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-[132px] lg:text-left md:text-left text-right"
+                className="text-white-50 tracking-[0.01em] whitespace-normal lg:w-[247px] md:w-[137px] w-[132px] lg:text-left md:text-left text-right"
                 thousandSeparator
                 value={gasUsed}
                 decimalScale={0}
               />
               <NumericFormat
                 data-testid="transaction-gas-used-percentage"
-                className="text-white-700 text-xs mt-1 lg:w-[247px] md:w-[137px] w-[132px] lg:text-left md:text-left text-right"
+                className="text-white-700 tracking-[0.02em] text-xs mt-1 lg:w-[247px] md:w-[137px] w-[132px] lg:text-left md:text-left text-right"
                 thousandSeparator
                 value={gasUsedPercentage}
                 decimalScale={2}
@@ -498,7 +519,7 @@ function TransactionDetailSegmentTwo({
               <div className="grow">
                 <div
                   data-testid="transaction-token-transferred-from-title"
-                  className="text-white-700 w-[101px]"
+                  className="text-white-700 w-[101px] tracking-[0.01em]"
                 >
                   {fixedTitle.from}
                 </div>
@@ -506,7 +527,7 @@ function TransactionDetailSegmentTwo({
               {isFromAddressCopied ? (
                 <div
                   className={clsx(
-                    "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[136px] w-auto",
+                    "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[280px] md:w-[135px] w-auto",
                     { "md:w-[155px] w-auto gap-x-0": isFromAddressCopied }
                   )}
                 >
@@ -522,14 +543,18 @@ function TransactionDetailSegmentTwo({
               ) : (
                 <div
                   className={clsx(
-                    "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-auto",
+                    "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[280px] md:w-[137px] w-auto",
                     { "md:w-[155px] w-auto gap-x-0": isFromAddressCopied }
                   )}
                 >
                   <div className={clsx({ "mr-[10px]": isFromAddressCopied })}>
                     <LinkText
+                      customStyle="tracking-[0.01em]"
                       testId="transaction-token-transferred-from"
-                      label={truncateTextFromMiddle(from)}
+                      label={truncateTextFromMiddle(
+                        from,
+                        windowDimension <= 1280 ? 5 : 11
+                      )}
                       href={`/address/${from}`}
                     />
                   </div>
@@ -544,14 +569,19 @@ function TransactionDetailSegmentTwo({
               )}
             </div>
             <div className="flex flex-row">
-              <div className="text-white-700 w-[101px] grow">
-                {fixedTitle.to}
+              <div className="text-white-700 grow">
+                <div
+                  data-testid="transaction-token-transferred-to-title"
+                  className="text-white-700 w-[101px] tracking-[0.01em]"
+                >
+                  {fixedTitle.to}
+                </div>
               </div>
               <div>
                 {isToAddressCopied ? (
                   <div
                     className={clsx(
-                      "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[136px] w-auto",
+                      "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[280px] md:w-[135px] w-auto",
                       { "md:w-[155px] w-auto gap-x-0": isToAddressCopied }
                     )}
                   >
@@ -567,14 +597,17 @@ function TransactionDetailSegmentTwo({
                 ) : (
                   <div
                     className={clsx(
-                      "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[247px] md:w-[137px] w-auto",
+                      "flex flex-row items-center gap-x-2.5 md:text-left lg:w-[280px] md:w-[137px] w-auto",
                       { "md:w-[155px] w-auto gap-x-0": isToAddressCopied }
                     )}
                   >
                     <div className={clsx({ "mr-[10px]": isToAddressCopied })}>
                       <LinkText
                         testId="transaction-token-transferred-to"
-                        label={truncateTextFromMiddle(to)}
+                        label={truncateTextFromMiddle(
+                          to,
+                          windowDimension <= 1280 ? 5 : 11
+                        )}
                         href={`/address/${to}`}
                       />
                     </div>
@@ -593,7 +626,7 @@ function TransactionDetailSegmentTwo({
               <div className="grow">
                 <div
                   data-testid="transaction-token-transferred-for-title"
-                  className="text-white-700 w-[101px]"
+                  className="text-white-700 w-[101px] tracking-[0.01em]"
                 >
                   {fixedTitle.for}
                 </div>
@@ -601,7 +634,7 @@ function TransactionDetailSegmentTwo({
               <div className="flex lg:text-left md:text-left text-right">
                 <NumericFormat
                   data-testid="transaction-token-transferred-for"
-                  className="text-white-50 whitespace-normal lg:w-[247px] md:w-[137px] w-auto"
+                  className="text-white-50 tracking-[0.01em] whitespace-normal lg:w-[280px] md:w-[137px] w-auto"
                   thousandSeparator
                   value={forToken.value}
                   decimalScale={8}
@@ -615,11 +648,15 @@ function TransactionDetailSegmentTwo({
       <div>
         <div
           data-testid="transaction-raw-input-title"
-          className="text-white-50 lg:pb-6 lg:pt-14 md:pb-6 md:pt-14 pt-16 pb-6"
+          className="text-white-50 lg:pt-14 md:pt-14 pt-16 pb-6"
         >
           {fixedTitle.rawInput}
         </div>
-        <div className="flex flex-row items-center mb-[14px] ">
+        <div
+          className={clsx("flex flex-row items-center", {
+            "mb-[14px]": isRawInputExpanded,
+          })}
+        >
           <div
             data-testid="transaction-hex-title"
             role="button"

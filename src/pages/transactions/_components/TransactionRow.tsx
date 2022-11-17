@@ -2,7 +2,7 @@ import { FiFileText } from "react-icons/fi";
 import { TransactionsIcon } from "@components/icons/Transactions";
 import BigNumber from "bignumber.js";
 import { ConfirmCheck } from "@components/icons/ConfirmCheck";
-import { secondsToDhmsDisplay } from "shared/durationHelper";
+import { getDuration } from "shared/durationHelper";
 import { RejectedCross } from "@components/icons/RejectedCross";
 import clsx from "clsx";
 import { truncateTextFromMiddle } from "shared/textHelper";
@@ -166,9 +166,7 @@ function TimeComponent({
 }): JSX.Element {
   return (
     <div className={containerClass}>
-      <span className="text-white-700 text-base">
-        {secondsToDhmsDisplay(time)} ago
-      </span>
+      <span className="text-white-700 text-base">{getDuration(time)} ago</span>
     </div>
   );
 }

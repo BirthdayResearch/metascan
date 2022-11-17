@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { DMX_TOKEN_SYMBOL } from "shared/contants";
-import { secondsToDhmsDisplay } from "shared/durationHelper";
+import { getDuration } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import Button from "./commons/Button";
 import GradientCardContainer from "./commons/GradientCardContainer";
@@ -119,7 +119,7 @@ function RowItem({
         />
       </div>
       <div className="w-2/4 inline-flex items-center justify-end text-white-700 text-right md:order-last md:grow md:-mt-6 lg:mt-0 lg:w-20 xl:w-32 lg:pl-5 xl:pl-0">
-        {secondsToDhmsDisplay(time)} ago
+        {getDuration(time)} ago
       </div>
       <div className="md:w-4/12 md:pl-5 lg:flex lg:w-96 lg:pl-12">
         {type === "blocks" ? (

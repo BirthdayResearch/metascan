@@ -44,7 +44,7 @@ export default function LatestDataTable({
   type,
   title,
   data,
-  detailsPageBaseUrl = "",
+  detailsPageBaseUrl,
   amountLabel = "",
   containerClass = "",
 }: Props): JSX.Element {

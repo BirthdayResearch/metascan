@@ -90,9 +90,11 @@ export default function Block({ block, ...data }: Props) {
                 {block.transactionsPerBlock} Transactions
               </div>
               <div className="text-white-700 mt-1 flex flex-col md:flex-row">
-                <span data-testid="block-time" className="pt-1 md:pt-0">
+                <span className="order-last md:order-first pt-1 md:pt-0">
                   {secondsToDhmsDisplay(block.time)} ago
                 </span>
+                <span className="hidden md:inline">&nbsp;-&nbsp;</span>
+                <span>{block.datetime}</span>
               </div>
             </div>
           </div>

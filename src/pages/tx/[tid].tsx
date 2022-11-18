@@ -15,7 +15,7 @@ import { RejectedCross } from "@components/icons/RejectedCross";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { useRouter } from "next/router";
-import { secondsToDhmsDisplay } from "shared/durationHelper";
+import { getDuration } from "shared/durationHelper";
 
 const data = transactionDetailData.transactionDetailData;
 
@@ -214,7 +214,7 @@ function TransactionDetailSegmentOne({
             data-testid="transaction-timestamp"
             className="text-white-700 tracking-[0.01em] h-[22px] leading-[22.4px]"
           >
-            {secondsToDhmsDisplay(Number(timestamp))} ago
+            {getDuration(Number(timestamp))} ago
           </div>
         </div>
       </div>

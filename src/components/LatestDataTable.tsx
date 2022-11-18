@@ -161,7 +161,7 @@ function BlockInfoDisplay({
       <div className="flex pt-5 md:pt-0">
         <LinkText
           testId={`block-details-link-${block}`}
-          href={`/transactions?block=${block}`}
+          href={`/txs?block=${block}`}
           label={`${blockInfo.transactionsPerBlock} Transactions`}
         />
       </div>

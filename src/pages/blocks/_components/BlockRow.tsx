@@ -1,5 +1,4 @@
 import { FiBox } from "react-icons/fi";
-import BigNumber from "bignumber.js";
 import clsx from "clsx";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import LinkText from "@components/commons/LinkText";
@@ -101,7 +100,7 @@ function RewardComponent({
       <NumericFormat
         className="text-white-50 text-base"
         thousandSeparator
-        value={new BigNumber(amount).toFixed(8)}
+        value={amount}
         decimalScale={8}
         suffix={` ${symbol}`}
       />
@@ -140,7 +139,7 @@ function TxnCountComponent({
       <NumericFormat
         className="text-white-700 text-base"
         thousandSeparator
-        value={count.toString()}
+        value={count}
         decimalScale={0}
         suffix=" transactions"
       />

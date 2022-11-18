@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import TokenStatsApi from "@api/TokenStatsApi";
 import { useUnitSuffix } from "hooks/useUnitSuffix";
-import { DMX_TOKEN_SYMBOL } from "shared/contants";
+import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import TrendLineChart, { LineData } from "./TrendLineChart";
 import GradientCardContainer from "./commons/GradientCardContainer";
 

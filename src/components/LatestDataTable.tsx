@@ -31,6 +31,7 @@ interface Props {
   type: DataType;
   title: string;
   data: RowData[];
+  listPageUrl: string;
   detailsPageBaseUrl: string;
   containerClass?: string;
   amountPrefix?: string;
@@ -40,6 +41,7 @@ export default function LatestDataTable({
   type,
   title,
   data,
+  listPageUrl,
   detailsPageBaseUrl,
   amountPrefix = "",
   containerClass = "",
@@ -75,7 +77,7 @@ export default function LatestDataTable({
                 <Button
                   testId={`view-${type}`}
                   label={`View all ${type}`}
-                  href={`/${type}`}
+                  href={listPageUrl}
                   customStyle="w-full md:w-auto"
                 />
               </div>

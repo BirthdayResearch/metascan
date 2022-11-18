@@ -1,8 +1,8 @@
 import BigNumber from "bignumber.js";
 import { TransactionType } from "mockdata/TransactionData";
-import { iconMapping as txnIconMapping } from "pages/transactions/_components/TransactionRow";
+import { iconMapping as txnIconMapping } from "pages/txs/_components/TransactionRow";
 import { FiBox } from "react-icons/fi";
-import { DMX_TOKEN_SYMBOL } from "shared/contants";
+import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import Button from "./commons/Button";
@@ -190,7 +190,7 @@ function BlockInfoDisplay({
       <div className="flex pt-5 md:pt-0">
         <LinkText
           testId={`block-details-link-${block}`}
-          href={`/transactions?block=${block}`}
+          href={`/txs?block=${block}`}
         >
           <NumericFormat
             thousandSeparator

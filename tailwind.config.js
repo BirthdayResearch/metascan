@@ -148,6 +148,9 @@ module.exports = {
         "infinite-fade-in": "fade-in-out 10s ease-in-out infinite",
         "infinite-fade-out": "fade-out-in 10s ease-in-out infinite",
       },
+      fontFamily: {
+        "space-mono": ["Space Mono", "sans-serif"]
+      }
     },
   },
   plugins: [require("@tailwindcss/line-clamp")],

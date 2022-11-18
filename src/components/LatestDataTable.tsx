@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { DMX_TOKEN_SYMBOL } from "shared/contants";
+import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import Button from "./commons/Button";

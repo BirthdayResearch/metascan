@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
-import { DFI_TOKEN_SYMBOL, DMX_TOKEN_SYMBOL } from "shared/contants";
+import { DFI_TOKEN_SYMBOL, DMX_TOKEN_SYMBOL } from "shared/constants";
 import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { transactions, pages } from "../../mockdata/TransactionData";
@@ -229,13 +229,13 @@ function FeeRecipientRow({
         <div className="flex">
           <LinkText
             testId="fee-recipient-mobile"
-            href={`/addresses/${feeRecipient}`}
+            href={`/address/${feeRecipient}`}
             label={truncateTextFromMiddle(feeRecipient, 4)}
             customStyle={clsx("inline-flex xl:hidden", style.valueWidth)}
           />
           <LinkText
             testId="fee-recipient-desktop"
-            href={`/addresses/${feeRecipient}`}
+            href={`/address/${feeRecipient}`}
             label={truncateTextFromMiddle(feeRecipient, 13)}
             customStyle={clsx("hidden xl:inline-flex", style.valueWidth)}
           />

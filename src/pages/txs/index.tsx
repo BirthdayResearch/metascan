@@ -1,4 +1,3 @@
-import Container from "@components/commons/Container";
 import { CursorPagination } from "@components/commons/CursorPagination";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
@@ -7,7 +6,7 @@ import TransactionRow from "./_components/TransactionRow";
 
 export default function Transactions({ data }) {
   return (
-    <Container className="px-1 md:px-0 mt-12">
+    <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
         <div className="p-5 md:p-10">
@@ -31,7 +30,7 @@ export default function Transactions({ data }) {
           />
         </div>
       </GradientCardContainer>
-    </Container>
+    </div>
   );
 }
 

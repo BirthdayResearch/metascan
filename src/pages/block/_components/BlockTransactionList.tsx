@@ -4,7 +4,7 @@ import {
 } from "@components/commons/CursorPagination";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { TransactionI } from "mockdata/TransactionData";
-import TransactionRow from "pages/transactions/_components/TransactionRow";
+import TransactionRow from "pages/txs/_components/TransactionRow";
 
 interface Props {
   blockNumber: string;

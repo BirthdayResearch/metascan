@@ -1,4 +1,3 @@
-import Container from "@components/commons/Container";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import LinkText from "@components/commons/LinkText";
 import LinkTextWithIcon from "@components/commons/LinktextWithIcon";
@@ -31,7 +30,7 @@ export default function Block({ block, ...data }: Props) {
   const nextBlockNumber = blockNumber.plus(1); // TODO: check if nextBlockNumber exists when api is readys
 
   return (
-    <Container
+    <div
       data-testid={`block-${blockNumber}-details-page`}
       className="px-1 md:px-0 mt-12"
     >
@@ -150,7 +149,7 @@ export default function Block({ block, ...data }: Props) {
           pages={data.pages}
         />
       </div>
-    </Container>
+    </div>
   );
 }
 

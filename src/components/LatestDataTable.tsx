@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { DMX_TOKEN_SYMBOL } from "shared/contants";
+import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import Button from "./commons/Button";
@@ -31,6 +31,7 @@ interface Props {
   type: DataType;
   title: string;
   data: RowData[];
+  detailsPageBaseUrl: string;
   containerClass?: string;
   amountPrefix?: string;
 }
@@ -39,6 +40,7 @@ export default function LatestDataTable({
   type,
   title,
   data,
+  detailsPageBaseUrl,
   amountPrefix = "",
   containerClass = "",
 }: Props): JSX.Element {
@@ -64,6 +66,7 @@ export default function LatestDataTable({
                   type={type}
                   rowData={row}
                   amountPrefix={amountPrefix}
+                  detailsPageBaseUrl={detailsPageBaseUrl}
                 />
               ))}
             </div>
@@ -88,15 +91,17 @@ function RowItem({
   type,
   rowData,
   amountPrefix,
+  detailsPageBaseUrl,
   rowIndex,
 }: {
   type: DataType;
   rowData: RowData;
   amountPrefix: string;
+  detailsPageBaseUrl: string;
   rowIndex: number;
 }): JSX.Element {
   const { transactionId, tokenAmount, time, txnOrBlockInfo } = rowData;
-  const detailsPageLink = `/${type}/${transactionId}`;
+  const detailsPageLink = `/${detailsPageBaseUrl}/${transactionId}`;
   return (
     <div
       data-testid={`latest-${type}-row-${rowIndex}`}

@@ -35,7 +35,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
             </div>
             <TransactionLinkRow
               label="Hash"
-              pathname={`/transactions/${data.hash}`}
+              pathname={`/tx/${data.hash}`}
               value={data.hash}
               containerClass="flex flex-col lg:flex-row ml-8 lg:ml-10 mt-2 lg:mt-3"
             />
@@ -88,7 +88,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
           <TimeComponent time={data.time} containerClass="mt-4" />
           <TransactionLinkRow
             label="Hash"
-            pathname={`/transactions/${data.hash}`}
+            pathname={`/tx/${data.hash}`}
             value={data.hash}
             containerClass="flex flex-row mt-4 w-5/6"
           />

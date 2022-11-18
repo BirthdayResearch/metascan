@@ -20,6 +20,7 @@ export default function Home() {
           type="transactions"
           title="Latest transactions"
           data={latestTransactions}
+          detailsPageBaseUrl="/tx"
           containerClass="pt-8 md:pt-20"
         />
         <LatestDataTable
@@ -27,6 +28,7 @@ export default function Home() {
           title="Latest blocks"
           data={latestBlocks}
           amountPrefix="Reward:"
+          detailsPageBaseUrl="/block"
           containerClass="pt-5 md:pt-6 lg:pt-5"
         />
       </div>

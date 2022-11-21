@@ -67,9 +67,8 @@ export default function LatestDataTable({
             </h2>
             <div className="md:order-last md:flex-1 md:pt-6 md:col-span-8">
               {data.map((row, index) => (
-                <>
+                <div key={row.id}>
                   <RowItem
-                    key={row.id}
                     rowIndex={index}
                     type={type}
                     rowData={row}
@@ -82,7 +81,7 @@ export default function LatestDataTable({
                       { hidden: data.length === index + 1 }
                     )}
                   />
-                </>
+                </div>
               ))}
             </div>
             <div className="pt-10 md:pt-0 md:col-span-3 md:col-end-auto">

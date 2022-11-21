@@ -35,8 +35,8 @@ interface Props {
   type: DataType;
   title: string;
   data: RowData[];
-  detailsPageBaseUrl: string;
   listPageUrl: string;
+  detailsPageBaseUrl: string;
   containerClass?: string;
   amountLabel?: string;
 }
@@ -45,8 +45,8 @@ export default function LatestDataTable({
   type,
   title,
   data,
-  detailsPageBaseUrl,
   listPageUrl,
+  detailsPageBaseUrl,
   amountLabel = "",
   containerClass = "",
 }: Props): JSX.Element {

@@ -2,12 +2,12 @@ import { FiFileText } from "react-icons/fi";
 import { TransactionsIcon } from "@components/icons/Transactions";
 import BigNumber from "bignumber.js";
 import { ConfirmCheck } from "@components/icons/ConfirmCheck";
-import { secondsToDhmsDisplay } from "shared/durationHelper";
 import { RejectedCross } from "@components/icons/RejectedCross";
 import clsx from "clsx";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
+import { TimeComponent } from "@components/commons/TimeComponent";
 import {
   TransactionI,
   TransactionStatus,
@@ -25,7 +25,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
     <div>
       {/* for desktop and tablet */}
       <div className="hidden md:block">
-        <div className="grid grid-cols-8 lg:grid-cols-12 gap-5 py-3.5 lg:py-4">
+        <div className="grid grid-cols-8 lg:grid-cols-12 gap-5 py-4">
           <div className="col-start-1 col-end-3">
             <div className="flex flex-row">
               <Icon size={24} className="text-white-50 stroke-white-50" />
@@ -34,30 +34,30 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
               </div>
             </div>
             <TransactionLinkRow
-              label="Hash:"
+              label="Hash"
               pathname={`/tx/${data.hash}`}
               value={data.hash}
               containerClass="flex flex-col lg:flex-row ml-8 lg:ml-10 mt-2 lg:mt-3"
             />
           </div>
-          <div className="col-start-3 col-end-7 lg:col-start-4 lg:col-end-10 text-white-50">
+          <div className="col-start-3 col-end-7 lg:col-start-4 lg:col-end-10">
             <AmountComponent amount={data.amount} symbol={data.symbol} />
             <div className="grid grid-cols-4 lg:grid-cols-6 gap-5 mt-2 lg:mt-3">
               <TransactionLinkRow
-                label="From:"
+                label="From"
                 pathname={`/address/${data.hash}`}
                 value={data.from}
                 containerClass="flex flex-col lg:flex-row col-start-1 col-end-3"
               />
               <TransactionLinkRow
-                label="To:"
+                label="To"
                 pathname={`/address/${data.hash}`}
                 value={data.from}
                 containerClass="flex flex-col lg:flex-row col-start-3 col-end-5"
               />
             </div>
           </div>
-          <div className="col-start-7 col-end-9 lg:col-start-11 lg:col-end-13 text-white-50 justify-self-end">
+          <div className="col-start-7 col-end-9 lg:col-start-11 lg:col-end-13 justify-self-end">
             <StatusComponent status={data.status} />
             <div className="text-right mr-8 mt-2 lg:mt-3">
               <TimeComponent time={data.time} />
@@ -67,7 +67,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
       </div>
 
       {/* For mobile */}
-      <div className="md:hidden py-6 z-10 mt-2">
+      <div className="md:hidden py-6">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
             <Icon size={24} className="text-white-50 stroke-white-50" />
@@ -87,26 +87,26 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
           />
           <TimeComponent time={data.time} containerClass="mt-4" />
           <TransactionLinkRow
-            label="Hash:"
+            label="Hash"
             pathname={`/tx/${data.hash}`}
             value={data.hash}
             containerClass="flex flex-row mt-4 w-5/6"
           />
           <TransactionLinkRow
-            label="From:"
+            label="From"
             pathname={`/address/${data.from}`}
             value={data.hash}
             containerClass="flex flex-row mt-4 w-5/6"
           />
           <TransactionLinkRow
-            label="To:"
+            label="To"
             pathname={`/address/${data.to}`}
             value={data.hash}
             containerClass="flex flex-row mt-4 w-5/6"
           />
         </div>
       </div>
-      <div className="border-b border-black-600 ml-8 md:ml-10" />
+      <div className="border-b border-black-600 ml-8 lg:ml-10" />
     </div>
   );
 }
@@ -144,7 +144,7 @@ function AmountComponent({
   return (
     <div className={clsx("flex flex-row", containerClass)}>
       <span className="hidden md:block text-white-700 text-base mr-1">
-        Amount:
+        Amount
       </span>
       <NumericFormat
         className="text-white-50 text-base font-bold"
@@ -153,22 +153,6 @@ function AmountComponent({
         decimalScale={8}
         suffix={` ${symbol}`}
       />
-    </div>
-  );
-}
-
-function TimeComponent({
-  time,
-  containerClass,
-}: {
-  time: number;
-  containerClass?: string;
-}): JSX.Element {
-  return (
-    <div className={containerClass}>
-      <span className="text-white-700 text-base">
-        {secondsToDhmsDisplay(time)} ago
-      </span>
     </div>
   );
 }

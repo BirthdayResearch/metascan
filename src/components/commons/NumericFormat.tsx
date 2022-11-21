@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 
 interface NumericFormatProps extends BigNumber.Format {
-  value: string | BigNumber;
+  value: string | number | BigNumber;
   className?: string;
   thousandSeparator?: boolean;
   decimalScale?: number;

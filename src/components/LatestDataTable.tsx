@@ -4,7 +4,7 @@ import { TransactionType } from "mockdata/TransactionData";
 import { iconMapping as txnIconMapping } from "pages/txs/_components/TransactionRow";
 import { FiBox } from "react-icons/fi";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
-import { secondsToDhmsDisplay } from "shared/durationHelper";
+import { getDuration } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import Button from "./commons/Button";
 import GradientCardContainer from "./commons/GradientCardContainer";
@@ -36,8 +36,8 @@ interface Props {
   type: DataType;
   title: string;
   data: RowData[];
-  detailsPageBaseUrl: string;
   listPageUrl: string;
+  detailsPageBaseUrl: string;
   containerClass?: string;
   amountLabel?: string;
 }
@@ -46,8 +46,8 @@ export default function LatestDataTable({
   type,
   title,
   data,
-  detailsPageBaseUrl,
   listPageUrl,
+  detailsPageBaseUrl,
   amountLabel = "",
   containerClass = "",
 }: Props): JSX.Element {
@@ -159,7 +159,7 @@ function RowItem({
         </LinkText>
       </div>
       <div className="w-2/4 inline-flex items-center justify-end text-white-700 text-right align-top md:order-last md:grow md:-mt-6 lg:mt-0 lg:w-20 xl:w-32 lg:pl-5 xl:pl-0">
-        {secondsToDhmsDisplay(time)} ago
+        {getDuration(time)} ago
       </div>
       <div className="md:w-4/12 md:pl-5 ml-8 md:ml-0 lg:flex lg:w-96 lg:pl-12">
         {type === "blocks" ? (

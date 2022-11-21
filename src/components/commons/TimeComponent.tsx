@@ -1,4 +1,4 @@
-import { secondsToDhmsDisplay } from "shared/durationHelper";
+import { getDuration } from "shared/durationHelper";
 
 export function TimeComponent({
   time,
@@ -9,9 +9,7 @@ export function TimeComponent({
 }): JSX.Element {
   return (
     <div className={containerClass}>
-      <span className="text-white-700 text-base">
-        {secondsToDhmsDisplay(time)} ago
-      </span>
+      <span className="text-white-700 text-base">{getDuration(time)} ago</span>
     </div>
   );
 }

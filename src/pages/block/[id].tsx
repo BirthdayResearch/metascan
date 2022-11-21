@@ -1,4 +1,3 @@
-import Container from "@components/commons/Container";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import LinkText from "@components/commons/LinkText";
 import LinkTextWithIcon from "@components/commons/LinktextWithIcon";
@@ -12,7 +11,7 @@ import { useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
 import { DFI_TOKEN_SYMBOL, DMX_TOKEN_SYMBOL } from "shared/constants";
-import { secondsToDhmsDisplay } from "shared/durationHelper";
+import { getDuration } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { transactions, pages } from "../../mockdata/TransactionData";
 import BlockTransactionList from "./_components/BlockTransactionList";
@@ -31,7 +30,7 @@ export default function Block({ block, ...data }: Props) {
   const nextBlockNumber = blockNumber.plus(1); // TODO: check if nextBlockNumber exists when api is readys
 
   return (
-    <Container
+    <div
       data-testid={`block-${blockNumber}-details-page`}
       className="px-1 md:px-0 mt-12"
     >
@@ -91,7 +90,7 @@ export default function Block({ block, ...data }: Props) {
               </div>
               <div className="text-white-700 mt-1 flex flex-col md:flex-row">
                 <span className="order-last md:order-first pt-1 md:pt-0">
-                  {secondsToDhmsDisplay(block.time)} ago
+                  {getDuration(block.time)} ago
                 </span>
                 <span className="hidden md:inline">&nbsp;-&nbsp;</span>
                 <span>{block.datetime}</span>
@@ -150,7 +149,7 @@ export default function Block({ block, ...data }: Props) {
           pages={data.pages}
         />
       </div>
-    </Container>
+    </div>
   );
 }
 

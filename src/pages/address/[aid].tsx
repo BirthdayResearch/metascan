@@ -191,7 +191,6 @@ function WalletDetails() {
             {isTokenIconClicked && (
               <TokenDropDown
                 data-testid="wallet-token-search-dropdown"
-                setIsTokenIconClick={setIsTokenIconClicked}
                 addressTokens={walletAddressData.tokens.allTokens}
               />
             )}
@@ -407,7 +406,6 @@ function BalanceDetails() {
           {isTokenIconClicked && (
             <TokenDropDown
               data-testid="wallet-other-tokens-dropdown"
-              setIsTokenIconClick={setIsTokenIconClicked}
               addressTokens={walletAddressData.otherTokens.allTokens}
             />
           )}
@@ -540,7 +538,6 @@ const onTokenIconClick = (
 
 interface TokenDropDownProps {
   addressTokens: AddressToken[];
-  setIsTokenIconClick: Dispatch<SetStateAction<boolean>>;
 }
 
 interface AddressToken {
@@ -548,10 +545,8 @@ interface AddressToken {
   symbol: string;
 }
 
-function TokenDropDown({
-  addressTokens,
-  setIsTokenIconClick,
-}: TokenDropDownProps) {
+function TokenDropDown({ addressTokens }: TokenDropDownProps) {
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const [searchString, setSearchString] = useState("");
   const [searchedList, setSearchedList] = useState(addressTokens);
 
@@ -576,16 +571,27 @@ function TokenDropDown({
           "p-5 w-full h-full overflow-y-hidden hover:overflow-y-auto",
           { "hover:overflow-y-hidden": searchedList.length <= 3 }
         )}
-        onBlur={() => setIsTokenIconClick(false)}
-        onFocus={() => setIsTokenIconClick(true)}
+        onBlur={() => {
+          setIsFocused(false);
+        }}
+        onFocus={() => {
+          setIsFocused(true);
+        }}
       >
-        <div className="flex flex-row items-center rounded-lg bg-black-900 black-gradient-1 gap-x-[13px] pt-[17px] pb-[19px] focus-within:border-lightBlue border-[0.5px] border-black-500 mb-5">
-          <FiSearch className="ml-[23px] text-white-50" size={24} />
-          <input
-            className="w-full h-full focus:outline-none bg-black-900 black-gradient-1 border-none black-gradient-1-shadow text-white-700 text-xl focus:caret-lightBlue"
-            onChange={(v) => setSearchString(v.target.value)}
-            placeholder="Search..."
-          />
+        <div
+          className={clsx("rounded-lg mb-5 bg-opacity-0", {
+            "transition duration-600 ease-in hover:p-[0.5px] hover:bg-opacity-100 hover:brand-gradient-1":
+              !isFocused,
+          })}
+        >
+          <div className="flex flex-row items-center rounded-lg bg-black-900 black-gradient-1 gap-x-[13px] pt-[17px] pb-[19px] transition duration-300 ease-in focus-within:border-lightBlue border-[0.5px] border-black-500 ">
+            <FiSearch className="ml-[23px] text-white-50" size={24} />
+            <input
+              className="w-full h-full focus:outline-none bg-black-900 black-gradient-1 border-none black-gradient-1-shadow text-white-700 text-xl focus:caret-lightBlue"
+              onChange={(v) => setSearchString(v.target.value)}
+              placeholder="Search..."
+            />
+          </div>
         </div>
 
         {searchedList.map((item) => (

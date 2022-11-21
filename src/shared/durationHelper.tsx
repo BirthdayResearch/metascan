@@ -18,9 +18,9 @@ export function secondsToDhmsDisplay(seconds: number): string {
   const { d, h, m, s } = secondsToDhm(seconds);
   const dDisplay = d > 0 ? `${d}d` : "";
   const hDisplay =
-    h > 0 ? ` ${d > 0 ? padStart(h.toString(), 2, "0") : h}h` : "";
+    h > 0 ? ` ${d > 0 ? padStart(h.toString(), 2, "0") : h}hr` : "";
   const mDisplay =
-    m > 0 ? ` ${h > 0 ? padStart(m.toString(), 2, "0") : m}m` : "";
+    m > 0 ? ` ${h > 0 ? padStart(m.toString(), 2, "0") : m}min` : "";
   const sDisplay = s > 0 ? ` ${padStart(s.toString(), 2, "0")}s` : "";
   return `${dDisplay}${hDisplay}${mDisplay}${sDisplay}`;
 }

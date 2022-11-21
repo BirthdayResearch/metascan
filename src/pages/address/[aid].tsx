@@ -20,6 +20,7 @@ import { tokens, tokenPages, Token } from "mockdata/TokenData";
 import { walletAddressData } from "mockdata/WalletAddressData";
 import QRCode from "react-qr-code";
 import clsx from "clsx";
+import { TbLoaderQuarter } from "react-icons/tb";
 import DropDownTokenRow from "./components/DropDownTokenRow";
 import AddressTokenTableTitle from "./components/AddressTokenTableTitle";
 import TokenRow from "./components/TokenRow";
@@ -544,20 +545,41 @@ interface AddressToken {
   value: number;
   symbol: string;
 }
+function SearchingMessage(): JSX.Element {
+  return (
+    <div className="w-full px-8 py-5">
+      <div className="w-full flex items-center">
+        <TbLoaderQuarter size={20} className="animate-spin text-[#FF008C]" />
+        <span className="text-center text-xl font-bold ml-3 text-white-50">
+          Searching ...
+        </span>
+      </div>
+    </div>
+  );
+}
 
 function TokenDropDown({ addressTokens }: TokenDropDownProps) {
   const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
   const [searchString, setSearchString] = useState("");
   const [searchedList, setSearchedList] = useState(addressTokens);
 
   useEffect(() => {
     const displayTokens: AddressToken[] = [];
-    if (searchString !== "") {
+
+    const getSearchedString = async () => {
+      setIsSearching(true);
+      await sleep(300);
       for (let i = 0; i < addressTokens.length; i += 1) {
         if (addressTokens[i].symbol.toLowerCase().includes(searchString)) {
           displayTokens.push(addressTokens[i]);
         }
       }
+      setIsSearching(false);
+    };
+
+    if (searchString !== "") {
+      getSearchedString();
       setSearchedList(displayTokens);
     } else {
       setSearchedList(addressTokens);
@@ -593,14 +615,15 @@ function TokenDropDown({ addressTokens }: TokenDropDownProps) {
             />
           </div>
         </div>
-
-        {searchedList.map((item) => (
-          <DropDownTokenRow
-            key={item.symbol}
-            symbol={item.symbol}
-            value={item.value}
-          />
-        ))}
+        {isSearching
+          ? SearchingMessage()
+          : searchedList.map((item) => (
+              <DropDownTokenRow
+                key={item.symbol}
+                symbol={item.symbol}
+                value={item.value}
+              />
+            ))}
       </div>
     </GradientCardContainer>
   );

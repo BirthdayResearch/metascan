@@ -18,7 +18,11 @@ export default {
       id: `${i + 1}`,
       transactionId: t.hash,
       tokenAmount: t.amount,
-      txnOrBlockInfo: { from: t.from, to: t.to },
+      txnOrBlockInfo: {
+        from: t.from,
+        to: t.to,
+        transactionType: t.transactionType,
+      },
       time: t.time,
     })),
 };

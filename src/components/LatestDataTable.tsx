@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import clsx from "clsx";
 import { TransactionType } from "mockdata/TransactionData";
 import { iconMapping as txnIconMapping } from "pages/txs/_components/TransactionRow";
 import { FiBox } from "react-icons/fi";
@@ -66,17 +67,24 @@ export default function LatestDataTable({
             </h2>
             <div className="md:order-last md:flex-1 md:pt-6 md:col-span-8">
               {data.map((row, index) => (
-                <RowItem
-                  key={row.id}
-                  rowIndex={index}
-                  type={type}
-                  rowData={row}
-                  amountLabel={amountLabel}
-                  detailsPageBaseUrl={detailsPageBaseUrl}
-                />
+                <div key={row.id}>
+                  <RowItem
+                    rowIndex={index}
+                    type={type}
+                    rowData={row}
+                    amountLabel={amountLabel}
+                    detailsPageBaseUrl={detailsPageBaseUrl}
+                  />
+                  <div
+                    className={clsx(
+                      "w-[calc(100% - 16px)] ml-8 h-5 border-b border-black-600",
+                      { hidden: data.length === index + 1 }
+                    )}
+                  />
+                </div>
               ))}
             </div>
-            <div className="pt-5 md:pt-0 md:col-span-3 md:col-end-auto">
+            <div className="pt-10 md:pt-0 md:col-span-3 md:col-end-auto">
               <div className="md:flex md:justify-end md:text-rightt">
                 <Button
                   testId={`view-${type}`}
@@ -122,7 +130,7 @@ function RowItem({
   return (
     <div
       data-testid={`latest-${type}-row-${rowIndex}`}
-      className="text-white-50 py-5 border-b border-black-600 md:flex md:flex-wrap md:items-start lg:flex-nowrap xl:gap-5"
+      className="text-white-50 pt-5 md:flex md:flex-wrap md:items-start lg:flex-nowrap xl:gap-5"
     >
       <div
         data-testid={
@@ -149,10 +157,10 @@ function RowItem({
           )}
         </LinkText>
       </div>
-      <div className="w-2/4 inline-flex items-center justify-end text-white-700 text-right md:order-last md:grow md:-mt-6 lg:mt-0 lg:w-20 xl:w-32 lg:pl-5 xl:pl-0">
+      <div className="w-2/4 inline-flex items-center justify-end text-white-700 text-right align-top md:order-last md:grow md:-mt-6 lg:mt-0 lg:w-20 xl:w-32 lg:pl-5 xl:pl-0">
         {getDuration(time)} ago
       </div>
-      <div className="md:w-4/12 md:pl-5 lg:flex lg:w-96 lg:pl-12">
+      <div className="md:w-4/12 md:pl-5 ml-8 md:ml-0 lg:flex lg:w-96 lg:pl-12">
         {type === "blocks" ? (
           <BlockInfoDisplay
             block={transactionId}
@@ -164,7 +172,7 @@ function RowItem({
       </div>
       <div
         data-testid={`${type}-amount-${rowIndex}`}
-        className="pt-5 pr-1 md:grow md:text-right md:p-0 lg:grow xl:w-2/5"
+        className="pt-2 pr-1 md:grow md:text-right md:p-0 ml-8 md:ml-0 lg:grow xl:w-2/5"
       >
         {amountLabel && (
           <span className="text-white-700 mr-1">{amountLabel}</span>
@@ -202,7 +210,7 @@ function BlockInfoDisplay({
           />
         </LinkText>
       </div>
-      <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 ml-1">
+      <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:ml-1">
         {`in ${blockInfo.blockTimeInSec} sec`}
       </div>
     </>

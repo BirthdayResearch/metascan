@@ -729,6 +729,7 @@ function QrCode({ address, onCloseClick }: QrCodeProps) {
             />
             <FiCopy
               data-testid="qr-code-copy-icon"
+              role="button"
               onClick={() =>
                 onCopyAddressIconClick(
                   setIsWalletAddressCopied,

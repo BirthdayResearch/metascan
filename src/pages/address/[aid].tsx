@@ -101,10 +101,7 @@ function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
             role="button"
             data-testid="wallet-address-copy-icon"
             onClick={() =>
-              onCopyAddressIconClick(
-                setIsWalletAddressCopied,
-                walletAddressData.walletAddress
-              )
+              onCopyAddressIconClick(setIsWalletAddressCopied, aid)
             }
             className="text-white-50"
           />

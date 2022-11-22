@@ -24,6 +24,8 @@ import WalletAddressQRCode from "./components/WalletAddressQRCode";
 
 function Address() {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
+  const router = useRouter();
+  const aid = router.query.aid?.toString()!;
   return (
     <div>
       <SearchBar containerClass="mt-1 mb-6" />
@@ -49,7 +51,7 @@ function Address() {
       {isQrCodeClicked && (
         <WalletAddressQRCode
           data-testid="qr-code"
-          address={walletAddressData.walletAddress}
+          address={aid}
           onCloseClick={setIsQrCodeClicked}
         />
       )}
@@ -74,7 +76,6 @@ function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
   const [isWalletAddressCopied, setIsWalletAddressCopied] = useState(false);
   const router = useRouter();
   const aid = router.query.aid?.toString()!;
-
   return (
     <div>
       {isWalletAddressCopied ? (

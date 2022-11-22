@@ -30,7 +30,7 @@ export default function WalletAddressQRCode({
       />
       <GradientCardContainer className="w-[245px] h-[38px]">
         {isWalletAddressCopied ? (
-          <div className="flex flex-row gap-x-2.5 items-center py-2 px-[21.5px]">
+          <div className="flex flex-row gap-x-[9.6px] justify-center items-center py-2 px-[21.5px]">
             <LinkText
               testId="wallet-id-copied"
               label={fixedTitle.copied}
@@ -40,7 +40,7 @@ export default function WalletAddressQRCode({
             <GreenTickIcon data-testid="qr-code-address-copied-green-tick-icon" />
           </div>
         ) : (
-          <div className="flex flex-row gap-x-2.5 items-center py-2 px-[21.5px]">
+          <div className="flex flex-row justify-evenly items-center py-2 px-[21.5px]">
             <LinkText
               testId="wallet-id"
               label={truncateTextFromMiddle(address, 8)}

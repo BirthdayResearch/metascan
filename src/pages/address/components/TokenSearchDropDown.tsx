@@ -98,9 +98,13 @@ export default function TokenSearchDropDown({
                 setSearchString("");
               }}
               role="button"
-              className={clsx("text-white-50 mr-[18px] opacity-0", {
-                "opacity-100": isFocused,
-              })}
+              className={clsx(
+                "text-white-50 mr-[18px] opacity-0",
+                {
+                  "opacity-100": isFocused,
+                },
+                { "opacity-100": searchString !== "" }
+              )}
               size={24}
             />
           </div>

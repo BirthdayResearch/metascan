@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { TbLoaderQuarter } from "react-icons/tb";
+import { debounce } from "lodash";
 import DropDownTokenRow from "./DropDownTokenRow";
 
 interface TokenDropDownProps {
@@ -36,22 +37,28 @@ export default function TokenSearchDropDown({
   const [searchedList, setSearchedList] = useState(addressTokens);
 
   useEffect(() => {
-    const displayTokens: AddressToken[] = [];
-
-    const getSearchedString = async () => {
-      setIsSearching(true);
-      await sleep(300);
-      for (let i = 0; i < addressTokens.length; i += 1) {
-        if (addressTokens[i].symbol.toLowerCase().includes(searchString)) {
-          displayTokens.push(addressTokens[i]);
+    const getSearchedList = () => {
+      const displayTokens: AddressToken[] = [];
+      addressTokens.forEach((tokenSymbol) => {
+        if (
+          tokenSymbol.symbol.toLowerCase().includes(searchString.toLowerCase())
+        ) {
+          displayTokens.push(tokenSymbol);
         }
-      }
+      });
+      return displayTokens;
+    };
+
+    const setSearchResult = (displayTokens: AddressToken[]) => {
+      setSearchedList(displayTokens);
       setIsSearching(false);
     };
 
     if (searchString !== "") {
-      getSearchedString();
-      setSearchedList(displayTokens);
+      setIsSearching(true);
+      const userSearchedList = getSearchedList();
+      const debounceSetSearchList = debounce(setSearchResult, 300);
+      debounceSetSearchList(userSearchedList);
     } else {
       setSearchedList(addressTokens);
     }
@@ -98,13 +105,9 @@ export default function TokenSearchDropDown({
                 setSearchString("");
               }}
               role="button"
-              className={clsx(
-                "text-white-50 mr-[18px] opacity-0",
-                {
-                  "opacity-100": isFocused,
-                },
-                { "opacity-100": searchString !== "" }
-              )}
+              className={clsx("text-white-50 mr-[18px] opacity-0", {
+                "opacity-100": isFocused || searchString !== "",
+              })}
               size={24}
             />
           </div>
@@ -122,8 +125,3 @@ export default function TokenSearchDropDown({
     </GradientCardContainer>
   );
 }
-
-const sleep = (ms: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });

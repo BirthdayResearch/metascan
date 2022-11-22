@@ -1,5 +1,3 @@
-import React from "react";
-
 interface DefaultTokenProps {
   size?: number;
   symbol?: string;

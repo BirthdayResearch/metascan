@@ -11,24 +11,18 @@ export default function TokenRow({ data }: { data: Token }) {
       {/* desktop */}
       <div className="hidden lg:block">
         <div className="grid grid-cols-9 py-5">
-          <div>
-            <LinkText
-              label={data.asset}
-              href={`/address/${data.asset}`}
-              customStyle="tracking-[0.01em]"
-            />
-          </div>
-          <div>
-            <div className="text-white-50 tracking-[0.01em]">{data.type}</div>
-          </div>
-          <div>
-            <div className="text-white-50 tracking-[0.01em]">
-              {data.symbol.toUpperCase()}
-            </div>
+          <LinkText
+            label={data.asset}
+            href={`/address/${data.asset}`}
+            customStyle="tracking-[0.01em]"
+          />
+          <div className="text-white-50 tracking-[0.01em]">{data.type}</div>
+          <div className="text-white-50 tracking-[0.01em]">
+            {data.symbol.toUpperCase()}
           </div>
           <div className="col-span-2 text-right pr-10">
             <NumericFormat
-              value={data.amount.toString()}
+              value={data.amount}
               thousandSeparator
               decimalScale={8}
               className="text-white-50 tracking-[0.01em]"
@@ -36,7 +30,7 @@ export default function TokenRow({ data }: { data: Token }) {
           </div>
           <div className="text-right pr-5">
             <NumericFormat
-              value={data.price.toString()}
+              value={data.price}
               decimalScale={2}
               thousandSeparator
               className="text-white-50 tracking-[0.01em]"
@@ -45,7 +39,7 @@ export default function TokenRow({ data }: { data: Token }) {
           </div>
           <div className="text-right">
             <NumericFormat
-              value={data.value.toString()}
+              value={data.value}
               decimalScale={2}
               thousandSeparator
               className="text-white-50 tracking-[0.01em]"
@@ -64,28 +58,24 @@ export default function TokenRow({ data }: { data: Token }) {
       {/* tablet */}
       <div className="hidden lg:hidden md:block">
         <div className="grid grid-cols-5 grid-rows-2 py-5 gap-y-4">
-          <div>
-            <div className="flex flex-col">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.asset}
-                className="text-xs tracking-[0.02em]"
-              />
-              <LinkText
-                label={data.asset}
-                href={`/address/${data.asset}`}
-                customStyle="tracking-[0.01em]"
-              />
-            </div>
+          <div className="flex flex-col">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.asset}
+              className="text-xs tracking-[0.02em]"
+            />
+            <LinkText
+              label={data.asset}
+              href={`/address/${data.asset}`}
+              customStyle="tracking-[0.01em]"
+            />
           </div>
-          <div>
-            <div className="flex flex-col">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.symbol}
-                className="text-xs tracking-[0.02em]"
-              />
-              <div className="text-white-50 tracking-[0.01em]">
-                {data.symbol.toUpperCase()}
-              </div>
+          <div className="flex flex-col">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.symbol}
+              className="text-xs tracking-[0.02em]"
+            />
+            <div className="text-white-50 tracking-[0.01em]">
+              {data.symbol.toUpperCase()}
             </div>
           </div>
           <div className="col-span-3">
@@ -99,50 +89,44 @@ export default function TokenRow({ data }: { data: Token }) {
               </div>
             </div>
           </div>
-          <div className="">
-            <div className="flex flex-col">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.amount}
-                className="text-xs tracking-[0.02em]"
-              />
+          <div className="flex flex-col">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.amount}
+              className="text-xs tracking-[0.02em]"
+            />
+            <NumericFormat
+              value={data.amount}
+              decimalScale={8}
+              thousandSeparator
+              className="text-white-50 tracking-[0.01em]"
+            />
+          </div>
+          <div className="flex flex-col">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.price}
+              className="text-xs tracking-[0.02em]"
+            />
+            <div>
               <NumericFormat
-                value={data.amount.toString()}
-                decimalScale={8}
-                thousandSeparator
+                value={data.price}
+                decimalScale={2}
                 className="text-white-50 tracking-[0.01em]"
+                prefix="$"
               />
             </div>
           </div>
-          <div>
-            <div className="flex flex-col">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.price}
-                className="text-xs tracking-[0.02em]"
+          <div className="flex flex-col">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.value}
+              className="text-xs tracking-[0.02em]"
+            />
+            <div>
+              <NumericFormat
+                value={data.value}
+                decimalScale={2}
+                className="text-white-50 tracking-[0.01em]"
+                prefix="$"
               />
-              <div>
-                <NumericFormat
-                  value={data.price.toString()}
-                  decimalScale={2}
-                  className="text-white-50 tracking-[0.01em]"
-                  prefix="$"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="">
-            <div className="flex flex-col">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.value}
-                className="text-xs tracking-[0.02em]"
-              />
-              <div>
-                <NumericFormat
-                  value={data.value.toString()}
-                  decimalScale={2}
-                  className="text-white-50 tracking-[0.01em]"
-                  prefix="$"
-                />
-              </div>
             </div>
           </div>
           <div className="col-span-2">
@@ -167,85 +151,73 @@ export default function TokenRow({ data }: { data: Token }) {
       {/* mobile */}
       <div className="lg:hidden md:hidden sm:block">
         <div className="grid grid-cols-2 grid-rows-4 pb-5 pt-4 gap-y-4 gap-x-5">
-          <div>
-            <div className="flex flex-col">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.asset}
-                className="text-xs tracking-[0.02em]"
-              />
-              <LinkText
-                label={data.asset}
-                href={`/address/${data.asset}`}
-                customStyle="tracking-[0.01em]"
-              />
+          <div className="flex flex-col">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.asset}
+              className="text-xs tracking-[0.02em]"
+            />
+            <LinkText
+              label={data.asset}
+              href={`/address/${data.asset}`}
+              customStyle="tracking-[0.01em]"
+            />
+          </div>
+          <div className="flex flex-col items-end">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.type}
+              className="text-xs tracking-[0.02em]"
+            />
+            <div className="text-white-50 tracking-[0.01em]">
+              {data.type.toUpperCase()}
             </div>
           </div>
-          <div className="">
-            <div className="flex flex-col items-end">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.type}
-                className="text-xs tracking-[0.02em]"
-              />
-              <div className="text-white-50 tracking-[0.01em]">
-                {data.type.toUpperCase()}
-              </div>
+          <div className="flex flex-col">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.symbol}
+              className="text-xs tracking-[0.02em]"
+            />
+            <div className="text-white-50 tracking-[0.01em]">
+              {data.symbol.toUpperCase()}
             </div>
           </div>
-          <div>
-            <div className="flex flex-col">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.symbol}
-                className="text-xs tracking-[0.02em]"
-              />
-              <div className="text-white-50 tracking-[0.01em]">
-                {data.symbol.toUpperCase()}
-              </div>
-            </div>
+          <div className="flex flex-col items-end">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.amount}
+              className="text-xs tracking-[0.02em]"
+            />
+            <NumericFormat
+              value={data.amount}
+              decimalScale={8}
+              thousandSeparator
+              className="text-white-50 tracking-[0.01em]"
+            />
           </div>
-          <div>
-            <div className="flex flex-col items-end">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.amount}
-                className="text-xs tracking-[0.02em]"
-              />
+          <div className="flex flex-col">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.price}
+              className="text-xs tracking-[0.02em]"
+            />
+            <div>
               <NumericFormat
-                value={data.amount.toString()}
-                decimalScale={8}
-                thousandSeparator
+                value={data.price}
+                decimalScale={2}
                 className="text-white-50 tracking-[0.01em]"
+                prefix="$"
               />
             </div>
           </div>
-          <div>
-            <div className="flex flex-col">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.price}
-                className="text-xs tracking-[0.02em]"
+          <div className="flex flex-col items-end">
+            <AddressTokenTableTitle
+              title={tokenTableFixedTitle.value}
+              className="text-xs tracking-[0.02em]"
+            />
+            <div>
+              <NumericFormat
+                value={data.value}
+                decimalScale={2}
+                className="text-white-50 tracking-[0.01em]"
+                prefix="$"
               />
-              <div>
-                <NumericFormat
-                  value={data.price.toString()}
-                  decimalScale={2}
-                  className="text-white-50 tracking-[0.01em]"
-                  prefix="$"
-                />
-              </div>
-            </div>
-          </div>
-          <div className="">
-            <div className="flex flex-col items-end">
-              <AddressTokenTableTitle
-                title={tokenTableFixedTitle.value}
-                className="text-xs tracking-[0.02em]"
-              />
-              <div>
-                <NumericFormat
-                  value={data.value.toString()}
-                  decimalScale={2}
-                  className="text-white-50 tracking-[0.01em]"
-                  prefix="$"
-                />
-              </div>
             </div>
           </div>
           <div className="col-span-2">

@@ -44,7 +44,7 @@ export default function WalletAddressQRCode({
             <LinkText
               testId="wallet-id"
               label={truncateTextFromMiddle(address, 8)}
-              href={`https://defimetascan.netlify.app/address/${address}`}
+              href={`/address/${address}`}
               customStyle="tracking-[0.01em]"
             />
             <FiCopy

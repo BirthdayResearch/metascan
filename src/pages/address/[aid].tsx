@@ -609,7 +609,7 @@ function TokenDropDown({ addressTokens }: TokenDropDownProps) {
           <div className="flex flex-row items-center rounded-lg bg-black-900 black-gradient-1 gap-x-[13px] pt-[17px] pb-[19px] transition duration-300 ease-in focus-within:border-lightBlue border-[0.5px] border-black-500 ">
             <FiSearch className="ml-[23px] text-white-50" size={24} />
             <input
-              className=" w-2/3 h-full focus:outline-none bg-black-900 black-gradient-1 border-none black-gradient-1-shadow text-white-700 text-xl focus:caret-lightBlue"
+              className="w-2/3 h-full focus:outline-none bg-black-900 black-gradient-1 border-none black-gradient-1-shadow text-white-700 text-xl focus:caret-lightBlue"
               onChange={(v) => setSearchString(v.target.value)}
               placeholder="Search..."
               value={searchString}

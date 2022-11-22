@@ -117,7 +117,8 @@ function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
 }
 
 function WalletDetails() {
-  const [isTokenIconClicked, setIsTokenIconClicked] = useState(false);
+  const [isTokenDropDownIconClicked, setIsTokenDropDownIconClicked] =
+    useState(false);
   return (
     <div className="flex lg:flex-row md:flex-col flex-col gap-y-4 lg:gap-x-5">
       <div className="flex flex-col lg:flex-row md:flex-row gap-y-4 lg:gap-x-5">
@@ -149,10 +150,16 @@ function WalletDetails() {
               role="button"
               tabIndex={0}
               onKeyDown={() =>
-                onTokenIconClick(setIsTokenIconClicked, isTokenIconClicked)
+                onTokenDropDownIconClick(
+                  setIsTokenDropDownIconClicked,
+                  isTokenDropDownIconClicked
+                )
               }
               onClick={() =>
-                onTokenIconClick(setIsTokenIconClicked, isTokenIconClicked)
+                onTokenDropDownIconClick(
+                  setIsTokenDropDownIconClicked,
+                  isTokenDropDownIconClicked
+                )
               }
               className="flex flex-row items-center"
             >
@@ -160,7 +167,7 @@ function WalletDetails() {
                 {walletAddressData.tokens.allTokens.length} {fixedTitle.tokens}
               </div>
               <div>
-                {isTokenIconClicked ? (
+                {isTokenDropDownIconClicked ? (
                   <FiChevronDown
                     data-testid="wallet-tokens-dropdown-icon"
                     size={24}
@@ -186,7 +193,7 @@ function WalletDetails() {
                 />
               </div>
             </div>
-            {isTokenIconClicked && (
+            {isTokenDropDownIconClicked && (
               <TokenSearchDropDown
                 data-testid="wallet-token-search-dropdown"
                 addressTokens={walletAddressData.tokens.allTokens}
@@ -374,10 +381,16 @@ function BalanceDetails() {
             role="button"
             tabIndex={0}
             onKeyDown={() =>
-              onTokenIconClick(setIsTokenIconClicked, isTokenIconClicked)
+              onTokenDropDownIconClick(
+                setIsTokenIconClicked,
+                isTokenIconClicked
+              )
             }
             onClick={() =>
-              onTokenIconClick(setIsTokenIconClicked, isTokenIconClicked)
+              onTokenDropDownIconClick(
+                setIsTokenIconClicked,
+                isTokenIconClicked
+              )
             }
             className="flex flex-row items-center gap-x-[10.29px]"
           >
@@ -523,7 +536,7 @@ function TokenDetails({ tokenList, tokenListPage }: TokenDetailsProps) {
   );
 }
 
-const onTokenIconClick = (
+const onTokenDropDownIconClick = (
   setIsTokenIconClicked: Dispatch<SetStateAction<boolean>>,
   isTokenIconClicked: boolean
 ) => {

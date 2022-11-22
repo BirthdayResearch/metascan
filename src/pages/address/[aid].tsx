@@ -72,6 +72,9 @@ function WalletSegmentOne({ setIsQrCodeClicked }: QrClickProps) {
 
 function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
   const [isWalletAddressCopied, setIsWalletAddressCopied] = useState(false);
+  const router = useRouter();
+  const aid = router.query.aid?.toString()!;
+
   return (
     <div>
       {isWalletAddressCopied ? (
@@ -79,7 +82,7 @@ function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
           <LinkText
             testId="wallet-address-copied"
             label={fixedTitle.copied}
-            href={`/address/${walletAddressData.walletAddress}`}
+            href={`/address/${aid}`}
             customStyle="tracking-[0.01em]"
           />
           <GreenTickIcon data-testid="wallet-address-copied-green-tick-icon" />
@@ -89,8 +92,8 @@ function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
         <div className="flex flex-row gap-x-2.5 items-center">
           <LinkText
             testId="wallet-address"
-            label={truncateTextFromMiddle(walletAddressData.walletAddress, 11)}
-            href={`/address/${walletAddressData.walletAddress}`}
+            label={truncateTextFromMiddle(aid, 11)}
+            href={`/address/${aid}`}
             customStyle="tracking-[0.01em]"
           />
           <FiCopy
@@ -596,5 +599,11 @@ const onQrCodeClick = (
 ) => {
   setIsQrCodeClicked(true);
 };
+
+export async function getServerSideProps() {
+  return {
+    props: {}, // will be passed to the page component as props
+  };
+}
 
 export default Address;

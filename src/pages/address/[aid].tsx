@@ -13,7 +13,7 @@ import { pages, TransactionI, transactions } from "mockdata/TransactionData";
 import { useRouter } from "next/router";
 import TransactionRow from "pages/txs/_components/TransactionRow";
 import { FiCopy, FiChevronUp, FiChevronDown, FiSearch } from "react-icons/fi";
-import { IoCloseOutline } from "react-icons/io5";
+import { IoCloseOutline, IoCloseCircleSharp } from "react-icons/io5";
 import { MdOutlineQrCode } from "react-icons/md";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { tokens, tokenPages, Token } from "mockdata/TokenData";
@@ -609,9 +609,20 @@ function TokenDropDown({ addressTokens }: TokenDropDownProps) {
           <div className="flex flex-row items-center rounded-lg bg-black-900 black-gradient-1 gap-x-[13px] pt-[17px] pb-[19px] transition duration-300 ease-in focus-within:border-lightBlue border-[0.5px] border-black-500 ">
             <FiSearch className="ml-[23px] text-white-50" size={24} />
             <input
-              className="w-full h-full focus:outline-none bg-black-900 black-gradient-1 border-none black-gradient-1-shadow text-white-700 text-xl focus:caret-lightBlue"
+              className=" w-2/3 h-full focus:outline-none bg-black-900 black-gradient-1 border-none black-gradient-1-shadow text-white-700 text-xl focus:caret-lightBlue"
               onChange={(v) => setSearchString(v.target.value)}
               placeholder="Search..."
+              value={searchString}
+            />
+            <IoCloseCircleSharp
+              onClick={() => {
+                setSearchString("");
+              }}
+              role="button"
+              className={clsx("text-white-50 mr-[18px] opacity-0", {
+                "opacity-100": isFocused,
+              })}
+              size={24}
             />
           </div>
         </div>

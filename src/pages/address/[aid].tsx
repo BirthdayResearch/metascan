@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import {
   CursorPage,
   CursorPagination,
@@ -12,18 +12,15 @@ import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { pages, TransactionI, transactions } from "mockdata/TransactionData";
 import { useRouter } from "next/router";
 import TransactionRow from "pages/txs/_components/TransactionRow";
-import { FiCopy, FiChevronUp, FiChevronDown, FiSearch } from "react-icons/fi";
-import { IoCloseOutline, IoCloseCircleSharp } from "react-icons/io5";
+import { FiCopy, FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { MdOutlineQrCode } from "react-icons/md";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { tokens, tokenPages, Token } from "mockdata/TokenData";
 import { walletAddressData } from "mockdata/WalletAddressData";
-import QRCode from "react-qr-code";
-import clsx from "clsx";
-import { TbLoaderQuarter } from "react-icons/tb";
-import DropDownTokenRow from "./components/DropDownTokenRow";
 import AddressTokenTableTitle from "./components/AddressTokenTableTitle";
 import TokenRow from "./components/TokenRow";
+import TokenSearchDropDown from "./components/TokenSearchDropDown";
+import WalletAddressQRCode from "./components/WalletAddressQRCode";
 
 function Address() {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
@@ -50,7 +47,7 @@ function Address() {
         </div>
       </GradientCardContainer>
       {isQrCodeClicked && (
-        <QrCode
+        <WalletAddressQRCode
           data-testid="qr-code"
           address={walletAddressData.walletAddress}
           onCloseClick={setIsQrCodeClicked}
@@ -190,7 +187,7 @@ function WalletDetails() {
               </div>
             </div>
             {isTokenIconClicked && (
-              <TokenDropDown
+              <TokenSearchDropDown
                 data-testid="wallet-token-search-dropdown"
                 addressTokens={walletAddressData.tokens.allTokens}
               />
@@ -405,7 +402,7 @@ function BalanceDetails() {
             )}
           </div>
           {isTokenIconClicked && (
-            <TokenDropDown
+            <TokenSearchDropDown
               data-testid="wallet-other-tokens-dropdown"
               addressTokens={walletAddressData.otherTokens.allTokens}
             />
@@ -537,109 +534,6 @@ const onTokenIconClick = (
   }
 };
 
-interface TokenDropDownProps {
-  addressTokens: AddressToken[];
-}
-
-interface AddressToken {
-  value: number;
-  symbol: string;
-}
-function SearchingMessage(): JSX.Element {
-  return (
-    <div className="w-full px-8 py-5">
-      <div className="w-full flex items-center">
-        <TbLoaderQuarter size={20} className="animate-spin text-[#FF008C]" />
-        <span className="text-center text-xl font-bold ml-3 text-white-50">
-          Searching ...
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function TokenDropDown({ addressTokens }: TokenDropDownProps) {
-  const [isFocused, setIsFocused] = useState<boolean>(false);
-  const [isSearching, setIsSearching] = useState<boolean>(false);
-  const [searchString, setSearchString] = useState("");
-  const [searchedList, setSearchedList] = useState(addressTokens);
-
-  useEffect(() => {
-    const displayTokens: AddressToken[] = [];
-
-    const getSearchedString = async () => {
-      setIsSearching(true);
-      await sleep(300);
-      for (let i = 0; i < addressTokens.length; i += 1) {
-        if (addressTokens[i].symbol.toLowerCase().includes(searchString)) {
-          displayTokens.push(addressTokens[i]);
-        }
-      }
-      setIsSearching(false);
-    };
-
-    if (searchString !== "") {
-      getSearchedString();
-      setSearchedList(displayTokens);
-    } else {
-      setSearchedList(addressTokens);
-    }
-  }, [searchString]);
-
-  return (
-    <GradientCardContainer className="absolute whitespace-nowrap translate-x-[-10px] translate-y-[13px] lg:w-[314px] lg:h-[284px] md:w-[314px] md:h-[284px] w-[296px] h-[300px]">
-      <div
-        className={clsx(
-          "p-5 w-full h-full overflow-y-hidden hover:overflow-y-auto",
-          { "hover:overflow-y-hidden": searchedList.length <= 3 }
-        )}
-        onBlur={() => {
-          setIsFocused(false);
-        }}
-        onFocus={() => {
-          setIsFocused(true);
-        }}
-      >
-        <div
-          className={clsx("rounded-lg mb-5 bg-opacity-0", {
-            "transition duration-600 ease-in hover:p-[0.5px] hover:bg-opacity-100 hover:brand-gradient-1":
-              !isFocused,
-          })}
-        >
-          <div className="flex flex-row items-center rounded-lg bg-black-900 black-gradient-1 gap-x-[13px] pt-[17px] pb-[19px] transition duration-300 ease-in focus-within:border-lightBlue border-[0.5px] border-black-500 ">
-            <FiSearch className="ml-[23px] text-white-50" size={24} />
-            <input
-              className="w-2/3 h-full focus:outline-none bg-black-900 black-gradient-1 border-none black-gradient-1-shadow text-white-700 text-xl focus:caret-lightBlue"
-              onChange={(v) => setSearchString(v.target.value)}
-              placeholder="Search..."
-              value={searchString}
-            />
-            <IoCloseCircleSharp
-              onClick={() => {
-                setSearchString("");
-              }}
-              role="button"
-              className={clsx("text-white-50 mr-[18px] opacity-0", {
-                "opacity-100": isFocused,
-              })}
-              size={24}
-            />
-          </div>
-        </div>
-        {isSearching
-          ? SearchingMessage()
-          : searchedList.map((item) => (
-              <DropDownTokenRow
-                key={item.symbol}
-                symbol={item.symbol}
-                value={item.value}
-              />
-            ))}
-      </div>
-    </GradientCardContainer>
-  );
-}
-
 const onOptionsClick = (
   setIsTransactionClicked: Dispatch<SetStateAction<boolean>>,
   itemClicked: string
@@ -689,66 +583,5 @@ const onQrCodeClick = (
 ) => {
   setIsQrCodeClicked(true);
 };
-
-interface QrCodeProps {
-  address: string;
-  onCloseClick: Dispatch<SetStateAction<boolean>>;
-}
-
-function QrCode({ address, onCloseClick }: QrCodeProps) {
-  const [isWalletAddressCopied, setIsWalletAddressCopied] = useState(false);
-  return (
-    <div className="fixed backdrop-blur z-20 inset-0 pt-[104px] w-screen h-screen flex flex-col gap-y-[10px] items-center">
-      <IoCloseOutline
-        data-testid="wallet-qr-close-button"
-        role="button"
-        onClick={() => {
-          onCloseClick(false);
-        }}
-        size={24}
-        className="fixed md:top-[46px] md:right-[46px] top-[38px] right-[38px] text-white-50"
-      />
-      <GradientCardContainer className="w-[245px] h-[38px]">
-        {isWalletAddressCopied ? (
-          <div className="flex flex-row gap-x-2.5 items-center py-2 px-[21.5px]">
-            <LinkText
-              testId="wallet-id-copied"
-              label={fixedTitle.copied}
-              href={`/address/${walletAddressData.walletAddress}`}
-              customStyle="tracking-[0.01em]"
-            />
-            <GreenTickIcon data-testid="qr-code-address-copied-green-tick-icon" />
-          </div>
-        ) : (
-          <div className="flex flex-row gap-x-2.5 items-center py-2 px-[21.5px]">
-            <LinkText
-              testId="wallet-id"
-              label={truncateTextFromMiddle(walletAddressData.walletAddress, 8)}
-              href={`https://defimetascan.netlify.app/address/${walletAddressData.walletAddress}`}
-              customStyle="tracking-[0.01em]"
-            />
-            <FiCopy
-              data-testid="qr-code-copy-icon"
-              role="button"
-              onClick={() =>
-                onCopyAddressIconClick(
-                  setIsWalletAddressCopied,
-                  walletAddressData.walletAddress
-                )
-              }
-              className="text-white-50"
-            />
-          </div>
-        )}
-      </GradientCardContainer>
-      <QRCode
-        data-testid="wallet-qr-code-image"
-        size={245}
-        value={`/address/${address}`}
-        viewBox="0 0 245 245"
-      />
-    </div>
-  );
-}
 
 export default Address;

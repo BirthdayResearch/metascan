@@ -100,16 +100,16 @@ export default function TokenSearchDropDown({
               placeholder="Search..."
               value={searchString}
             />
-            <IoCloseCircleSharp
-              onClick={() => {
-                setSearchString("");
-              }}
-              role="button"
-              className={clsx("text-white-50 mr-[18px] opacity-0", {
-                "opacity-100": isFocused || searchString !== "",
-              })}
-              size={24}
-            />
+            {(searchString !== "" || isFocused) && (
+              <IoCloseCircleSharp
+                onClick={() => {
+                  setSearchString("");
+                }}
+                role="button"
+                className={clsx("text-white-50 mr-[18px]")}
+                size={24}
+              />
+            )}
           </div>
         </div>
         {isSearching

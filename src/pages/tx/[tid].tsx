@@ -959,10 +959,9 @@ function TransactionDetailSegmentTwo({
           title={fixedTitle.rawInput}
         />
         <div
-          className={clsx(
-            "flex flex-row items-center lg:mb-[14px] md:mb-3 mb-1",
-            { "mb-3": isRawInputExpanded }
-          )}
+          className={clsx("flex flex-row items-center lg:mb-[14px] mb-3", {
+            "mb-3": isRawInputExpanded,
+          })}
         >
           <div
             data-testid="transaction-hex-title"
@@ -988,17 +987,18 @@ function TransactionDetailSegmentTwo({
             )}
           </div>
         </div>
-
-        {isRawInputExpanded && (
-          <div
-            data-testid="transaction-hex"
-            className={clsx(
-              "font-space-mono tracking-[-0.04em] break-all lg:py-6 md:py-5 py-4 lg:px-10 md:px-8 px-4 border-[1px] border-black-600 rounded-lg text-white-50 text-xs"
-            )}
-          >
-            {hex}
-          </div>
-        )}
+        <div
+          data-testid="transaction-hex"
+          className={clsx(
+            " opacity-0 h-0 p-0 font-space-mono tracking-[-0.04em] break-all border-[1px] border-black-600 rounded-lg text-white-50 text-xs",
+            {
+              "h-auto lg:py-6 md:py-5 py-4 lg:px-10 md:px-8 px-4 transition-opacity duration-1000 ease-out opacity-100":
+                isRawInputExpanded,
+            }
+          )}
+        >
+          {hex}
+        </div>
       </div>
     </div>
   );

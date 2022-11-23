@@ -27,7 +27,7 @@ function Address() {
   const router = useRouter();
   const aid = router.query.aid?.toString()!;
   return (
-    <div>
+    <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer className="relative z-10">
         <div className="lg:p-10 md:p-10 px-5 py-6">

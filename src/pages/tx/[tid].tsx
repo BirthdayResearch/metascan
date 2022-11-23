@@ -24,7 +24,7 @@ function Transaction() {
   const tid = router.query.tid?.toString()!;
 
   return (
-    <div>
+    <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
         <div className="p-5 pt-8 pb-8 md:p-10">

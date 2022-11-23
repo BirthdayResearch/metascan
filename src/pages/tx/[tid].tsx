@@ -981,12 +981,6 @@ function TransactionDetailSegmentTwo({
             onKeyDown={onRawInputClick}
             onClick={onRawInputClick}
           >
-            <FiChevronDown
-              size={24}
-              className={clsx("text-white-700", {
-                "animate-spin": isRawInputExpanded,
-              })}
-            />
             {isRawInputExpanded ? (
               <FiChevronDown size={24} className="text-white-700" />
             ) : (

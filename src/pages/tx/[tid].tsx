@@ -980,11 +980,28 @@ function TransactionDetailSegmentTwo({
             onKeyDown={onRawInputClick}
             onClick={onRawInputClick}
           >
-            {isRawInputExpanded ? (
-              <FiChevronDown size={24} className="text-white-700" />
-            ) : (
-              <FiChevronUp size={24} className="text-white-700" />
-            )}
+            <div className="grid ">
+              <FiChevronDown
+                size={24}
+                className={clsx(
+                  "col-start-1 row-start-1 text-white-700 opacity-0",
+                  {
+                    "transition-opacity duration-1000 ease-out opacity-100":
+                      isRawInputExpanded,
+                  }
+                )}
+              />
+              <FiChevronUp
+                size={24}
+                className={clsx(
+                  "col-start-1 row-start-1 text-white-700 opacity-0",
+                  {
+                    "transition-opacity duration-1000 ease-out opacity-100":
+                      !isRawInputExpanded,
+                  }
+                )}
+              />
+            </div>
           </div>
         </div>
         <div

@@ -84,19 +84,5 @@ const onCopyAddressIconClick = async (
 };
 
 const fixedTitle = {
-  walletAddress: "Wallet address",
-  balance: "Balance",
-  tokens: "Tokens",
-  transactions: "Transactions",
-  networth: "Net worth",
-  dmctxBalance: "DMCTx Balance",
-  otherTokens: "Other tokens",
   copied: "Copied!",
-  asset: "Asset",
-  type: "Type",
-  symbol: "Symbol",
-  amount: "Amount",
-  price: "Price",
-  value: "Value",
-  contractAddress: "Contract Address",
 };

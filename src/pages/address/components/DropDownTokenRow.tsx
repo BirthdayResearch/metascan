@@ -21,7 +21,7 @@ export default function DropDownTokenRow({
 
       <div>
         <NumericFormat
-          value={value.toString()}
+          value={value}
           thousandSeparator
           decimalScale={8}
           className="text-white-50"

@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   CursorPage,
   CursorPagination,
@@ -120,6 +126,9 @@ function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
 function WalletDetails() {
   const [isTokenDropDownIconClicked, setIsTokenDropDownIconClicked] =
     useState(false);
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, setIsTokenDropDownIconClicked);
+
   return (
     <div className="flex lg:flex-row md:flex-col flex-col gap-y-4 lg:gap-x-5">
       <div className="flex flex-col lg:flex-row md:flex-row gap-y-4 lg:gap-x-5">
@@ -146,7 +155,7 @@ function WalletDetails() {
           >
             {fixedTitle.tokens}
           </div>
-          <div className="group relative">
+          <div ref={wrapperRef} className="relative">
             <div
               role="button"
               tabIndex={0}
@@ -320,6 +329,8 @@ function WalletSegmentTwo() {
 
 function BalanceDetails() {
   const [isTokenIconClicked, setIsTokenIconClicked] = useState(false);
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, setIsTokenIconClicked);
 
   return (
     <div className="flex flex-col lg:flex-row md:flex-row gap-y-6 lg:gap-x-[109px] md:gap-x-[76px] mt-11 mb-[53px]">
@@ -377,7 +388,7 @@ function BalanceDetails() {
           decimalScale={2}
           prefix="$"
         />
-        <div className="group relative">
+        <div ref={wrapperRef} className="relative">
           <div
             role="button"
             tabIndex={0}
@@ -597,6 +608,20 @@ const onQrCodeClick = (
 ) => {
   setIsQrCodeClicked(true);
 };
+
+function useOutsideAlerter(ref, setIsTokenClicked) {
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (ref.current && !ref.current.contains(event.target)) {
+        setIsTokenClicked(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
+}
 
 export async function getServerSideProps() {
   return {

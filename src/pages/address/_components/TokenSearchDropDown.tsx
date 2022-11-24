@@ -71,12 +71,6 @@ export default function TokenSearchDropDown({
           "p-5 w-full h-full overflow-y-hidden hover:overflow-y-auto",
           { "hover:overflow-y-hidden": searchedList.length <= 3 }
         )}
-        onBlur={() => {
-          setIsFocused(false);
-        }}
-        onFocus={() => {
-          setIsFocused(true);
-        }}
       >
         <div
           className={clsx(
@@ -92,12 +86,20 @@ export default function TokenSearchDropDown({
               )}
             />
           )}
-          <div className="flex flex-row items-center rounded-lg bg-black-900 black-gradient-1 gap-x-[13px] pt-[17px] pb-[19px]">
+          <div
+            onBlur={() => {
+              setIsFocused(false);
+            }}
+            onFocus={() => {
+              setIsFocused(true);
+            }}
+            className="flex flex-row items-center rounded-lg bg-black-900 black-gradient-1 gap-x-[13px] pt-[17px] pb-[19px]"
+          >
             <FiSearch className="ml-[23px] text-white-50" size={24} />
             <input
               className="w-2/3 h-full focus:outline-none bg-black-900 black-gradient-1 border-none black-gradient-1-shadow text-white-700 text-xl focus:caret-lightBlue"
               onChange={(v) => setSearchString(v.target.value)}
-              placeholder="Search..."
+              placeholder="Search Tokens"
               value={searchString}
             />
             {(searchString !== "" || isFocused) && (

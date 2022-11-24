@@ -1,5 +1,6 @@
 import React, {
   Dispatch,
+  MutableRefObject,
   SetStateAction,
   useEffect,
   useRef,
@@ -609,7 +610,10 @@ const onQrCodeClick = (
   setIsQrCodeClicked(true);
 };
 
-function useOutsideAlerter(ref, setIsTokenClicked) {
+function useOutsideAlerter(
+  ref: MutableRefObject<HTMLDivElement | null>,
+  setIsTokenClicked: Dispatch<SetStateAction<boolean>>
+) {
   useEffect(() => {
     function handleClickOutside(event) {
       if (ref.current && !ref.current.contains(event.target)) {

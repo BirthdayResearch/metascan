@@ -56,9 +56,8 @@ export default function TokenSearchDropDown({
 
     if (searchString !== "") {
       setIsSearching(true);
-      const userSearchedList = getSearchedList();
       const debounceSetSearchList = debounce(setSearchResult, 300);
-      debounceSetSearchList(userSearchedList);
+      debounceSetSearchList(getSearchedList());
     } else {
       setSearchedList(addressTokens);
     }
@@ -93,13 +92,13 @@ export default function TokenSearchDropDown({
             onFocus={() => {
               setIsFocused(true);
             }}
-            className="flex flex-row items-center rounded-lg bg-black-900 black-gradient-1 gap-x-[13px] pt-[17px] pb-[19px]"
+            className="flex flex-row items-center rounded-lg bg-black-900 black-gradient-1 gap-x-[13px] py-3 px-5"
           >
-            <FiSearch className="ml-[23px] text-white-50" size={24} />
+            <FiSearch className="ml-[3px] text-white-50" size={24} />
             <input
               className="w-2/3 h-full focus:outline-none bg-black-900 black-gradient-1 border-none black-gradient-1-shadow text-white-700 text-xl focus:caret-lightBlue"
               onChange={(v) => setSearchString(v.target.value)}
-              placeholder="Search Tokens"
+              placeholder="Search tokens"
               value={searchString}
             />
             {(searchString !== "" || isFocused) && (
@@ -108,7 +107,7 @@ export default function TokenSearchDropDown({
                   setSearchString("");
                 }}
                 role="button"
-                className={clsx("text-white-50 mr-[18px]")}
+                className={clsx("text-white-50")}
                 size={24}
               />
             )}

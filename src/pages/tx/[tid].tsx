@@ -1008,7 +1008,7 @@ function TransactionDetailSegmentTwo({
         <div
           data-testid="transaction-hex"
           className={clsx(
-            " opacity-0 h-0 p-0 font-space-mono tracking-[-0.04em] break-all border-[1px] border-black-600 rounded-lg text-white-50 text-xs",
+            "rounded-lg h-0 p-0 font-space-mono tracking-[-0.04em] break-all border-[1px] border-black-600 bg-black-800 opacity-0 text-white-50 text-xs",
             {
               "h-auto lg:py-6 md:py-5 py-4 lg:px-10 md:px-8 px-4 transition-opacity duration-1000 ease-out opacity-100":
                 isRawInputExpanded,

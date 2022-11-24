@@ -16,7 +16,7 @@ import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { useRouter } from "next/router";
 import { getDuration } from "shared/durationHelper";
-import BoldedTitle from "./BoldedTitle";
+import BoldedTitle from "./components/BoldedTitle";
 
 const data = transactionDetailData.transactionDetailData;
 

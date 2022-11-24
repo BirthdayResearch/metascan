@@ -17,10 +17,10 @@ import { MdOutlineQrCode } from "react-icons/md";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { tokens, tokenPages, Token } from "mockdata/TokenData";
 import { walletAddressData } from "mockdata/WalletAddressData";
-import AddressTokenTableTitle from "./components/AddressTokenTableTitle";
-import TokenRow from "./components/TokenRow";
-import TokenSearchDropDown from "./components/TokenSearchDropDown";
-import WalletAddressQRCode from "./components/WalletAddressQRCode";
+import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
+import TokenRow from "./_components/TokenRow";
+import TokenSearchDropDown from "./_components/TokenSearchDropDown";
+import WalletAddressQRCode from "./_components/WalletAddressQRCode";
 
 function Address() {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);

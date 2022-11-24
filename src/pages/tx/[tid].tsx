@@ -16,6 +16,7 @@ import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { useRouter } from "next/router";
 import { getDuration } from "shared/durationHelper";
+import BoldedTitle from "./BoldedTitle";
 
 const data = transactionDetailData.transactionDetailData;
 
@@ -1035,23 +1036,6 @@ const onCopyAddressIconClick = async (
   await sleep(2000);
   onTextClick(false);
 };
-
-interface BoldedTitleProps {
-  title: string;
-  testId?: string;
-  className?: string;
-}
-
-function BoldedTitle({ title, testId, className }: BoldedTitleProps) {
-  return (
-    <div
-      data-testid={testId}
-      className={clsx("text-white-50 font-bold", className)}
-    >
-      {title}
-    </div>
-  );
-}
 
 export async function getServerSideProps() {
   return {

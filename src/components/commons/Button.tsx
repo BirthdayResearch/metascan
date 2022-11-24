@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 type ButtonSize = "small" | "medium" | "large";
 
 interface ButtonProps {
@@ -32,13 +34,14 @@ export default function Button({
   customStyle,
 }: ButtonProps): JSX.Element {
   const btnPadding = getButtonPadding(size);
+  const router = useRouter();
 
   const handleButtonClick = () => {
     if (onClick) {
       onClick();
       return;
     }
-    window.open(href, "_blank", "noreferrer");
+    router.push(href);
   };
 
   const transitionStyle = "transition-all ease-in duration-300";

@@ -30,7 +30,7 @@ export default function Button({
   href,
   testId,
   onClick,
-  disabled = false,
+  disabled = true,
   customStyle,
 }: ButtonProps): JSX.Element {
   const btnPadding = getButtonPadding(size);
@@ -56,9 +56,7 @@ export default function Button({
         onClick={handleButtonClick}
       >
         <span
-          className={`text-white-50 font-medium tracking-[0.02em] brand-gradient-1 group-active:brand-gradient-2 bg-clip-text group-hover:text-transparent ${transitionStyle} ${
-            disabled ? "opacity-50" : "opacity-100"
-          }`}
+          className={`text-white-50 font-medium tracking-[0.02em] brand-gradient-1 group-active:brand-gradient-2 bg-clip-text group-hover:text-transparent ${transitionStyle} `}
         >
           {label}
         </span>

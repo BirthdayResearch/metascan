@@ -31,7 +31,7 @@ export default function Button({
   href,
   testId,
   onClick,
-  disabled = true,
+  disabled = false,
   customStyle,
 }: ButtonProps): JSX.Element {
   const btnPadding = getButtonPadding(size);

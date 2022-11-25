@@ -98,12 +98,8 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
                 as="input"
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                placeholder={
-                  isFocused
-                    ? "Search Block / Txn / Vault ID and more"
-                    : "Search DMC blockchain ..."
-                }
-                className="h-full w-full focus:outline-none bg-transparent caret-lightBlue placeholder-black-50 text-white-50"
+                placeholder="Search for txn hash / block height / verified contract"
+                className="h-full w-full focus:outline-none bg-transparent caret-lightBlue placeholder-black-50 text-white-50 text-xl"
                 data-testid="searchBar-input"
                 displayValue={(item: SearchResult) => item?.title}
                 onChange={onChangeDebounceHandler}

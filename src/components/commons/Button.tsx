@@ -1,6 +1,3 @@
-import clsx from "clsx";
-import NextLink from "next/link";
-
 type ButtonSize = "small" | "medium" | "large";
 
 interface ButtonProps {
@@ -43,32 +40,23 @@ export default function Button({
   };
 
   const transitionStyle = "transition-all ease-in duration-300";
+
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      onKeyDown={handleButtonClick}
-      onClick={handleButtonClick}
-      className={`relative group z-10 flex items-center justify-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 active:brand-bg-gradient-2 hover:border-transparent
-      ${transitionStyle} ${btnPadding} ${customStyle ?? ""} ${
-        disabled
-          ? "disabled-brand-gradient active:disabled-brand-gradient hover:border-white-50 hover:border-opacity-50 border-opacity-50"
-          : ""
-      }`}
-    >
-      <NextLink
-        data-testid={testId}
-        href={href}
-        className={clsx(
-          "text-white-50 font-medium tracking-[0.02em] brand-gradient-1 group-active:brand-gradient-2 bg-clip-text group-hover:text-transparent transition-all ease-in duration-300",
-          {
-            "pointer-events-none opacity-50 text-white-50 group-hover:text-white-50":
-              disabled,
-          }
-        )}
+    <a href={href}>
+      <button
+        data-testid={`${testId}-button`}
+        type="button"
+        className={`flex items-center justify-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 active:brand-bg-gradient-2 hover:border-transparent
+                  ${transitionStyle} ${btnPadding} ${customStyle ?? ""}`}
+        disabled={disabled}
+        onClick={handleButtonClick}
       >
-        {label}
-      </NextLink>
-    </div>
+        <span
+          className={`text-white-50 brand-gradient-1 group-active:brand-gradient-2 bg-clip-text group-hover:text-transparent ${transitionStyle}`}
+        >
+          {label}
+        </span>
+      </button>
+    </a>
   );
 }

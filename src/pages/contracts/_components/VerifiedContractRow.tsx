@@ -13,7 +13,10 @@ export default function VerifiedContractRow({
       {data.status === fixedTitle.verified && (
         <div>
           {/* desktop */}
-          <div className="hidden lg:block">
+          <div
+            data-testid={`${data.address}-desktop-verified-list`}
+            className="hidden lg:block"
+          >
             <div className="grid grid-cols-7 py-[21px]">
               <div className="flex flex-row items-center gap-x-[11px]">
                 <LinkText
@@ -42,7 +45,11 @@ export default function VerifiedContractRow({
             <div className="bg-black-600 h-[1px]" />
           </div>
 
-          <div className="hidden lg:hidden md:block">
+          {/* tablet */}
+          <div
+            data-testid={`${data.address}-tablet-verified-list`}
+            className="hidden lg:hidden md:block"
+          >
             <div className="grid grid-cols-4 grid-rows-2 py-5 gap-y-3">
               <div className="flex flex-row items-center gap-x-[11px]">
                 <LinkText
@@ -72,7 +79,10 @@ export default function VerifiedContractRow({
           </div>
 
           {/* mobile */}
-          <div className="lg:hidden md:hidden sm:block">
+          <div
+            data-testid={`${data.address}-mobile-verified-list`}
+            className="lg:hidden md:hidden sm:block"
+          >
             <div className="grid grid-rows-5 py-6 gap-y-4">
               <div className="flex flex-row items-center gap-x-[11px]">
                 <LinkText

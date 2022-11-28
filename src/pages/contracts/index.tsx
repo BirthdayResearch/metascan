@@ -15,7 +15,7 @@ export default function VerifiedContracts({ data }) {
         <div className="lg:p-10 md:p-10 px-5 py-11">
           <div className="flex flex-col md:flex-row justify-between md:items-center lg:mb-[42px] md:mb-[45px] mb-12 lg:mt-[19px] md:mt-4">
             <h2
-              data-testid="address-txn-list-title"
+              data-testid="verified-contract-list-title"
               className="font-bold text-xl text-white-50"
             >
               {fixedTitle.title}

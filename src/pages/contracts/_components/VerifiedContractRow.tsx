@@ -14,14 +14,14 @@ export default function VerifiedContractRow({
         <div>
           {/* desktop */}
           <div
-            data-testid={`${data.address}-desktop-verified-list`}
+            data-testid={`${data.contract}-desktop-verified-list`}
             className="hidden lg:block"
           >
             <div className="grid grid-cols-7 py-[21px]">
               <div className="flex flex-row items-center gap-x-[11px]">
                 <LinkText
-                  label={truncateTextFromMiddle(data.address, 4)}
-                  href={`/address/${data.address}`}
+                  label={truncateTextFromMiddle(data.contract, 4)}
+                  href={`/contract/${data.contract}`}
                 />
                 <VerifiedGreenTickIcon size={18} />
               </div>
@@ -47,14 +47,14 @@ export default function VerifiedContractRow({
 
           {/* tablet */}
           <div
-            data-testid={`${data.address}-tablet-verified-list`}
+            data-testid={`${data.contract}-tablet-verified-list`}
             className="hidden lg:hidden md:block"
           >
             <div className="grid grid-cols-4 grid-rows-2 py-5 gap-y-3">
               <div className="flex flex-row items-center gap-x-[11px]">
                 <LinkText
-                  label={truncateTextFromMiddle(data.address, 4)}
-                  href={`/address/${data.address}`}
+                  label={truncateTextFromMiddle(data.contract, 4)}
+                  href={`/contract/${data.contract}`}
                 />
                 <VerifiedGreenTickIcon size={18} />
               </div>
@@ -80,14 +80,14 @@ export default function VerifiedContractRow({
 
           {/* mobile */}
           <div
-            data-testid={`${data.address}-mobile-verified-list`}
+            data-testid={`${data.contract}-mobile-verified-list`}
             className="lg:hidden md:hidden sm:block"
           >
             <div className="grid grid-rows-5 py-6 gap-y-4">
               <div className="flex flex-row items-center gap-x-[11px]">
                 <LinkText
-                  label={truncateTextFromMiddle(data.address, 4)}
-                  href={`/address/${data.address}`}
+                  label={truncateTextFromMiddle(data.contract, 4)}
+                  href={`/contract/${data.contract}`}
                 />
                 <VerifiedGreenTickIcon size={18} />
               </div>

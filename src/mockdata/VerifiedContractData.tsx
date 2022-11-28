@@ -1,5 +1,5 @@
 export interface VerifiedContract {
-  address: string;
+  contract: string;
   contractName: string;
   version: string;
   compiler: string;
@@ -14,7 +14,7 @@ export enum VerifiedContractStatus {
 
 export const verifiedContracts: VerifiedContract[] = [
   {
-    address: "1x1c19380x0c19380x0c1938",
+    contract: "1x1c19380x0c19380x0c1938",
     contractName: "DRliveSey",
     version: "0.8.12",
     compiler: "Solidity",
@@ -22,7 +22,7 @@ export const verifiedContracts: VerifiedContract[] = [
     status: VerifiedContractStatus.Verified,
   },
   {
-    address: "0x3c19380x0c19380x0c1938",
+    contract: "0x3c19380x0c19380x0c1938",
     contractName: "DRliveSey",
     version: "0.8.12",
     compiler: "Solidity",
@@ -30,7 +30,7 @@ export const verifiedContracts: VerifiedContract[] = [
     status: VerifiedContractStatus.Verified,
   },
   {
-    address: "0x2c19380x0c19380x0c1938",
+    contract: "0x2c19380x0c19380x0c1938",
     contractName: "DRliveSey",
     version: "0.8.12",
     compiler: "Solidity",
@@ -38,7 +38,7 @@ export const verifiedContracts: VerifiedContract[] = [
     status: VerifiedContractStatus.Verified,
   },
   {
-    address: "0x4c19380x0c19380x0c1938",
+    contract: "0x4c19380x0c19380x0c1938",
     contractName: "DRliveSey",
     version: "0.8.12",
     compiler: "Solidity",
@@ -46,7 +46,7 @@ export const verifiedContracts: VerifiedContract[] = [
     status: VerifiedContractStatus.Verified,
   },
   {
-    address: "0x5c19380x0c19380x0c1938",
+    contract: "0x5c19380x0c19380x0c1938",
     contractName: "DRliveSey",
     version: "0.8.12",
     compiler: "Solidity",
@@ -54,7 +54,7 @@ export const verifiedContracts: VerifiedContract[] = [
     status: VerifiedContractStatus.Verified,
   },
   {
-    address: "0x6c19380x0c19380x0c1938",
+    contract: "0x6c19380x0c19380x0c1938",
     contractName: "DRliveSey",
     version: "0.8.12",
     compiler: "Solidity",
@@ -62,7 +62,7 @@ export const verifiedContracts: VerifiedContract[] = [
     status: VerifiedContractStatus.Verified,
   },
   {
-    address: "0x7c19380x0c19380x0c1938",
+    contract: "0x7c19380x0c19380x0c1938",
     contractName: "DRliveSey",
     version: "0.8.12",
     compiler: "Solidity",
@@ -70,7 +70,23 @@ export const verifiedContracts: VerifiedContract[] = [
     status: VerifiedContractStatus.Verified,
   },
   {
-    address: "0x8c19380x0c19380x0c1938",
+    contract: "0x8c19380x0c19380x0c1938",
+    contractName: "DRliveSey",
+    version: "0.8.12",
+    compiler: "Solidity",
+    verifiedDate: "11/12/2023",
+    status: VerifiedContractStatus.Verified,
+  },
+  {
+    contract: "0x9c19380x0c19380x0c1938",
+    contractName: "DRliveSey",
+    version: "0.8.12",
+    compiler: "Solidity",
+    verifiedDate: "11/12/2023",
+    status: VerifiedContractStatus.Verified,
+  },
+  {
+    contract: "0x10c19380x0c19380x0c1938",
     contractName: "DRliveSey",
     version: "0.8.12",
     compiler: "Solidity",

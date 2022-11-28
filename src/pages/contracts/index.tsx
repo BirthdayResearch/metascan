@@ -32,7 +32,7 @@ export default function VerifiedContracts({ data }) {
           <CursorPagination
             pages={data.verifiedContractPages}
             path="/contracts/"
-            className="flex w-full md:justify-end mt-12 md:mt-10"
+            className="flex w-full md:justify-end mt-12 md:mt-10 lg:mb-4 md:mb-[19.5px]"
           />
         </div>
       </GradientCardContainer>

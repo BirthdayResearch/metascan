@@ -27,7 +27,7 @@ export default function VerifiedContracts({ data }) {
             />
           </div>
           {data.verifiedContracts.map((item) => (
-            <VerifiedContractRow key={item.address} data={item} />
+            <VerifiedContractRow key={item.contract} data={item} />
           ))}
           <CursorPagination
             pages={data.verifiedContractPages}

@@ -1,5 +1,4 @@
 import LinkText from "@components/commons/LinkText";
-import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import { VerifiedContract } from "mockdata/VerifiedContractData";
 import { truncateTextFromMiddle } from "shared/textHelper";
 
@@ -18,13 +17,14 @@ export default function VerifiedContractRow({
             className="hidden lg:block"
           >
             <div className="grid grid-cols-7 py-[21px]">
-              <div className="flex flex-row items-center gap-x-[11px]">
+              <div className="flex flex-row items-center">
                 <LinkText
                   label={truncateTextFromMiddle(data.contract, 4)}
                   href={`/contract/${data.contract}`}
+                  customStyle="tracking-[0.01em]"
                 />
               </div>
-              <div className="flex flex-row gap-x-[4px] col-span-2 justify-center pr-16">
+              <div className="flex flex-row gap-x-[4px] col-span-2 justify-center pr-20">
                 <ListTitle title={fixedTitle.contractName} />
                 <ListBody body={data.contractName} />
               </div>
@@ -54,8 +54,8 @@ export default function VerifiedContractRow({
                 <LinkText
                   label={truncateTextFromMiddle(data.contract, 4)}
                   href={`/contract/${data.contract}`}
+                  customStyle="tracking-[0.01em]"
                 />
-                <VerifiedGreenTickIcon size={18} />
               </div>
               <div className="flex flex-row gap-x-[4px] col-span-2 ">
                 <ListTitle title={fixedTitle.contractName} />
@@ -87,8 +87,8 @@ export default function VerifiedContractRow({
                 <LinkText
                   label={truncateTextFromMiddle(data.contract, 4)}
                   href={`/contract/${data.contract}`}
+                  customStyle="tracking-[0.01em]"
                 />
-                <VerifiedGreenTickIcon size={18} />
               </div>
               <div className="flex flex-row gap-x-[4px]">
                 <ListTitle title={fixedTitle.contractName} />

@@ -11,7 +11,7 @@ export default function VerifiedContracts({ data }) {
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
-      <GradientCardContainer className="relative z-10">
+      <GradientCardContainer className="relative">
         <div className="lg:p-10 md:p-10 px-5 py-11">
           <div className="flex flex-col md:flex-row justify-between md:items-center lg:mb-[42px] md:mb-[45px] mb-12 lg:mt-[19px] md:mt-4">
             <h2

@@ -24,10 +24,10 @@ import { MdOutlineQrCode } from "react-icons/md";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { tokens, tokenPages, Token } from "mockdata/TokenData";
 import { walletAddressData } from "mockdata/WalletAddressData";
+import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
 import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
 import TokenRow from "./_components/TokenRow";
-import TokenSearchDropDown from "./_components/TokenSearchDropDown";
-import WalletAddressQRCode from "./_components/WalletAddressQRCode";
+import QrCode from "../../components/commons/QrCode";
 
 function Address() {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
@@ -36,7 +36,7 @@ function Address() {
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
-      <GradientCardContainer className="relative z-10">
+      <GradientCardContainer className="relative z-[1]">
         <div className="lg:p-10 md:p-10 px-5 py-6">
           <div
             className="flex flex-row pb-[9px]"
@@ -56,9 +56,10 @@ function Address() {
         </div>
       </GradientCardContainer>
       {isQrCodeClicked && (
-        <WalletAddressQRCode
+        <QrCode
           data-testid="qr-code"
           address={aid}
+          href={`/address/${aid}`}
           onCloseClick={setIsQrCodeClicked}
         />
       )}

@@ -1,6 +1,6 @@
 import React from "react";
 import NumericFormat from "@components/commons/NumericFormat";
-import { getTokenIcon } from "../../../shared/getTokenIcon";
+import { getTokenIcon } from "../../shared/getTokenIcon";
 
 interface DropDownTokenRowProps {
   value: number;

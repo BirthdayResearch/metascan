@@ -23,7 +23,6 @@ export default function VerifiedContractRow({
                   label={truncateTextFromMiddle(data.contract, 4)}
                   href={`/contract/${data.contract}`}
                 />
-                <VerifiedGreenTickIcon size={18} />
               </div>
               <div className="flex flex-row gap-x-[4px] col-span-2 justify-center pr-16">
                 <ListTitle title={fixedTitle.contractName} />

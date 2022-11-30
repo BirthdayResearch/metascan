@@ -48,7 +48,7 @@ export default function VerifiedContractRow({
         className="hidden lg:hidden md:block"
       >
         <div className="grid grid-cols-4 grid-rows-2 py-5 gap-y-3">
-          <div className="flex flex-row items-center gap-x-[11px]">
+          <div className="flex flex-row gap-x-[11px]">
             <LinkText
               label={truncateTextFromMiddle(data.contract, 4)}
               href={`/contract/${data.contract}`}
@@ -81,7 +81,7 @@ export default function VerifiedContractRow({
         className="md:hidden sm:block"
       >
         <div className="grid grid-rows-5 py-6 gap-y-4">
-          <div className="flex flex-row items-center gap-x-[11px]">
+          <div className="flex flex-row gap-x-[11px]">
             <LinkText
               label={truncateTextFromMiddle(data.contract, 4)}
               href={`/contract/${data.contract}`}

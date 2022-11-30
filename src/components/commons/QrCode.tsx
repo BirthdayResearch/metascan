@@ -15,6 +15,12 @@ interface QrCodeProps {
 
 export default function QrCode({ href, address, onCloseClick }: QrCodeProps) {
   const [isWalletAddressCopied, setIsWalletAddressCopied] = useState(false);
+  const fullPath =
+    window.location.href.substring(
+      0,
+      window.location.href.lastIndexOf("/") + 1
+    ) + address;
+
   return (
     <div className="fixed backdrop-blur z-20 inset-0 pt-[104px] w-screen h-screen flex flex-col gap-y-[10px] items-center">
       <IoCloseOutline
@@ -59,7 +65,7 @@ export default function QrCode({ href, address, onCloseClick }: QrCodeProps) {
       <QRCode
         data-testid="wallet-qr-code-image"
         size={245}
-        value={href}
+        value={fullPath}
         viewBox="0 0 245 245"
       />
     </div>

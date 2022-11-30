@@ -1,190 +1,98 @@
 import { Dispatch, SetStateAction } from "react";
 
 interface ContractOptionsProps {
-  isTransactionClicked: boolean;
-  isCodeClicked: boolean;
-  isTokenClicked: boolean;
-  setIsTransactionClicked: Dispatch<SetStateAction<boolean>>;
-  setIsCodeClicked: Dispatch<SetStateAction<boolean>>;
-  setIsTokenClicked: Dispatch<SetStateAction<boolean>>;
+  selectedTab: ContractOptionsTitle;
+  setSelectedTab: Dispatch<SetStateAction<ContractOptionsTitle>>;
 }
 
 export default function ContractOptions({
-  isTransactionClicked,
-  isCodeClicked,
-  isTokenClicked,
-  setIsTransactionClicked,
-  setIsCodeClicked,
-  setIsTokenClicked,
+  selectedTab,
+  setSelectedTab,
 }: ContractOptionsProps) {
   return (
     <div className="flex flex-row gap-x-4 md:pt-[3.67px] pt-[19.67px]">
-      {isCodeClicked ? (
+      {selectedTab === ContractOptionsTitle.Code ? (
         <div>
-          <div
+          <button
+            type="button"
             className="text-white-50 font-medium"
             data-testid="contract-code-options-clicked-title"
-            role="button"
-            tabIndex={0}
-            onKeyDown={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Code
-              )
-            }
             onClick={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Code
-              )
+              onOptionsClick(setSelectedTab, ContractOptionsTitle.Code)
             }
           >
             {ContractOptionsTitle.Code}
-          </div>
+          </button>
           <div className="brand-gradient-1 h-1 mt-[19.33px]" />
         </div>
       ) : (
         <div>
-          <div
+          <button
+            type="button"
             className="text-white-700 font-medium"
             data-testid="contract-code-options-title"
-            role="button"
-            tabIndex={0}
-            onKeyDown={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Code
-              )
-            }
             onClick={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Code
-              )
+              onOptionsClick(setSelectedTab, ContractOptionsTitle.Code)
             }
           >
             {ContractOptionsTitle.Code}
-          </div>
+          </button>
         </div>
       )}
-      {isTransactionClicked ? (
+      {selectedTab === ContractOptionsTitle.Transactions ? (
         <div>
-          <div
+          <button
+            type="button"
             className="text-white-50 font-medium"
             data-testid="contract-transactions-options-clicked-title"
-            role="button"
-            tabIndex={0}
-            onKeyDown={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Transactions
-              )
-            }
             onClick={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Transactions
-              )
+              onOptionsClick(setSelectedTab, ContractOptionsTitle.Transactions)
             }
           >
             {ContractOptionsTitle.Transactions}
-          </div>
+          </button>
           <div className="brand-gradient-1 h-1 mt-[19.33px]" />
         </div>
       ) : (
         <div>
-          <div
+          <button
+            type="button"
             className="text-white-700 font-medium"
             data-testid="contract-transactions-options-title"
-            role="button"
-            tabIndex={0}
-            onKeyDown={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Transactions
-              )
-            }
             onClick={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Transactions
-              )
+              onOptionsClick(setSelectedTab, ContractOptionsTitle.Transactions)
             }
           >
             {ContractOptionsTitle.Transactions}
-          </div>
+          </button>
         </div>
       )}
-      {isTokenClicked ? (
+      {selectedTab === ContractOptionsTitle.Tokens ? (
         <div>
-          <div
+          <button
+            type="button"
             className="text-white-50 font-medium"
             data-testid="contract-token-options-clicked-title"
-            role="button"
-            tabIndex={0}
-            onKeyDown={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Tokens
-              )
-            }
             onClick={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Tokens
-              )
+              onOptionsClick(setSelectedTab, ContractOptionsTitle.Tokens)
             }
           >
             {ContractOptionsTitle.Tokens}
-          </div>
+          </button>
           <div className="brand-gradient-1 h-1 mt-[19.33px]" />
         </div>
       ) : (
         <div>
-          <div
+          <button
+            type="button"
             className="text-white-700 font-medium"
             data-testid="contract-token-options-title"
-            role="button"
-            tabIndex={0}
-            onKeyDown={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Tokens
-              )
-            }
             onClick={() =>
-              onOptionsClick(
-                setIsTransactionClicked,
-                setIsCodeClicked,
-                setIsTokenClicked,
-                ContractOptionsTitle.Tokens
-              )
+              onOptionsClick(setSelectedTab, ContractOptionsTitle.Tokens)
             }
           >
             {ContractOptionsTitle.Tokens}
-          </div>
+          </button>
         </div>
       )}
     </div>
@@ -192,31 +100,21 @@ export default function ContractOptions({
 }
 
 const onOptionsClick = (
-  setIsTransactionClicked: Dispatch<SetStateAction<boolean>>,
-  setIsCodeClicked: Dispatch<SetStateAction<boolean>>,
-  setIsTokenClicked: Dispatch<SetStateAction<boolean>>,
+  setSelectedTab: Dispatch<SetStateAction<ContractOptionsTitle>>,
   itemClicked: ContractOptionsTitle
 ) => {
   switch (itemClicked) {
     case ContractOptionsTitle.Code:
-      setIsTransactionClicked(false);
-      setIsTokenClicked(false);
-      setIsCodeClicked(true);
+      setSelectedTab(ContractOptionsTitle.Code);
       break;
     case ContractOptionsTitle.Transactions:
-      setIsTransactionClicked(true);
-      setIsTokenClicked(false);
-      setIsCodeClicked(false);
+      setSelectedTab(ContractOptionsTitle.Transactions);
       break;
     case ContractOptionsTitle.Tokens:
-      setIsTransactionClicked(false);
-      setIsTokenClicked(true);
-      setIsCodeClicked(false);
+      setSelectedTab(ContractOptionsTitle.Tokens);
       break;
     default:
-      setIsTransactionClicked(false);
-      setIsTokenClicked(false);
-      setIsCodeClicked(true);
+      setSelectedTab(ContractOptionsTitle.Code);
       break;
   }
 };

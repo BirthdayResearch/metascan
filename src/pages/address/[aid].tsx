@@ -25,6 +25,7 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import { tokens, tokenPages, Token } from "mockdata/TokenData";
 import { walletAddressData } from "mockdata/WalletAddressData";
 import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
+import { sleep } from "shared/sleep";
 import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
 import TokenRow from "./_components/TokenRow";
 import QrCode from "../../components/commons/QrCode";
@@ -244,72 +245,56 @@ function WalletSegmentTwo() {
       {isTransactionClicked ? (
         <div className="flex flex-row gap-x-6">
           <div className="flex flex-col">
-            <div
+            <button
+              type="button"
               className="text-white-50 font-medium"
               data-testid="wallet-transactions-options-clicked-title"
-              role="button"
-              tabIndex={0}
-              onKeyDown={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.transactions)
-              }
               onClick={() =>
                 onOptionsClick(setIsTransactionClicked, fixedTitle.transactions)
               }
             >
               {fixedTitle.transactions}
-            </div>
+            </button>
             <div className="brand-gradient-1 h-1 mt-[19.33px]" />
           </div>
           <div className="flex flex-col">
-            <div
+            <button
+              type="button"
               className="text-white-700 font-medium"
               data-testid="wallet-tokens-options-title"
-              role="button"
-              tabIndex={0}
-              onKeyDown={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.tokens)
-              }
               onClick={() =>
                 onOptionsClick(setIsTransactionClicked, fixedTitle.tokens)
               }
             >
               {fixedTitle.tokens}
-            </div>
+            </button>
           </div>
         </div>
       ) : (
         <div className="flex flex-row gap-x-6">
           <div className="flex flex-col">
-            <div
+            <button
+              type="button"
               className="text-white-700 font-medium"
               data-testid="wallet-transactions-options-title"
-              role="button"
-              tabIndex={0}
-              onKeyDown={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.transactions)
-              }
               onClick={() =>
                 onOptionsClick(setIsTransactionClicked, fixedTitle.transactions)
               }
             >
               {fixedTitle.transactions}
-            </div>
+            </button>
           </div>
           <div className="flex flex-col">
-            <div
+            <button
+              type="button"
               className="text-white-50 font-medium"
               data-testid="wallet-token-options-clicked-title"
-              role="button"
-              tabIndex={0}
-              onKeyDown={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.tokens)
-              }
               onClick={() =>
                 onOptionsClick(setIsTransactionClicked, fixedTitle.tokens)
               }
             >
               {fixedTitle.tokens}
-            </div>
+            </button>
             <div className="brand-gradient-1 h-1 mt-[19.33px]" />
           </div>
         </div>
@@ -593,11 +578,6 @@ const fixedTitle = {
   value: "Value",
   contractAddress: "Contract Address",
 };
-
-const sleep = (ms: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
 
 const onCopyAddressIconClick = async (
   onTextClick: Dispatch<SetStateAction<boolean>>,

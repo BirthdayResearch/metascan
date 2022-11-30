@@ -13,6 +13,7 @@ import { MdOutlineQrCode } from "react-icons/md";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import QrCode from "@components/commons/QrCode";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
+import { sleep } from "shared/sleep";
 import ContractOptions from "./_components/ContractOptions";
 import ContractTokensList from "./_components/ContractTokensList";
 import ContractTransactionsList from "./_components/ContractTransactionsList";
@@ -44,8 +45,7 @@ export default function VerifiedContract({ data }) {
           />
         </div>
       </GradientCardContainer>
-      <div className="mt-6" />
-      <GradientCardContainer className="relative">
+      <GradientCardContainer className="relative mt-6">
         <div className="md:p-10 px-5 py-10">
           <ContractSegmentTwo data={data} />
         </div>
@@ -142,27 +142,21 @@ function ContractSegmentOne({
 }
 
 function ContractSegmentTwo({ data }) {
-  const [isTransactionClicked, setIsTransactionClicked] = useState(false);
-  const [isCodeClicked, setIsCodeClicked] = useState(true);
-  const [isTokenClicked, setIsTokenClicked] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(ContractOptionsTitle.Code);
 
   return (
     <div>
       <ContractOptions
-        isTransactionClicked={isTransactionClicked}
-        isCodeClicked={isCodeClicked}
-        isTokenClicked={isTokenClicked}
-        setIsTransactionClicked={setIsTransactionClicked}
-        setIsCodeClicked={setIsCodeClicked}
-        setIsTokenClicked={setIsTokenClicked}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
       />
-      {isTransactionClicked && (
+      {selectedTab === ContractOptionsTitle.Transactions && (
         <ContractTransactionsList
           contractTransactions={data.transactions}
           contractTransactionPages={data.pages}
         />
       )}
-      {isTokenClicked && (
+      {selectedTab === ContractOptionsTitle.Tokens && (
         <ContractTokensList
           contractTokenList={data.tokens}
           contractTokenListPage={data.tokenPages}
@@ -208,11 +202,6 @@ export async function getServerSideProps() {
   return { props: { data } };
 }
 
-const sleep = (ms: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-
 const onCopyAddressIconClick = async (
   onTextClick: Dispatch<SetStateAction<boolean>>,
   address: string
@@ -228,3 +217,9 @@ const onQrCodeClick = (
 ) => {
   setIsQrCodeClicked(true);
 };
+
+enum ContractOptionsTitle {
+  Code = "Code",
+  Transactions = "Transactions",
+  Tokens = "Tokens",
+}

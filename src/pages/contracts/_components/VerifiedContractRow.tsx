@@ -10,7 +10,7 @@ export default function VerifiedContractRow({
   return (
     <div>
       {data.status === fixedTitle.verified && (
-        <div>
+        <>
           {/* desktop */}
           <div
             data-testid={`${data.contract}-desktop-verified-list`}
@@ -109,7 +109,7 @@ export default function VerifiedContractRow({
             </div>
             <div className="bg-black-600 h-[1px]" />
           </div>
-        </div>
+        </>
       )}
     </div>
   );

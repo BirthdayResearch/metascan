@@ -80,7 +80,7 @@ export default function VerifiedContractRow({
           {/* mobile */}
           <div
             data-testid={`${data.contract}-mobile-verified-list`}
-            className="lg:hidden md:hidden sm:block"
+            className="md:hidden sm:block"
           >
             <div className="grid grid-rows-5 py-6 gap-y-4">
               <div className="flex flex-row items-center gap-x-[11px]">

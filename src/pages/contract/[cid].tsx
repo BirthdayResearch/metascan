@@ -86,7 +86,11 @@ function ContractSegmentOne({
               customStyle="tracking-[0.01em]"
             />
             <GreenTickIcon data-testid="contract-copied-green-tick-icon" />
-            <MdOutlineQrCode className="text-white-50" />
+            <MdOutlineQrCode
+              role="button"
+              onClick={() => onQrCodeClick(setIsQrCodeClicked)}
+              className="text-white-50"
+            />
           </div>
         ) : (
           <div className="flex flex-row gap-x-2.5 items-center">

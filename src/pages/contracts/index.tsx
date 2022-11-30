@@ -4,6 +4,7 @@ import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import {
   verifiedContractPages,
   verifiedContracts,
+  VerifiedContractStatus,
 } from "mockdata/VerifiedContractData";
 import VerifiedContractRow from "./_components/VerifiedContractRow";
 
@@ -26,7 +27,7 @@ export default function VerifiedContracts({ data }) {
               className="justify-end mt-5 md:mt-0"
             />
           </div>
-          {data.verifiedContracts.map((item) => (
+          {data.filteredVerifiedContracts.map((item) => (
             <VerifiedContractRow key={item.contract} data={item} />
           ))}
           <CursorPagination
@@ -45,12 +46,12 @@ const fixedTitle = {
 };
 
 export async function getServerSideProps() {
-  // Fetch data from external API
+  const filteredVerifiedContracts = verifiedContracts.filter(
+    (item) => item.status === VerifiedContractStatus.Verified
+  );
   const data = {
-    verifiedContracts,
+    filteredVerifiedContracts,
     verifiedContractPages,
   };
-
-  // Pass data to the page via props
   return { props: { data } };
 }

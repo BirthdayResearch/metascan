@@ -49,7 +49,7 @@ export default function TokenRow({ data }: { data: Token }) {
           <div className="col-span-2 text-right">
             <LinkText
               label={truncateTextFromMiddle(data.contractAddress, 4)}
-              href={`/address/${data.contractAddress}`}
+              href={`/contract/${data.contractAddress}`}
             />
           </div>
         </div>

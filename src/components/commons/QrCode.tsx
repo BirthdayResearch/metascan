@@ -8,19 +8,23 @@ import QRCode from "react-qr-code";
 import { truncateTextFromMiddle } from "shared/textHelper";
 
 interface QrCodeProps {
+  href: string;
   address: string;
   onCloseClick: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function WalletAddressQRCode({
-  address,
-  onCloseClick,
-}: QrCodeProps) {
+export default function QrCode({ href, address, onCloseClick }: QrCodeProps) {
   const [isWalletAddressCopied, setIsWalletAddressCopied] = useState(false);
+  const fullPath =
+    window.location.href.substring(
+      0,
+      window.location.href.lastIndexOf("/") + 1
+    ) + address;
+
   return (
     <div className="fixed backdrop-blur z-20 inset-0 pt-[104px] w-screen h-screen flex flex-col gap-y-[10px] items-center">
       <IoCloseOutline
-        data-testid="wallet-qr-close-button"
+        data-testid="qr-close-button"
         role="button"
         onClick={() => {
           onCloseClick(false);
@@ -34,7 +38,7 @@ export default function WalletAddressQRCode({
             <LinkText
               testId="wallet-id-copied"
               label={fixedTitle.copied}
-              href={`/address/${address}`}
+              href={href}
               customStyle="tracking-[0.01em]"
             />
             <GreenTickIcon data-testid="qr-code-address-copied-green-tick-icon" />
@@ -44,7 +48,7 @@ export default function WalletAddressQRCode({
             <LinkText
               testId="wallet-id"
               label={truncateTextFromMiddle(address, 8)}
-              href={`/address/${address}`}
+              href={href}
               customStyle="tracking-[0.01em]"
             />
             <FiCopy
@@ -61,7 +65,7 @@ export default function WalletAddressQRCode({
       <QRCode
         data-testid="wallet-qr-code-image"
         size={245}
-        value={`/address/${address}`}
+        value={fullPath}
         viewBox="0 0 245 245"
       />
     </div>

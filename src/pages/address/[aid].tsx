@@ -24,10 +24,11 @@ import { MdOutlineQrCode } from "react-icons/md";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { tokens, tokenPages, Token } from "mockdata/TokenData";
 import { walletAddressData } from "mockdata/WalletAddressData";
+import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
+import { sleep } from "shared/sleep";
 import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
 import TokenRow from "./_components/TokenRow";
-import TokenSearchDropDown from "./_components/TokenSearchDropDown";
-import WalletAddressQRCode from "./_components/WalletAddressQRCode";
+import QrCode from "../../components/commons/QrCode";
 
 function Address() {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
@@ -36,7 +37,7 @@ function Address() {
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
-      <GradientCardContainer className="relative z-10">
+      <GradientCardContainer className="relative z-[1]">
         <div className="lg:p-10 md:p-10 px-5 py-6">
           <div
             className="flex flex-row pb-[9px]"
@@ -56,9 +57,10 @@ function Address() {
         </div>
       </GradientCardContainer>
       {isQrCodeClicked && (
-        <WalletAddressQRCode
+        <QrCode
           data-testid="qr-code"
           address={aid}
+          href={`/address/${aid}`}
           onCloseClick={setIsQrCodeClicked}
         />
       )}
@@ -94,7 +96,11 @@ function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
             customStyle="tracking-[0.01em]"
           />
           <GreenTickIcon data-testid="wallet-address-copied-green-tick-icon" />
-          <MdOutlineQrCode className="text-white-50" />
+          <MdOutlineQrCode
+            role="button"
+            onClick={() => onQrCodeClick(setIsQrCodeClicked)}
+            className="text-white-50"
+          />
         </div>
       ) : (
         <div className="flex flex-row gap-x-2.5 items-center">
@@ -239,72 +245,56 @@ function WalletSegmentTwo() {
       {isTransactionClicked ? (
         <div className="flex flex-row gap-x-6">
           <div className="flex flex-col">
-            <div
+            <button
+              type="button"
               className="text-white-50 font-medium"
               data-testid="wallet-transactions-options-clicked-title"
-              role="button"
-              tabIndex={0}
-              onKeyDown={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.transactions)
-              }
               onClick={() =>
                 onOptionsClick(setIsTransactionClicked, fixedTitle.transactions)
               }
             >
               {fixedTitle.transactions}
-            </div>
+            </button>
             <div className="brand-gradient-1 h-1 mt-[19.33px]" />
           </div>
           <div className="flex flex-col">
-            <div
+            <button
+              type="button"
               className="text-white-700 font-medium"
               data-testid="wallet-tokens-options-title"
-              role="button"
-              tabIndex={0}
-              onKeyDown={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.tokens)
-              }
               onClick={() =>
                 onOptionsClick(setIsTransactionClicked, fixedTitle.tokens)
               }
             >
               {fixedTitle.tokens}
-            </div>
+            </button>
           </div>
         </div>
       ) : (
         <div className="flex flex-row gap-x-6">
           <div className="flex flex-col">
-            <div
+            <button
+              type="button"
               className="text-white-700 font-medium"
               data-testid="wallet-transactions-options-title"
-              role="button"
-              tabIndex={0}
-              onKeyDown={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.transactions)
-              }
               onClick={() =>
                 onOptionsClick(setIsTransactionClicked, fixedTitle.transactions)
               }
             >
               {fixedTitle.transactions}
-            </div>
+            </button>
           </div>
           <div className="flex flex-col">
-            <div
+            <button
+              type="button"
               className="text-white-50 font-medium"
               data-testid="wallet-token-options-clicked-title"
-              role="button"
-              tabIndex={0}
-              onKeyDown={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.tokens)
-              }
               onClick={() =>
                 onOptionsClick(setIsTransactionClicked, fixedTitle.tokens)
               }
             >
               {fixedTitle.tokens}
-            </div>
+            </button>
             <div className="brand-gradient-1 h-1 mt-[19.33px]" />
           </div>
         </div>
@@ -588,11 +578,6 @@ const fixedTitle = {
   value: "Value",
   contractAddress: "Contract Address",
 };
-
-const sleep = (ms: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
 
 const onCopyAddressIconClick = async (
   onTextClick: Dispatch<SetStateAction<boolean>>,

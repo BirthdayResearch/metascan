@@ -4,7 +4,7 @@ import NumericFormat from "@components/commons/NumericFormat";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import transactionDetailData from "mockdata/TransactionDetailData";
 import LinkText from "@components/commons/LinkText";
-import { truncateTextFromMiddle } from "shared/textHelper";
+import { stringToNumber, truncateTextFromMiddle } from "shared/textHelper";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useUnitSuffix } from "hooks/useUnitSuffix";
 import { InfoIcon } from "@components/icons/InfoIcon";
@@ -113,6 +113,7 @@ function TransactionDetailSegmentOne({
   const [isToAddressCopied, setIsToAddressCopied] = useState(false);
   const [isTransactionIdCopied, setIsTransationIdCopied] = useState(false);
   const windowDimension = useWindowDimensions().width;
+  const parsedBlockNumber = stringToNumber(block);
 
   return (
     <div className="flex flex-col gap-y-10">
@@ -252,7 +253,7 @@ function TransactionDetailSegmentOne({
                 customStyle="tracking-[0.01em]"
                 testId="transaction-block"
                 label={block}
-                href={`/blocks/${block}`}
+                href={`/block/${parsedBlockNumber}`}
               />
             </div>
           </div>
@@ -405,7 +406,7 @@ function TransactionDetailSegmentOne({
               customStyle="tracking-[0.01em]"
               testId="transaction-block"
               label={block}
-              href={`/blocks/${block}`}
+              href={`/block/${parsedBlockNumber}`}
             />
           </div>
         </div>

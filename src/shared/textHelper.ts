@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 export const truncateTextFromMiddle = (text: string, length = 5): string => {
   if (text.length <= length) {
     return text;
@@ -7,3 +9,6 @@ export const truncateTextFromMiddle = (text: string, length = 5): string => {
     text.length
   )}`;
 };
+
+export const stringToNumber = (value: string): Number =>
+  new BigNumber(value.replace(",", "")).toNumber();

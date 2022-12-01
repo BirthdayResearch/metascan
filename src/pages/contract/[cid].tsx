@@ -14,7 +14,7 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import QrCode from "@components/commons/QrCode";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import { sleep } from "shared/sleep";
-import ContractOptions from "./_components/ContractOptions";
+import ContractTabs from "./_components/ContractTabs";
 import ContractTokensList from "./_components/ContractTokensList";
 import ContractTransactionsList from "./_components/ContractTransactionsList";
 import VerifiedContractSubtitle from "./_components/VerifiedContractSubtitle";
@@ -146,10 +146,7 @@ function ContractSegmentTwo({ data }) {
 
   return (
     <div>
-      <ContractOptions
-        selectedTab={selectedTab}
-        setSelectedTab={setSelectedTab}
-      />
+      <ContractTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       {selectedTab === ContractOptionsTitle.Transactions && (
         <ContractTransactionsList
           contractTransactions={data.transactions}

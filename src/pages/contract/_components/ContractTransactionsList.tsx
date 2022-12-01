@@ -5,6 +5,7 @@ import {
 import { TransactionI } from "mockdata/TransactionData";
 import { useRouter } from "next/router";
 import TransactionRow from "pages/txs/_components/TransactionRow";
+import { ContractOptionsTitle } from "./ContractOptionsTitle";
 
 interface ContractTransactionsListProps {
   contractTransactions: TransactionI[];
@@ -43,10 +44,4 @@ export default function ContractTransactionsList({
       />
     </div>
   );
-}
-
-enum ContractOptionsTitle {
-  Code = "Code",
-  Transactions = "Transactions",
-  Tokens = "Tokens",
 }

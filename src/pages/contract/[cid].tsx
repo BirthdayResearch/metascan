@@ -18,6 +18,7 @@ import ContractTabs from "./_components/ContractTabs";
 import ContractTokensList from "./_components/ContractTokensList";
 import ContractTransactionsList from "./_components/ContractTransactionsList";
 import VerifiedContractSubtitle from "./_components/VerifiedContractSubtitle";
+import { ContractOptionsTitle } from "./_components/ContractOptionsTitle";
 
 export default function VerifiedContract({ data }) {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
@@ -214,9 +215,3 @@ const onQrCodeClick = (
 ) => {
   setIsQrCodeClicked(true);
 };
-
-enum ContractOptionsTitle {
-  Code = "Code",
-  Transactions = "Transactions",
-  Tokens = "Tokens",
-}

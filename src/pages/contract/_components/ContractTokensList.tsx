@@ -16,6 +16,7 @@ import {
   useState,
 } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { ContractOptionsTitle } from "./ContractOptionsTitle";
 import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
 
 interface TokenDetailsProps {
@@ -213,12 +214,6 @@ export default function TokenDetails({
       />
     </div>
   );
-}
-
-enum ContractOptionsTitle {
-  Code = "Code",
-  Transactions = "Transactions",
-  Tokens = "Tokens",
 }
 
 const fixedTitle = {

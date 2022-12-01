@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { Dispatch, SetStateAction } from "react";
+import { ContractOptionsTitle } from "./ContractOptionsTitle";
 
 interface ContractOptionsProps {
   selectedTab: ContractOptionsTitle;
@@ -12,51 +13,36 @@ export default function ContractTabs({
 }: ContractOptionsProps) {
   return (
     <div className="flex flex-row gap-x-4 md:pt-[3.67px] pt-[19.67px]">
-      {selectedTab === ContractOptionsTitle.Code ? (
-        <ButtonTab
-          testId="contract-code-options-clicked-title"
-          active
-          tab={ContractOptionsTitle.Code}
-          setSelectedTab={setSelectedTab}
-        />
-      ) : (
-        <ButtonTab
-          testId="contract-code-options-title"
-          active={false}
-          tab={ContractOptionsTitle.Code}
-          setSelectedTab={setSelectedTab}
-        />
-      )}
-      {selectedTab === ContractOptionsTitle.Transactions ? (
-        <ButtonTab
-          testId="contract-transaction-options-clicked-title"
-          active
-          tab={ContractOptionsTitle.Transactions}
-          setSelectedTab={setSelectedTab}
-        />
-      ) : (
-        <ButtonTab
-          testId="contract-transaction-options-title"
-          active={false}
-          tab={ContractOptionsTitle.Transactions}
-          setSelectedTab={setSelectedTab}
-        />
-      )}
-      {selectedTab === ContractOptionsTitle.Tokens ? (
-        <ButtonTab
-          testId="contract-tokens-options-clicked-title"
-          active
-          tab={ContractOptionsTitle.Tokens}
-          setSelectedTab={setSelectedTab}
-        />
-      ) : (
-        <ButtonTab
-          testId="contract-tokens-options-title"
-          active={false}
-          tab={ContractOptionsTitle.Tokens}
-          setSelectedTab={setSelectedTab}
-        />
-      )}
+      <ButtonTab
+        testId={
+          selectedTab === ContractOptionsTitle.Code
+            ? "contract-code-options-clicked-title"
+            : "contract-code-options-title"
+        }
+        active={selectedTab === ContractOptionsTitle.Code}
+        tab={ContractOptionsTitle.Code}
+        setSelectedTab={setSelectedTab}
+      />
+      <ButtonTab
+        testId={
+          selectedTab === ContractOptionsTitle.Transactions
+            ? "contract-transaction-options-clicked-title"
+            : "contract-transaction-options-title"
+        }
+        active={selectedTab === ContractOptionsTitle.Transactions}
+        tab={ContractOptionsTitle.Transactions}
+        setSelectedTab={setSelectedTab}
+      />
+      <ButtonTab
+        testId={
+          selectedTab === ContractOptionsTitle.Tokens
+            ? "contract-tokens-options-clicked-title"
+            : "contract-tokens-options-title"
+        }
+        active={selectedTab === ContractOptionsTitle.Tokens}
+        tab={ContractOptionsTitle.Tokens}
+        setSelectedTab={setSelectedTab}
+      />
     </div>
   );
 }
@@ -78,12 +64,6 @@ const onOptionsClick = (
       break;
   }
 };
-
-enum ContractOptionsTitle {
-  Code = "Code",
-  Transactions = "Transactions",
-  Tokens = "Tokens",
-}
 
 function ButtonTab({
   active,

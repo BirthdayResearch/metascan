@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Dispatch, SetStateAction } from "react";
-import { ContractOptionsTitle } from "./ContractOptionsTitle";
+import { ContractOptionsTitle } from "../../../shared/contractOptionsTitle";
 
 interface ContractOptionsProps {
   selectedTab: ContractOptionsTitle;

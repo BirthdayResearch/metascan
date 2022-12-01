@@ -16,7 +16,7 @@ import {
   useState,
 } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import { ContractOptionsTitle } from "../../../shared/contractOptionsTitle";
+import { ContractOptionsTitle } from "../../../enum/contractOptionsTitle";
 import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
 
 interface TokenDetailsProps {

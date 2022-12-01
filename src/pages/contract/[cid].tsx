@@ -18,7 +18,7 @@ import ContractTabs from "./_components/ContractTabs";
 import ContractTokensList from "./_components/ContractTokensList";
 import ContractTransactionsList from "./_components/ContractTransactionsList";
 import VerifiedContractSubtitle from "./_components/VerifiedContractSubtitle";
-import { ContractOptionsTitle } from "../../shared/contractOptionsTitle";
+import { ContractOptionsTitle } from "../../enum/contractOptionsTitle";
 
 export default function VerifiedContract({ data }) {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);

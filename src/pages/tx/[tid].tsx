@@ -113,6 +113,7 @@ function TransactionDetailSegmentOne({
   const [isToAddressCopied, setIsToAddressCopied] = useState(false);
   const [isTransactionIdCopied, setIsTransationIdCopied] = useState(false);
   const windowDimension = useWindowDimensions().width;
+  const parsedBlockNumber = stringToNumber(block);
 
   return (
     <div className="flex flex-col gap-y-10">
@@ -252,7 +253,7 @@ function TransactionDetailSegmentOne({
                 customStyle="tracking-[0.01em]"
                 testId="transaction-block"
                 label={block}
-                href={`/block/${stringToNumber(block)}`}
+                href={`/block/${parsedBlockNumber}`}
               />
             </div>
           </div>
@@ -405,7 +406,7 @@ function TransactionDetailSegmentOne({
               customStyle="tracking-[0.01em]"
               testId="transaction-block"
               label={block}
-              href={`/block/${stringToNumber(block)}`}
+              href={`/block/${parsedBlockNumber}`}
             />
           </div>
         </div>

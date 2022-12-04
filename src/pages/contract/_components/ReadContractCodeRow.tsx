@@ -21,6 +21,15 @@ export default function ReadContractCodeRow({
   const [isCodeExpanded, setIsCodeExpanded] = useState(false);
   const [isPermaLinkClicked, setIsPermaLinkClicked] = useState(false);
   const count = useRef(0);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovering(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovering(false);
+  };
 
   useEffect(() => {
     count.current += 1;
@@ -88,6 +97,8 @@ export default function ReadContractCodeRow({
       </div>
       <GradientCardContainer>
         <div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           className={clsx(
             "px-[19px] py-4 ",
             isCodeExpanded ? "h-full" : "h-[482px] over"
@@ -103,7 +114,7 @@ export default function ReadContractCodeRow({
               fontSize: "12px",
               letterSpacing: "-0.04em",
               height: "100%",
-              overflowY: "scroll",
+              overflowY: isHovering ? "auto" : "hidden",
               background: `linearGradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), linearGradient(152.58deg, rgba(51, 51, 51, 0.4) -3.08%, rgba(128, 128, 128, 0.1) 77.78%)`,
               whiteSpace: "pre-line",
               display: "block",

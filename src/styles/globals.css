@@ -17,14 +17,17 @@ body {
 }
 
 @layer utilities {
+
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 
   /* To style :before and :after of button border to have color transition on hover */
@@ -58,13 +61,10 @@ body {
   /* To style button/container without using :before and :after to have color transition */
   .brand-bg-gradient-1 {
     background: linear-gradient(#000000, #000000) padding-box,
-      linear-gradient(
-          103.45deg,
-          #ff12af 22.86%,
-          #0821bb 74.53%,
-          #42f9c2 105.23%
-        )
-        border-box;
+      linear-gradient(103.45deg,
+        #ff12af 22.86%,
+        #0821bb 74.53%,
+        #42f9c2 105.23%) border-box;
   }
 
   .brand-bg-gradient-2 {
@@ -73,28 +73,22 @@ body {
   }
 
   .brand-gradient-1 {
-    background-image: linear-gradient(
-      103.45deg,
-      #ff12af 22.86%,
-      #0821bb 74.53%,
-      #42f9c2 105.23%
-    );
+    background-image: linear-gradient(103.45deg,
+        #ff12af 22.86%,
+        #0821bb 74.53%,
+        #42f9c2 105.23%);
   }
 
   .brand-gradient-2 {
-    background-image: linear-gradient(
-      103.45deg,
-      #42f9c2 3.99%,
-      #082fd4 105.23%
-    );
+    background-image: linear-gradient(103.45deg,
+        #42f9c2 3.99%,
+        #082fd4 105.23%);
   }
 
   .white-gradient-1 {
-    background-image: linear-gradient(
-      129.11deg,
-      rgba(255, 255, 255, 0.4) 6.34%,
-      rgba(255, 255, 255, 0) 45.98%
-    );
+    background-image: linear-gradient(129.11deg,
+        rgba(255, 255, 255, 0.4) 6.34%,
+        rgba(255, 255, 255, 0) 45.98%);
   }
 
   .black-gradient-1-shadow {
@@ -129,7 +123,7 @@ video {
   clip-path: inset(1px 1px);
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 8px;
 }
 
@@ -141,28 +135,22 @@ video {
 ::-webkit-scrollbar-track {
   box-shadow: rgb(55 47 71) 0px 0px 5px inset;
   border-radius: 10px;
-}
+} */
 
 .brand-gradient-1 {
-  background-image: linear-gradient(
-    103.45deg,
-    #ff12af 22.86%,
-    #0821bb 74.53%,
-    #42f9c2 105.23%
-  );
+  background-image: linear-gradient(103.45deg,
+      #ff12af 22.86%,
+      #0821bb 74.53%,
+      #42f9c2 105.23%);
 }
 
 .black-gradient-1 {
-  background-image: linear-gradient(
-      0deg,
+  background-image: linear-gradient(0deg,
       rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0.4)
-    ),
-    linear-gradient(
-      152.58deg,
+      rgba(0, 0, 0, 0.4)),
+    linear-gradient(152.58deg,
       rgba(51, 51, 51, 0.4) -3.08%,
-      rgba(128, 128, 128, 0.1) 77.78%
-    );
+      rgba(128, 128, 128, 0.1) 77.78%);
 }
 
 .black-gradient-2 {
@@ -174,4 +162,8 @@ video {
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
+}
+
+#contractInputID::placeholder {
+  color: #FFFFFF
 }

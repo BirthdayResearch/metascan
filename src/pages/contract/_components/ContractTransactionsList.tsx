@@ -5,7 +5,7 @@ import {
 import { TransactionI } from "mockdata/TransactionData";
 import { useRouter } from "next/router";
 import TransactionRow from "pages/txs/_components/TransactionRow";
-import { ContractOptionsTitle } from "../../../shared/contractOptionsTitle";
+import { ContractOptionsTitle } from "../../../enum/contractOptionsTitle";
 
 interface ContractTransactionsListProps {
   contractTransactions: TransactionI[];

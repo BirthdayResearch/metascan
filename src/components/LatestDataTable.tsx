@@ -6,7 +6,7 @@ import { FiBox } from "react-icons/fi";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { getDuration } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
-import Button from "./commons/Button";
+import LinkButton from "./commons/LinkButton";
 import GradientCardContainer from "./commons/GradientCardContainer";
 import LinkText from "./commons/LinkText";
 import NumericFormat from "./commons/NumericFormat";
@@ -86,7 +86,7 @@ export default function LatestDataTable({
             </div>
             <div className="pt-10 md:pt-0 md:col-span-3 md:col-end-auto">
               <div className="md:flex md:justify-end md:text-rightt">
-                <Button
+                <LinkButton
                   testId={`view-${type}`}
                   label={`View all ${type}`}
                   href={listPageUrl}

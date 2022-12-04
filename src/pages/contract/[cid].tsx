@@ -3,7 +3,7 @@ import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import { verifiedContractData } from "mockdata/ContractData";
+import { readContractPages, verifiedContractData } from "mockdata/ContractData";
 import { pages, transactions } from "mockdata/TransactionData";
 import { tokenPages, tokens } from "mockdata/TokenData";
 import { useRouter } from "next/router";
@@ -14,11 +14,12 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import QrCode from "@components/commons/QrCode";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import { sleep } from "shared/sleep";
+import { ContractOptionsTitle } from "shared/contractOptionsTitle";
 import ContractTabs from "./_components/ContractTabs";
 import ContractTokensList from "./_components/ContractTokensList";
 import ContractTransactionsList from "./_components/ContractTransactionsList";
 import VerifiedContractSubtitle from "./_components/VerifiedContractSubtitle";
-import { ContractOptionsTitle } from "../../shared/contractOptionsTitle";
+import ContractCode from "./_components/ContractCode";
 
 export default function VerifiedContract({ data }) {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
@@ -163,6 +164,19 @@ function ContractSegmentTwo({ data }) {
           networth={data.verifiedContractData.networth}
         />
       )}
+      {selectedTab === ContractOptionsTitle.Code && (
+        <ContractCode
+          contractName={data.verifiedContractData.contractName}
+          compilerVersion={data.verifiedContractData.compilerVersion}
+          evmVersion={data.verifiedContractData.evmVersion}
+          optimizedEnabled={data.verifiedContractData.optimizationEnabled}
+          optimizationRuns={data.verifiedContractData.optimazationRuns}
+          verifiedAt={data.verifiedContractData.verifiedAt}
+          codes={data.verifiedContractData.codes}
+          pages={data.readContractPages}
+          writeContractData={data.verifiedContractData.writeContractData}
+        />
+      )}
     </div>
   );
 }
@@ -195,6 +209,7 @@ export async function getServerSideProps() {
     transactions,
     tokenPages,
     tokens,
+    readContractPages,
   };
   // Pass data to the page via props
   return { props: { data } };

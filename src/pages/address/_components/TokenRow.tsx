@@ -11,11 +11,7 @@ export default function TokenRow({ data }: { data: Token }) {
       {/* desktop */}
       <div className="hidden lg:block">
         <div className="grid grid-cols-9 py-5">
-          <LinkText
-            label={data.asset}
-            href={`/address/${data.asset}`}
-            customStyle="tracking-[0.01em]"
-          />
+          <div className="text-white-50 tracking-[0.01em]">{data.asset}</div>
           <div className="text-white-50 tracking-[0.01em]">{data.type}</div>
           <div className="text-white-50 tracking-[0.01em]">
             {data.symbol.toUpperCase()}
@@ -63,11 +59,7 @@ export default function TokenRow({ data }: { data: Token }) {
               title={tokenTableFixedTitle.asset}
               className="text-xs tracking-[0.02em]"
             />
-            <LinkText
-              label={data.asset}
-              href={`/address/${data.asset}`}
-              customStyle="tracking-[0.01em]"
-            />
+            <div className="text-white-50 tracking-[0.01em]">{data.asset}</div>
           </div>
           <div className="flex flex-col">
             <AddressTokenTableTitle
@@ -156,11 +148,7 @@ export default function TokenRow({ data }: { data: Token }) {
               title={tokenTableFixedTitle.asset}
               className="text-xs tracking-[0.02em]"
             />
-            <LinkText
-              label={data.asset}
-              href={`/address/${data.asset}`}
-              customStyle="tracking-[0.01em]"
-            />
+            <div className="text-white-50 tracking-[0.01em]">{data.asset}</div>
           </div>
           <div className="flex flex-col items-end">
             <AddressTokenTableTitle

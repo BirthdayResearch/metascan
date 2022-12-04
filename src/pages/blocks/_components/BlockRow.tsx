@@ -1,6 +1,6 @@
 import { FiBox } from "react-icons/fi";
 import clsx from "clsx";
-import { truncateTextFromMiddle } from "shared/textHelper";
+import { stringToNumber, truncateTextFromMiddle } from "shared/textHelper";
 import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import { TimeComponent } from "@components/commons/TimeComponent";
@@ -66,12 +66,13 @@ export default function BlockRow({ data }: { data: BlocksI }) {
 }
 
 function BlockNumberComponent({ number }: { number: string }): JSX.Element {
+  const parsedBlockNumber = stringToNumber(number);
   return (
     <div className="flex flex-row">
       <FiBox size={24} className="text-white-50 stroke-white-50" />
       <LinkText
-        testId={`block-number-${number}`}
-        href={`/blocks/${number}`}
+        testId={`block-number-${parsedBlockNumber}`}
+        href={`/block/${parsedBlockNumber}`}
         customStyle="ml-2 lg:ml-4"
       >
         <NumericFormat

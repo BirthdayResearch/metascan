@@ -6,8 +6,8 @@ import { FiBox } from "react-icons/fi";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { getDuration } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
-import LinkButton from "./commons/LinkButton";
 import GradientCardContainer from "./commons/GradientCardContainer";
+import LinkButton from "./commons/LinkButton";
 import LinkText from "./commons/LinkText";
 import NumericFormat from "./commons/NumericFormat";
 

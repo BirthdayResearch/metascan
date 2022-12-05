@@ -42,6 +42,8 @@ export default function WriteContractInputItem({
     returnInputData.inputs = userInputDataArray;
     setUserInput(returnInputData);
   };
+
+  console.log(itemIndex);
   return (
     <div
       data-testid={`${rowItem.parentid}-write-contract-row`}
@@ -49,9 +51,10 @@ export default function WriteContractInputItem({
     >
       <div
         data-testid={`${rowItem.parentid}-write-contract-title`}
-        className={clsx("text-white-50 font-bold text-xl mt-[81px]", {
-          "mt-0": itemIndex === 0,
-        })}
+        className={clsx(
+          "text-white-50 font-bold text-xl",
+          itemIndex === 0 ? "mt-0" : "mt-[81px]"
+        )}
       >
         {rowItem.title}
       </div>

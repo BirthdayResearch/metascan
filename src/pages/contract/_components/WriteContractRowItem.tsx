@@ -56,7 +56,7 @@ export default function WriteContractRowItem({
         {rowItem.title}
       </div>
       <div
-        data-testid={`${rowItem.parentid}-write-contract-title`}
+        data-testid={`${rowItem.parentid}-write-contract-summary`}
         className="text-white-700 tracking-[0.01em] lg:w-[740px] mt-[21px]"
       >
         {rowItem.summary}
@@ -74,7 +74,7 @@ export default function WriteContractRowItem({
       ))}
       <Button
         label="Write"
-        testId="test"
+        testId={`${rowItem.parentid}-write-contract-button`}
         size="small"
         onClick={() => {
           // send data back to api

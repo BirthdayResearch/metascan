@@ -49,7 +49,7 @@ export default function WriteContractInputItem({
     >
       <div
         data-testid={`${rowItem.parentid}-write-contract-title`}
-        className={clsx("text-white-50 font-bold text-xl mt-[84px]", {
+        className={clsx("text-white-50 font-bold text-xl mt-[81px]", {
           "mt-0": itemIndex === 0,
         })}
       >
@@ -73,6 +73,7 @@ export default function WriteContractInputItem({
         />
       ))}
       <Button
+        customStyle="ml-4"
         label="Write"
         testId={`${rowItem.parentid}-write-contract-button`}
         size="small"
@@ -112,7 +113,7 @@ function WriteContractInputRow({
       className={clsx(
         "flex flex-col gap-y-4 my-[72px]",
         { "mt-[52px]": index === 0 },
-        { "mb-4": index === length - 1 }
+        { "mb-3": index === length - 1 }
       )}
     >
       <div

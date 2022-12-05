@@ -1,5 +1,6 @@
 import { CursorPage } from "@components/commons/CursorPagination";
 import clsx from "clsx";
+import { CodeOptions } from "enum/codeOptions";
 import { Dispatch, SetStateAction, useState } from "react";
 import ReadContract, { CodesData } from "./ReadContract";
 import WriteContract from "./WriteContract";
@@ -95,8 +96,3 @@ const onOptionsClick = (
       break;
   }
 };
-
-enum CodeOptions {
-  Read = "Read contract",
-  Write = "Write contract",
-}

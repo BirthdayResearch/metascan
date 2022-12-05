@@ -20,7 +20,7 @@ interface InputTitle {
   title: string;
 }
 
-export default function WriteContractRowItem({
+export default function WriteContractInputItem({
   rowItem,
   itemIndex,
   length,

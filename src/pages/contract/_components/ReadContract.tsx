@@ -3,7 +3,7 @@ import {
   CursorPagination,
 } from "@components/commons/CursorPagination";
 import { useRouter } from "next/router";
-import ReadContractCodeRow from "./ReadContractCodeRow";
+import ReadContractCodeFile from "./ReadContractCodeFile";
 import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
 
 export interface CodesData {
@@ -154,7 +154,7 @@ export default function ReadContract({
       </div>
 
       {codes.map((item, index) => (
-        <ReadContractCodeRow
+        <ReadContractCodeFile
           key={item.fileName}
           fileName={item.fileName}
           code={item.code}

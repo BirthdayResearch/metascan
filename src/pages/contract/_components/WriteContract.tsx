@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../../../components/commons/Button";
-import WriteContractRowItem, { WriteData } from "./WriteContractRowItem";
+import WriteContractInputItem, { WriteData } from "./WriteContractInputItem";
 
 export default function WriteContract({
   writeContractData,
@@ -24,7 +24,7 @@ export default function WriteContract({
         />
       </div>
       {writeContractData.map((item, index) => (
-        <WriteContractRowItem
+        <WriteContractInputItem
           key={item.parentid}
           rowItem={item}
           itemIndex={index}

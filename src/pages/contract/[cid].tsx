@@ -14,7 +14,7 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import QrCode from "@components/commons/QrCode";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import { sleep } from "shared/sleep";
-import { ContractOptionsTitle } from "shared/contractOptionsTitle";
+import { ContractTabsTitle } from "enum/contractTabsTitle";
 import ContractTabs from "./_components/ContractTabs";
 import ContractTokensList from "./_components/ContractTokensList";
 import ContractTransactionsList from "./_components/ContractTransactionsList";
@@ -144,18 +144,18 @@ function ContractSegmentOne({
 }
 
 function ContractSegmentTwo({ data }) {
-  const [selectedTab, setSelectedTab] = useState(ContractOptionsTitle.Code);
+  const [selectedTab, setSelectedTab] = useState(ContractTabsTitle.Code);
 
   return (
     <div>
       <ContractTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-      {selectedTab === ContractOptionsTitle.Transactions && (
+      {selectedTab === ContractTabsTitle.Transactions && (
         <ContractTransactionsList
           contractTransactions={data.transactions}
           contractTransactionPages={data.pages}
         />
       )}
-      {selectedTab === ContractOptionsTitle.Tokens && (
+      {selectedTab === ContractTabsTitle.Tokens && (
         <ContractTokensList
           contractTokenList={data.tokens}
           contractTokenListPage={data.tokenPages}
@@ -164,7 +164,7 @@ function ContractSegmentTwo({ data }) {
           networth={data.verifiedContractData.networth}
         />
       )}
-      {selectedTab === ContractOptionsTitle.Code && (
+      {selectedTab === ContractTabsTitle.Code && (
         <ContractCode
           contractName={data.verifiedContractData.contractName}
           compilerVersion={data.verifiedContractData.compilerVersion}

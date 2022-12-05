@@ -16,7 +16,7 @@ import {
   useState,
 } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import { ContractOptionsTitle } from "../../../enum/contractOptionsTitle";
+import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
 import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
 
 interface TokenDetailsProps {
@@ -161,7 +161,7 @@ export default function TokenDetails({
           data-testid="contract-address-token-list-title"
           className="font-bold text-xl text-white-50"
         >
-          {ContractOptionsTitle.Tokens}
+          {ContractTabsTitle.Tokens}
         </h2>
         <CursorPagination
           pages={contractTokenListPage}

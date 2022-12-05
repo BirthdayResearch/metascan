@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
 import ReadContract, { CodesData } from "./ReadContract";
 import WriteContract from "./WriteContract";
-import { WriteData } from "./WriteContractRowItem";
+import { WriteData } from "./WriteContractInputItem";
 
 interface ContractCodeProps {
   contractName: string;

@@ -986,9 +986,9 @@ function TransactionDetailSegmentTwo({
               <FiChevronDown
                 size={24}
                 className={clsx(
-                  "col-start-1 row-start-1 text-white-700 opacity-0",
+                  "col-start-1 row-start-1 text-white-700 opacity-100",
                   {
-                    "transition-opacity duration-1000 ease-out opacity-100":
+                    "transition-opacity duration-300 ease-out opacity-0":
                       isRawInputExpanded,
                   }
                 )}
@@ -996,9 +996,9 @@ function TransactionDetailSegmentTwo({
               <FiChevronUp
                 size={24}
                 className={clsx(
-                  "col-start-1 row-start-1 text-white-700 opacity-0",
+                  "col-start-1 row-start-1 text-white-700 opacity-100",
                   {
-                    "transition-opacity duration-1000 ease-out opacity-100":
+                    "transition-opacity duration-300 ease-out opacity-0":
                       !isRawInputExpanded,
                   }
                 )}
@@ -1006,18 +1006,16 @@ function TransactionDetailSegmentTwo({
             </div>
           </div>
         </div>
-        <div
-          data-testid="transaction-hex"
-          className={clsx(
-            "rounded-lg h-0 p-0 font-space-mono tracking-[-0.04em] break-all border-[1px] border-black-600 bg-black-800 opacity-0 text-white-50 text-xs",
-            {
-              "h-auto lg:py-6 md:py-5 py-4 lg:px-10 md:px-8 px-4 transition-opacity duration-1000 ease-out opacity-100":
-                isRawInputExpanded,
-            }
-          )}
-        >
-          {hex}
-        </div>
+        {isRawInputExpanded && (
+          <div
+            data-testid="transaction-hex"
+            className={clsx(
+              " transition-opacity rounded-lg font-space-mono tracking-[-0.04em] break-all bg-black-800 lg:py-6 md:py-5 py-4 lg:px-10 md:px-8 px-4 border-[1px] border-black-600 text-white-50 text-xs"
+            )}
+          >
+            {hex}
+          </div>
+        )}
       </div>
     </div>
   );

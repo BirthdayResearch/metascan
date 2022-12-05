@@ -6,7 +6,7 @@ import { CodeBlock } from "react-code-blocks";
 import clsx from "clsx";
 import Tooltip from "@components/commons/Tooltip";
 
-export default function ReadContractCodeRow({
+export default function ReadContractCodeFile({
   fileName,
   code,
   length,
@@ -20,8 +20,8 @@ export default function ReadContractCodeRow({
   const [isCodeCopied, setIsCodeCopied] = useState(false);
   const [isCodeExpanded, setIsCodeExpanded] = useState(false);
   const [isPermaLinkClicked, setIsPermaLinkClicked] = useState(false);
-  const count = useRef(0);
   const [isHovering, setIsHovering] = useState(false);
+  const firstLoad = useRef(true);
 
   const handleMouseEnter = () => {
     setIsHovering(true);
@@ -32,8 +32,8 @@ export default function ReadContractCodeRow({
   };
 
   useEffect(() => {
-    count.current += 1;
-    if (count.current === 1) {
+    if (firstLoad.current) {
+      firstLoad.current = false;
       const path = window.location.hash;
       if (path && path.includes("#")) {
         const id = path.replace("#", "");

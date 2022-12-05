@@ -124,9 +124,9 @@ export default function ReadContractCodeRow({
               height: "100%",
               overflowY: isHovering ? "auto" : "hidden",
               overflowX: "hidden",
-              wordBreak: "break-words",
+              wordBreak: "break-all",
               background: `linearGradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), linearGradient(152.58deg, rgba(51, 51, 51, 0.4) -3.08%, rgba(128, 128, 128, 0.1) 77.78%)`,
-              whiteSpace: "pre-line",
+              whiteSpace: "pre-wrap",
               display: "block",
             }}
           />

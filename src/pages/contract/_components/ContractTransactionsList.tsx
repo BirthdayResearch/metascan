@@ -5,7 +5,7 @@ import {
 import { TransactionI } from "mockdata/TransactionData";
 import { useRouter } from "next/router";
 import TransactionRow from "pages/txs/_components/TransactionRow";
-import { ContractOptionsTitle } from "../../../enum/contractOptionsTitle";
+import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
 
 interface ContractTransactionsListProps {
   contractTransactions: TransactionI[];
@@ -26,7 +26,7 @@ export default function ContractTransactionsList({
           data-testid="contract-address-txn-list-title"
           className="font-bold text-xl text-white-50"
         >
-          {ContractOptionsTitle.Transactions}
+          {ContractTabsTitle.Transactions}
         </h2>
         <CursorPagination
           pages={contractTransactionPages}

@@ -4,8 +4,8 @@ type ButtonSize = "small" | "medium" | "large";
 
 interface ButtonProps {
   label: string;
-  href: string;
   testId: string;
+  href?: string;
   size?: ButtonSize;
   onClick?: () => void;
   disabled?: boolean;
@@ -33,6 +33,46 @@ export default function Button({
   disabled = false,
   customStyle,
 }: ButtonProps): JSX.Element {
+  if (href !== null) {
+    return (
+      <a href={href} className={clsx({ "pointer-events-none": disabled })}>
+        <ButtonElement
+          size={size}
+          label={label}
+          testId={testId}
+          onClick={onClick}
+          customStyle={customStyle}
+        />
+      </a>
+    );
+  }
+
+  return (
+    <ButtonElement
+      size={size}
+      label={label}
+      testId={testId}
+      onClick={onClick}
+      customStyle={customStyle}
+    />
+  );
+}
+
+function ButtonElement({
+  size = "medium",
+  label,
+  testId,
+  onClick,
+  disabled = false,
+  customStyle,
+}: {
+  label: string;
+  testId: string;
+  size?: ButtonSize;
+  onClick?: () => void;
+  disabled?: boolean;
+  customStyle?: string;
+}) {
   const btnPadding = getButtonPadding(size);
 
   const handleButtonClick = () => {
@@ -42,25 +82,22 @@ export default function Button({
   };
 
   const transitionStyle = "transition-all ease-in duration-300";
-
   return (
-    <a href={href} className={clsx({ "pointer-events-none": disabled })}>
-      <button
-        data-testid={`${testId}-button`}
-        type="button"
-        className={`flex items-center justify-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 active:brand-bg-gradient-2 hover:border-transparent
+    <button
+      data-testid={`${testId}-button`}
+      type="button"
+      className={`flex items-center justify-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 active:brand-bg-gradient-2 hover:border-transparent
                   ${transitionStyle} ${btnPadding} ${customStyle ?? ""} ${
-          disabled ? "opacity-50" : "opacity-100"
-        }`}
-        disabled={disabled}
-        onClick={handleButtonClick}
+        disabled ? "opacity-50" : "opacity-100"
+      }`}
+      disabled={disabled}
+      onClick={handleButtonClick}
+    >
+      <span
+        className={`text-white-50 font-medium tracking-[0.02em] brand-gradient-1 group-active:brand-gradient-2 bg-clip-text group-hover:text-transparent ${transitionStyle} `}
       >
-        <span
-          className={`text-white-50 font-medium tracking-[0.02em] brand-gradient-1 group-active:brand-gradient-2 bg-clip-text group-hover:text-transparent ${transitionStyle} `}
-        >
-          {label}
-        </span>
-      </button>
-    </a>
+        {label}
+      </span>
+    </button>
   );
 }

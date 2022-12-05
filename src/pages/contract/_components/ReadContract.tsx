@@ -149,7 +149,7 @@ export default function ReadContract({
         </div>
       </div>
 
-      <div className="text-white-50 font-bold text-xl mt-[86.5px]">
+      <div className="text-white-50 font-bold text-xl lg:mt-[86.5px] md:mt-[89.5px] mt-[86.5px]">
         {fixedTitle.codeSource}
       </div>
 

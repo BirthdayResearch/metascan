@@ -117,7 +117,7 @@ function WriteContractInputRow({
     >
       <div
         data-testid={`${inputItem.id}-write-contract-user-input-title`}
-        className="text-white-700 tracking-[0.01em] text-xl"
+        className="text-white-700 tracking-[0.01em] md:text-xl"
       >
         {inputItem.title}
       </div>

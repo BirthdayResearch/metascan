@@ -56,10 +56,10 @@ export default function ReadContractCodeFile({
       className="flex flex-col gap-y-[23px] my-[53px]"
     >
       <div className="flex flex-row md:items-center">
-        <div className="flex grow text-white-700 text-xl tracking-[0.01em]">
+        <div className="flex grow tracking-[0.01em]">
           <div
             data-testid={`${fileName}-code-title`}
-            className="md:w-auto w-[87px]"
+            className="md:w-auto w-[87px] md:text-xl text-white-700"
           >
             File {index} of {length}: {fileName}
           </div>

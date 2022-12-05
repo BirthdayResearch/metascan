@@ -15,9 +15,8 @@ export default function WriteContract({
           {fixedTitle.writeContract}
         </div>
         <Button
-          customStyle="md:mt-0 mt-2"
           label="Clear data"
-          testId="test"
+          testId="write-contract-clear-input-button"
           size="small"
           onClick={() => {
             setIsClearDataClicked(true);

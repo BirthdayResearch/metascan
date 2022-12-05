@@ -50,10 +50,17 @@ export default function ReadContractCodeRow({
   });
 
   return (
-    <div id={fileName} className="flex flex-col gap-y-[23px] my-[53px]">
+    <div
+      data-testid={`${fileName}-code-row`}
+      id={fileName}
+      className="flex flex-col gap-y-[23px] my-[53px]"
+    >
       <div className="flex flex-row md:items-center">
         <div className="flex grow text-white-700">
-          <div className="md:w-auto w-[87px]">
+          <div
+            data-testid={`${fileName}-code-title`}
+            className="md:w-auto w-[87px]"
+          >
             File {index} of {length}: {fileName}
           </div>
         </div>
@@ -97,6 +104,7 @@ export default function ReadContractCodeRow({
       </div>
       <GradientCardContainer>
         <div
+          data-testid={`${fileName}-code-block`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           className={clsx(

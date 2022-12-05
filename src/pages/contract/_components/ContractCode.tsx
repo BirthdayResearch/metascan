@@ -38,7 +38,7 @@ export default function ContractCode({
             onOptionsClick(setIsReadContractClicked, CodeOptions.Read);
           }}
           className={clsx(
-            "whitespace-nowrap py-2 px-4 rounded-[24px] font-medium",
+            "whitespace-nowrap py-2 px-4 rounded-[24px] text-sm font-medium",
             isReadContractClicked
               ? "bg-white-50 text-black-900"
               : "text-white-50 bg-black-600"
@@ -52,7 +52,7 @@ export default function ContractCode({
             onOptionsClick(setIsReadContractClicked, CodeOptions.Write);
           }}
           className={clsx(
-            "whitespace-nowrap py-2 px-4 rounded-[24px] font-medium",
+            "whitespace-nowrap py-2 px-4 rounded-[24px] text-sm font-medium",
             isReadContractClicked
               ? "text-white-50 bg-black-600"
               : "bg-white-50 text-black-900"

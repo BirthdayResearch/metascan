@@ -43,15 +43,22 @@ export default function WriteContractRowItem({
     setUserInput(returnInputData);
   };
   return (
-    <div className={clsx({ "md:mb-10 mb-5": itemIndex === length - 1 })}>
+    <div
+      data-testid={`${rowItem.parentid}-write-contract-row`}
+      className={clsx({ "md:mb-10 mb-5": itemIndex === length - 1 })}
+    >
       <div
+        data-testid={`${rowItem.parentid}-write-contract-title`}
         className={clsx("text-white-50 font-bold text-xl mt-[84px]", {
           "mt-0": itemIndex === 0,
         })}
       >
         {rowItem.title}
       </div>
-      <div className="text-white-700 tracking-[0.01em] lg:w-[740px] mt-[21px]">
+      <div
+        data-testid={`${rowItem.parentid}-write-contract-title`}
+        className="text-white-700 tracking-[0.01em] lg:w-[740px] mt-[21px]"
+      >
         {rowItem.summary}
       </div>
       {rowItem.inputs.map((inputItem: UserInputData, index: number) => (
@@ -101,13 +108,19 @@ function WriteContractInputRow({
   });
   return (
     <div
+      data-testid={`${inputItem.id}-write-contract-user-input`}
       className={clsx(
         "flex flex-col gap-y-4 my-[72px]",
         { "mt-[52px]": index === 0 },
         { "mb-4": index === length - 1 }
       )}
     >
-      <div className="text-white-700 tracking-[0.01em]">{inputItem.title}</div>
+      <div
+        data-testid={`${inputItem.id}-write-contract-user-input-title`}
+        className="text-white-700 tracking-[0.01em]"
+      >
+        {inputItem.title}
+      </div>
 
       <div
         className={clsx(
@@ -133,7 +146,7 @@ function WriteContractInputRow({
           className="flex flex-row items-center w-full h-full rounded-lg bg-black-900 black-gradient-1"
         >
           <input
-            id="contractInputID"
+            data-testid={`${inputItem.id}-write-contract-user-input-field`}
             className="w-full h-full rounded-lg py-6 px-5 focus:outline-none bg-black-900 black-gradient-1 border-none black-gradient-1-shadow text-white-50 tracking-[0.04em] text-xs font-space-mono focus:caret-lightBlue"
             onChange={(v) => {
               setUserInput(v.target.value);

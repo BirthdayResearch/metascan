@@ -67,6 +67,7 @@ export default function ReadContractCodeRow({
         <div className="flex flex-row md:gap-x-6 gap-x-4">
           <Tooltip text="Code Copied!" active={isCodeCopied}>
             <FiCopy
+              size={18}
               role="button"
               data-testid="contract-code-copy-icon"
               onClick={() => onCopyCodeIconClick(setIsCodeCopied, code)}
@@ -75,6 +76,7 @@ export default function ReadContractCodeRow({
           </Tooltip>
           <Tooltip text="Link Copied!" active={isPermaLinkClicked}>
             <FiShare2
+              size={18}
               role="button"
               data-testid="contract-code-share-icon"
               onClick={() => onPermaLinkClick(setIsPermaLinkClicked, fileName)}
@@ -83,6 +85,7 @@ export default function ReadContractCodeRow({
           </Tooltip>
           {isCodeExpanded ? (
             <FiMinimize
+              size={18}
               role="button"
               data-testid="contract-code-maximize-icon"
               onClick={() =>
@@ -92,6 +95,7 @@ export default function ReadContractCodeRow({
             />
           ) : (
             <FiMaximize
+              size={18}
               role="button"
               data-testid="contract-code-maximize-icon"
               onClick={() =>

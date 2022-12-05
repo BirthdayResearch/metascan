@@ -118,7 +118,7 @@ export default function ReadContractCodeRow({
             showLineNumbers={false}
             customStyle={{
               color: "#FFFFFF",
-              fontFamily: "font-space-mono",
+              fontFamily: "Space Mono",
               fontSize: "12px",
               letterSpacing: "-0.04em",
               height: "100%",

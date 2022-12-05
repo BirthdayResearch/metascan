@@ -56,7 +56,7 @@ export default function ReadContractCodeRow({
       className="flex flex-col gap-y-[23px] my-[53px]"
     >
       <div className="flex flex-row md:items-center">
-        <div className="flex grow text-white-700">
+        <div className="flex grow text-white-700 text-xl tracking-[0.01em]">
           <div
             data-testid={`${fileName}-code-title`}
             className="md:w-auto w-[87px]"
@@ -64,7 +64,7 @@ export default function ReadContractCodeRow({
             File {index} of {length}: {fileName}
           </div>
         </div>
-        <div className="flex flex-row md:gap-x-[30px] gap-x-[22px]">
+        <div className="flex flex-row md:gap-x-6 gap-x-4">
           <Tooltip text="Code Copied!" active={isCodeCopied}>
             <FiCopy
               role="button"

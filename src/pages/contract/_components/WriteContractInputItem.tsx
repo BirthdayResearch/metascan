@@ -43,7 +43,6 @@ export default function WriteContractInputItem({
     setUserInput(returnInputData);
   };
 
-  console.log(itemIndex);
   return (
     <div
       data-testid={`${rowItem.parentid}-write-contract-row`}

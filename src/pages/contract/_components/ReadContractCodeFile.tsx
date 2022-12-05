@@ -53,7 +53,10 @@ export default function ReadContractCodeFile({
     <div
       data-testid={`${fileName}-code-row`}
       id={fileName}
-      className="flex flex-col gap-y-[23px] my-[53px]"
+      className={clsx(
+        "flex flex-col md:gap-y-[23px] gap-y-[21px]",
+        index === 1 ? "mt-[47.5px] mb-[53px]" : "my-[53px]"
+      )}
     >
       <div className="flex flex-row md:items-center">
         <div className="flex grow tracking-[0.01em]">

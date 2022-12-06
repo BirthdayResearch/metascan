@@ -110,14 +110,14 @@ module.exports = {
         700: "#3A6C92",
         800: "#082FD4",
       },
-      lightBlue: "#0964F4"
+      lightBlue: "#0964F4",
     },
     extend: {
       borderRadius: {
-        DEFAULT: '5px',
-        'md': '10px',
-        'lg': '15px',
-        "xl": "20px",
+        DEFAULT: "5px",
+        md: "10px",
+        lg: "15px",
+        xl: "20px",
         "2xl": "25px",
         "3xl": "30px",
       },
@@ -149,8 +149,8 @@ module.exports = {
         "infinite-fade-out": "fade-out-in 10s ease-in-out infinite",
       },
       fontFamily: {
-        "space-mono": ["Space Mono", "sans-serif"]
-      }
+        "space-mono": ["Space Mono", "sans-serif"],
+      },
     },
   },
   plugins: [require("@tailwindcss/line-clamp")],

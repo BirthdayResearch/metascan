@@ -21,7 +21,7 @@ specifiers:
   lodash: ^4.17.21
   postcss: ^8.4.20
   react-code-blocks: ^0.0.9-0
-  react-qr-code: ^2.0.8
+  react-qr-code: ^2.0.9
   recharts: ^2.2.0
   tailwindcss: ^3.2.4
 
@@ -34,7 +34,7 @@ dependencies:
   clsx: 1.2.1
   lodash: 4.17.21
   react-code-blocks: 0.0.9-0_7i5myeigehqah43i5u7wbekgba
-  react-qr-code: 2.0.8_react@18.2.0
+  react-qr-code: 2.0.9_react@18.2.0
   recharts: 2.2.0_v2m5e27vhdewzwhryxwfaorcca
 
 devDependencies:
@@ -6926,8 +6926,8 @@ packages:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
     dev: false
 
-  /react-qr-code/2.0.8_react@18.2.0:
-    resolution: {integrity: sha512-zYO9EAPQU8IIeD6c6uAle7NlKOiVKs8ji9hpbWPTGxO+FLqBN2on+XCXQvnhm91nrRd306RvNXUkUNcXXSfhWA==}
+  /react-qr-code/2.0.9_react@18.2.0:
+    resolution: {integrity: sha512-q6CUAzKZXxJyWOe9SFvw2G1hQ80k/1hnIE7eRTMMcNcnQGjm4Ohd+w4tBz7ASz+a76AMs9wPUNOZmES8sfhmuA==}
     peerDependencies:
       react: ^16.x || ^17.x || ^18.x
       react-native-svg: '*'

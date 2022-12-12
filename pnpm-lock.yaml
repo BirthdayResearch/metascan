@@ -4,7 +4,7 @@ specifiers:
   '@cypress/code-coverage': ^3.10.0
   '@defichain/jellyfish-network': ^3.5.3
   '@floating-ui/react-dom': ^1.0.1
-  '@headlessui/react': ^1.7.4
+  '@headlessui/react': ^1.7.5
   '@netlify/plugin-lighthouse': ^4.0.3
   '@netlify/plugin-nextjs': ^4.29.3
   '@tailwindcss/line-clamp': ^0.4.2
@@ -28,7 +28,7 @@ specifiers:
 dependencies:
   '@defichain/jellyfish-network': 3.5.3_defichain@3.5.3
   '@floating-ui/react-dom': 1.0.1_biqbaboplfbrettd7655fr4n2y
-  '@headlessui/react': 1.7.4_biqbaboplfbrettd7655fr4n2y
+  '@headlessui/react': 1.7.5_biqbaboplfbrettd7655fr4n2y
   '@waveshq/standard-web': 0.10.0_nxrcxq3d2px3f3w2g4ulingn6i
   bignumber.js: 9.1.1
   clsx: 1.2.1
@@ -1366,8 +1366,8 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@headlessui/react/1.7.4_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-D8n5yGCF3WIkPsjEYeM8knn9jQ70bigGGb5aUvN6y4BGxcT3OcOQOKcM3zRGllRCZCFxCZyQvYJF6ZE7bQUOyQ==}
+  /@headlessui/react/1.7.5_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-UZSxOfA0CYKO7QDT5OGlFvesvlR1SKkawwSjwQJwt7XQItpzRKdE3ZUQxHcg4LEz3C0Wler2s9psdb872ynwrQ==}
     engines: {node: '>=10'}
     peerDependencies:
       react: ^16 || ^17 || ^18

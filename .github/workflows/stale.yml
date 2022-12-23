@@ -8,7 +8,7 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/stale@975308fb9d005fd1d6680ff07a34bb9d82321354
+      - uses: actions/stale@b43f1bcb154af8eb846fc957d09106244348cf02
         with:
           repo-token: ${{ secrets.DEFICHAIN_BOT_GITHUB_TOKEN }}
           remove-stale-when-updated: true

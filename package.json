@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@defichain/jellyfish-network": "^3.11.0",
-    "@waveshq/standard-web": "^0.21.0",
+    "@waveshq/standard-web": "^0.25.0",
     "@floating-ui/react-dom": "^1.1.0",
     "@headlessui/react": "^1.7.7",
     "bignumber.js": "^9.1.1",
@@ -32,7 +32,7 @@
     "@testing-library/cypress": "^8.0.7",
     "@types/node": "18.11.7",
     "@types/recharts": "^1.8.24",
-    "@waveshq/standard-web-linter": "^0.21.0",
+    "@waveshq/standard-web-linter": "^0.25.0",
     "autoprefixer": "^10.4.13",
     "cypress": "^11.2.0",
     "lint-staged": "^13.1.0",

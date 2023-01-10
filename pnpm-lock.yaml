@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@cypress/code-coverage': ^3.10.0
   '@defichain/jellyfish-network': ^3.14.0
-  '@floating-ui/react-dom': ^1.1.1
+  '@floating-ui/react-dom': ^1.2.0
   '@headlessui/react': ^1.7.7
   '@netlify/plugin-lighthouse': ^4.0.3
   '@netlify/plugin-nextjs': ^4.29.4
@@ -27,7 +27,7 @@ specifiers:
 
 dependencies:
   '@defichain/jellyfish-network': 3.14.0_defichain@3.14.0
-  '@floating-ui/react-dom': 1.1.1_biqbaboplfbrettd7655fr4n2y
+  '@floating-ui/react-dom': 1.2.0_biqbaboplfbrettd7655fr4n2y
   '@headlessui/react': 1.7.7_biqbaboplfbrettd7655fr4n2y
   '@waveshq/standard-web': 0.25.0_zqkszxknale233zrv573yzuqvq
   bignumber.js: 9.1.1
@@ -1355,8 +1355,8 @@ packages:
       '@floating-ui/core': 1.0.5
     dev: false
 
-  /@floating-ui/react-dom/1.1.1_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-F27E+7SLB5NZvwF9Egqx/PlvxOhMnA6k/yNMQUqaQ9BPZdr4fQgSW6J6AKNIrBQElBT8IRDtv9j6h7FDkgp3dA==}
+  /@floating-ui/react-dom/1.2.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-o1uQ9gPhgBajY/9T0boFNOw9MoxcuHOnVortmdlGCViM7I/aONbY+G1wejbqydHQ7+9j3p7hIsAUMrr3huV/JQ==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'

@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@cypress/code-coverage': ^3.10.0
-  '@defichain/jellyfish-network': ^3.14.0
+  '@defichain/jellyfish-network': ^3.23.0
   '@floating-ui/react-dom': ^1.2.0
   '@headlessui/react': ^1.7.7
   '@netlify/plugin-lighthouse': ^4.0.3
@@ -26,7 +26,7 @@ specifiers:
   tailwindcss: ^3.2.4
 
 dependencies:
-  '@defichain/jellyfish-network': 3.14.0_defichain@3.14.0
+  '@defichain/jellyfish-network': 3.23.0_defichain@3.23.0
   '@floating-ui/react-dom': 1.2.0_biqbaboplfbrettd7655fr4n2y
   '@headlessui/react': 1.7.7_biqbaboplfbrettd7655fr4n2y
   '@waveshq/standard-web': 0.28.0_zqkszxknale233zrv573yzuqvq
@@ -1299,13 +1299,13 @@ packages:
       - supports-color
     dev: true
 
-  /@defichain/jellyfish-network/3.14.0_defichain@3.14.0:
-    resolution: {integrity: sha512-SssnyYLdxHItG4Yf3uurMiybxZkOxOx132tw0dXyFQflh20fxdYO/TzLBqffqk1MAJexmQARc7i1xn9LmYczhA==}
+  /@defichain/jellyfish-network/3.23.0_defichain@3.23.0:
+    resolution: {integrity: sha512-URb0HpKkTK1qnUaXHRrXqYSrZh6deSqJOxzrhm+ew6mf2DkdCkvyIKHT2vZW6ER2A+pVHxaQg8qX+AmJCgnzfg==}
     peerDependencies:
-      defichain: ^3.14.0
+      defichain: ^3.23.0
     dependencies:
       bignumber.js: 9.1.1
-      defichain: 3.14.0
+      defichain: 3.23.0
     dev: false
 
   /@emotion/is-prop-valid/1.2.0:
@@ -3637,8 +3637,8 @@ packages:
       strip-bom: 4.0.0
     dev: true
 
-  /defichain/3.14.0:
-    resolution: {integrity: sha512-TPfO6ZDGd3rc6fMqyIMMUmtBnReRKBk/rvl7Azda1KjxlsrMwEHc0byrLkCPbJUx2Q5JeElHIAq0fxZPCV99xA==}
+  /defichain/3.23.0:
+    resolution: {integrity: sha512-BZ5iAe5WIbBK94oTbReucRJuqpum8uCydvFqlCxxKm1XhhySumc2kgba26t3IM1dBb8isglpLoUcmQfmYm/3EQ==}
     engines: {node: '>=v16.17.0'}
     dev: false
 

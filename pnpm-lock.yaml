@@ -17,7 +17,7 @@ specifiers:
   bignumber.js: ^9.1.1
   clsx: ^1.2.1
   cypress: ^11.2.0
-  lint-staged: ^13.1.0
+  lint-staged: ^13.1.2
   lodash: ^4.17.21
   postcss: ^8.4.21
   react-code-blocks: ^0.0.9-0
@@ -48,7 +48,7 @@ devDependencies:
   '@waveshq/standard-web-linter': 0.43.0_klpylqwss7j4mjsavnu5vopi6q
   autoprefixer: 10.4.13_postcss@8.4.21
   cypress: 11.2.0
-  lint-staged: 13.1.0
+  lint-staged: 13.1.2
   postcss: 8.4.21
   tailwindcss: 3.2.4_postcss@8.4.21
 
@@ -5820,29 +5820,6 @@ packages:
   /lilconfig/2.0.6:
     resolution: {integrity: sha512-9JROoBW7pobfsx+Sq2JsASvCo6Pfo6WWoUW79HuB1BCoBXD4PLWJPqDF6fNj67pqBYTbAHkE57M1kS/+L1neOg==}
     engines: {node: '>=10'}
-    dev: true
-
-  /lint-staged/13.1.0:
-    resolution: {integrity: sha512-pn/sR8IrcF/T0vpWLilih8jmVouMlxqXxKuAojmbiGX5n/gDnz+abdPptlj0vYnbfE0SQNl3CY/HwtM0+yfOVQ==}
-    engines: {node: ^14.13.1 || >=16.0.0}
-    hasBin: true
-    dependencies:
-      cli-truncate: 3.1.0
-      colorette: 2.0.19
-      commander: 9.4.1
-      debug: 4.3.4
-      execa: 6.1.0
-      lilconfig: 2.0.6
-      listr2: 5.0.6
-      micromatch: 4.0.5
-      normalize-path: 3.0.0
-      object-inspect: 1.12.2
-      pidtree: 0.6.0
-      string-argv: 0.3.1
-      yaml: 2.1.3
-    transitivePeerDependencies:
-      - enquirer
-      - supports-color
     dev: true
 
   /lint-staged/13.1.2:

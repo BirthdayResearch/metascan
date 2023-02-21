@@ -23,7 +23,7 @@ specifiers:
   react-code-blocks: ^0.0.9-0
   react-qr-code: ^2.0.11
   recharts: ^2.4.3
-  tailwindcss: ^3.2.4
+  tailwindcss: ^3.2.7
 
 dependencies:
   '@defichain/jellyfish-network': 3.28.2_defichain@3.28.2
@@ -41,7 +41,7 @@ devDependencies:
   '@cypress/code-coverage': 3.10.0_evefxzax64vtdycatomx3m6wya
   '@netlify/plugin-lighthouse': 4.0.7
   '@netlify/plugin-nextjs': 4.30.4
-  '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.4
+  '@tailwindcss/line-clamp': 0.4.2_tailwindcss@3.2.7
   '@testing-library/cypress': 8.0.7_cypress@11.2.0
   '@types/node': 18.11.7
   '@types/recharts': 1.8.24
@@ -50,7 +50,7 @@ devDependencies:
   cypress: 11.2.0
   lint-staged: 13.1.2
   postcss: 8.4.21
-  tailwindcss: 3.2.4_postcss@8.4.21
+  tailwindcss: 3.2.7_postcss@8.4.21
 
 packages:
 
@@ -1972,12 +1972,12 @@ packages:
     dependencies:
       tslib: 2.4.1
 
-  /@tailwindcss/line-clamp/0.4.2_tailwindcss@3.2.4:
+  /@tailwindcss/line-clamp/0.4.2_tailwindcss@3.2.7:
     resolution: {integrity: sha512-HFzAQuqYCjyy/SX9sLGB1lroPzmcnWv1FHkIpmypte10hptf4oPUfucryMKovZh2u0uiS9U5Ty3GghWfEJGwVw==}
     peerDependencies:
       tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
     dependencies:
-      tailwindcss: 3.2.4_postcss@8.4.21
+      tailwindcss: 3.2.7_postcss@8.4.21
     dev: true
 
   /@testing-library/cypress/8.0.7_cypress@11.2.0:
@@ -7861,8 +7861,8 @@ packages:
       tslib: 2.4.1
     dev: true
 
-  /tailwindcss/3.2.4_postcss@8.4.21:
-    resolution: {integrity: sha512-AhwtHCKMtR71JgeYDaswmZXhPcW9iuI9Sp2LvZPo9upDZ7231ZJ7eA9RaURbhpXGVlrjX4cFNlB4ieTetEb7hQ==}
+  /tailwindcss/3.2.7_postcss@8.4.21:
+    resolution: {integrity: sha512-B6DLqJzc21x7wntlH/GsZwEXTBttVSl1FtCzC8WP4oBc/NKef7kaax5jeihkkCEWc831/5NDJ9gRNDK6NEioQQ==}
     engines: {node: '>=12.13.0'}
     hasBin: true
     peerDependencies:

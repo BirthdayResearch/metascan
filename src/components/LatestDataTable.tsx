@@ -21,7 +21,7 @@ export interface TxnWalletInfo {
 
 export interface BlockInfo {
   transactionsPerBlock: string;
-  blockTimeInSec: string;
+  blockTimeInSec?: string;
 }
 
 export interface RowData {
@@ -209,9 +209,11 @@ function BlockInfoDisplay({
           />
         </LinkText>
       </div>
-      <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:ml-1">
-        {`in ${blockInfo.blockTimeInSec} sec`}
-      </div>
+      {blockInfo.blockTimeInSec && (
+        <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:ml-1">
+          {`in ${blockInfo.blockTimeInSec} sec`}
+        </div>
+      )}
     </>
   );
 }

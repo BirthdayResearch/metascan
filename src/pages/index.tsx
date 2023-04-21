@@ -5,16 +5,11 @@ import { GetServerSidePropsResult, InferGetServerSidePropsType } from "next";
 import GroupStatisticCard from "@components/GroupStatisticCard";
 import LatestDataTable, { RowData } from "@components/LatestDataTable";
 import LatestDataApi from "@api/LatestDataApi";
-import { MAIN_LATEST_TRANSACTION_URL } from "@api/index";
-import dayjs from "dayjs";
-import { TransactionType } from "../mockdata/TransactionData";
 
 export default function Home({
   latestTransactions,
+  latestBlocks,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const latestBlocks = LatestDataApi.useLatestBlocks();
-  // const data = LatestDataApi.useLatestTransactions();
-
   return (
     <>
       <HomeTitle />
@@ -44,42 +39,29 @@ export default function Home({
   );
 }
 
-export async function getServerSideProps(): Promise<
-  GetServerSidePropsResult<LatestTransactionsProps>
-> {
-  const res = await fetch(MAIN_LATEST_TRANSACTION_URL);
-  const responseData = await res.json();
-  const maxRow = Math.min(responseData.length, 5);
-
-  const latestTransactions = responseData.slice(0, maxRow).map((data) => {
-    // TODO temporary workaround to display txn type icons
-    const type: string | undefined =
-      data.tx_types !== undefined && data.tx_types.length > 0
-        ? data.tx_types[0]
-        : undefined;
-    const transactionType = type?.includes("contract")
-      ? TransactionType.ContractCall
-      : TransactionType.Transaction;
-    const time = dayjs().unix() - dayjs(data.timestamp).unix();
-    return {
-      transactionId: data.hash,
-      tokenAmount: data.value,
-      txnOrBlockInfo: {
-        from: data.from.hash,
-        to: data.to?.hash || null,
-        transactionType,
-      },
-      time,
-    };
-  });
-
-  return {
-    props: {
-      latestTransactions,
-    },
-  };
+interface LatestDataProps {
+  latestTransactions: RowData[];
+  latestBlocks: RowData[];
 }
 
-interface LatestTransactionsProps {
-  latestTransactions: RowData[];
+export async function getServerSideProps(): Promise<
+  GetServerSidePropsResult<LatestDataProps>
+> {
+  try {
+    const latestTransactions = await LatestDataApi.getLatestTransactions();
+    const latestBlocks = await LatestDataApi.getLatestBlocks();
+    return {
+      props: {
+        latestTransactions,
+        latestBlocks,
+      },
+    };
+  } catch (e) {
+    return {
+      props: {
+        latestTransactions: [],
+        latestBlocks: [],
+      },
+    };
+  }
 }

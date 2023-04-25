@@ -53,11 +53,6 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
   function formatResults(results: SearchResults): SearchResult[] {
     const list: SearchResult[] = [];
     results.items.forEach((item) => {
-      // skip token now as we do not support it
-      if (item.type === SearchResultType.Token) {
-        return;
-      }
-
       let url = "";
       let title = "";
       if (
@@ -77,11 +72,14 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
         title = result.block_number.toString();
       }
 
-      list.push({
-        url,
-        title,
-        type: item.type,
-      });
+      // filter to show types that are supported only
+      if (url !== "") {
+        list.push({
+          url,
+          title,
+          type: item.type,
+        });
+      }
     });
     return list;
   }

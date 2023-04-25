@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { BLOCKSCOUT_ENDPOINT } from "@api/index";
 
 export enum SearchResultType {
-  Token = "token",
   Address = "address",
   Contract = "contract",
   Block = "block",

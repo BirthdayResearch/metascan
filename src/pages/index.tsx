@@ -1,14 +1,15 @@
 import TokenStatsDisplay from "@components/TokenStatsDisplay";
 import { HomeTitle } from "@components/HomeTitle";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
+import { GetServerSidePropsResult, InferGetServerSidePropsType } from "next";
 import GroupStatisticCard from "@components/GroupStatisticCard";
-import LatestDataTable from "@components/LatestDataTable";
+import LatestDataTable, { RowData } from "@components/LatestDataTable";
 import LatestDataApi from "@api/LatestDataApi";
 
-export default function Home() {
-  const latestBlocks = LatestDataApi.useLatestBlocks();
-  const latestTransactions = LatestDataApi.useLatestTransactions();
-
+export default function Home({
+  latestTransactions,
+  latestBlocks,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
       <HomeTitle />
@@ -36,4 +37,31 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+interface LatestDataProps {
+  latestTransactions: RowData[];
+  latestBlocks: RowData[];
+}
+
+export async function getServerSideProps(): Promise<
+  GetServerSidePropsResult<LatestDataProps>
+> {
+  try {
+    const latestTransactions = await LatestDataApi.getLatestTransactions();
+    const latestBlocks = await LatestDataApi.getLatestBlocks();
+    return {
+      props: {
+        latestTransactions,
+        latestBlocks,
+      },
+    };
+  } catch (e) {
+    return {
+      props: {
+        latestTransactions: [],
+        latestBlocks: [],
+      },
+    };
+  }
 }

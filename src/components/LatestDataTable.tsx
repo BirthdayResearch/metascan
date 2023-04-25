@@ -15,17 +15,16 @@ type DataType = "blocks" | "transactions";
 
 export interface TxnWalletInfo {
   from: string;
-  to: string;
+  to?: string;
   transactionType: TransactionType;
 }
 
 export interface BlockInfo {
   transactionsPerBlock: string;
-  blockTimeInSec: string;
+  blockTimeInSec?: string;
 }
 
 export interface RowData {
-  id: string;
   transactionId: string;
   tokenAmount: string;
   txnOrBlockInfo: TxnWalletInfo | BlockInfo;
@@ -67,7 +66,7 @@ export default function LatestDataTable({
             </h2>
             <div className="md:order-last md:flex-1 md:pt-6 md:col-span-8">
               {data.map((row, index) => (
-                <div key={row.id}>
+                <div key={row.transactionId}>
                   <RowItem
                     rowIndex={index}
                     type={type}
@@ -210,9 +209,11 @@ function BlockInfoDisplay({
           />
         </LinkText>
       </div>
-      <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:ml-1">
-        {`in ${blockInfo.blockTimeInSec} sec`}
-      </div>
+      {blockInfo.blockTimeInSec && (
+        <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:ml-1">
+          {`in ${blockInfo.blockTimeInSec} sec`}
+        </div>
+      )}
     </>
   );
 }
@@ -234,16 +235,18 @@ function TxnWalletInfoDisplay({
           />
         </div>
       </div>
-      <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:w-48  xl:ml-11">
-        <span className="mr-1">To</span>
-        <div className="w-4/5 lg:w-36">
-          <LinkText
-            testId={`to-address-link-${txnInfo.to}`}
-            href={`/address/${txnInfo.to}`}
-            label={truncateTextFromMiddle(txnInfo.to)}
-          />
+      {txnInfo.to && (
+        <div className="flex pt-1.5 md:pt-2.5 lg:pt-0 lg:w-48  xl:ml-11">
+          <span className="mr-1">To</span>
+          <div className="w-4/5 lg:w-36">
+            <LinkText
+              testId={`to-address-link-${txnInfo.to}`}
+              href={`/address/${txnInfo.to}`}
+              label={truncateTextFromMiddle(txnInfo.to)}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

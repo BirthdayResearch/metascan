@@ -1,10 +1,18 @@
 import { useMemo, useState } from "react";
 import { debounce } from "lodash";
-import { shift, autoUpdate, size, useFloating } from "@floating-ui/react-dom";
+import { autoUpdate, shift, size, useFloating } from "@floating-ui/react-dom";
 import { Combobox, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { FiSearch } from "react-icons/fi";
 import { IoCloseCircleSharp } from "react-icons/io5";
+import {
+  ResultAddressContract,
+  ResultBlock,
+  ResultTransaction,
+  SearchResults,
+  SearchResultType,
+  useSearchResultMutation,
+} from "@store/search";
 import { SearchResult, SearchResultTable } from "./SearchResult";
 
 interface SearchBarProps {
@@ -12,6 +20,7 @@ interface SearchBarProps {
 }
 
 export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
+  const [searchResultMutation] = useSearchResultMutation();
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [searchString, setSearchString] = useState();
@@ -41,14 +50,52 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
     whileElementsMounted: autoUpdate,
   });
 
+  function formatResults(results: SearchResults): SearchResult[] {
+    const list: SearchResult[] = [];
+    results.items.forEach((item) => {
+      // skip token now as we do not support it
+      if (item.type === SearchResultType.Token) {
+        return;
+      }
+
+      let url = "";
+      let title = "";
+      if (
+        item.type === SearchResultType.Address ||
+        item.type === SearchResultType.Contract
+      ) {
+        const result = item as ResultAddressContract;
+        url = `/address/${result.address}`;
+        title = result.name ?? result.address;
+      } else if (item.type === SearchResultType.Transaction) {
+        const result = item as ResultTransaction;
+        url = `/tx/${result.tx_hash}`;
+        title = result.tx_hash;
+      } else if (item.type === SearchResultType.Block) {
+        const result = item as ResultBlock;
+        url = `/block/${result.block_number}`;
+        title = result.block_number.toString();
+      }
+
+      list.push({
+        url,
+        title,
+        type: item.type,
+      });
+    });
+    return list;
+  }
+
   async function changeHandler(value): Promise<void> {
     const query = value.trim();
     setSearchString(query);
     setSelected({ title: query, url: "", type: "Query" });
     if (query.length > 0) {
       setIsSearching(true);
-      const results = await getSearchResults(query);
-      setSearchResults(results);
+      const results = await searchResultMutation({
+        queryString: query,
+      }).unwrap();
+      setSearchResults(formatResults(results));
       setIsSearching(false);
     } else {
       setSearchResults([]);
@@ -56,7 +103,7 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
   }
 
   const onChangeDebounceHandler = useMemo(
-    () => debounce((event) => changeHandler(event.target.value), 200),
+    () => debounce((event) => changeHandler(event.target.value), 500),
     []
   );
 
@@ -138,27 +185,4 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
       </div>
     </Combobox>
   );
-}
-
-async function getSearchResults(query): Promise<SearchResult[]> {
-  // TODO remove test data and timeout
-  await timeout(1000);
-  return [
-    {
-      title: query,
-      type: "Transaction",
-      url: `/tx/${query}`,
-    },
-    {
-      title: query,
-      type: "Block",
-      url: `/block/${query}`,
-    },
-  ];
-}
-
-async function timeout(ms): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
 }

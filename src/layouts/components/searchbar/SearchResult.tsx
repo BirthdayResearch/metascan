@@ -94,7 +94,7 @@ function NoResultsMessage(): JSX.Element {
       </div>
       <div className="ml-8 mt-2">
         <span className="text-center text-white-700 text-base">
-          Search for Hash, block, Vault ID ...
+          Search for Hash, block ...
         </span>
       </div>
     </div>

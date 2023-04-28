@@ -1,7 +1,12 @@
 import { TransactionType } from "mockdata/TransactionData";
-import dayjs from "dayjs";
 import { RowData } from "@components/LatestDataTable";
-import { MAIN_LATEST_BLOCK_URL, MAIN_LATEST_TRANSACTION_URL } from "./index";
+import { getTimeAgo } from "shared/durationHelper";
+import { getRewards } from "shared/getRewards";
+import {
+  MAIN_BLOCKS_URL,
+  MAIN_LATEST_BLOCK_URL,
+  MAIN_LATEST_TRANSACTION_URL,
+} from "./index";
 
 const MAX_ROW = 5;
 
@@ -12,11 +17,8 @@ export default {
     const blockRows = Math.min(responseBlockData.length, MAX_ROW);
 
     return responseBlockData.slice(0, blockRows).map((data) => {
-      const reward =
-        data.rewards !== undefined && data.rewards.length > 0
-          ? data.rewards[0].reward
-          : 0;
-      const time = dayjs().unix() - dayjs(data.timestamp).unix();
+      const reward = getRewards(data.rewards);
+      const time = getTimeAgo(data.timestamp);
       return {
         transactionId: data.height,
         tokenAmount: reward,
@@ -42,7 +44,7 @@ export default {
       const transactionType = type?.includes("contract")
         ? TransactionType.ContractCall
         : TransactionType.Transaction;
-      const time = dayjs().unix() - dayjs(data.timestamp).unix();
+      const time = getTimeAgo(data.timestamp);
       return {
         transactionId: data.hash,
         tokenAmount: data.value,
@@ -54,5 +56,15 @@ export default {
         time,
       };
     });
+  },
+  getBlocks: async (): Promise<any> => {
+    const resTxn = await fetch(MAIN_BLOCKS_URL);
+    const responseBlockData = await resTxn.json();
+    return responseBlockData;
+  },
+  getBlock: async (blockId: string): Promise<any> => {
+    const resTxn = await fetch(`${MAIN_BLOCKS_URL}/${blockId}`);
+    const responseBlockData = await resTxn.json();
+    return responseBlockData;
   },
 };

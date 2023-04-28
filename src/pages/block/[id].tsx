@@ -7,27 +7,40 @@ import clsx from "clsx";
 import useCopyToClipboard from "hooks/useCopyToClipboard";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { useRouter } from "next/router";
+import { GetServerSidePropsContext } from "next";
 import { useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
-import { DFI_TOKEN_SYMBOL, DMX_TOKEN_SYMBOL } from "shared/constants";
-import { getDuration } from "shared/durationHelper";
+import { getDuration, getTimeAgo } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
-import { transactions, pages } from "../../mockdata/TransactionData";
-import BlockTransactionList from "./_components/BlockTransactionList";
+import LatestDataApi from "@api/LatestDataApi";
+import { getRewards } from "shared/getRewards";
 
 // TODO: Replace `any` with proper types
 interface Props {
-  block: any;
-  blockTransactions: any;
-  pages: any;
+  block: {
+    base_fee_per_gas: string;
+    burnt_fees: string;
+    gas_limit: string;
+    gas_used: string;
+    gas_used_percentage: number;
+    height: number;
+    miner: {
+      hash: string;
+    };
+    rewards: any; // TODO(Pierre): Dependent to DMC rewards
+    timestamp: string;
+    tx_count: number;
+  };
+  // blockTransactions: any;
 }
 
-export default function Block({ block, ...data }: Props) {
+export default function Block({ block }: Props) {
   const router = useRouter();
   const blockNumber = new BigNumber(router.query.id as string);
   const prevBlockNumber = blockNumber.minus(1);
   const nextBlockNumber = blockNumber.plus(1); // TODO: check if nextBlockNumber exists when api is readys
+  const timeago = getTimeAgo(block.timestamp);
 
   return (
     <div
@@ -86,14 +99,14 @@ export default function Block({ block, ...data }: Props) {
                 data-testid="block-txn-count"
                 className="text-white-50 font-bold"
               >
-                {block.transactionsPerBlock} Transactions
+                {block.tx_count} Transactions
               </div>
               <div className="text-white-700 mt-1 flex flex-col md:flex-row">
                 <span className="order-last md:order-first pt-1 md:pt-0">
-                  {getDuration(block.time)} ago
+                  {getDuration(timeago)} ago
                 </span>
                 <span className="hidden md:inline">&nbsp;-&nbsp;</span>
-                <span>{block.datetime}</span>
+                <span>{block.timestamp}</span>
               </div>
             </div>
           </div>
@@ -103,23 +116,25 @@ export default function Block({ block, ...data }: Props) {
             <div className="w-full md:w-1/2">
               <FeeRecipientRow
                 label="Fee recipient"
-                feeRecipient={block.feeRecipient}
+                feeRecipient={block.miner.hash}
               />
               <DetailRow
                 testId="block-reward-amount"
                 label="Reward"
-                value={new BigNumber(block.rewardAmount).toFixed(8)}
-                suffix={` ${DFI_TOKEN_SYMBOL}`}
+                // TODO(pierregee): Dependent to how DMC rewards pass the data
+                value={getRewards(block.rewards[0]).toFixed(8)}
               />
               <GasUsedRow
                 label="Gas used"
-                gasUsed={block.gasUsed}
-                gasPercentage={block.gasPercentage}
+                gasUsed={block.gas_used}
+                gasPercentage={new BigNumber(block.gas_used_percentage).toFixed(
+                  2
+                )}
               />
               <DetailRow
                 testId="gas-limit"
                 label="Gas limit"
-                value={block.gasLimit}
+                value={block.gas_limit}
                 decimalScale={0}
               />
             </div>
@@ -127,14 +142,12 @@ export default function Block({ block, ...data }: Props) {
               <DetailRow
                 testId="base-fee"
                 label="Base fee"
-                value={new BigNumber(block.baseFee).toFixed(8)}
-                suffix={` ${DFI_TOKEN_SYMBOL}`}
+                value={new BigNumber(block.base_fee_per_gas).toFixed(8)}
               />
               <DetailRow
                 testId="burnt-fee"
                 label="Burnt fee"
-                value={new BigNumber(block.burntFee).toFixed(8)}
-                suffix={` ${DFI_TOKEN_SYMBOL}`}
+                value={new BigNumber(block.burnt_fees).toFixed(8)}
               />
             </div>
           </div>
@@ -142,13 +155,13 @@ export default function Block({ block, ...data }: Props) {
       </GradientCardContainer>
 
       {/* Block transaction list */}
-      <div data-testid="block-transaction-list" className="mt-6">
+      {/* <div data-testid="block-transaction-list" className="mt-6">
         <BlockTransactionList
           blockNumber={blockNumber.toFixed(0)}
           blockTransactions={data.blockTransactions}
           pages={data.pages}
         />
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -258,8 +271,8 @@ function GasUsedRow({
   gasPercentage,
 }: {
   label: string;
-  gasUsed: number;
-  gasPercentage: number;
+  gasUsed: string;
+  gasPercentage: string;
 }): JSX.Element {
   return (
     <div className={clsx(style.container)}>
@@ -275,7 +288,6 @@ function GasUsedRow({
             thousandSeparator
             value={new BigNumber(gasUsed)}
             decimalScale={0}
-            suffix={` ${DMX_TOKEN_SYMBOL}`}
           />
         </div>
         <div data-testid="gas-pct" className="text-white-700 text-xs pt-1">
@@ -286,23 +298,11 @@ function GasUsedRow({
   );
 }
 
-export async function getServerSideProps() {
-  // TODO: Fetch data from external API
-  // TODO: Use mockdata from blocks list later
-  const block = {
-    blockNumber: 21002,
-    transactionsPerBlock: 34,
-    feeRecipient: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
-    time: 2040,
-    datetime: "09/12/2023 12:45:23 PM + 7 UTC",
-    rewardAmount: "120.324003",
-    gasUsed: 12234,
-    gasPercentage: 0.5,
-    gasLimit: "40000000",
-    baseFee: "0.00004242",
-    burntFee: "0.13818798",
-  };
-  const blockTransactions = transactions;
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  if (context.params?.id === undefined) {
+    return null;
+  }
+  const block = await LatestDataApi.getBlock(context.params.id as string);
 
-  return { props: { block, blockTransactions, pages } };
+  return { props: { block } };
 }

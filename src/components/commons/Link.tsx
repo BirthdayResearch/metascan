@@ -2,7 +2,7 @@ import { getEnvironment } from "@contexts/Environment";
 import { useNetwork } from "@contexts/NetworkContext";
 import { LinkProps as NextLinkProps } from "next/dist/client/link";
 import NextLink from "next/link";
-import { PropsWithChildren } from "react";
+import { forwardRef, PropsWithChildren } from "react";
 import { UrlObject } from "url";
 
 export interface LinkUrlObject extends UrlObject {
@@ -22,21 +22,23 @@ interface LinkProps extends NextLinkProps {
  *
  * @param {PropsWithChildren<LinkProps>} props
  */
-export function Link(props: PropsWithChildren<LinkProps>): JSX.Element {
-  const { connection } = useNetwork();
+export const Link = forwardRef<HTMLAnchorElement, PropsWithChildren<LinkProps>>(
+  (props, ref) => {
+    const { connection } = useNetwork();
 
-  const { href, children } = props;
+    const { href, children } = props;
 
-  if (!getEnvironment().isDefaultConnection(connection)) {
-    href.query = {
-      ...(href.query ?? {}),
-      network: connection,
-    };
+    if (!getEnvironment().isDefaultConnection(connection)) {
+      href.query = {
+        ...(href.query ?? {}),
+        network: connection,
+      };
+    }
+
+    return (
+      <NextLink passHref {...props} ref={ref}>
+        {children}
+      </NextLink>
+    );
   }
-
-  return (
-    <NextLink passHref {...props}>
-      {children}
-    </NextLink>
-  );
-}
+);

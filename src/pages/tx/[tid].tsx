@@ -1,27 +1,30 @@
-import GradientCardContainer from "@components/commons/GradientCardContainer";
-import { FiCopy, FiChevronUp, FiChevronDown } from "react-icons/fi";
-import NumericFormat from "@components/commons/NumericFormat";
-import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import LinkText from "@components/commons/LinkText";
-import { truncateTextFromMiddle } from "shared/textHelper";
-import { Dispatch, SetStateAction, useState } from "react";
-import { useUnitSuffix } from "hooks/useUnitSuffix";
-import { InfoIcon } from "@components/icons/InfoIcon";
-import Tooltip from "@components/commons/Tooltip";
+import BigNumber from "bignumber.js";
 import clsx from "clsx";
+import { Dispatch, SetStateAction, useState } from "react";
+import { FiCopy, FiChevronUp, FiChevronDown } from "react-icons/fi";
+
+import { useUnitSuffix } from "hooks/useUnitSuffix";
+import useWindowDimensions from "hooks/useWindowDimensions";
+import { formatDateToUTC, getDuration } from "shared/durationHelper";
+import { massageTransactionData } from "shared/transactionDataHelper";
+import { truncateTextFromMiddle } from "shared/textHelper";
+import { ETH_TOKEN_SYMBOL } from "shared/constants";
+import TransactionsApi from "@api/TransactionsApi";
+import { TransactionI, TransactionType } from "@api/types";
+
+import { SearchBar } from "layouts/components/searchbar/SearchBar";
+import GradientCardContainer from "@components/commons/GradientCardContainer";
+import NumericFormat from "@components/commons/NumericFormat";
+import LinkText from "@components/commons/LinkText";
+import Tooltip from "@components/commons/Tooltip";
+import { InfoIcon } from "@components/icons/InfoIcon";
 import { ConfirmCheck } from "@components/icons/ConfirmCheck";
 import { RejectedCross } from "@components/icons/RejectedCross";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
-import useWindowDimensions from "hooks/useWindowDimensions";
-import { getDuration } from "shared/durationHelper";
-import TransactionsApi from "@api/TransactionsApi";
-import { TransactionI, TransactionType } from "@api/types";
-import BigNumber from "bignumber.js";
-import { massageTransactionData } from "shared/transactionDataHelper";
-import { ETH_TOKEN_SYMBOL } from "shared/constants";
 import BoldedTitle from "./_components/BoldedTitle";
 
 function Transaction({ txDetails }: { txDetails: TransactionI }) {
+  console.log({ txDetails });
   const amount = { value: txDetails.amount, symbol: txDetails.symbol };
   const gasPrice = { value: txDetails.gasPrice, symbol: ETH_TOKEN_SYMBOL };
   const gasUsedPercentage = new BigNumber(txDetails.gasUsed)
@@ -51,7 +54,8 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
             status={txDetails.status}
             blockNumber={txDetails.blockNumber}
             confirmations={txDetails.confirmations}
-            timestamp={txDetails.time}
+            timeInSec={txDetails.timeInSec}
+            timestamp={txDetails.timestamp}
             transactionFee={transactionFee}
             transactionType={txDetails.transactionType}
             nonce={txDetails.nonce}
@@ -89,7 +93,8 @@ interface TransactionDetailSegmentOneProp {
   status: string;
   blockNumber: string;
   confirmations: number;
-  timestamp: number;
+  timeInSec: number;
+  timestamp: string;
   transactionFee: {
     value: string;
     symbol: string;
@@ -111,6 +116,7 @@ function TransactionDetailSegmentOne({
   status,
   blockNumber,
   confirmations,
+  timeInSec,
   timestamp,
   transactionFee,
   transactionType,
@@ -122,6 +128,9 @@ function TransactionDetailSegmentOne({
   const [isToAddressCopied, setIsToAddressCopied] = useState(false);
   const [isTransactionIdCopied, setIsTransationIdCopied] = useState(false);
   const windowDimension = useWindowDimensions().width;
+
+  const timeDuration = getDuration(Number(timeInSec));
+  const timeInUTC = formatDateToUTC(timestamp);
 
   return (
     <div className="flex flex-col gap-y-10">
@@ -222,7 +231,7 @@ function TransactionDetailSegmentOne({
             data-testid="transaction-timestamp"
             className="text-white-700 tracking-[0.01em] h-[22px] leading-[22.4px]"
           >
-            {getDuration(Number(timestamp))} ago
+            {`${timeDuration} ago (${timeInUTC} +UTC)`}
           </div>
         </div>
       </div>

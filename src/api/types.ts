@@ -54,7 +54,8 @@ export interface TransactionI {
   from: string;
   to: string | null;
   status: TransactionStatus;
-  time: number;
+  timeInSec: number;
+  timestamp: string;
   nonce: number;
   blockNumber: string;
   value: string;

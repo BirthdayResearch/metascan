@@ -46,7 +46,8 @@ export const massageTransactionData = (tx: RawTransactionI): TransactionI => {
       tx.status === "ok"
         ? TransactionStatus.Confirmed
         : TransactionStatus.Reverted,
-    time: dayjs().unix() - dayjs(tx.timestamp).unix(),
+    timeInSec: dayjs().unix() - dayjs(tx.timestamp).unix(),
+    timestamp: tx.timestamp,
     nonce: tx.nonce,
     blockNumber: tx.block,
     value: utils.formatEther(tx.value),

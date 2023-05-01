@@ -8,11 +8,7 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import { TimeComponent } from "@components/commons/TimeComponent";
-import {
-  TransactionI,
-  TransactionStatus,
-  TransactionType,
-} from "../../../mockdata/TransactionData";
+import { TransactionI, TransactionStatus, TransactionType } from "@api/types";
 
 export const iconMapping = {
   [TransactionType.ContractCall]: FiFileText,

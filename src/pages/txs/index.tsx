@@ -1,7 +1,9 @@
 import { CursorPagination } from "@components/commons/CursorPagination";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import { transactions, pages } from "../../mockdata/TransactionData";
+import TransactionsApi from "@api/TransactionsApi";
+import { massageTransactionData } from "shared/transactionDataHelper";
+import { pages } from "../../mockdata/TransactionData";
 import TransactionRow from "./_components/TransactionRow";
 
 export default function Transactions({ data }) {
@@ -20,9 +22,10 @@ export default function Transactions({ data }) {
               className="justify-end mt-5 md:mt-0"
             />
           </div>
-          {data.transactions.map((item) => (
-            <TransactionRow key={item.hash} data={item} />
-          ))}
+          {data.transactions.map((item) => {
+            const tx = massageTransactionData(item);
+            return <TransactionRow key={tx.hash} data={tx} />;
+          })}
           <CursorPagination
             pages={data.pages}
             path="/txs"
@@ -36,8 +39,9 @@ export default function Transactions({ data }) {
 
 export async function getServerSideProps() {
   // Fetch data from external API
+  const txs = await TransactionsApi.getTransactions(null); // TODO: Pass `next_page_params` when needed, for pagination
   const data = {
-    transactions,
+    transactions: txs.items,
     pages,
   };
 

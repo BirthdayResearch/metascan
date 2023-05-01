@@ -1,7 +1,7 @@
-import { TransactionType } from "mockdata/TransactionData";
 import dayjs from "dayjs";
 import { RowData } from "@components/LatestDataTable";
 import { MAIN_LATEST_BLOCK_URL, MAIN_LATEST_TRANSACTION_URL } from "./index";
+import { TransactionType } from "./types";
 
 const MAX_ROW = 5;
 
@@ -35,13 +35,14 @@ export default {
 
     return responseTxnData.slice(0, txnRows).map((data) => {
       // TODO temporary workaround to display txn type icons
-      const type: string | undefined =
-        data.tx_types !== undefined && data.tx_types.length > 0
-          ? data.tx_types[0]
-          : undefined;
-      const transactionType = type?.includes("contract")
-        ? TransactionType.ContractCall
-        : TransactionType.Transaction;
+      const type = data.tx_types?.length > 0 ? data.tx_types[0] : null;
+      let transactionType = TransactionType.Transaction;
+      if (type?.includes("contract")) {
+        transactionType = TransactionType.ContractCall;
+      } else if (type?.includes("token")) {
+        transactionType = TransactionType.Tokenized;
+      }
+
       const time = dayjs().unix() - dayjs(data.timestamp).unix();
       return {
         transactionId: data.hash,

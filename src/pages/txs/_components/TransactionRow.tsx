@@ -81,7 +81,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
             symbol={data.symbol}
             containerClass="mt-4"
           />
-          <TimeComponent time={data.time} containerClass="mt-4" />
+          <TimeComponent time={data.timeInSec} containerClass="mt-4" />
           <TransactionLinkRow
             label="Hash"
             pathname={`/tx/${data.hash}`}

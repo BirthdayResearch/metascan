@@ -24,7 +24,6 @@ import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import BoldedTitle from "./_components/BoldedTitle";
 
 function Transaction({ txDetails }: { txDetails: TransactionI }) {
-  console.log({ txDetails });
   const amount = { value: txDetails.amount, symbol: txDetails.symbol };
   const gasPrice = { value: txDetails.gasPrice, symbol: ETH_TOKEN_SYMBOL };
   const gasUsedPercentage = new BigNumber(txDetails.gasUsed)

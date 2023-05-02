@@ -1,11 +1,12 @@
 import { Combobox } from "@headlessui/react";
 import { Fragment } from "react";
 import clsx from "clsx";
-import { FiBox, FiSlash } from "react-icons/fi";
+import { FiBox, FiFileText, FiSlash } from "react-icons/fi";
 import { TbLoaderQuarter } from "react-icons/tb";
 import { Link } from "@components/commons/Link";
 import { TransactionsIcon } from "@components/icons/Transactions";
 import { IconType } from "react-icons";
+import { SearchResultType } from "@store/search";
 
 export interface SearchResult {
   url: string;
@@ -40,11 +41,11 @@ export function SearchResultTable({
   );
 }
 
-type SearchResultType = "Block" | "Transaction";
-
 const iconMapping: Record<SearchResultType, IconType> = {
-  Block: FiBox,
-  Transaction: TransactionsIcon,
+  [SearchResultType.Block]: FiBox,
+  [SearchResultType.Transaction]: TransactionsIcon,
+  [SearchResultType.Address]: FiFileText,
+  [SearchResultType.Contract]: FiFileText,
 };
 
 function SearchResultRow({
@@ -64,7 +65,7 @@ function SearchResultRow({
             <div className="w-full flex items-center">
               <Icon size={20} className="text-white-50 stroke-white-50" />
               <span
-                className={clsx("text-center text-base ml-3", {
+                className={clsx("text-center text-base ml-3 capitalize", {
                   "text-transparent bg-clip-text brand-gradient-1": active,
                   "text-white-700": !active,
                 })}
@@ -93,7 +94,7 @@ function NoResultsMessage(): JSX.Element {
       </div>
       <div className="ml-8 mt-2">
         <span className="text-center text-white-700 text-base">
-          Search for Hash, block, Vault ID ...
+          Search for Hash, block ...
         </span>
       </div>
     </div>

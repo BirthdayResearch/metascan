@@ -19,21 +19,36 @@ import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { pages, TransactionI, transactions } from "mockdata/TransactionData";
 import { useRouter } from "next/router";
 import TransactionRow from "pages/txs/_components/TransactionRow";
-import { FiCopy, FiChevronUp, FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp, FiCopy } from "react-icons/fi";
 import { MdOutlineQrCode } from "react-icons/md";
-import { truncateTextFromMiddle } from "shared/textHelper";
-import { tokens, tokenPages, Token } from "mockdata/TokenData";
+import { isAlphanumeric, truncateTextFromMiddle } from "shared/textHelper";
+import {
+  Token,
+  tokenPages,
+  tokens as tokenDetailList,
+} from "mockdata/TokenData";
 import { walletAddressData } from "mockdata/WalletAddressData";
 import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
 import { sleep } from "shared/sleep";
+import {
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  InferGetServerSidePropsType,
+} from "next";
 import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
 import TokenRow from "./_components/TokenRow";
 import QrCode from "../../components/commons/QrCode";
+import WalletAddressApi from "../../api/WalletAddressApi";
 
-function Address() {
+function Address({
+  balance,
+  transactionCount,
+  tokens,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
   const router = useRouter();
   const aid = router.query.aid?.toString()!;
+
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
@@ -47,7 +62,10 @@ function Address() {
               {fixedTitle.walletAddress}
             </span>
           </div>
-          <WalletSegmentOne setIsQrCodeClicked={setIsQrCodeClicked} />
+          <WalletSegmentOne
+            setIsQrCodeClicked={setIsQrCodeClicked}
+            detail={{ balance, transactionCount, tokens }}
+          />
         </div>
       </GradientCardContainer>
       <div className="mt-6" />
@@ -68,15 +86,20 @@ function Address() {
   );
 }
 
+interface SegmentOneProps {
+  setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
+  detail: WalletDetailProps;
+}
+
 interface QrClickProps {
   setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
 }
 
-function WalletSegmentOne({ setIsQrCodeClicked }: QrClickProps) {
+function WalletSegmentOne({ setIsQrCodeClicked, detail }: SegmentOneProps) {
   return (
     <div className="flex flex-col gap-y-[33px]">
       <WalletAddressDetails setIsQrCodeClicked={setIsQrCodeClicked} />
-      <WalletDetails />
+      <WalletDetails detail={detail} />
     </div>
   );
 }
@@ -130,7 +153,7 @@ function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
   );
 }
 
-function WalletDetails() {
+function WalletDetails({ detail }: { detail: WalletDetailProps }) {
   const [isTokenDropDownIconClicked, setIsTokenDropDownIconClicked] =
     useState(false);
   const wrapperRef = useRef(null);
@@ -149,75 +172,77 @@ function WalletDetails() {
           <NumericFormat
             className="text-white-50 tracking-[0.01em]"
             thousandSeparator
-            value={walletAddressData.balance.value.toString()}
+            value={detail.balance}
             decimalScale={8}
-            suffix={` ${walletAddressData.balance.symbol}`}
             data-testid="wallet-balance-value"
           />
         </div>
-        <div className="flex flex-col gap-y-1 lg:w-[265px] md:w-[294px]">
-          <div
-            data-testid="wallet-tokens-title"
-            className="text-white-700 tracking-[0.01em]"
-          >
-            {fixedTitle.tokens}
-          </div>
-          <div ref={wrapperRef} className="relative">
+        {/* hides token field for now */}
+        {detail.tokens !== null && (
+          <div className="flex flex-col gap-y-1 lg:w-[265px] md:w-[294px]">
             <div
-              role="button"
-              tabIndex={0}
-              onKeyDown={() =>
-                onTokenDropDownIconClick(
-                  setIsTokenDropDownIconClicked,
-                  isTokenDropDownIconClicked
-                )
-              }
-              onClick={() =>
-                onTokenDropDownIconClick(
-                  setIsTokenDropDownIconClicked,
-                  isTokenDropDownIconClicked
-                )
-              }
-              className="flex flex-row items-center"
+              data-testid="wallet-tokens-title"
+              className="text-white-700 tracking-[0.01em]"
             >
-              <div className="text-white-50 tracking-[0.01em] mr-[10px]">
-                {walletAddressData.tokens.allTokens.length} {fixedTitle.tokens}
-              </div>
-              <div>
-                {isTokenDropDownIconClicked ? (
-                  <FiChevronDown
-                    data-testid="wallet-tokens-dropdown-icon"
-                    size={24}
-                    className="text-white-700"
-                  />
-                ) : (
-                  <FiChevronUp
-                    data-testid="wallet-tokens-up-icon"
-                    size={24}
-                    className="text-white-700"
-                  />
-                )}
-              </div>
-              <div>
-                <NumericFormat
-                  className="text-white-700 ml-[14px] tracking-[0.01em]"
-                  value={walletAddressData.tokens.value.toString()}
-                  thousandSeparator
-                  decimalScale={2}
-                  suffix=")"
-                  prefix="($"
-                  data-testid="wallet-tokens-value"
-                />
-              </div>
+              {fixedTitle.tokens}
             </div>
-            {isTokenDropDownIconClicked && (
-              <TokenSearchDropDown
-                data-testid="wallet-token-search-dropdown"
-                addressTokens={walletAddressData.tokens.allTokens}
-              />
-            )}
+            <div ref={wrapperRef} className="relative">
+              <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={() =>
+                  onTokenDropDownIconClick(
+                    setIsTokenDropDownIconClicked,
+                    isTokenDropDownIconClicked
+                  )
+                }
+                onClick={() =>
+                  onTokenDropDownIconClick(
+                    setIsTokenDropDownIconClicked,
+                    isTokenDropDownIconClicked
+                  )
+                }
+                className="flex flex-row items-center"
+              >
+                <div className="text-white-50 tracking-[0.01em] mr-[10px]">
+                  {detail.tokens.allTokens.length} {fixedTitle.tokens}
+                </div>
+                <div>
+                  {isTokenDropDownIconClicked ? (
+                    <FiChevronDown
+                      data-testid="wallet-tokens-dropdown-icon"
+                      size={24}
+                      className="text-white-700"
+                    />
+                  ) : (
+                    <FiChevronUp
+                      data-testid="wallet-tokens-up-icon"
+                      size={24}
+                      className="text-white-700"
+                    />
+                  )}
+                </div>
+                <div>
+                  <NumericFormat
+                    className="text-white-700 ml-[14px] tracking-[0.01em]"
+                    value={detail.tokens.value.toString()}
+                    thousandSeparator
+                    decimalScale={2}
+                    suffix=")"
+                    prefix="($"
+                    data-testid="wallet-tokens-value"
+                  />
+                </div>
+              </div>
+              {isTokenDropDownIconClicked && (
+                <TokenSearchDropDown
+                  data-testid="wallet-token-search-dropdown"
+                  addressTokens={detail.tokens.allTokens}
+                />
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="flex flex-col gap-y-1 lg:w-[265px] md:w-[294px]">
         <div
@@ -230,7 +255,7 @@ function WalletDetails() {
           data-testid="wallet-transactions-value"
           className="text-white-50 tracking-[0.01em]"
         >
-          {useUnitSuffix(walletAddressData.transaction.toString())}
+          {useUnitSuffix(detail.transactionCount)}
         </div>
       </div>
     </div>
@@ -311,7 +336,10 @@ function WalletSegmentTwo() {
         />
       ) : (
         <div>
-          <TokenDetails tokenList={tokens} tokenListPage={tokenPages} />
+          <TokenDetails
+            tokenList={tokenDetailList}
+            tokenListPage={tokenPages}
+          />
         </div>
       )}
     </div>
@@ -605,6 +633,7 @@ function useOutsideAlerter(
         setIsTokenClicked(false);
       }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -612,10 +641,40 @@ function useOutsideAlerter(
   }, [ref]);
 }
 
-export async function getServerSideProps() {
-  return {
-    props: {}, // will be passed to the page component as props
-  };
+interface WalletDetailProps {
+  balance: string;
+  transactionCount: string;
+  tokens: {
+    value: number;
+    allTokens: {
+      value: number;
+      symbol: string;
+    }[];
+  } | null;
+}
+
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<WalletDetailProps>> {
+  const aid = context.params?.aid?.toString().trim() as string;
+
+  if (!isAlphanumeric(aid)) {
+    return { notFound: true };
+  }
+
+  try {
+    const walletDetail = await WalletAddressApi.getDetail(aid);
+    const counters = await WalletAddressApi.getCounters(aid);
+    return {
+      props: {
+        balance: walletDetail.coin_balance,
+        transactionCount: counters?.transactions_count,
+        tokens: null,
+      },
+    };
+  } catch (e) {
+    return { notFound: true };
+  }
 }
 
 export default Address;

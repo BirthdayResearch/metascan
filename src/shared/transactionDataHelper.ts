@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { utils } from "ethers";
 import {
   RawTransactionI,
@@ -7,6 +6,7 @@ import {
   TransactionType,
 } from "@api/types";
 import { DFI_TOKEN_SYMBOL } from "./constants";
+import { getTimeAgo } from "./durationHelper";
 
 /**
  * This function is called from component, to directly transform data in the UI and prevent multiple loop thru the list
@@ -46,7 +46,7 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
       tx.status === "ok"
         ? TransactionStatus.Confirmed
         : TransactionStatus.Reverted,
-    timeInSec: dayjs().unix() - dayjs(tx.timestamp).unix(),
+    timeInSec: getTimeAgo(tx.timestamp),
     timestamp: tx.timestamp,
     nonce: tx.nonce,
     blockNumber: tx.block,

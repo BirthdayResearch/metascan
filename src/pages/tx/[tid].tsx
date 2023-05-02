@@ -6,7 +6,7 @@ import { FiCopy, FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { useUnitSuffix } from "hooks/useUnitSuffix";
 import useWindowDimensions from "hooks/useWindowDimensions";
 import { formatDateToUTC, getDuration } from "shared/durationHelper";
-import { massageTransactionData } from "shared/transactionDataHelper";
+import { transformTransactionData } from "shared/transactionDataHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { ETH_TOKEN_SYMBOL } from "shared/constants";
 import TransactionsApi from "@api/TransactionsApi";
@@ -1060,7 +1060,7 @@ const onCopyAddressIconClick = async (
 export async function getServerSideProps(context) {
   const { tid } = context.params;
   const data = await TransactionsApi.getTransaction(tid);
-  const txDetails = massageTransactionData(data);
+  const txDetails = transformTransactionData(data);
 
   return { props: { txDetails } };
 }

@@ -2,7 +2,7 @@ import { CursorPagination } from "@components/commons/CursorPagination";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import TransactionsApi from "@api/TransactionsApi";
-import { massageTransactionData } from "shared/transactionDataHelper";
+import { transformTransactionData } from "shared/transactionDataHelper";
 import { pages } from "../../mockdata/TransactionData";
 import TransactionRow from "./_components/TransactionRow";
 
@@ -23,7 +23,7 @@ export default function Transactions({ data }) {
             />
           </div>
           {data.transactions.map((item) => {
-            const tx = massageTransactionData(item);
+            const tx = transformTransactionData(item);
             return <TransactionRow key={tx.hash} data={tx} />;
           })}
           <CursorPagination

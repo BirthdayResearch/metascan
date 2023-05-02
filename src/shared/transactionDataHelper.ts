@@ -13,7 +13,7 @@ import { DFI_TOKEN_SYMBOL } from "./constants";
  * @param tx raw tx data from the api
  * @returns formatted tx data
  */
-export const massageTransactionData = (tx: RawTransactionI): TransactionI => {
+export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
   // TODO: Revisit the amount/value format once actual tx data is available
   const amountIndex = tx.decoded_input?.parameters?.findIndex(
     (p) => p.name === "amount"

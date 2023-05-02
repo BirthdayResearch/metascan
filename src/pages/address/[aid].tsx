@@ -162,7 +162,7 @@ function WalletDetails({ detail }: { detail: WalletDetailProps }) {
   return (
     <div className="flex lg:flex-row md:flex-col flex-col gap-y-4 lg:gap-x-5">
       <div className="flex flex-col lg:flex-row md:flex-row gap-y-4 lg:gap-x-5">
-        <div className="flex flex-col gap-y-1 lg:w-[265px] md:w-[294px]">
+        <div className="flex flex-col gap-y-1 lg:min-w-[265px] md:min-w-[294px]">
           <div
             data-testid="wallet-balance-title"
             className="text-white-700 tracking-[0.01em]"
@@ -170,7 +170,7 @@ function WalletDetails({ detail }: { detail: WalletDetailProps }) {
             {fixedTitle.balance}
           </div>
           <NumericFormat
-            className="text-white-50 tracking-[0.01em]"
+            className="text-white-50 tracking-[0.01em] break-all"
             thousandSeparator
             value={detail.balance}
             decimalScale={8}

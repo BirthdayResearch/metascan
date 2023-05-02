@@ -32,36 +32,40 @@ export default function QrCode({ href, address, onCloseClick }: QrCodeProps) {
         size={24}
         className="fixed md:top-[46px] md:right-[46px] top-[38px] right-[38px] text-white-50"
       />
-      <GradientCardContainer className="w-[245px] h-[38px]">
-        {isWalletAddressCopied ? (
-          <div className="flex flex-row gap-x-[9.6px] justify-center items-center py-2 px-[21.5px]">
-            <LinkText
-              testId="wallet-id-copied"
-              label={fixedTitle.copied}
-              href={href}
-              customStyle="tracking-[0.01em]"
-            />
-            <GreenTickIcon data-testid="qr-code-address-copied-green-tick-icon" />
-          </div>
-        ) : (
-          <div className="flex flex-row justify-evenly items-center py-2 px-[21.5px]">
-            <LinkText
-              testId="wallet-id"
-              label={truncateTextFromMiddle(address, 8)}
-              href={href}
-              customStyle="tracking-[0.01em]"
-            />
-            <FiCopy
-              data-testid="qr-code-copy-icon"
-              role="button"
+      <div>
+        <GradientCardContainer className="w-[245px] h-[38px]">
+          {isWalletAddressCopied ? (
+            <div className="flex flex-row gap-x-[9.6px] justify-center items-center py-2 px-[21.5px]">
+              <LinkText
+                testId="wallet-id-copied"
+                label={fixedTitle.copied}
+                href={href}
+                customStyle="tracking-[0.01em]"
+              />
+              <GreenTickIcon data-testid="qr-code-address-copied-green-tick-icon" />
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="flex flex-row justify-evenly items-center py-2 px-[21.5px]"
               onClick={() =>
                 onCopyAddressIconClick(setIsWalletAddressCopied, address)
               }
-              className="text-white-50"
-            />
-          </div>
-        )}
-      </GradientCardContainer>
+            >
+              <LinkText
+                testId="wallet-id"
+                label={truncateTextFromMiddle(address, 8)}
+                href={href}
+                customStyle="tracking-[0.01em]"
+              />
+              <FiCopy
+                data-testid="qr-code-copy-icon"
+                className="text-white-50 ml-1"
+              />
+            </button>
+          )}
+        </GradientCardContainer>
+      </div>
       <QRCode
         data-testid="wallet-qr-code-image"
         size={245}

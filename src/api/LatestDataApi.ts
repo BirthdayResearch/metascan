@@ -21,7 +21,7 @@ export default {
       const time = getTimeAgo(data.timestamp);
       return {
         transactionId: data.height,
-        tokenAmount: reward,
+        tokenAmount: reward.toFixed(),
         txnOrBlockInfo: {
           transactionsPerBlock: data.tx_count || null,
           blockTimeInSec: null,
@@ -57,8 +57,14 @@ export default {
       };
     });
   },
-  getBlocks: async (): Promise<any> => {
-    const resTxn = await fetch(MAIN_BLOCKS_URL);
+  getBlocks: async (blockNumber: string, itemsCount: string): Promise<any> => {
+    const params = getParams([
+      { key: "block_number", value: blockNumber },
+      { key: "items_count", value: itemsCount },
+      { key: "type", value: "block" },
+    ]);
+
+    const resTxn = await fetch(`${MAIN_BLOCKS_URL}${params}`);
     const responseBlockData = await resTxn.json();
     return responseBlockData;
   },
@@ -68,3 +74,15 @@ export default {
     return responseBlockData;
   },
 };
+
+function getParams(params: { key: string; value }[]): string {
+  let queryParams = "?";
+  params.forEach((p) => {
+    if (p.value !== undefined && p.value.trim() !== "") {
+      // Pierre to add cleaner way to handle this params
+      queryParams += `${p.key}=${p.value}&`;
+    }
+  });
+
+  return queryParams;
+}

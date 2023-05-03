@@ -359,7 +359,7 @@ function TransactionDetailSegmentOne({
                     testId="transaction-details-to"
                     label={truncateTextFromMiddle(
                       address.to,
-                      windowDimension >= 760 ? 5 : 11
+                      windowDimension >= 760 ? 4 : 11
                     )}
                     href={`/address/${address.to}`}
                   />
@@ -378,11 +378,19 @@ function TransactionDetailSegmentOne({
             </div>
           )}
           <div className="flex flex-col gap-y-1 col-start-1 row-start-2">
-            <div
-              data-testid="transaction-nonce-title"
-              className="text-white-700 tracking-[0.01em]"
-            >
-              {fixedTitle.nonce}
+            <div className="flex flex-row items-center grow">
+              <div
+                data-testid="transaction-nonce-title"
+                className="text-white-700 tracking-[0.01em]"
+              >
+                {fixedTitle.nonce}
+              </div>
+              <Tooltip text={fixedTitle.nonce}>
+                <InfoIcon
+                  data-testid="desktop-transaction-nonce-icon"
+                  className="ml-[9.33px] mr-[8.67px]"
+                />
+              </Tooltip>
             </div>
             <div
               data-testid="transaction-nonce"
@@ -444,11 +452,19 @@ function TransactionDetailSegmentOne({
           </div>
         </div>
         <div className="flex flex-col gap-y-1">
-          <div
-            data-testid="transaction-nonce-title"
-            className="text-white-700 tracking-[0.01em]"
-          >
-            {fixedTitle.nonce}
+          <div className="flex flex-row items-center grow">
+            <div
+              data-testid="transaction-nonce-title"
+              className="text-white-700 tracking-[0.01em]"
+            >
+              {fixedTitle.nonce}
+            </div>
+            <Tooltip text={fixedTitle.nonce}>
+              <InfoIcon
+                data-testid="transaction-nonce-icon"
+                className="ml-[9.33px] mr-[8.67px]"
+              />
+            </Tooltip>
           </div>
           <div
             data-testid="transaction-nonce"
@@ -482,7 +498,7 @@ function TransactionDetailSegmentOne({
                   testId="transaction-details-from"
                   label={truncateTextFromMiddle(
                     address.from,
-                    windowDimension >= 760 ? 5 : 11
+                    windowDimension >= 760 ? 4 : 11
                   )}
                   href={`/address/${address.from}`}
                 />
@@ -528,7 +544,7 @@ function TransactionDetailSegmentOne({
                   testId="transaction-details-to"
                   label={truncateTextFromMiddle(
                     address.to,
-                    windowDimension >= 760 ? 5 : 11
+                    windowDimension >= 760 ? 4 : 11
                   )}
                   href={`/address/${address.to}`}
                 />
@@ -596,11 +612,19 @@ function TransactionDetailSegmentTwo({
             />
           </div>
           <div className="row-start-2 col-start-1">
-            <div
-              data-testid="desktop-transaction-gas-price-title"
-              className="text-white-700 tracking-[0.01em]"
-            >
-              {fixedTitle.gasPrice}
+            <div className="flex flex-row items-center grow">
+              <div
+                data-testid="desktop-transaction-gas-price-title"
+                className="text-white-700 tracking-[0.01em]"
+              >
+                {fixedTitle.gasPrice}
+              </div>
+              <Tooltip text={fixedTitle.gasPrice}>
+                <InfoIcon
+                  data-testid="desktop-transaction-gas-price-icon"
+                  className="ml-[9.33px] mr-[8.67px]"
+                />
+              </Tooltip>
             </div>
           </div>
           <div className="row-start-2 col-start-2 lg:col-span-2">
@@ -637,11 +661,19 @@ function TransactionDetailSegmentTwo({
             </div>
           </div>
           <div className="row-start-4 col-start-1">
-            <div
-              data-testid="desktop-transaction-gas-used-title"
-              className="text-white-700 w-[101px] tracking-[0.01em]"
-            >
-              {fixedTitle.gasUsed}
+            <div className="flex flex-row items-center grow">
+              <div
+                data-testid="desktop-transaction-gas-used-title"
+                className="text-white-700 w-[101px] tracking-[0.01em]"
+              >
+                {fixedTitle.gasUsed}
+              </div>
+              <Tooltip text={fixedTitle.gasUsed}>
+                <InfoIcon
+                  data-testid="desktop-transaction-gas-used-icon"
+                  className="ml-[9.33px] mr-[8.67px]"
+                />
+              </Tooltip>
             </div>
           </div>
           <div className="row-start-4 col-start-2 lg:col-span-2">
@@ -699,7 +731,7 @@ function TransactionDetailSegmentTwo({
                     testId="desktop-transaction-token-transferred-from"
                     label={truncateTextFromMiddle(
                       from,
-                      windowDimension <= 1280 ? 5 : 11
+                      windowDimension <= 1280 ? 4 : 11
                     )}
                     href={`/address/${from}`}
                   />
@@ -742,7 +774,7 @@ function TransactionDetailSegmentTwo({
                     testId="desktop-transaction-token-transferred-to"
                     label={truncateTextFromMiddle(
                       to,
-                      windowDimension <= 1280 ? 5 : 11
+                      windowDimension <= 1280 ? 4 : 11
                     )}
                     href={`/address/${to}`}
                   />
@@ -792,13 +824,19 @@ function TransactionDetailSegmentTwo({
             testId="transaction-gas-detail-title"
           />
           <div className="flex flex-row">
-            <div className="grow">
+            <div className="flex flex-row items-center grow">
               <div
                 data-testid="transaction-gas-price-title"
                 className="text-white-700 tracking-[0.01em]"
               >
                 {fixedTitle.gasPrice}
               </div>
+              <Tooltip text={fixedTitle.gasPrice}>
+                <InfoIcon
+                  data-testid="transaction-gas-price-icon"
+                  className="ml-[9.33px] mr-[8.67px]"
+                />
+              </Tooltip>
             </div>
             <div className="flex text-right">
               <NumericFormat
@@ -833,13 +871,19 @@ function TransactionDetailSegmentTwo({
             </div>
           </div>
           <div className="flex flex-row">
-            <div className=" grow">
+            <div className="flex flex-row items-center grow">
               <div
                 data-testid="transaction-gas-used-title"
                 className="text-white-700 w-[101px] tracking-[0.01em]"
               >
                 {fixedTitle.gasUsed}
               </div>
+              <Tooltip text={fixedTitle.gasUsed}>
+                <InfoIcon
+                  data-testid="transaction-gas-used-icon"
+                  className="ml-[9.33px] mr-[8.67px]"
+                />
+              </Tooltip>
             </div>
             <div className="flex flex-col">
               <NumericFormat
@@ -892,7 +936,7 @@ function TransactionDetailSegmentTwo({
                       testId="transaction-token-transferred-from"
                       label={truncateTextFromMiddle(
                         from,
-                        windowDimension <= 1280 ? 5 : 11
+                        windowDimension <= 1280 ? 4 : 11
                       )}
                       href={`/address/${from}`}
                     />
@@ -935,7 +979,7 @@ function TransactionDetailSegmentTwo({
                           testId="transaction-token-transferred-to"
                           label={truncateTextFromMiddle(
                             to,
-                            windowDimension <= 1280 ? 5 : 11
+                            windowDimension <= 1280 ? 4 : 11
                           )}
                           href={`/address/${to}`}
                         />

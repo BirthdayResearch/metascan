@@ -7,7 +7,11 @@ interface TooltipProps {
   active?: boolean;
 }
 
-export default function Tooltip({ text, children, active }: TooltipProps) {
+export default function Tooltip({
+  text,
+  children,
+  active = true,
+}: TooltipProps) {
   return (
     <div className="group relative">
       <div

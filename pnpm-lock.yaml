@@ -43,8 +43,8 @@ devDependencies:
     specifier: ^3.10.0
     version: 3.10.0(@babel/core@7.20.5)(@babel/preset-env@7.20.2)(babel-loader@8.3.0)(cypress@11.2.0)(webpack@5.75.0)
   '@netlify/plugin-lighthouse':
-    specifier: ^4.0.7
-    version: 4.0.7
+    specifier: ^4.1.1
+    version: 4.1.1
   '@netlify/plugin-nextjs':
     specifier: ^4.30.4
     version: 4.30.4
@@ -1696,9 +1696,9 @@ packages:
       - supports-color
       - utf-8-validate
 
-  /@netlify/plugin-lighthouse@4.0.7:
-    resolution: {integrity: sha512-J9oPEJ3/7KcWDGaHuxngSYzyiVR21DKEJ8AmfZs/G2nzG+4fXpLpWsJT/SyKj+tgD8DUxNjffZlCcZZPxIu6Vg==}
-    engines: {node: '>=14.15 <19'}
+  /@netlify/plugin-lighthouse@4.1.1:
+    resolution: {integrity: sha512-eFNzOBOkmNpN9oBro7PSYim/eGZNUJDfV4lJf32HcA2lCzv2fmuZECid7BlfAY3B1KGFh7oT66Z2Pa/OUVbnJw==}
+    engines: {node: '>=14.15 <20'}
     dependencies:
       chalk: 4.1.2
       chrome-launcher: 0.15.1
@@ -6826,7 +6826,7 @@ packages:
   /puppeteer@18.2.1:
     resolution: {integrity: sha512-7+UhmYa7wxPh2oMRwA++k8UGVDxh3YdWFB52r9C3tM81T6BU7cuusUSxImz0GEYSOYUKk/YzIhkQ6+vc0gHbxQ==}
     engines: {node: '>=14.1.0'}
-    deprecated: < 19.2.0 is no longer supported
+    deprecated: < 19.4.0 is no longer supported
     requiresBuild: true
     dependencies:
       https-proxy-agent: 5.0.1

@@ -35,6 +35,7 @@ import {
   GetServerSidePropsResult,
   InferGetServerSidePropsType,
 } from "next";
+import clsx from "clsx";
 import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
 import TokenRow from "./_components/TokenRow";
 import QrCode from "../../components/commons/QrCode";
@@ -71,7 +72,7 @@ function Address({
       <div className="mt-6" />
       <GradientCardContainer className="relative">
         <div className="md:p-10 p-5">
-          <WalletSegmentTwo />
+          <WalletSegmentTwo tokens={tokens} />
         </div>
       </GradientCardContainer>
       {isQrCodeClicked && (
@@ -262,68 +263,52 @@ function WalletDetails({ detail }: { detail: WalletDetailProps }) {
   );
 }
 
-function WalletSegmentTwo() {
+function TabSelectionIndicator() {
+  return <div className="brand-gradient-1 h-1 mt-[19.33px]" />;
+}
+
+function WalletSegmentTwo({ tokens }: { tokens: WalletDetailTokenI | null }) {
   const [isTransactionClicked, setIsTransactionClicked] = useState(true);
+
+  const selectedFontStyle = "text-white-50";
+  const unselectedFontStyle = "text-white-700";
+
+  const tabs = [
+    {
+      title: fixedTitle.transactions,
+      isSelected: isTransactionClicked,
+    },
+    // hide tokens tab for now
+    ...(tokens !== null
+      ? [
+          {
+            title: fixedTitle.tokens,
+            isSelected: !isTransactionClicked,
+          },
+        ]
+      : []),
+  ];
 
   return (
     <div className="flex flex-col md:pt-[3.67px] pt-[23.67px]">
-      {isTransactionClicked ? (
-        <div className="flex flex-row gap-x-6">
-          <div className="flex flex-col">
+      <div className="flex flex-row gap-x-6">
+        {tabs.map(({ title, isSelected }) => (
+          <div className="flex flex-col" key={title}>
             <button
               type="button"
-              className="text-white-50 font-medium"
-              data-testid="wallet-transactions-options-clicked-title"
-              onClick={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.transactions)
-              }
+              className={clsx(
+                "font-medium",
+                isSelected ? selectedFontStyle : unselectedFontStyle
+              )}
+              data-testid={`wallet-${title}-options-title`}
+              onClick={() => onOptionsClick(setIsTransactionClicked, title)}
             >
-              {fixedTitle.transactions}
+              {title}
             </button>
-            <div className="brand-gradient-1 h-1 mt-[19.33px]" />
+            {isSelected && <TabSelectionIndicator />}
           </div>
-          <div className="flex flex-col">
-            <button
-              type="button"
-              className="text-white-700 font-medium"
-              data-testid="wallet-tokens-options-title"
-              onClick={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.tokens)
-              }
-            >
-              {fixedTitle.tokens}
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-row gap-x-6">
-          <div className="flex flex-col">
-            <button
-              type="button"
-              className="text-white-700 font-medium"
-              data-testid="wallet-transactions-options-title"
-              onClick={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.transactions)
-              }
-            >
-              {fixedTitle.transactions}
-            </button>
-          </div>
-          <div className="flex flex-col">
-            <button
-              type="button"
-              className="text-white-50 font-medium"
-              data-testid="wallet-token-options-clicked-title"
-              onClick={() =>
-                onOptionsClick(setIsTransactionClicked, fixedTitle.tokens)
-              }
-            >
-              {fixedTitle.tokens}
-            </button>
-            <div className="brand-gradient-1 h-1 mt-[19.33px]" />
-          </div>
-        </div>
-      )}
+        ))}
+      </div>
       {isTransactionClicked ? (
         <div className="lg:mt-5 lg:mb-[22.5px] md:mt-5 md:mb-5 mt-5 mb-7" />
       ) : (
@@ -641,16 +626,18 @@ function useOutsideAlerter(
   }, [ref]);
 }
 
+interface WalletDetailTokenI {
+  value: number;
+  allTokens: {
+    value: number;
+    symbol: string;
+  }[];
+}
+
 interface WalletDetailProps {
   balance: string;
   transactionCount: string;
-  tokens: {
-    value: number;
-    allTokens: {
-      value: number;
-      symbol: string;
-    }[];
-  } | null;
+  tokens: WalletDetailTokenI | null;
 }
 
 export async function getServerSideProps(
@@ -669,7 +656,7 @@ export async function getServerSideProps(
       props: {
         balance: walletDetail.coin_balance,
         transactionCount: counters?.transactions_count,
-        tokens: null,
+        tokens: null, // passing null to temporary hide all tokens related UI
       },
     };
   } catch (e) {

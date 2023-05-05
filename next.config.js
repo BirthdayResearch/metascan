@@ -19,7 +19,7 @@ const securityHeaders = [
         process.env.NODE_ENV === "development"
           ? `ws://localhost:3000/_next/webpack-hmr`
           : ""
-      };` +
+      } https://fonts.gstatic.com https://fonts.googleapis.com;` +
       `prefetch-src 'self';`,
   },
   {

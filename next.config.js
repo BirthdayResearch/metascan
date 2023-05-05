@@ -19,7 +19,8 @@ const securityHeaders = [
         process.env.NODE_ENV === "development"
           ? `ws://localhost:3000/_next/webpack-hmr`
           : ""
-      };`,
+      };` +
+      `prefetch-src 'self';`,
   },
   {
     key: "Referrer-Policy",
@@ -48,6 +49,10 @@ const nextConfig = {
   swcMinify: true,
   async headers() {
     return [
+      {
+        source: "/:path*",
+        headers: securityHeaders,
+      },
       {
         source: "/(.*)",
         headers: securityHeaders,

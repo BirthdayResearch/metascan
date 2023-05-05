@@ -3,7 +3,7 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value:
       `default-src 'none';` +
-      `base-uri 'none';` +
+      `base-uri 'self';` +
       `child-src 'self' app.netlify.com;` +
       `form-action 'none';` +
       `frame-ancestors 'none';` +

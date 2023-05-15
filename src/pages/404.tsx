@@ -24,7 +24,7 @@ export default function Page404() {
       </div>
       <Button
         label="Return to homepage"
-        testId="return-home-button"
+        testId="return-home"
         href="/"
         customStyle="mt-12"
       />

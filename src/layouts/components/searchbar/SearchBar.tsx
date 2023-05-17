@@ -13,6 +13,7 @@ import {
   SearchResultType,
   useSearchResultMutation,
 } from "@store/search";
+import { useNetwork } from "@contexts/NetworkContext";
 import { SearchResult, SearchResultTable } from "./SearchResult";
 
 interface SearchBarProps {
@@ -27,6 +28,7 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
   const [searchResults, setSearchResults] = useState<
     SearchResult[] | undefined
   >(undefined);
+  const { connection } = useNetwork();
 
   const { x, y, reference, floating, strategy, refs } = useFloating({
     placement: "bottom-end",
@@ -89,6 +91,7 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
     if (query.length > 0) {
       setIsSearching(true);
       const results = await searchResultMutation({
+        network: connection,
         queryString: query,
       }).unwrap();
       setSearchResults(formatResults(results));

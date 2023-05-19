@@ -1,47 +1,122 @@
-import { PropsWithChildren } from "react";
-import { FiArrowRight } from "react-icons/fi";
+import { useEffect, useMemo, useState, PropsWithChildren } from "react";
+import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
+import { useRouter } from "next/router";
 import { Link } from "./Link";
 
-interface NextPageParamsProps {
-  blockNumber: number;
-  itemsCount: number;
+interface PaginationProps<T> {
+  nextPageParams?: T & {
+    items_count: string;
+    page_number: string;
+  };
 }
 
-export function Pagination({
-  pages,
+export default function Pagination<T>({
   nextPageParams,
-}: {
-  pages: {
-    n: number;
-    path: string;
-  }[];
-  nextPageParams: NextPageParamsProps;
-}): JSX.Element {
-  console.log({ pages, nextPageParams });
+}: PaginationProps<T>): JSX.Element {
+  const router = useRouter();
+  const pathName = router.pathname;
+  const currentPageNumber = Number(router.query.page_number ?? 1);
+  const [previousPagesParams, setPreviousPagesParams] = useState<any[]>([]);
+
+  console.log({ previousPagesParams });
+  const getPageQueryParams = (pageNumber: number) =>
+    previousPagesParams.find(
+      (page) => Number(page?.page_number) === pageNumber
+    );
+
+  const previousPageQuery = useMemo(
+    () => getPageQueryParams(Number(router.query.page_number) - 1),
+    [router.query]
+  );
+
+  const getPageButtons = (pageNumber) => {
+    /*
+      Page numbers are only limited to previous and next pages which will be displayed as such:
+        [1][2]    - first page
+        [1][2][3] - page 2
+        [98][99]  - last page
+    */
+    const pageButton = {
+      previous: getPageQueryParams(pageNumber - 1),
+      current: {
+        ...router.query,
+        items_count: router.query.items_count as string,
+        page_number: (router.query.page_number as string) ?? "1",
+      },
+      next: nextPageParams,
+    };
+
+    if (nextPageParams === undefined) {
+      return [pageButton.previous, pageButton.current];
+    }
+    if (pageNumber === 1) {
+      return [pageButton.current, pageButton.next];
+    }
+    return [pageButton.previous, pageButton.current, pageButton.next];
+  };
+
+  useEffect(() => {
+    if (
+      !previousPagesParams.some(
+        (page) => page?.page_number === (router.query.page_number as string)
+      )
+    ) {
+      // Store page query params to be used for previouPage button
+      setPreviousPagesParams([
+        ...previousPagesParams,
+        {
+          ...router.query,
+          items_count: router.query.items_count as string,
+          page_number: (router.query.page_number as string) ?? "1",
+        },
+      ]);
+    }
+  }, [router.query]);
+
+  useEffect(() => {
+    // If pageNumber > 1 and previousPagesParams (local state) is cleared, go back to page 1
+    if (
+      Number(router.query.page_number) > 1 &&
+      previousPagesParams.length === 0
+    ) {
+      setPreviousPagesParams([]);
+      router.push(pathName);
+    }
+  }, [router.query]);
+
   return (
     <div>
       <div className="flex space-x-1">
-        {/* <NavigateButton.Prev path={path} cursors={prev?.cursors}>
-          <FiArrowLeft size={24} />
-        </NavigateButton.Prev> */}
-        {pages.map((page) => (
-          <NumberButton
-            key={page.n}
-            n={page.n}
-            path={page.path}
-            active={false}
-          />
-        ))}
-        <NavigateButton.Next
-          path="/blocks"
-          query={{
-            block_number: nextPageParams.blockNumber.toString(),
-            items_count: nextPageParams.itemsCount.toString(),
-            type: "block",
-          }}
-        >
-          <FiArrowRight className="text-white-700" size={24} />
-        </NavigateButton.Next>
+        {previousPageQuery && (
+          <NavigateButton
+            type="Prev"
+            query={previousPageQuery}
+            pathName={pathName}
+          >
+            <FiArrowLeft className="text-white-700" size={24} />
+          </NavigateButton>
+        )}
+
+        {getPageButtons(currentPageNumber)
+          .filter((page) => page)
+          .map((page) => (
+            <NumberButton
+              key={page.page_number ?? 1}
+              n={page.page_number}
+              active={currentPageNumber === page.page_number}
+              query={page}
+              pathName={pathName}
+            />
+          ))}
+        {nextPageParams && (
+          <NavigateButton
+            type="Next"
+            query={nextPageParams}
+            pathName={pathName}
+          >
+            <FiArrowRight className="text-white-700" size={24} />
+          </NavigateButton>
+        )}
       </div>
     </div>
   );
@@ -50,20 +125,16 @@ export function Pagination({
 interface NumberButtonProps {
   n: number;
   active: boolean;
-  // path: string;
-  // query: {
-  //   block_number: string;
-  //   items_count: string;
-  //   type: "block";
-  // };
+  pathName: string;
+  query: any;
 }
 
 function NumberButton({
   n,
   active,
-}: // path,
-// query,
-NumberButtonProps): JSX.Element {
+  query,
+  pathName,
+}: NumberButtonProps): JSX.Element {
   if (active) {
     return (
       <div className="bg-black-500 rounded h-6 w-6 flex items-center justify-center cursor-not-allowed">
@@ -73,7 +144,7 @@ NumberButtonProps): JSX.Element {
   }
 
   return (
-    <Link href={{ pathname: "/blocks" /* , query */ }}>
+    <Link href={{ pathname: pathName, query }}>
       <div className="rounded cursor-pointer h-6 w-6 flex items-center justify-center">
         <span className="font-medium text-white-50">{n}</span>
       </div>
@@ -81,36 +152,18 @@ NumberButtonProps): JSX.Element {
   );
 }
 
-NavigateButton.Prev = (
-  props: PropsWithChildren<{ path: string; query: any }>
-) => NavigateButton({ type: "Prev", ...props });
-
-NavigateButton.Next = (
-  props: PropsWithChildren<{
-    path: string;
-    query: {
-      block_number: string;
-      items_count: string;
-      type: "block";
-    };
-  }>
-) => NavigateButton({ type: "Next", ...props });
-
 function NavigateButton({
   children,
   type,
   query,
+  pathName,
 }: PropsWithChildren<{
   type: "Next" | "Prev";
-  // path: string;
-  query: {
-    block_number: string;
-    items_count: string;
-    type: "block";
-  };
+  pathName: string;
+  query: any;
 }>): JSX.Element {
   return (
-    <Link href={{ pathname: "/blocks", query }}>
+    <Link href={{ pathname: pathName, query }}>
       <div
         data-testid={`Pagination.${type}`}
         className="text-white-700 cursor-pointer h-6 w-6 flex items-center justify-center"

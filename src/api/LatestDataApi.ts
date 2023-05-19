@@ -10,6 +10,18 @@ import {
 
 const MAX_ROW = 5;
 
+function getParams(params: { key: string; value }[]): string {
+  let queryParams = "?";
+  params.forEach((p) => {
+    if (p.value !== undefined && p.value.trim() !== "") {
+      // Pierre to add cleaner way to handle this params
+      queryParams += `${p.key}=${p.value}&`;
+    }
+  });
+
+  return queryParams;
+}
+
 export default {
   getLatestBlocks: async (): Promise<RowData[]> => {
     const resBlock = await fetch(MAIN_LATEST_BLOCK_URL);
@@ -57,7 +69,10 @@ export default {
       };
     });
   },
-  getBlocks: async (blockNumber: string, itemsCount: string): Promise<any> => {
+  getBlocks: async (
+    blockNumber?: string,
+    itemsCount?: string
+  ): Promise<any> => {
     const params = getParams([
       { key: "block_number", value: blockNumber },
       { key: "items_count", value: itemsCount },
@@ -66,6 +81,7 @@ export default {
 
     const resTxn = await fetch(`${MAIN_BLOCKS_URL}${params}`);
     const responseBlockData = await resTxn.json();
+
     return responseBlockData;
   },
   getBlock: async (blockId: string): Promise<any> => {
@@ -74,15 +90,3 @@ export default {
     return responseBlockData;
   },
 };
-
-function getParams(params: { key: string; value }[]): string {
-  let queryParams = "?";
-  params.forEach((p) => {
-    if (p.value !== undefined && p.value.trim() !== "") {
-      // Pierre to add cleaner way to handle this params
-      queryParams += `${p.key}=${p.value}&`;
-    }
-  });
-
-  return queryParams;
-}

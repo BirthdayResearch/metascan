@@ -13,6 +13,7 @@ import {
   SearchResultType,
   useSearchResultMutation,
 } from "@store/search";
+import { useNetwork } from "@contexts/NetworkContext";
 import { SearchResult, SearchResultTable } from "./SearchResult";
 
 interface SearchBarProps {
@@ -27,8 +28,8 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
   const [searchResults, setSearchResults] = useState<
     SearchResult[] | undefined
   >(undefined);
+  const { connection } = useNetwork();
 
-  const [selected, setSelected] = useState<SearchResult>();
   const { x, y, reference, floating, strategy, refs } = useFloating({
     placement: "bottom-end",
     middleware: [
@@ -87,10 +88,10 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
   async function changeHandler(value): Promise<void> {
     const query = value.trim();
     setSearchString(query);
-    setSelected({ title: query, url: "", type: "Query" });
     if (query.length > 0) {
       setIsSearching(true);
       const results = await searchResultMutation({
+        network: connection,
         queryString: query,
       }).unwrap();
       setSearchResults(formatResults(results));
@@ -105,14 +106,10 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
     []
   );
 
-  const onSelect = (result?: SearchResult): void => {
-    setSelected(result);
-    // TODO add on select action
-  };
   const transitionClass = "transition duration-300 ease-in";
 
   return (
-    <Combobox value={selected} onChange={onSelect} nullable>
+    <Combobox>
       <div
         className={clsx(
           "flex w-full items-center justify-self-center mx-auto my-10",
@@ -143,7 +140,7 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
                 as="input"
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
-                placeholder="Search for txn hash / block height / verified contract"
+                placeholder="Search for txn hash / block height"
                 className="h-full w-full focus:outline-none bg-transparent caret-lightBlue placeholder-black-50 text-white-50 text-xl"
                 data-testid="searchBar-input"
                 displayValue={(item: SearchResult) => item?.title}

@@ -2,8 +2,10 @@ import { TransactionType } from "mockdata/TransactionData";
 import { RowData } from "@components/LatestDataTable";
 import { getTimeAgo } from "shared/durationHelper";
 import { getRewards } from "shared/getRewards";
+import { NetworkConnection } from "@contexts/Environment";
 import {
   MAIN_BLOCKS_URL,
+  getBaseUrl,
   MAIN_LATEST_BLOCK_URL,
   MAIN_LATEST_TRANSACTION_URL,
 } from "./index";
@@ -23,8 +25,9 @@ function getParams(params: { key: string; value }[]): string {
 }
 
 export default {
-  getLatestBlocks: async (): Promise<RowData[]> => {
-    const resBlock = await fetch(MAIN_LATEST_BLOCK_URL);
+  getLatestBlocks: async (network: NetworkConnection): Promise<RowData[]> => {
+    const baseUrl = getBaseUrl(network);
+    const resBlock = await fetch(`${baseUrl}/${MAIN_LATEST_BLOCK_URL}`);
     const responseBlockData = await resBlock.json();
     const blockRows = Math.min(responseBlockData.length, MAX_ROW);
 
@@ -42,8 +45,11 @@ export default {
       };
     });
   },
-  getLatestTransactions: async (): Promise<RowData[]> => {
-    const resTxn = await fetch(MAIN_LATEST_TRANSACTION_URL);
+  getLatestTransactions: async (
+    network: NetworkConnection
+  ): Promise<RowData[]> => {
+    const baseUrl = getBaseUrl(network);
+    const resTxn = await fetch(`${baseUrl}/${MAIN_LATEST_TRANSACTION_URL}`);
     const responseTxnData = await resTxn.json();
     const txnRows = Math.min(responseTxnData.length, MAX_ROW);
 
@@ -57,6 +63,7 @@ export default {
         ? TransactionType.ContractCall
         : TransactionType.Transaction;
       const time = getTimeAgo(data.timestamp);
+
       return {
         transactionId: data.hash,
         tokenAmount: data.value,
@@ -70,23 +77,31 @@ export default {
     });
   },
   getBlocks: async (
+    network: NetworkConnection,
     blockNumber?: string,
     itemsCount?: string
   ): Promise<any> => {
+    const baseUrl = getBaseUrl(network);
+
     const params = getParams([
       { key: "block_number", value: blockNumber },
       { key: "items_count", value: itemsCount },
       { key: "type", value: "block" },
     ]);
 
-    const resTxn = await fetch(`${MAIN_BLOCKS_URL}${params}`);
+    const resTxn = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}${params}`);
     const responseBlockData = await resTxn.json();
 
     return responseBlockData;
   },
-  getBlock: async (blockId: string): Promise<any> => {
-    const resTxn = await fetch(`${MAIN_BLOCKS_URL}/${blockId}`);
+  getBlock: async (
+    network: NetworkConnection,
+    blockId: string
+  ): Promise<any> => {
+    const baseUrl = getBaseUrl(network);
+    const resTxn = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}`);
     const responseBlockData = await resTxn.json();
+
     return responseBlockData;
   },
 };

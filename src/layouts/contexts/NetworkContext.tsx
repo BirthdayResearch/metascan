@@ -17,7 +17,9 @@ export interface NetworkContextObject extends NetworkObject {
   connection: NetworkConnection;
 }
 
-const NetworkContext = createContext<NetworkContextObject>(undefined as any);
+export const NetworkContext = createContext<NetworkContextObject>(
+  undefined as any
+);
 
 export function useNetwork(): NetworkContextObject {
   return useContext(NetworkContext);

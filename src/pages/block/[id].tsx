@@ -16,6 +16,7 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import LatestDataApi from "@api/LatestDataApi";
 import { getRewards } from "shared/getRewards";
 import { BlockProps } from "pages/blocks";
+import { NetworkConnection } from "@contexts/Environment";
 
 // TODO: Replace `any` with proper types
 interface Props {
@@ -290,7 +291,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (context.params?.id === undefined) {
     return null;
   }
-  const block = await LatestDataApi.getBlock(context.params.id as string);
+
+  const block = await LatestDataApi.getBlock(
+    context.query.network as NetworkConnection,
+    context.params.id as string
+  );
 
   return { props: { block } };
 }

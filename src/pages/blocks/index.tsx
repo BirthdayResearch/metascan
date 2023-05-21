@@ -9,6 +9,7 @@ import {
   InferGetServerSidePropsType,
 } from "next";
 import { isNumeric } from "shared/textHelper";
+import { NetworkConnection } from "@contexts/Environment";
 import BlockRow from "./_components/BlockRow";
 
 interface NextPageParamsProps {
@@ -76,7 +77,7 @@ export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<{ data: PageProps }>> {
   // Get pagination details
-  const params = context.query;
+  const { network, ...params } = context.query;
   // Avoid fetching if somes params are not valid
   const hasInvalidParams =
     !isNumeric(params?.block_number as string) ||
@@ -85,8 +86,9 @@ export async function getServerSideProps(
 
   // Fetch data from external API
   const blocks = hasInvalidParams
-    ? await LatestDataApi.getBlocks()
+    ? await LatestDataApi.getBlocks(network as NetworkConnection)
     : await LatestDataApi.getBlocks(
+        network as NetworkConnection,
         params?.block_number as string,
         params?.items_count as string
       );

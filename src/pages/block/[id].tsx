@@ -15,23 +15,11 @@ import { getDuration, getTimeAgo } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import LatestDataApi from "@api/LatestDataApi";
 import { getRewards } from "shared/getRewards";
+import { BlockProps } from "pages/blocks";
 
 // TODO: Replace `any` with proper types
 interface Props {
-  block: {
-    base_fee_per_gas: string;
-    burnt_fees: string;
-    gas_limit: string;
-    gas_used: string;
-    gas_used_percentage: number;
-    height: number;
-    miner: {
-      hash: string;
-    };
-    rewards: any; // TODO(Pierre): Dependent to DMC rewards
-    timestamp: string;
-    tx_count: number;
-  };
+  block: BlockProps;
   // blockTransactions: any;
 }
 

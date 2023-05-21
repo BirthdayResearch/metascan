@@ -6,19 +6,26 @@ import { Link } from "./Link";
 interface PaginationProps<T> {
   nextPageParams?: T & {
     items_count: string;
-    page_number: string;
+    page_number?: string;
   };
 }
 
 export default function Pagination<T>({
-  nextPageParams,
+  nextPageParams: nextPageParamsProps,
 }: PaginationProps<T>): JSX.Element {
   const router = useRouter();
   const pathName = router.pathname;
-  const currentPageNumber = Number(router.query.page_number ?? 1);
+
+  const currentPageNumber = Number.isNaN(Number(router.query.page_number))
+    ? 1
+    : Number(router.query.page_number);
+  const nextPageParams = {
+    ...nextPageParamsProps,
+    ...{ page_number: currentPageNumber + 1 },
+  };
+
   const [previousPagesParams, setPreviousPagesParams] = useState<any[]>([]);
 
-  console.log({ previousPagesParams });
   const getPageQueryParams = (pageNumber: number) =>
     previousPagesParams.find(
       (page) => Number(page?.page_number) === pageNumber
@@ -41,7 +48,7 @@ export default function Pagination<T>({
       current: {
         ...router.query,
         items_count: router.query.items_count as string,
-        page_number: (router.query.page_number as string) ?? "1",
+        page_number: currentPageNumber,
       },
       next: nextPageParams,
     };

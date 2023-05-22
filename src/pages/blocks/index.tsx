@@ -21,6 +21,26 @@ interface PageProps {
   next_page_params: BlockNextPageParamsProps;
 }
 
+function BlockPagination({
+  nextPageParams,
+}: {
+  nextPageParams: BlockNextPageParamsProps;
+}) {
+  return (
+    <Pagination<BlockQueryParamsProps>
+      nextPageParams={
+        nextPageParams
+          ? {
+              block_number: nextPageParams.block_number,
+              items_count: nextPageParams.items_count,
+              type: "block",
+            }
+          : undefined
+      }
+    />
+  );
+}
+
 export default function Blocks({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -31,21 +51,12 @@ export default function Blocks({
         <div className="p-5 md:p-10">
           <div className="flex flex-col md:flex-row py-6 md:py-4 mb-6 justify-between md:items-center">
             <span className="font-bold text-2xl text-white-50">Blocks</span>
-            <Pagination<BlockQueryParamsProps>
-              nextPageParams={
-                data.next_page_params
-                  ? {
-                      block_number: data.next_page_params.block_number,
-                      items_count: data.next_page_params.items_count,
-                      type: "block",
-                    }
-                  : undefined
-              }
-            />
+            <BlockPagination nextPageParams={data.next_page_params} />
           </div>
           {data.blocks.map((item) => (
             <BlockRow key={item.height} data={item} />
           ))}
+          <BlockPagination nextPageParams={data.next_page_params} />
         </div>
       </GradientCardContainer>
     </Container>

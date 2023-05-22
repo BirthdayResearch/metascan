@@ -1,7 +1,6 @@
 import Container from "@components/commons/Container";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import Pagination from "@components/commons/Pagination";
-import LatestDataApi from "@api/LatestDataApi";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import {
   GetServerSidePropsContext,
@@ -10,6 +9,7 @@ import {
 } from "next";
 import { isNumeric } from "shared/textHelper";
 import { NetworkConnection } from "@contexts/Environment";
+import BlocksApi from "@api/BlocksApi";
 import BlockRow from "./_components/BlockRow";
 
 interface NextPageParamsProps {
@@ -86,8 +86,8 @@ export async function getServerSideProps(
 
   // Fetch data from external API
   const blocks = hasInvalidParams
-    ? await LatestDataApi.getBlocks(network as NetworkConnection)
-    : await LatestDataApi.getBlocks(
+    ? await BlocksApi.getBlocks(network as NetworkConnection)
+    : await BlocksApi.getBlocks(
         network as NetworkConnection,
         params?.block_number as string,
         params?.items_count as string

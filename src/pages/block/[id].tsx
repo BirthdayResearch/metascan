@@ -13,10 +13,10 @@ import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
 import { getDuration, getTimeAgo } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
-import LatestDataApi from "@api/LatestDataApi";
 import { getRewards } from "shared/getRewards";
 import { BlockProps } from "pages/blocks";
 import { NetworkConnection } from "@contexts/Environment";
+import BlocksApi from "@api/BlocksApi";
 
 // TODO: Replace `any` with proper types
 interface Props {
@@ -292,7 +292,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return null;
   }
 
-  const block = await LatestDataApi.getBlock(
+  const block = await BlocksApi.getBlock(
     context.query.network as NetworkConnection,
     context.params.id as string
   );

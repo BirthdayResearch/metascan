@@ -1,12 +1,16 @@
-import { RawTransactionI } from "@api/types";
+import { TxnQueryParamsProps } from "@api/TransactionsApi";
+import Pagination from "@components/commons/Pagination";
 import TransactionRow from "@components/commons/TransactionRow";
+import { AddressTransactionsProps } from "./WalletDetails";
 
 interface TransactionDetailsProps {
-  addressTransactions: RawTransactionI[];
+  aid: string;
+  addressTransactions: AddressTransactionsProps;
 }
 
 export function TransactionDetails({
-  addressTransactions,
+  aid,
+  addressTransactions: { transactions, nextPageParams },
 }: TransactionDetailsProps) {
   return (
     <div>
@@ -18,8 +22,19 @@ export function TransactionDetails({
           Transactions
         </h2>
       </div>
-
-      {addressTransactions.map((item) => (
+      <Pagination<TxnQueryParamsProps>
+        pathname={`/address/${aid}`}
+        nextPageParams={
+          nextPageParams
+            ? {
+                block_number: nextPageParams.block_number,
+                items_count: nextPageParams.items_count,
+                index: nextPageParams.index,
+              }
+            : undefined
+        }
+      />
+      {transactions.map((item) => (
         <TransactionRow key={item.hash} rawData={item} />
       ))}
     </div>

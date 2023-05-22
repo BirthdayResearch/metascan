@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction, useState } from "react";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { useRouter } from "next/router";
-import { isAlphanumeric } from "shared/textHelper";
+import { isAlphanumeric, isNumeric } from "shared/textHelper";
 import { tokenPages, tokens as tokenDetailList } from "mockdata/TokenData";
 import {
   GetServerSidePropsContext,
@@ -11,13 +11,13 @@ import {
   InferGetServerSidePropsType,
 } from "next";
 import clsx from "clsx";
-import { RawTransactionI } from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
 
 import QrCode from "../../components/commons/QrCode";
 import WalletAddressApi from "../../api/WalletAddressApi";
 import { WalletAddressDetails } from "./_components/WalletAddressDetails";
 import {
+  AddressTransactionsProps,
   WalletDetailProps,
   WalletDetailTokenI,
   WalletDetails,
@@ -69,6 +69,7 @@ function Address({
       <GradientCardContainer className="relative">
         <div className="md:p-10 p-5">
           <WalletSegmentTwo
+            aid={aid}
             tokens={tokens}
             addressTransactions={addressTransactions}
           />
@@ -100,11 +101,13 @@ function WalletSegmentOne({ setIsQrCodeClicked, detail }: SegmentOneProps) {
 }
 
 function WalletSegmentTwo({
+  aid,
   tokens,
   addressTransactions,
 }: {
+  aid: string;
   tokens: WalletDetailTokenI | null;
-  addressTransactions: RawTransactionI[];
+  addressTransactions: AddressTransactionsProps;
 }) {
   const [isTransactionClicked, setIsTransactionClicked] = useState(true);
   const selectedFontStyle = "text-white-50";
@@ -162,7 +165,10 @@ function WalletSegmentTwo({
         <BalanceDetails />
       )}
       {isTransactionClicked ? (
-        <TransactionDetails addressTransactions={addressTransactions} />
+        <TransactionDetails
+          addressTransactions={addressTransactions}
+          aid={aid}
+        />
       ) : (
         <div>
           <TokenDetails
@@ -177,7 +183,7 @@ function WalletSegmentTwo({
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<WalletDetailProps>> {
-  const { network } = context.query;
+  const { network, ...params } = context.query;
   const aid = context.params?.aid?.toString().trim() as string;
 
   if (!isAlphanumeric(aid)) {
@@ -193,15 +199,33 @@ export async function getServerSideProps(
       network as NetworkConnection,
       aid
     );
-    const addressTransactions = await WalletAddressApi.getAddressTransactions(
-      network as NetworkConnection,
-      aid
-    );
+
+    const hasInvalidParams =
+      !isNumeric(params?.block_number as string) ||
+      !isNumeric(params?.items_count as string) ||
+      !isNumeric(params?.page_number as string) ||
+      !isNumeric(params?.index as string);
+
+    const addressTransactions = hasInvalidParams
+      ? await WalletAddressApi.getAddressTransactions(
+          network as NetworkConnection,
+          aid
+        )
+      : await WalletAddressApi.getAddressTransactions(
+          network as NetworkConnection,
+          aid,
+          params?.block_number as string,
+          params?.items_count as string,
+          params?.index as string
+        );
 
     return {
       props: {
         balance: walletDetail.coin_balance,
-        addressTransactions: addressTransactions.items,
+        addressTransactions: {
+          transactions: addressTransactions.items,
+          nextPageParams: addressTransactions.next_page_params,
+        },
         transactionCount: counters?.transactions_count,
         tokens: null, // passing null to temporary hide all tokens related UI
       },

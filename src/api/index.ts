@@ -25,12 +25,13 @@ export const getBaseUrl = (network: NetworkConnection) => {
 };
 
 export function filterParams(params: { key: string; value }[]): string {
-  let queryParams = "?";
+  let queryParams = "";
+
   params.forEach((p) => {
     if (p.value && p.value.trim() !== "") {
       queryParams += `${p.key}=${p.value}&`;
     }
   });
 
-  return queryParams;
+  return queryParams !== "" ? `?${queryParams}}` : queryParams;
 }

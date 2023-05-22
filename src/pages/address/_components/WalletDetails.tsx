@@ -5,6 +5,7 @@ import { RawTransactionI } from "@api/types";
 import { useOutsideAlerter } from "@hooks/useOutsideAlerter";
 import NumericFormat from "@components/commons/NumericFormat";
 import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
+import { TxnNextPageParamsProps } from "@api/TransactionsApi";
 
 export interface WalletDetailTokenI {
   value: number;
@@ -14,11 +15,16 @@ export interface WalletDetailTokenI {
   }[];
 }
 
+export interface AddressTransactionsProps {
+  transactions: RawTransactionI[];
+  nextPageParams: TxnNextPageParamsProps;
+}
+
 export interface WalletDetailProps {
   balance: string;
   transactionCount: string;
   tokens: WalletDetailTokenI | null;
-  addressTransactions: RawTransactionI[];
+  addressTransactions: AddressTransactionsProps;
 }
 
 export function WalletDetails({ detail }: { detail: WalletDetailProps }) {

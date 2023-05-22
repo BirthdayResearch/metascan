@@ -19,6 +19,14 @@ export default {
     const res = await fetch(`${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/counters`);
     return wrapResponse<WalletAddressCounterI>(res);
   },
+  getAddressTransactions: async (
+    network: NetworkConnection,
+    aid: string
+  ): Promise<any> => {
+    const baseUrl = getBaseUrl(network);
+    const res = await fetch(
+      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/transactions`
+    );
+    return wrapResponse<WalletAddressCounterI>(res);
+  },
 };
-
-// `https://base-goerli.blockscout.com/api/v2/addresses/${aid}/transactions`

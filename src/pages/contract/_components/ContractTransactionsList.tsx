@@ -2,13 +2,13 @@ import {
   CursorPage,
   CursorPagination,
 } from "@components/commons/CursorPagination";
-import { MockTransactionI } from "mockdata/TransactionData";
 import { useRouter } from "next/router";
 import TransactionRow from "pages/txs/_components/TransactionRow";
+import { RawTransactionI } from "@api/types";
 import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
 
 interface ContractTransactionsListProps {
-  contractTransactions: MockTransactionI[];
+  contractTransactions: RawTransactionI[];
   contractTransactionPages: CursorPage[];
 }
 
@@ -35,7 +35,7 @@ export default function ContractTransactionsList({
         />
       </div>
       {contractTransactions.map((item) => (
-        <TransactionRow key={item.hash} data={item as any} />
+        <TransactionRow key={item.hash} rawData={item} />
       ))}
       <CursorPagination
         pages={contractTransactionPages}

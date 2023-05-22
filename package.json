@@ -37,7 +37,7 @@
     "@types/node": "18.11.7",
     "@types/recharts": "^1.8.24",
     "@waveshq/standard-web-linter": "^0.43.0",
-    "autoprefixer": "^10.4.13",
+    "autoprefixer": "^10.4.14",
     "cypress": "^11.2.0",
     "lint-staged": "^13.1.2",
     "postcss": "^8.4.21",

@@ -21,6 +21,26 @@ interface PageProps {
   next_page_params: TxnNextPageParamsProps;
 }
 
+function TxnPagination({
+  nextPageParams,
+}: {
+  nextPageParams: TxnNextPageParamsProps;
+}) {
+  return (
+    <Pagination<TxnQueryParamsProps>
+      nextPageParams={
+        nextPageParams
+          ? {
+              block_number: nextPageParams.block_number,
+              items_count: nextPageParams.items_count,
+              index: nextPageParams.index,
+            }
+          : undefined
+      }
+    />
+  );
+}
+
 export default function Transactions({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -33,21 +53,13 @@ export default function Transactions({
             <span className="font-bold text-2xl text-white-50">
               Transactions
             </span>
-            <Pagination<TxnQueryParamsProps>
-              nextPageParams={
-                data.next_page_params
-                  ? {
-                      block_number: data.next_page_params.block_number,
-                      items_count: data.next_page_params.items_count,
-                    }
-                  : undefined
-              }
-            />
+            <TxnPagination nextPageParams={data.next_page_params} />
           </div>
           {data.transactions.map((item) => {
             const tx = transformTransactionData(item);
             return <TransactionRow key={tx.hash} data={tx} />;
           })}
+          <TxnPagination nextPageParams={data.next_page_params} />
         </div>
       </GradientCardContainer>
     </div>
@@ -62,7 +74,8 @@ export async function getServerSideProps(
   const hasInvalidParams =
     !isNumeric(params?.block_number as string) ||
     !isNumeric(params?.items_count as string) ||
-    !isNumeric(params?.page_number as string);
+    !isNumeric(params?.page_number as string) ||
+    !isNumeric(params?.index as string);
 
   // Fetch data from external API
   const txs = hasInvalidParams
@@ -70,7 +83,8 @@ export async function getServerSideProps(
     : await TransactionsApi.getTransactions(
         network as NetworkConnection,
         params?.block_number as string,
-        params?.items_count as string
+        params?.items_count as string,
+        params?.index as string
       );
   const data = {
     transactions: txs.items,

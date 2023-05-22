@@ -6,18 +6,21 @@ export default {
   getTransactions: async (
     network: NetworkConnection,
     blockNumber?: string,
-    itemsCount?: string
+    itemsCount?: string,
+    index?: string
   ): Promise<{
     items: RawTransactionI[];
     next_page_params?: {
       blockNumber?: string;
       itemsCount?: string;
+      index?: string;
     };
   }> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
       { key: "items_count", value: itemsCount },
+      { key: "index", value: index },
     ]);
 
     const response = await fetch(`${baseUrl}/${TRANSACTIONS_URL}?${params}`);
@@ -39,6 +42,7 @@ export default {
 export interface TxnNextPageParamsProps {
   block_number: string;
   items_count: string;
+  index: string;
 }
 
 export interface TxnQueryParamsProps extends TxnNextPageParamsProps {

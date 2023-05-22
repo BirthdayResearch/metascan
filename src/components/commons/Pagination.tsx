@@ -92,39 +92,33 @@ export default function Pagination<T>({
   }, [router.query]);
 
   return (
-    <div>
-      <div className="flex space-x-1">
-        {previousPageQuery && (
-          <NavigateButton
-            type="Prev"
-            query={previousPageQuery}
-            pathName={pathName}
-          >
-            <FiArrowLeft className="text-white-700" size={24} />
-          </NavigateButton>
-        )}
+    <div className="flex space-x-1 flex-row justify-end mt-4">
+      {previousPageQuery && (
+        <NavigateButton
+          type="Prev"
+          query={previousPageQuery}
+          pathName={pathName}
+        >
+          <FiArrowLeft className="text-white-700" size={24} />
+        </NavigateButton>
+      )}
 
-        {getPageButtons(currentPageNumber)
-          .filter((page) => page)
-          .map((page) => (
-            <NumberButton
-              key={page.page_number ?? 1}
-              n={page.page_number}
-              active={currentPageNumber === page.page_number}
-              query={page}
-              pathName={pathName}
-            />
-          ))}
-        {nextPageParams && (
-          <NavigateButton
-            type="Next"
-            query={nextPageParams}
+      {getPageButtons(currentPageNumber)
+        .filter((page) => page)
+        .map((page) => (
+          <NumberButton
+            key={page.page_number ?? 1}
+            n={page.page_number}
+            active={currentPageNumber === page.page_number}
+            query={page}
             pathName={pathName}
-          >
-            <FiArrowRight className="text-white-700" size={24} />
-          </NavigateButton>
-        )}
-      </div>
+          />
+        ))}
+      {nextPageParams && (
+        <NavigateButton type="Next" query={nextPageParams} pathName={pathName}>
+          <FiArrowRight className="text-white-700" size={24} />
+        </NavigateButton>
+      )}
     </div>
   );
 }

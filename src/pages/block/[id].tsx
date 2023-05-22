@@ -14,9 +14,9 @@ import { MdCheckCircle } from "react-icons/md";
 import { getDuration, getTimeAgo } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { getRewards } from "shared/getRewards";
-import { BlockProps } from "pages/blocks";
 import { NetworkConnection } from "@contexts/Environment";
 import BlocksApi from "@api/BlocksApi";
+import { BlockProps } from "@api/types";
 
 // TODO: Replace `any` with proper types
 interface Props {

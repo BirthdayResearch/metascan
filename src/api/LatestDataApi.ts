@@ -4,8 +4,8 @@ import { getTimeAgo } from "shared/durationHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
 import {
-  MAIN_BLOCKS_URL,
   getBaseUrl,
+  MAIN_BLOCKS_URL,
   MAIN_LATEST_BLOCK_URL,
   MAIN_LATEST_TRANSACTION_URL,
 } from "./index";

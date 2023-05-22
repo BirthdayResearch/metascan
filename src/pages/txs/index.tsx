@@ -70,7 +70,7 @@ export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<{ data: PageProps }>> {
   const { network, ...params } = context.query;
-  // Avoid fetching if somes params are not valid
+  // Avoid fetching if some params are not valid
   const hasInvalidParams =
     !isNumeric(params?.block_number as string) ||
     !isNumeric(params?.items_count as string) ||

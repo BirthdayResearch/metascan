@@ -1,13 +1,19 @@
 import { TransactionType } from "mockdata/TransactionData";
 import dayjs from "dayjs";
+import { NetworkConnection } from "@contexts/Environment";
 import { RowData } from "@components/LatestDataTable";
-import { MAIN_LATEST_BLOCK_URL, MAIN_LATEST_TRANSACTION_URL } from "./index";
+import {
+  getBaseUrl,
+  MAIN_LATEST_BLOCK_URL,
+  MAIN_LATEST_TRANSACTION_URL,
+} from "./index";
 
 const MAX_ROW = 5;
 
 export default {
-  getLatestBlocks: async (): Promise<RowData[]> => {
-    const resBlock = await fetch(MAIN_LATEST_BLOCK_URL);
+  getLatestBlocks: async (network: NetworkConnection): Promise<RowData[]> => {
+    const baseUrl = getBaseUrl(network);
+    const resBlock = await fetch(`${baseUrl}/${MAIN_LATEST_BLOCK_URL}`);
     const responseBlockData = await resBlock.json();
     const blockRows = Math.min(responseBlockData.length, MAX_ROW);
 
@@ -28,8 +34,11 @@ export default {
       };
     });
   },
-  getLatestTransactions: async (): Promise<RowData[]> => {
-    const resTxn = await fetch(MAIN_LATEST_TRANSACTION_URL);
+  getLatestTransactions: async (
+    network: NetworkConnection
+  ): Promise<RowData[]> => {
+    const baseUrl = getBaseUrl(network);
+    const resTxn = await fetch(`${baseUrl}/${MAIN_LATEST_TRANSACTION_URL}`);
     const responseTxnData = await resTxn.json();
     const txnRows = Math.min(responseTxnData.length, MAX_ROW);
 

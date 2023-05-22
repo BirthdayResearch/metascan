@@ -26,6 +26,16 @@ import { BalanceDetails } from "./_components/BalanceDetails";
 import { TokenDetails } from "./_components/TokenDetails";
 import { TransactionDetails } from "./_components/TransactionDetails";
 
+enum TabTitle {
+  tokens = "Tokens",
+  transactions = "Transactions",
+}
+
+interface SegmentOneProps {
+  setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
+  detail: WalletDetailProps;
+}
+
 function Address({
   balance,
   transactionCount,
@@ -46,7 +56,7 @@ function Address({
             data-testid="address-details-title"
           >
             <span className="font-bold text-xl text-white-50">
-              {fixedTitle.walletAddress}
+              Wallet address
             </span>
           </div>
           <WalletSegmentOne
@@ -76,11 +86,6 @@ function Address({
   );
 }
 
-interface SegmentOneProps {
-  setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
-  detail: WalletDetailProps;
-}
-
 function TabSelectionIndicator() {
   return <div className="brand-gradient-1 h-1 mt-[19.33px]" />;
 }
@@ -102,20 +107,18 @@ function WalletSegmentTwo({
   addressTransactions: RawTransactionI[];
 }) {
   const [isTransactionClicked, setIsTransactionClicked] = useState(true);
-
   const selectedFontStyle = "text-white-50";
   const unselectedFontStyle = "text-white-700";
-
   const tabs = [
     {
-      title: fixedTitle.transactions,
+      title: TabTitle.transactions,
       isSelected: isTransactionClicked,
     },
     // hide tokens tab for now
     ...(tokens !== null
       ? [
           {
-            title: fixedTitle.tokens,
+            title: TabTitle.tokens,
             isSelected: !isTransactionClicked,
           },
         ]
@@ -126,7 +129,7 @@ function WalletSegmentTwo({
     setIsTransactionOptionClicked: Dispatch<SetStateAction<boolean>>,
     itemClicked: string
   ) => {
-    if (itemClicked === fixedTitle.tokens) {
+    if (itemClicked === TabTitle.tokens) {
       setIsTransactionOptionClicked(false);
     } else {
       setIsTransactionOptionClicked(true);
@@ -171,25 +174,6 @@ function WalletSegmentTwo({
     </div>
   );
 }
-
-const fixedTitle = {
-  walletAddress: "Wallet address",
-  balance: "Balance",
-  tokens: "Tokens",
-  transactions: "Transactions",
-  networth: "Net worth",
-  dmctxBalance: "DMCTx Balance",
-  otherTokens: "Other tokens",
-  copied: "Copied!",
-  asset: "Asset",
-  type: "Type",
-  symbol: "Symbol",
-  amount: "Amount",
-  price: "Price",
-  value: "Value",
-  contractAddress: "Contract Address",
-};
-
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<WalletDetailProps>> {

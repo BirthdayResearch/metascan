@@ -6,6 +6,7 @@ const BLOCKSCOUT_ENDPOINT_TESTNET = "https://eth-goerli.blockscout.com"; // TODO
 export const MAIN_LATEST_TRANSACTION_URL = "api/v2/main-page/transactions";
 export const MAIN_LATEST_BLOCK_URL = "api/v2/main-page/blocks";
 export const MAIN_BLOCKS_URL = "api/v2/blocks";
+export const TRANSACTIONS_URL = "api/v2/transactions";
 
 export const getBaseUrl = (network: NetworkConnection) => {
   if (network === NetworkConnection.TestNet) {
@@ -13,3 +14,14 @@ export const getBaseUrl = (network: NetworkConnection) => {
   }
   return BLOCKSCOUT_ENDPOINT_MAINNET;
 };
+
+export function filterParams(params: { key: string; value }[]): string {
+  let queryParams = "?";
+  params.forEach((p) => {
+    if (p.value && p.value.trim() !== "") {
+      queryParams += `${p.key}=${p.value}&`;
+    }
+  });
+
+  return queryParams;
+}

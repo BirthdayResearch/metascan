@@ -12,7 +12,7 @@ import {
 
 const MAX_ROW = 5;
 
-function filterParams (params: { key: string; value }[]): string {
+function filterParams(params: { key: string; value }[]): string {
   let queryParams = "?";
   params.forEach((p) => {
     if (p.value !== undefined && p.value.trim() !== "") {

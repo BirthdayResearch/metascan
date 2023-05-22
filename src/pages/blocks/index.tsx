@@ -1,7 +1,6 @@
 import Container from "@components/commons/Container";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import Pagination from "@components/commons/Pagination";
-import LatestDataApi from "@api/LatestDataApi";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import {
   GetServerSidePropsContext,
@@ -10,36 +9,36 @@ import {
 } from "next";
 import { isNumeric } from "shared/textHelper";
 import { NetworkConnection } from "@contexts/Environment";
+import BlocksApi, {
+  BlockNextPageParamsProps,
+  BlockQueryParamsProps,
+} from "@api/BlocksApi";
+import { BlockProps } from "@api/types";
 import BlockRow from "./_components/BlockRow";
-
-interface NextPageParamsProps {
-  block_number: string;
-  items_count: string;
-}
-
-interface QueryParamsProps extends NextPageParamsProps {
-  type: "block";
-  page_number?: string;
-}
-
-export interface BlockProps {
-  base_fee_per_gas: string;
-  burnt_fees: string;
-  gas_limit: string;
-  gas_used: string;
-  gas_used_percentage: number;
-  height: number;
-  miner: {
-    hash: string;
-  };
-  rewards: any; // TODO: Dependent to DMC rewards
-  timestamp: string;
-  tx_count: number;
-}
 
 interface PageProps {
   blocks: BlockProps[];
-  next_page_params: NextPageParamsProps;
+  next_page_params: BlockNextPageParamsProps;
+}
+
+function BlockPagination({
+  nextPageParams,
+}: {
+  nextPageParams: BlockNextPageParamsProps;
+}) {
+  return (
+    <Pagination<BlockQueryParamsProps>
+      nextPageParams={
+        nextPageParams
+          ? {
+              block_number: nextPageParams.block_number,
+              items_count: nextPageParams.items_count,
+              type: "block",
+            }
+          : undefined
+      }
+    />
+  );
 }
 
 export default function Blocks({
@@ -52,21 +51,12 @@ export default function Blocks({
         <div className="p-5 md:p-10">
           <div className="flex flex-col md:flex-row py-6 md:py-4 mb-6 justify-between md:items-center">
             <span className="font-bold text-2xl text-white-50">Blocks</span>
-            <Pagination<QueryParamsProps>
-              nextPageParams={
-                data.next_page_params
-                  ? {
-                      block_number: data.next_page_params.block_number,
-                      items_count: data.next_page_params.items_count,
-                      type: "block",
-                    }
-                  : undefined
-              }
-            />
+            <BlockPagination nextPageParams={data.next_page_params} />
           </div>
           {data.blocks.map((item) => (
             <BlockRow key={item.height} data={item} />
           ))}
+          <BlockPagination nextPageParams={data.next_page_params} />
         </div>
       </GradientCardContainer>
     </Container>
@@ -76,9 +66,8 @@ export default function Blocks({
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<{ data: PageProps }>> {
-  // Get pagination details
   const { network, ...params } = context.query;
-  // Avoid fetching if somes params are not valid
+  // Avoid fetching if some params are not valid
   const hasInvalidParams =
     !isNumeric(params?.block_number as string) ||
     !isNumeric(params?.items_count as string) ||
@@ -86,8 +75,8 @@ export async function getServerSideProps(
 
   // Fetch data from external API
   const blocks = hasInvalidParams
-    ? await LatestDataApi.getBlocks(network as NetworkConnection)
-    : await LatestDataApi.getBlocks(
+    ? await BlocksApi.getBlocks(network as NetworkConnection)
+    : await BlocksApi.getBlocks(
         network as NetworkConnection,
         params?.block_number as string,
         params?.items_count as string
@@ -95,7 +84,7 @@ export async function getServerSideProps(
 
   const data = {
     blocks: blocks.items as BlockProps[],
-    next_page_params: blocks.next_page_params as NextPageParamsProps,
+    next_page_params: blocks.next_page_params as BlockNextPageParamsProps,
   };
 
   // Pass data to the page via props

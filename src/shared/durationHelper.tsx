@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
 import { padStart } from "lodash";
+import * as utc from "dayjs/plugin/utc";
+
+dayjs.extend(utc as any);
 
 function secondsToTime(value: number): {
   y: number;
@@ -54,4 +57,8 @@ export function getDuration(seconds: number): string {
 
 export function getTimeAgo(timestamp: string): number {
   return dayjs().unix() - dayjs(timestamp).unix();
+}
+
+export function formatDateToUTC(timestamp: string): string {
+  return dayjs(timestamp).utc().format("MM-DD-YYYY hh:mm:ss A");
 }

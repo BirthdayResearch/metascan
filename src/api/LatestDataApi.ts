@@ -12,11 +12,10 @@ import {
 
 const MAX_ROW = 5;
 
-function getParams(params: { key: string; value }[]): string {
+function filterParams(params: { key: string; value }[]): string {
   let queryParams = "?";
   params.forEach((p) => {
     if (p.value !== undefined && p.value.trim() !== "") {
-      // Pierre to add cleaner way to handle this params
       queryParams += `${p.key}=${p.value}&`;
     }
   });
@@ -83,7 +82,7 @@ export default {
   ): Promise<any> => {
     const baseUrl = getBaseUrl(network);
 
-    const params = getParams([
+    const params = filterParams([
       { key: "block_number", value: blockNumber },
       { key: "items_count", value: itemsCount },
       { key: "type", value: "block" },

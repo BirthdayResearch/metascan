@@ -16,7 +16,6 @@ import NumericFormat from "@components/commons/NumericFormat";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import { useUnitSuffix } from "hooks/useUnitSuffix";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import { pages, transactions } from "mockdata/TransactionData";
 import { useRouter } from "next/router";
 import TransactionRow from "pages/txs/_components/TransactionRow";
 import { FiChevronDown, FiChevronUp, FiCopy } from "react-icons/fi";
@@ -36,7 +35,7 @@ import {
   InferGetServerSidePropsType,
 } from "next";
 import clsx from "clsx";
-import { TransactionI } from "@api/types";
+import { RawTransactionI } from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
 import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
 import TokenRow from "./_components/TokenRow";
@@ -46,6 +45,7 @@ import WalletAddressApi from "../../api/WalletAddressApi";
 function Address({
   balance,
   transactionCount,
+  addressTransactions,
   tokens,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
@@ -67,14 +67,17 @@ function Address({
           </div>
           <WalletSegmentOne
             setIsQrCodeClicked={setIsQrCodeClicked}
-            detail={{ balance, transactionCount, tokens }}
+            detail={{ balance, transactionCount, tokens, addressTransactions }}
           />
         </div>
       </GradientCardContainer>
       <div className="mt-6" />
       <GradientCardContainer className="relative">
         <div className="md:p-10 p-5">
-          <WalletSegmentTwo tokens={tokens} />
+          <WalletSegmentTwo
+            tokens={tokens}
+            addressTransactions={addressTransactions}
+          />
         </div>
       </GradientCardContainer>
       {isQrCodeClicked && (
@@ -269,7 +272,13 @@ function TabSelectionIndicator() {
   return <div className="brand-gradient-1 h-1 mt-[19.33px]" />;
 }
 
-function WalletSegmentTwo({ tokens }: { tokens: WalletDetailTokenI | null }) {
+function WalletSegmentTwo({
+  tokens,
+  addressTransactions,
+}: {
+  tokens: WalletDetailTokenI | null;
+  addressTransactions: RawTransactionI[];
+}) {
   const [isTransactionClicked, setIsTransactionClicked] = useState(true);
 
   const selectedFontStyle = "text-white-50";
@@ -317,10 +326,7 @@ function WalletSegmentTwo({ tokens }: { tokens: WalletDetailTokenI | null }) {
         <BalanceDetails />
       )}
       {isTransactionClicked ? (
-        <TransactionDetails
-          addressTransactions={transactions}
-          transactionPages={pages}
-        />
+        <TransactionDetails addressTransactions={addressTransactions} />
       ) : (
         <div>
           <TokenDetails
@@ -445,17 +451,10 @@ function BalanceDetails() {
 }
 
 interface TransactionDetailsProps {
-  addressTransactions: TransactionI[];
-  transactionPages: CursorPage[];
+  addressTransactions: RawTransactionI[];
 }
 
-function TransactionDetails({
-  addressTransactions,
-  transactionPages,
-}: TransactionDetailsProps) {
-  const router = useRouter();
-  const id = router.query.aid;
-
+function TransactionDetails({ addressTransactions }: TransactionDetailsProps) {
   return (
     <div>
       <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
@@ -465,20 +464,10 @@ function TransactionDetails({
         >
           {fixedTitle.transactions}
         </h2>
-        <CursorPagination
-          pages={transactionPages}
-          path={`/address/${id}`}
-          className="justify-end mt-5 md:mt-0"
-        />
       </div>
       {addressTransactions.map((item) => (
-        <TransactionRow key={item.hash} data={item} />
+        <TransactionRow key={item.hash} rawData={item} />
       ))}
-      <CursorPagination
-        pages={transactionPages}
-        path={`/address/${id}`}
-        className="flex w-full md:justify-end mt-12 md:mt-10"
-      />
     </div>
   );
 }
@@ -640,6 +629,7 @@ interface WalletDetailProps {
   balance: string;
   transactionCount: string;
   tokens: WalletDetailTokenI | null;
+  addressTransactions: RawTransactionI[];
 }
 
 export async function getServerSideProps(
@@ -661,10 +651,15 @@ export async function getServerSideProps(
       network as NetworkConnection,
       aid
     );
+    const addressTransactions = await WalletAddressApi.getAddressTransactions(
+      network as NetworkConnection,
+      aid
+    );
 
     return {
       props: {
         balance: walletDetail.coin_balance,
+        addressTransactions: addressTransactions.items,
         transactionCount: counters?.transactions_count,
         tokens: null, // passing null to temporary hide all tokens related UI
       },

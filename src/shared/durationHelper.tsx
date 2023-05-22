@@ -60,5 +60,5 @@ export function getTimeAgo(timestamp: string): number {
 }
 
 export function formatDateToUTC(timestamp: string): string {
-  return dayjs(timestamp).utc().format("MMM-DD-YYYY hh:mm:ss A");
+  return dayjs(timestamp).utc().format("MM-DD-YYYY hh:mm:ss A");
 }

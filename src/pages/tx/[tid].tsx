@@ -21,6 +21,7 @@ import { InfoIcon } from "@components/icons/InfoIcon";
 import { ConfirmCheck } from "@components/icons/ConfirmCheck";
 import { RejectedCross } from "@components/icons/RejectedCross";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
+import { NetworkConnection } from "@contexts/Environment";
 import BoldedTitle from "./_components/BoldedTitle";
 
 function Transaction({ txDetails }: { txDetails: TransactionI }) {
@@ -1102,8 +1103,14 @@ const onCopyAddressIconClick = async (
 };
 
 export async function getServerSideProps(context) {
-  const { tid } = context.params;
-  const data = await TransactionsApi.getTransaction(tid);
+  const {
+    params: { tid },
+    query: { network },
+  } = context;
+  const data = await TransactionsApi.getTransaction(
+    network as NetworkConnection,
+    tid
+  );
   const txDetails = transformTransactionData(data);
 
   return { props: { txDetails } };

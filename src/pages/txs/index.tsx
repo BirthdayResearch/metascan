@@ -3,6 +3,8 @@ import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import TransactionsApi from "@api/TransactionsApi";
 import { transformTransactionData } from "shared/transactionDataHelper";
+import { GetServerSidePropsContext } from "next";
+import { NetworkConnection } from "@contexts/Environment";
 import { pages } from "../../mockdata/TransactionData";
 import TransactionRow from "./_components/TransactionRow";
 
@@ -37,9 +39,13 @@ export default function Transactions({ data }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { network } = context.query;
   // Fetch data from external API
-  const txs = await TransactionsApi.getTransactions(null); // TODO: Pass `next_page_params` when needed, for pagination
+  const txs = await TransactionsApi.getTransactions(
+    network as NetworkConnection,
+    null
+  ); // TODO: Pass `next_page_params` when needed, for pagination
   const data = {
     transactions: txs.items,
     pages,

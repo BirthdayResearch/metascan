@@ -59,8 +59,8 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
           <NetworkProvider>
             <Header />
             <IconGradient />
-            <Container className="px-4 md:px-10 lg:px-[120px]">
-              <main className="flex-grow">{children}</main>
+            <Container className="px-4 md:px-10 lg:px-[120px] flex-grow">
+              <main>{children}</main>
             </Container>
             <div
               data-testid="bg-purple-gradient"
@@ -68,7 +68,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
             />
             <div
               data-testid="bg-blue-gradient"
-              className="w-full h-screen absolute lg:top-[210px] md:top-[476px] top-[836px] z-[-1] mix-blend-screen bg-no-repeat bg-contain bg-right lg:bg-[url('/background/gradient-blue)] md:bg-[url('/background/gradient-blue-tablet.png')] bg-[url('/background/gradient-blue-mobile.png')]"
+              className="w-full h-screen absolute z-[-1] mix-blend-screen bg-no-repeat bg-contain bg-right lg:bg-[url('/background/gradient-blue)] md:bg-[url('/background/gradient-blue-tablet.png')] bg-[url('/background/gradient-blue-mobile.png')]"
             />
             <div className="relative w-full h-full">
               <Footer />

@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BLOCKSCOUT_ENDPOINT } from "@api/index";
+import { getBaseUrl } from "@api/index";
+import { NetworkConnection } from "@contexts/Environment";
 
 export enum SearchResultType {
   Address = "address",
@@ -40,12 +41,15 @@ export interface SearchResults {
 export const searchApi = createApi({
   reducerPath: "search",
   baseQuery: fetchBaseQuery({
-    baseUrl: BLOCKSCOUT_ENDPOINT,
+    baseUrl: "/", // This will be overridden by query url below, need to dynamically get the base url based on network
   }),
   endpoints: (builder) => ({
-    searchResult: builder.mutation<SearchResults, any>({
-      query: ({ queryString }) => ({
-        url: `api/v2/search?q=${queryString}`,
+    searchResult: builder.mutation<
+      SearchResults,
+      { network: NetworkConnection; queryString: string }
+    >({
+      query: ({ network, queryString }) => ({
+        url: `${getBaseUrl(network)}/api/v2/search?q=${queryString}`,
         method: "GET",
       }),
     }),

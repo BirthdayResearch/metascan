@@ -11,16 +11,12 @@ import {
   CursorPagination,
 } from "@components/commons/CursorPagination";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
-import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
-import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import { useUnitSuffix } from "hooks/useUnitSuffix";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { useRouter } from "next/router";
-import TransactionRow from "pages/txs/_components/TransactionRow";
-import { FiChevronDown, FiChevronUp, FiCopy } from "react-icons/fi";
-import { MdOutlineQrCode } from "react-icons/md";
-import { isAlphanumeric, truncateTextFromMiddle } from "shared/textHelper";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { isAlphanumeric } from "shared/textHelper";
 import {
   Token,
   tokenPages,
@@ -28,7 +24,6 @@ import {
 } from "mockdata/TokenData";
 import { walletAddressData } from "mockdata/WalletAddressData";
 import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
-import { sleep } from "shared/sleep";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
@@ -37,10 +32,12 @@ import {
 import clsx from "clsx";
 import { RawTransactionI } from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
+import TransactionRow from "@components/commons/TransactionRow";
 import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
 import TokenRow from "./_components/TokenRow";
 import QrCode from "../../components/commons/QrCode";
 import WalletAddressApi from "../../api/WalletAddressApi";
+import { WalletAddressDetails } from "./_components/WalletAddressDetails";
 
 function Address({
   balance,
@@ -97,64 +94,11 @@ interface SegmentOneProps {
   detail: WalletDetailProps;
 }
 
-interface QrClickProps {
-  setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
-}
-
 function WalletSegmentOne({ setIsQrCodeClicked, detail }: SegmentOneProps) {
   return (
     <div className="flex flex-col gap-y-[33px]">
       <WalletAddressDetails setIsQrCodeClicked={setIsQrCodeClicked} />
       <WalletDetails detail={detail} />
-    </div>
-  );
-}
-
-function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
-  const [isWalletAddressCopied, setIsWalletAddressCopied] = useState(false);
-  const router = useRouter();
-  const aid = router.query.aid?.toString()!;
-  return (
-    <div>
-      {isWalletAddressCopied ? (
-        <div className="flex flex-row gap-x-2.5 items-center">
-          <LinkText
-            testId="wallet-address-copied"
-            label={fixedTitle.copied}
-            href={`/address/${aid}`}
-            customStyle="tracking-[0.01em]"
-          />
-          <GreenTickIcon data-testid="wallet-address-copied-green-tick-icon" />
-          <MdOutlineQrCode
-            role="button"
-            onClick={() => onQrCodeClick(setIsQrCodeClicked)}
-            className="text-white-50"
-          />
-        </div>
-      ) : (
-        <div className="flex flex-row gap-x-2.5 items-center">
-          <LinkText
-            testId="wallet-address"
-            label={truncateTextFromMiddle(aid, 11)}
-            href={`/address/${aid}`}
-            customStyle="tracking-[0.01em]"
-          />
-          <FiCopy
-            role="button"
-            data-testid="wallet-address-copy-icon"
-            onClick={() =>
-              onCopyAddressIconClick(setIsWalletAddressCopied, aid)
-            }
-            className="text-white-50"
-          />
-          <MdOutlineQrCode
-            data-testid="wallet-address-qr-icon"
-            role="button"
-            onClick={() => onQrCodeClick(setIsQrCodeClicked)}
-            className="text-white-50"
-          />
-        </div>
-      )}
     </div>
   );
 }
@@ -465,6 +409,7 @@ function TransactionDetails({ addressTransactions }: TransactionDetailsProps) {
           {fixedTitle.transactions}
         </h2>
       </div>
+
       {addressTransactions.map((item) => (
         <TransactionRow key={item.hash} rawData={item} />
       ))}
@@ -581,22 +526,6 @@ const fixedTitle = {
   price: "Price",
   value: "Value",
   contractAddress: "Contract Address",
-};
-
-const onCopyAddressIconClick = async (
-  onTextClick: Dispatch<SetStateAction<boolean>>,
-  address: string
-) => {
-  onTextClick(true);
-  navigator.clipboard.writeText(address);
-  await sleep(2000);
-  onTextClick(false);
-};
-
-const onQrCodeClick = (
-  setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>
-) => {
-  setIsQrCodeClicked(true);
 };
 
 function useOutsideAlerter(

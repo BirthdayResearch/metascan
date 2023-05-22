@@ -13,7 +13,7 @@ import { NetworkConnection } from "@contexts/Environment";
 import Pagination from "@components/commons/Pagination";
 import { RawTransactionI } from "@api/types";
 import { isNumeric } from "shared/textHelper";
-import TransactionRow from "./_components/TransactionRow";
+import TransactionRow from "@components/commons/TransactionRow";
 
 interface PageProps {
   transactions: RawTransactionI[];

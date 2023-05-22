@@ -1,7 +1,7 @@
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
 import { TransactionType } from "mockdata/TransactionData";
-import { iconMapping as txnIconMapping } from "pages/txs/_components/TransactionRow";
+import { iconMapping as txnIconMapping } from "@components/commons/TransactionRow";
 import { FiBox } from "react-icons/fi";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { getDuration } from "shared/durationHelper";

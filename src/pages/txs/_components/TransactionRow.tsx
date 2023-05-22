@@ -41,13 +41,13 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
             <div className="grid grid-cols-4 lg:grid-cols-6 gap-5 mt-2 lg:mt-3">
               <TransactionLinkRow
                 label="From"
-                pathname={`/address/${data.hash}`}
+                pathname={`/address/${data.from}`}
                 value={data.from}
                 containerClass="flex flex-col lg:flex-row col-start-1 col-end-3"
               />
               <TransactionLinkRow
                 label="To"
-                pathname={`/address/${data.hash}`}
+                pathname={`/address/${data.to}`}
                 value={data.from}
                 containerClass="flex flex-col lg:flex-row col-start-3 col-end-5"
               />

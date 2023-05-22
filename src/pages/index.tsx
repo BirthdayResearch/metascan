@@ -44,12 +44,15 @@ interface LatestDataProps {
   latestBlocks: RowData[];
 }
 
-export async function getServerSideProps(): Promise<
-  GetServerSidePropsResult<LatestDataProps>
-> {
+export async function getServerSideProps(
+  context
+): Promise<GetServerSidePropsResult<LatestDataProps>> {
   try {
-    const latestTransactions = await LatestDataApi.getLatestTransactions();
-    const latestBlocks = await LatestDataApi.getLatestBlocks();
+    const { network } = context.query;
+    const latestTransactions = await LatestDataApi.getLatestTransactions(
+      network
+    );
+    const latestBlocks = await LatestDataApi.getLatestBlocks(network);
     return {
       props: {
         latestTransactions,

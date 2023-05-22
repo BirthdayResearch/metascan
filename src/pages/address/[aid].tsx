@@ -16,7 +16,7 @@ import NumericFormat from "@components/commons/NumericFormat";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import { useUnitSuffix } from "hooks/useUnitSuffix";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import { pages, TransactionI, transactions } from "mockdata/TransactionData";
+import { pages, transactions } from "mockdata/TransactionData";
 import { useRouter } from "next/router";
 import TransactionRow from "pages/txs/_components/TransactionRow";
 import { FiChevronDown, FiChevronUp, FiCopy } from "react-icons/fi";
@@ -36,6 +36,8 @@ import {
   InferGetServerSidePropsType,
 } from "next";
 import clsx from "clsx";
+import { TransactionI } from "@api/types";
+import { NetworkConnection } from "@contexts/Environment";
 import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
 import TokenRow from "./_components/TokenRow";
 import QrCode from "../../components/commons/QrCode";
@@ -643,6 +645,7 @@ interface WalletDetailProps {
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<WalletDetailProps>> {
+  const { network } = context.query;
   const aid = context.params?.aid?.toString().trim() as string;
 
   if (!isAlphanumeric(aid)) {
@@ -650,8 +653,15 @@ export async function getServerSideProps(
   }
 
   try {
-    const walletDetail = await WalletAddressApi.getDetail(aid);
-    const counters = await WalletAddressApi.getCounters(aid);
+    const walletDetail = await WalletAddressApi.getDetail(
+      network as NetworkConnection,
+      aid
+    );
+    const counters = await WalletAddressApi.getCounters(
+      network as NetworkConnection,
+      aid
+    );
+
     return {
       props: {
         balance: walletDetail.coin_balance,

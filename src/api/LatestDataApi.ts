@@ -1,25 +1,41 @@
 import { TransactionType } from "mockdata/TransactionData";
-import dayjs from "dayjs";
 import { RowData } from "@components/LatestDataTable";
-import { MAIN_LATEST_BLOCK_URL, MAIN_LATEST_TRANSACTION_URL } from "./index";
+import { getTimeAgo } from "shared/durationHelper";
+import { getRewards } from "shared/getRewards";
+import { NetworkConnection } from "@contexts/Environment";
+import {
+  getBaseUrl,
+  MAIN_BLOCKS_URL,
+  MAIN_LATEST_BLOCK_URL,
+  MAIN_LATEST_TRANSACTION_URL,
+} from "./index";
 
 const MAX_ROW = 5;
 
+function filterParams(params: { key: string; value }[]): string {
+  let queryParams = "?";
+  params.forEach((p) => {
+    if (p.value !== undefined && p.value.trim() !== "") {
+      queryParams += `${p.key}=${p.value}&`;
+    }
+  });
+
+  return queryParams;
+}
+
 export default {
-  getLatestBlocks: async (): Promise<RowData[]> => {
-    const resBlock = await fetch(MAIN_LATEST_BLOCK_URL);
+  getLatestBlocks: async (network: NetworkConnection): Promise<RowData[]> => {
+    const baseUrl = getBaseUrl(network);
+    const resBlock = await fetch(`${baseUrl}/${MAIN_LATEST_BLOCK_URL}`);
     const responseBlockData = await resBlock.json();
     const blockRows = Math.min(responseBlockData.length, MAX_ROW);
 
     return responseBlockData.slice(0, blockRows).map((data) => {
-      const reward =
-        data.rewards !== undefined && data.rewards.length > 0
-          ? data.rewards[0].reward
-          : 0;
-      const time = dayjs().unix() - dayjs(data.timestamp).unix();
+      const reward = getRewards(data.rewards);
+      const time = getTimeAgo(data.timestamp);
       return {
         transactionId: data.height,
-        tokenAmount: reward,
+        tokenAmount: reward.toFixed(),
         txnOrBlockInfo: {
           transactionsPerBlock: data.tx_count || null,
           blockTimeInSec: null,
@@ -28,8 +44,11 @@ export default {
       };
     });
   },
-  getLatestTransactions: async (): Promise<RowData[]> => {
-    const resTxn = await fetch(MAIN_LATEST_TRANSACTION_URL);
+  getLatestTransactions: async (
+    network: NetworkConnection
+  ): Promise<RowData[]> => {
+    const baseUrl = getBaseUrl(network);
+    const resTxn = await fetch(`${baseUrl}/${MAIN_LATEST_TRANSACTION_URL}`);
     const responseTxnData = await resTxn.json();
     const txnRows = Math.min(responseTxnData.length, MAX_ROW);
 
@@ -42,7 +61,8 @@ export default {
       const transactionType = type?.includes("contract")
         ? TransactionType.ContractCall
         : TransactionType.Transaction;
-      const time = dayjs().unix() - dayjs(data.timestamp).unix();
+      const time = getTimeAgo(data.timestamp);
+
       return {
         transactionId: data.hash,
         tokenAmount: data.value,
@@ -54,5 +74,33 @@ export default {
         time,
       };
     });
+  },
+  getBlocks: async (
+    network: NetworkConnection,
+    blockNumber?: string,
+    itemsCount?: string
+  ): Promise<any> => {
+    const baseUrl = getBaseUrl(network);
+
+    const params = filterParams([
+      { key: "block_number", value: blockNumber },
+      { key: "items_count", value: itemsCount },
+      { key: "type", value: "block" },
+    ]);
+
+    const resTxn = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}${params}`);
+    const responseBlockData = await resTxn.json();
+
+    return responseBlockData;
+  },
+  getBlock: async (
+    network: NetworkConnection,
+    blockId: string
+  ): Promise<any> => {
+    const baseUrl = getBaseUrl(network);
+    const resTxn = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}`);
+    const responseBlockData = await resTxn.json();
+
+    return responseBlockData;
   },
 };

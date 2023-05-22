@@ -3,12 +3,12 @@ import {
   CursorPagination,
 } from "@components/commons/CursorPagination";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
-import { TransactionI } from "mockdata/TransactionData";
+import { MockTransactionI } from "mockdata/TransactionData";
 import TransactionRow from "pages/txs/_components/TransactionRow";
 
 interface Props {
   blockNumber: string;
-  blockTransactions: TransactionI[];
+  blockTransactions: MockTransactionI[];
   pages: CursorPage[];
 }
 
@@ -34,7 +34,7 @@ export default function BlockTransactionList({
           />
         </div>
         {blockTransactions.map((item) => (
-          <TransactionRow key={item.hash} data={item} />
+          <TransactionRow key={item.hash} data={item as any} />
         ))}
         <CursorPagination
           pages={pages}

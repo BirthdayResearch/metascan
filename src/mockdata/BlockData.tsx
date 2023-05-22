@@ -1,5 +1,5 @@
 import {
-  TransactionI,
+  MockTransactionI,
   TransactionStatus,
   TransactionType,
 } from "./TransactionData";
@@ -27,7 +27,7 @@ export interface BlocksI {
   sealFields: string[];
   uncles: string[];
   blockSize: string;
-  transactions: TransactionI[];
+  transactions: MockTransactionI[];
 }
 
 export const blocks: BlocksI[] = [

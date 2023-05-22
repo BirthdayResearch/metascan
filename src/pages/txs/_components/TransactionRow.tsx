@@ -8,11 +8,7 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import { TimeComponent } from "@components/commons/TimeComponent";
-import {
-  TransactionI,
-  TransactionStatus,
-  TransactionType,
-} from "../../../mockdata/TransactionData";
+import { TransactionI, TransactionStatus, TransactionType } from "@api/types";
 
 export const iconMapping = {
   [TransactionType.ContractCall]: FiFileText,
@@ -60,7 +56,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
           <div className="col-start-7 col-end-9 lg:col-start-11 lg:col-end-13 justify-self-end">
             <StatusComponent status={data.status} />
             <div className="text-right mr-8 mt-2 lg:mt-3">
-              <TimeComponent time={data.time} />
+              <TimeComponent time={data.timeInSec} />
             </div>
           </div>
         </div>
@@ -85,7 +81,7 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
             symbol={data.symbol}
             containerClass="mt-4"
           />
-          <TimeComponent time={data.time} containerClass="mt-4" />
+          <TimeComponent time={data.timeInSec} containerClass="mt-4" />
           <TransactionLinkRow
             label="Hash"
             pathname={`/tx/${data.hash}`}

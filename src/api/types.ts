@@ -71,3 +71,18 @@ export interface TransactionI {
   method: string | null;
   confirmations: number;
 }
+
+export interface BlockProps {
+  base_fee_per_gas: string;
+  burnt_fees: string;
+  gas_limit: string;
+  gas_used: string;
+  gas_used_percentage: number;
+  height: number;
+  miner: {
+    hash: string;
+  };
+  rewards: any; // TODO: Dependent to DMC rewards
+  timestamp: string;
+  tx_count: number;
+}

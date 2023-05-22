@@ -1,16 +1,5 @@
 import { NetworkConnection } from "@contexts/Environment";
-import { getBaseUrl, MAIN_BLOCKS_URL } from "./index";
-
-function filterParams(params: { key: string; value }[]): string {
-  let queryParams = "?";
-  params.forEach((p) => {
-    if (p.value !== undefined && p.value.trim() !== "") {
-      queryParams += `${p.key}=${p.value}&`;
-    }
-  });
-
-  return queryParams;
-}
+import { filterParams, getBaseUrl, MAIN_BLOCKS_URL } from "./index";
 
 export default {
   getBlocks: async (
@@ -19,7 +8,6 @@ export default {
     itemsCount?: string
   ): Promise<any> => {
     const baseUrl = getBaseUrl(network);
-
     const params = filterParams([
       { key: "block_number", value: blockNumber },
       { key: "items_count", value: itemsCount },
@@ -42,3 +30,12 @@ export default {
     return responseBlockData;
   },
 };
+export interface BlockNextPageParamsProps {
+  block_number: string;
+  items_count: string;
+}
+
+export interface BlockQueryParamsProps extends BlockNextPageParamsProps {
+  type: "block";
+  page_number?: string;
+}

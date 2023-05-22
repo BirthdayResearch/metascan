@@ -14,3 +14,14 @@ export const getBaseUrl = (network: NetworkConnection) => {
   }
   return BLOCKSCOUT_ENDPOINT_MAINNET;
 };
+
+export function filterParams(params: { key: string; value }[]): string {
+  let queryParams = "?";
+  params.forEach((p) => {
+    if (p.value && p.value.trim() !== "") {
+      queryParams += `${p.key}=${p.value}&`;
+    }
+  });
+
+  return queryParams;
+}

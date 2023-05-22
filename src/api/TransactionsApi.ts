@@ -1,22 +1,28 @@
 import { NetworkConnection } from "@contexts/Environment";
-import { TRANSACTIONS_URL, getBaseUrl } from "./index";
+import { TRANSACTIONS_URL, filterParams, getBaseUrl } from "./index";
 import { RawTransactionI } from "./types";
 
 export default {
   getTransactions: async (
     network: NetworkConnection,
-    pageParams: NextPageParams | null
+    blockNumber?: string,
+    itemsCount?: string
   ): Promise<{
     items: RawTransactionI[];
-    next_page_params: NextPageParams;
+    next_page_params?: {
+      blockNumber?: string;
+      itemsCount?: string;
+    };
   }> => {
     const baseUrl = getBaseUrl(network);
-    const response = await fetch(
-      pageParams
-        ? `${baseUrl}/${TRANSACTIONS_URL}?block_number=${pageParams.block_number}&index=${pageParams.index}&items_count=${pageParams.items_count}`
-        : `${baseUrl}/${TRANSACTIONS_URL}`
-    );
+    const params = filterParams([
+      { key: "block_number", value: blockNumber },
+      { key: "items_count", value: itemsCount },
+    ]);
+
+    const response = await fetch(`${baseUrl}/${TRANSACTIONS_URL}?${params}`);
     const txs = await response.json();
+
     return txs;
   },
   getTransaction: async (
@@ -30,8 +36,11 @@ export default {
   },
 };
 
-interface NextPageParams {
+export interface TxnNextPageParamsProps {
   block_number: string;
-  items_count: number;
-  index: number;
+  items_count: string;
+}
+
+export interface TxnQueryParamsProps extends TxnNextPageParamsProps {
+  page_number?: string;
 }

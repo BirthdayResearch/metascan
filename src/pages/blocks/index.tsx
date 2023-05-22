@@ -9,37 +9,16 @@ import {
 } from "next";
 import { isNumeric } from "shared/textHelper";
 import { NetworkConnection } from "@contexts/Environment";
-import BlocksApi from "@api/BlocksApi";
+import BlocksApi, {
+  BlockNextPageParamsProps,
+  BlockQueryParamsProps,
+} from "@api/BlocksApi";
+import { BlockProps } from "@api/types";
 import BlockRow from "./_components/BlockRow";
-
-interface NextPageParamsProps {
-  block_number: string;
-  items_count: string;
-}
-
-interface QueryParamsProps extends NextPageParamsProps {
-  type: "block";
-  page_number?: string;
-}
-
-export interface BlockProps {
-  base_fee_per_gas: string;
-  burnt_fees: string;
-  gas_limit: string;
-  gas_used: string;
-  gas_used_percentage: number;
-  height: number;
-  miner: {
-    hash: string;
-  };
-  rewards: any; // TODO: Dependent to DMC rewards
-  timestamp: string;
-  tx_count: number;
-}
 
 interface PageProps {
   blocks: BlockProps[];
-  next_page_params: NextPageParamsProps;
+  next_page_params: BlockNextPageParamsProps;
 }
 
 export default function Blocks({
@@ -52,7 +31,7 @@ export default function Blocks({
         <div className="p-5 md:p-10">
           <div className="flex flex-col md:flex-row py-6 md:py-4 mb-6 justify-between md:items-center">
             <span className="font-bold text-2xl text-white-50">Blocks</span>
-            <Pagination<QueryParamsProps>
+            <Pagination<BlockQueryParamsProps>
               nextPageParams={
                 data.next_page_params
                   ? {
@@ -95,7 +74,7 @@ export async function getServerSideProps(
 
   const data = {
     blocks: blocks.items as BlockProps[],
-    next_page_params: blocks.next_page_params as NextPageParamsProps,
+    next_page_params: blocks.next_page_params as BlockNextPageParamsProps,
   };
 
   // Pass data to the page via props

@@ -1,14 +1,29 @@
-import { CursorPagination } from "@components/commons/CursorPagination";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import TransactionsApi from "@api/TransactionsApi";
+import TransactionsApi, {
+  TxnNextPageParamsProps,
+  TxnQueryParamsProps,
+} from "@api/TransactionsApi";
 import { transformTransactionData } from "shared/transactionDataHelper";
-import { GetServerSidePropsContext } from "next";
+import {
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  InferGetServerSidePropsType,
+} from "next";
 import { NetworkConnection } from "@contexts/Environment";
-import { pages } from "../../mockdata/TransactionData";
+import Pagination from "@components/commons/Pagination";
+import { RawTransactionI } from "@api/types";
+import { isNumeric } from "shared/textHelper";
 import TransactionRow from "./_components/TransactionRow";
 
-export default function Transactions({ data }) {
+interface PageProps {
+  transactions: RawTransactionI[];
+  next_page_params: TxnNextPageParamsProps;
+}
+
+export default function Transactions({
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
@@ -18,37 +33,48 @@ export default function Transactions({ data }) {
             <span className="font-bold text-2xl text-white-50">
               Transactions
             </span>
-            <CursorPagination
-              pages={data.pages}
-              path="/txs"
-              className="justify-end mt-5 md:mt-0"
+            <Pagination<TxnQueryParamsProps>
+              nextPageParams={
+                data.next_page_params
+                  ? {
+                      block_number: data.next_page_params.block_number,
+                      items_count: data.next_page_params.items_count,
+                    }
+                  : undefined
+              }
             />
           </div>
           {data.transactions.map((item) => {
             const tx = transformTransactionData(item);
             return <TransactionRow key={tx.hash} data={tx} />;
           })}
-          <CursorPagination
-            pages={data.pages}
-            path="/txs"
-            className="flex w-full md:justify-end mt-12 md:mt-10"
-          />
         </div>
       </GradientCardContainer>
     </div>
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { network } = context.query;
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<{ data: PageProps }>> {
+  const { network, ...params } = context.query;
+  // Avoid fetching if somes params are not valid
+  const hasInvalidParams =
+    !isNumeric(params?.block_number as string) ||
+    !isNumeric(params?.items_count as string) ||
+    !isNumeric(params?.page_number as string);
+
   // Fetch data from external API
-  const txs = await TransactionsApi.getTransactions(
-    network as NetworkConnection,
-    null
-  ); // TODO: Pass `next_page_params` when needed, for pagination
+  const txs = hasInvalidParams
+    ? await TransactionsApi.getTransactions(network as NetworkConnection)
+    : await TransactionsApi.getTransactions(
+        network as NetworkConnection,
+        params?.block_number as string,
+        params?.items_count as string
+      );
   const data = {
     transactions: txs.items,
-    pages,
+    next_page_params: txs.next_page_params as TxnNextPageParamsProps,
   };
 
   // Pass data to the page via props

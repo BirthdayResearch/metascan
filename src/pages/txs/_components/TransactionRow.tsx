@@ -8,14 +8,24 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import { TimeComponent } from "@components/commons/TimeComponent";
-import { TransactionI, TransactionStatus, TransactionType } from "@api/types";
+import {
+  RawTransactionI,
+  TransactionStatus,
+  TransactionType,
+} from "@api/types";
+import { transformTransactionData } from "shared/transactionDataHelper";
 
 export const iconMapping = {
   [TransactionType.ContractCall]: FiFileText,
   [TransactionType.Transaction]: TransactionsIcon,
 };
 
-export default function TransactionRow({ data }: { data: TransactionI }) {
+export default function TransactionRow({
+  rawData,
+}: {
+  rawData: RawTransactionI;
+}) {
+  const data = transformTransactionData(rawData);
   const Icon = iconMapping[data.transactionType];
   return (
     <div>
@@ -41,16 +51,18 @@ export default function TransactionRow({ data }: { data: TransactionI }) {
             <div className="grid grid-cols-4 lg:grid-cols-6 gap-5 mt-2 lg:mt-3">
               <TransactionLinkRow
                 label="From"
-                pathname={`/address/${data.hash}`}
+                pathname={`/address/${data.from}`}
                 value={data.from}
                 containerClass="flex flex-col lg:flex-row col-start-1 col-end-3"
               />
-              <TransactionLinkRow
-                label="To"
-                pathname={`/address/${data.hash}`}
-                value={data.from}
-                containerClass="flex flex-col lg:flex-row col-start-3 col-end-5"
-              />
+              {data.to && (
+                <TransactionLinkRow
+                  label="To"
+                  pathname={`/address/${data.to}`}
+                  value={data.to}
+                  containerClass="flex flex-col lg:flex-row col-start-3 col-end-5"
+                />
+              )}
             </div>
           </div>
           <div className="col-start-7 col-end-9 lg:col-start-11 lg:col-end-13 justify-self-end">

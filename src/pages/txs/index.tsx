@@ -4,7 +4,6 @@ import TransactionsApi, {
   TxnNextPageParamsProps,
   TxnQueryParamsProps,
 } from "@api/TransactionsApi";
-import { transformTransactionData } from "shared/transactionDataHelper";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
@@ -55,10 +54,9 @@ export default function Transactions({
             </span>
             <TxnPagination nextPageParams={data.next_page_params} />
           </div>
-          {data.transactions.map((item) => {
-            const tx = transformTransactionData(item);
-            return <TransactionRow key={tx.hash} data={tx} />;
-          })}
+          {data.transactions.map((tx) => (
+            <TransactionRow key={tx.hash} rawData={tx} />
+          ))}
           <TxnPagination nextPageParams={data.next_page_params} />
         </div>
       </GradientCardContainer>

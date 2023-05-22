@@ -13,7 +13,7 @@ export const truncateTextFromMiddle = (text: string, length = 5): string => {
 export const stringToNumber = (value: string): Number =>
   new BigNumber(value.replace(",", "")).toNumber();
 
-export const isAlphanumeric = (input: string, ignore?: string): boolean => {
+export function isAlphanumeric(input: string, ignore?: string): boolean {
   const re = /^[0-9A-Z]+$/i;
 
   let str = input;
@@ -29,10 +29,10 @@ export const isAlphanumeric = (input: string, ignore?: string): boolean => {
   }
 
   return re.test(str);
-};
+}
 
-export const isNumeric = (input: string): boolean => {
+export function isNumeric(input: string): boolean {
   const re = /^[0-9]+$/;
 
   return re.test(input);
-};
+}

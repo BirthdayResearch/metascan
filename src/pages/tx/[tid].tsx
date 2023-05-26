@@ -1107,13 +1107,17 @@ export async function getServerSideProps(context) {
     params: { tid },
     query: { network },
   } = context;
-  const data = await TransactionsApi.getTransaction(
-    network as NetworkConnection,
-    tid
-  );
-  const txDetails = transformTransactionData(data);
+  try {
+    const data = await TransactionsApi.getTransaction(
+      network as NetworkConnection,
+      tid
+    );
+    const txDetails = transformTransactionData(data);
 
-  return { props: { txDetails } };
+    return { props: { txDetails } };
+  } catch (e) {
+    return { notFound: true };
+  }
 }
 
 const fixedTitle = {

@@ -15,13 +15,13 @@ type DataType = "blocks" | "transactions";
 
 export interface TxnWalletInfo {
   from: string;
-  to?: string;
+  to: string | null;
   transactionType: TransactionType;
 }
 
 export interface BlockInfo {
   transactionsPerBlock: string;
-  blockTimeInSec?: string;
+  blockTimeInSec: string | null;
 }
 
 export interface RowData {

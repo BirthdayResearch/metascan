@@ -72,7 +72,7 @@ export default function Transactions({
               Transactions
             </span>
             {isLoading ? (
-              <div className="bg-dark-200 opacity-10 w-[130px] absolute right-0 top-8 rounded-[5px]" />
+              <div className="bg-dark-200 h-[24px] w-[130px] absolute right-0 top-[72px] md:top-8 rounded-[5px]" />
             ) : (
               <TxnPagination
                 onClick={handlePaginationClick}
@@ -88,14 +88,18 @@ export default function Transactions({
             ))
           )}
 
-          {isLoading ? (
-            <div className="bg-dark-200 opacity-10 w-[130px] absolute right-0 top-8 rounded-[5px]" />
-          ) : (
-            <TxnPagination
-              onClick={handlePaginationClick}
-              nextPageParams={data.next_page_params}
-            />
-          )}
+          <div className="relative h-[40px] md:h-[24px] lg:pt-1.5">
+            {isLoading ? (
+              <div className="h-[24px]">
+                <div className="bg-dark-200 h-[24px] w-[130px] absolute right-0 bottom-4 md:bottom-0 lg:-bottom-5 rounded-[5px]" />
+              </div>
+            ) : (
+              <TxnPagination
+                onClick={handlePaginationClick}
+                nextPageParams={data.next_page_params}
+              />
+            )}
+          </div>
         </div>
       </GradientCardContainer>
     </div>

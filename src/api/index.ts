@@ -33,5 +33,5 @@ export function filterParams(params: { key: string; value }[]): string {
     }
   });
 
-  return queryParams !== "" ? `?${queryParams}}` : queryParams;
+  return queryParams?.trim() !== "" ? `?${queryParams}}` : queryParams;
 }

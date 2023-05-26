@@ -19,7 +19,7 @@ import { WalletAddressDetails } from "./_components/WalletAddressDetails";
 import {
   AddressTransactionsProps,
   WalletDetailProps,
-  WalletDetailTokenI,
+  // WalletDetailTokenI,
   WalletDetails,
 } from "./_components/WalletDetails";
 import { BalanceDetails } from "./_components/BalanceDetails";
@@ -70,7 +70,7 @@ function Address({
         <div className="md:p-10 p-5">
           <WalletSegmentTwo
             aid={aid}
-            tokens={tokens}
+            // tokens={tokens}
             addressTransactions={addressTransactions}
           />
         </div>
@@ -102,22 +102,22 @@ function WalletSegmentOne({ setIsQrCodeClicked, detail }: SegmentOneProps) {
 
 function WalletSegmentTwo({
   aid,
-  tokens,
+  // tokens,
   addressTransactions,
 }: {
   aid: string;
-  tokens: WalletDetailTokenI | null;
+  // tokens: WalletDetailTokenI | null;
   addressTransactions: AddressTransactionsProps;
 }) {
   const [isTransactionClicked, setIsTransactionClicked] = useState(true);
   const selectedFontStyle = "text-white-50";
   const unselectedFontStyle = "text-white-700";
+  /* Hide tabs (since only one tab is available)
   const tabs = [
     {
       title: TabTitle.transactions,
       isSelected: isTransactionClicked,
     },
-    // hide tokens tab for now
     ...(tokens !== null
       ? [
           {
@@ -127,6 +127,8 @@ function WalletSegmentTwo({
         ]
       : []),
   ];
+  */
+  const tabs = [];
 
   const onOptionsClick = (
     setIsTransactionOptionClicked: Dispatch<SetStateAction<boolean>>,
@@ -141,29 +143,34 @@ function WalletSegmentTwo({
 
   return (
     <div className="flex flex-col md:pt-[3.67px] pt-[23.67px]">
-      <div className="flex flex-row gap-x-6">
-        {tabs.map(({ title, isSelected }) => (
-          <div className="flex flex-col" key={title}>
-            <button
-              type="button"
-              className={clsx(
-                "font-medium",
-                isSelected ? selectedFontStyle : unselectedFontStyle
-              )}
-              data-testid={`wallet-${title}-options-title`}
-              onClick={() => onOptionsClick(setIsTransactionClicked, title)}
-            >
-              {title}
-            </button>
-            {isSelected && <TabSelectionIndicator />}
-          </div>
-        ))}
-      </div>
-      {isTransactionClicked ? (
-        <div className="lg:mt-5 lg:mb-[22.5px] md:mt-5 md:mb-5 mt-5 mb-7" />
-      ) : (
-        <BalanceDetails />
+      {tabs.length > 0 && (
+        <div className="flex flex-row gap-x-6">
+          {tabs.map(({ title, isSelected }) => (
+            <div className="flex flex-col" key={title}>
+              <button
+                type="button"
+                className={clsx(
+                  "font-medium",
+                  isSelected ? selectedFontStyle : unselectedFontStyle
+                )}
+                data-testid={`wallet-${title}-options-title`}
+                onClick={() => onOptionsClick(setIsTransactionClicked, title)}
+              >
+                {title}
+              </button>
+              {isSelected && <TabSelectionIndicator />}
+            </div>
+          ))}
+        </div>
       )}
+
+      {/* Enable if tabs are displayed 
+      {isTransactionClicked && (
+        <div className="lg:mt-5 lg:mb-[22.5px] md:mt-5 md:mb-5 mt-5 mb-7" />
+      )} */}
+
+      {!isTransactionClicked && <BalanceDetails />}
+
       {isTransactionClicked ? (
         <TransactionDetails
           addressTransactions={addressTransactions}

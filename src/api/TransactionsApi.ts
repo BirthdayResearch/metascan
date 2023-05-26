@@ -7,7 +7,7 @@ import {
 } from "./index";
 import { RawTransactionI } from "./types";
 
-interface TransactionResponse {
+interface TransactionResponseProps {
   items: RawTransactionI[];
   next_page_params?: {
     blockNumber?: string;
@@ -21,24 +21,22 @@ export default {
     blockNumber?: string,
     itemsCount?: string,
     index?: string
-  ): Promise<TransactionResponse> => {
+  ): Promise<TransactionResponseProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
       { key: "items_count", value: itemsCount },
       { key: "index", value: index },
     ]);
-
     const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}?${params}`);
 
-    return wrapResponse<TransactionResponse>(res);
+    return wrapResponse<TransactionResponseProps>(res);
   },
   getTransaction: async (
     network: NetworkConnection,
     txnHash: string
   ): Promise<RawTransactionI> => {
     const baseUrl = getBaseUrl(network);
-
     const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}/${txnHash}`);
 
     return wrapResponse<RawTransactionI>(res);

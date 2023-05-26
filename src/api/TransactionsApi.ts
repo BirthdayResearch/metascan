@@ -1,21 +1,27 @@
 import { NetworkConnection } from "@contexts/Environment";
-import { TRANSACTIONS_URL, filterParams, getBaseUrl } from "./index";
+import {
+  TRANSACTIONS_URL,
+  filterParams,
+  getBaseUrl,
+  wrapResponse,
+} from "./index";
 import { RawTransactionI } from "./types";
 
+interface TransactionResponse {
+  items: RawTransactionI[];
+  next_page_params?: {
+    blockNumber?: string;
+    itemsCount?: string;
+    index?: string;
+  };
+}
 export default {
   getTransactions: async (
     network: NetworkConnection,
     blockNumber?: string,
     itemsCount?: string,
     index?: string
-  ): Promise<{
-    items: RawTransactionI[];
-    next_page_params?: {
-      blockNumber?: string;
-      itemsCount?: string;
-      index?: string;
-    };
-  }> => {
+  ): Promise<TransactionResponse> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
@@ -23,19 +29,19 @@ export default {
       { key: "index", value: index },
     ]);
 
-    const response = await fetch(`${baseUrl}/${TRANSACTIONS_URL}?${params}`);
-    const txs = await response.json();
+    const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}?${params}`);
 
-    return txs;
+    return wrapResponse<TransactionResponse>(res);
   },
   getTransaction: async (
     network: NetworkConnection,
     txnHash: string
   ): Promise<RawTransactionI> => {
     const baseUrl = getBaseUrl(network);
-    const response = await fetch(`${baseUrl}/${TRANSACTIONS_URL}/${txnHash}`);
-    const tx = await response.json();
-    return tx;
+
+    const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}/${txnHash}`);
+
+    return wrapResponse<RawTransactionI>(res);
   },
 };
 

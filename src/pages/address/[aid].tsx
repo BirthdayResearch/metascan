@@ -228,7 +228,7 @@ export async function getServerSideProps(
 
     return {
       props: {
-        balance: walletDetail.coin_balance,
+        balance: walletDetail.coin_balance ?? "0",
         addressTransactions: {
           transactions: addressTransactions.items,
           nextPageParams: addressTransactions.next_page_params,

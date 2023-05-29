@@ -1,6 +1,6 @@
 export default function TransactionRowLoader() {
   return (
-    <div className="">
+    <div>
       {/* For desktop */}
       <div className="hidden lg:block">
         <div className="grid grid-cols-8 lg:grid-cols-12 gap-5 py-4">

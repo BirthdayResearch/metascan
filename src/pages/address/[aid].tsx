@@ -16,11 +16,10 @@ import { NetworkConnection } from "@contexts/Environment";
 import QrCode from "../../components/commons/QrCode";
 import WalletAddressApi from "../../api/WalletAddressApi";
 import WalletAddressDetails from "./_components/WalletAddressDetails";
-import {
+import WalletDetails, {
   AddressTransactionsProps,
   WalletDetailProps,
   // WalletDetailTokenI,
-  WalletDetails,
 } from "./_components/WalletDetails";
 import BalanceDetails from "./_components/BalanceDetails";
 import TokenDetails from "./_components/TokenDetails";

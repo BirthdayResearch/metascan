@@ -27,7 +27,11 @@ export interface WalletDetailProps {
   addressTransactions: AddressTransactionsProps;
 }
 
-export function WalletDetails({ detail }: { detail: WalletDetailProps }) {
+export default function WalletDetails({
+  detail,
+}: {
+  detail: WalletDetailProps;
+}) {
   const [isTokenDropDownIconClicked, setIsTokenDropDownIconClicked] =
     useState(false);
   const wrapperRef = useRef(null);

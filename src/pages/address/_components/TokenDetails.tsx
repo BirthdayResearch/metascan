@@ -12,7 +12,10 @@ interface TokenDetailsProps {
   tokenListPage: CursorPage[];
 }
 
-export function TokenDetails({ tokenList, tokenListPage }: TokenDetailsProps) {
+export default function TokenDetails({
+  tokenList,
+  tokenListPage,
+}: TokenDetailsProps) {
   const router = useRouter();
   const id = router.query.aid;
 

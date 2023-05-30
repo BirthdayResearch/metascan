@@ -11,7 +11,9 @@ interface QrClickProps {
   setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
 }
 
-export function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
+export default function WalletAddressDetails({
+  setIsQrCodeClicked,
+}: QrClickProps) {
   const [isWalletAddressCopied, setIsWalletAddressCopied] = useState(false);
   const router = useRouter();
   const aid = router.query.aid?.toString()!;

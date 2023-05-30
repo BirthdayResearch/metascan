@@ -34,7 +34,7 @@ function TxnPagination({
   );
 }
 
-export function TransactionDetails({
+export default function TransactionDetails({
   aid,
   addressTransactions: { transactions, nextPageParams },
 }: TransactionDetailsProps) {

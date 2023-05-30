@@ -19,7 +19,7 @@ import {
   SkeletonLoader,
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BlockRow from "./_components/BlockRow";
 
 interface PageProps {
@@ -29,11 +29,14 @@ interface PageProps {
 
 function BlockPagination({
   nextPageParams,
+  onClick,
 }: {
   nextPageParams: BlockNextPageParamsProps;
+  onClick?: () => void;
 }) {
   return (
     <Pagination<BlockQueryParamsProps>
+      onClick={onClick}
       nextPageParams={
         nextPageParams
           ? {
@@ -50,7 +53,15 @@ function BlockPagination({
 export default function Blocks({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const handlePaginationClick = async () => {
+    setIsLoading(true);
+  };
+
+  // TODO: @Pierre bug for loading state
+  useEffect(() => {
+    setIsLoading(false);
+  }, [data]);
 
   return (
     <Container className="px-1 md:px-0 mt-12">
@@ -62,7 +73,10 @@ export default function Blocks({
             {isLoading ? (
               <PaginationLoader customStyle="right-0 top-[72px] md:top-8" />
             ) : (
-              <BlockPagination nextPageParams={data.next_page_params} />
+              <BlockPagination
+                onClick={handlePaginationClick}
+                nextPageParams={data.next_page_params}
+              />
             )}
           </div>
 
@@ -77,7 +91,10 @@ export default function Blocks({
             {isLoading ? (
               <PaginationLoader customStyle="right-0 bottom-0 md:-bottom-5 rounded-[5px]" />
             ) : (
-              <BlockPagination nextPageParams={data.next_page_params} />
+              <BlockPagination
+                onClick={handlePaginationClick}
+                nextPageParams={data.next_page_params}
+              />
             )}
           </div>
         </div>

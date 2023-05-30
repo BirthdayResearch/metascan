@@ -6,7 +6,6 @@ import { FiBox } from "react-icons/fi";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { getDuration } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
-import { useState } from "react";
 import Button from "./commons/Button";
 import GradientCardContainer from "./commons/GradientCardContainer";
 import LinkText from "./commons/LinkText";
@@ -44,6 +43,7 @@ interface Props {
   detailsPageBaseUrl: string;
   containerClass?: string;
   amountLabel?: string;
+  isLoading?: boolean;
 }
 
 export default function LatestDataTable({
@@ -52,10 +52,10 @@ export default function LatestDataTable({
   data,
   listPageUrl,
   detailsPageBaseUrl,
+  isLoading,
   amountLabel = "",
   containerClass = "",
 }: Props): JSX.Element {
-  const [isLoading] = useState(false);
   return (
     <div
       data-testid={`latest-${type}-table`}

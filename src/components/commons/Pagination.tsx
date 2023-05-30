@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { Link } from "./Link";
 
 interface PaginationProps<T> {
-  onClick?: () => void;
   nextPageParams?: T & {
     items_count: string;
     page_number?: string;
@@ -14,7 +13,6 @@ interface PaginationProps<T> {
 
 export default function Pagination<T>({
   nextPageParams: nextPageParamsProps,
-  onClick,
   pathname,
 }: PaginationProps<T>): JSX.Element {
   const router = useRouter();
@@ -102,7 +100,6 @@ export default function Pagination<T>({
           type="Prev"
           query={previousPageQuery}
           pathName={pathName}
-          onClick={onClick}
         >
           <FiArrowLeft className="text-white-700" size={24} />
         </NavigateButton>
@@ -112,7 +109,6 @@ export default function Pagination<T>({
         .filter((page) => page)
         .map((page) => (
           <NumberButton
-            onClick={onClick}
             key={page.page_number ?? 1}
             n={page.page_number}
             active={currentPageNumber === page.page_number}
@@ -121,12 +117,7 @@ export default function Pagination<T>({
           />
         ))}
       {nextPageParams && (
-        <NavigateButton
-          type="Next"
-          query={nextPageParams}
-          pathName={pathName}
-          onClick={onClick}
-        >
+        <NavigateButton type="Next" query={nextPageParams} pathName={pathName}>
           <FiArrowRight className="text-white-700" size={24} />
         </NavigateButton>
       )}
@@ -139,7 +130,6 @@ interface NumberButtonProps {
   active: boolean;
   pathName: string;
   query: any;
-  onClick?: () => void;
 }
 
 function NumberButton({
@@ -147,12 +137,10 @@ function NumberButton({
   active,
   query,
   pathName,
-  onClick,
 }: NumberButtonProps): JSX.Element {
   if (active) {
     return (
       <button
-        onClick={onClick}
         type="button"
         className="bg-black-500 rounded h-6 w-6 flex items-center justify-center cursor-not-allowed"
       >
@@ -164,7 +152,6 @@ function NumberButton({
   return (
     <Link href={{ pathname: pathName, query }}>
       <button
-        onClick={onClick}
         type="button"
         className="rounded cursor-pointer h-6 w-6 flex items-center justify-center"
       >
@@ -179,18 +166,15 @@ function NavigateButton({
   type,
   query,
   pathName,
-  onClick,
 }: PropsWithChildren<{
   type: "Next" | "Prev";
   pathName: string;
   query: any;
-  onClick?: () => void;
 }>): JSX.Element {
   return (
     <Link href={{ pathname: pathName, query }}>
       <button
         type="button"
-        onClick={onClick}
         data-testid={`Pagination.${type}`}
         className="text-white-700 cursor-pointer h-6 w-6 flex items-center justify-center"
       >

@@ -8,7 +8,7 @@ export default function PaginationLoader({
   return (
     <div
       className={clsx(
-        "bg-dark-200 h-[24px] w-[130px] absolute rounded-[5px]",
+        "bg-dark-200 h-[24px] w-[135px] absolute rounded-[5px]",
         customStyle
       )}
     />

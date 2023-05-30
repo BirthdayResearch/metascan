@@ -13,7 +13,6 @@ import { NetworkConnection } from "@contexts/Environment";
 import Pagination from "@components/commons/Pagination";
 import { RawTransactionI } from "@api/types";
 import { isNumeric } from "shared/textHelper";
-import { useState, useEffect } from "react";
 import {
   SkeletonLoader,
   SkeletonLoaderScreen,
@@ -28,14 +27,11 @@ interface PageProps {
 
 function TxnPagination({
   nextPageParams,
-  onClick,
 }: {
   nextPageParams: TxnNextPageParamsProps;
-  onClick: () => void;
 }) {
   return (
     <Pagination<TxnQueryParamsProps>
-      onClick={onClick}
       nextPageParams={
         nextPageParams
           ? {
@@ -51,18 +47,8 @@ function TxnPagination({
 
 export default function Transactions({
   data,
+  isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handlePaginationClick = async () => {
-    setIsLoading(true);
-  };
-
-  // TODO: @Pierre bug for loading state
-  useEffect(() => {
-    setIsLoading(false);
-  }, [data]);
-
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
@@ -72,14 +58,10 @@ export default function Transactions({
             <span className="font-bold text-2xl text-white-50">
               Transactions
             </span>
-            {isLoading ? (
+            {isLoading && (
               <PaginationLoader customStyle="right-0 top-[72px] md:top-8" />
-            ) : (
-              <TxnPagination
-                onClick={handlePaginationClick}
-                nextPageParams={data.next_page_params}
-              />
             )}
+            <TxnPagination nextPageParams={data.next_page_params} />
           </div>
           {isLoading ? (
             <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
@@ -90,14 +72,10 @@ export default function Transactions({
           )}
 
           <div className="relative h-10 md:h-6 lg:pt-1.5">
-            {isLoading ? (
-              <PaginationLoader customStyle="right-0 bottom-0 md:-bottom-5" />
-            ) : (
-              <TxnPagination
-                onClick={handlePaginationClick}
-                nextPageParams={data.next_page_params}
-              />
+            {isLoading && (
+              <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
             )}
+            <TxnPagination nextPageParams={data.next_page_params} />
           </div>
         </div>
       </GradientCardContainer>
@@ -107,7 +85,7 @@ export default function Transactions({
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext
-): Promise<GetServerSidePropsResult<{ data: PageProps }>> {
+): Promise<GetServerSidePropsResult<{ data: PageProps; isLoading?: boolean }>> {
   const { network, ...params } = context.query;
   // Avoid fetching if some params are not valid
   const hasInvalidParams =

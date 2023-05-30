@@ -3,7 +3,6 @@ import {
   TxnQueryParamsProps,
 } from "@api/TransactionsApi";
 import Pagination from "@components/commons/Pagination";
-import { useState, useEffect } from "react";
 import TransactionRow from "@components/commons/TransactionRow";
 import {
   SkeletonLoader,
@@ -15,21 +14,19 @@ import { AddressTransactionsProps } from "./WalletDetails";
 interface TransactionDetailsProps {
   aid: string;
   addressTransactions: AddressTransactionsProps;
+  isLoading?: boolean;
 }
 
 function TxnPagination({
   aid,
   nextPageParams,
-  onClick,
 }: {
   aid: string;
   nextPageParams: TxnNextPageParamsProps;
-  onClick: () => void;
 }) {
   return (
     <Pagination<TxnQueryParamsProps>
       pathname={`/address/${aid}`}
-      onClick={onClick}
       nextPageParams={
         nextPageParams
           ? {
@@ -46,18 +43,8 @@ function TxnPagination({
 export default function TransactionDetails({
   aid,
   addressTransactions: { transactions, nextPageParams },
+  isLoading,
 }: TransactionDetailsProps) {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handlePaginationClick = async () => {
-    setIsLoading(true);
-  };
-
-  // TODO: @Pierre bug for loading state
-  useEffect(() => {
-    setIsLoading(false);
-  }, [transactions]);
-
   return (
     <div>
       <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
@@ -69,22 +56,8 @@ export default function TransactionDetails({
         </h2>
       </div>
       <div className="relative">
-        {isLoading ? (
-          <>
-            <PaginationLoader customStyle="right-1 top-0 md:top-0" />
-            <TxnPagination
-              onClick={handlePaginationClick}
-              aid={aid}
-              nextPageParams={nextPageParams}
-            />
-          </>
-        ) : (
-          <TxnPagination
-            onClick={handlePaginationClick}
-            aid={aid}
-            nextPageParams={nextPageParams}
-          />
-        )}
+        {isLoading && <PaginationLoader customStyle="right-1 top-0 md:top-0" />}
+        <TxnPagination aid={aid} nextPageParams={nextPageParams} />
       </div>
 
       {isLoading ? (
@@ -95,15 +68,10 @@ export default function TransactionDetails({
         ))
       )}
       <div className="relative h-10 md:h-6 lg:pt-1.5">
-        {isLoading ? (
-          <PaginationLoader customStyle="right-0 bottom-0 md:-bottom-5" />
-        ) : (
-          <TxnPagination
-            onClick={handlePaginationClick}
-            aid={aid}
-            nextPageParams={nextPageParams}
-          />
+        {isLoading && (
+          <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
         )}
+        <TxnPagination aid={aid} nextPageParams={nextPageParams} />
       </div>
     </div>
   );

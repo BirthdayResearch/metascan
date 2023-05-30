@@ -25,6 +25,7 @@ export interface WalletDetailProps {
   transactionCount: string;
   tokens: WalletDetailTokenI | null;
   addressTransactions: AddressTransactionsProps;
+  isLoading?: boolean;
 }
 
 export default function WalletDetails({

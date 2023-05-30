@@ -40,6 +40,7 @@ function Address({
   transactionCount,
   addressTransactions,
   tokens,
+  isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
   const router = useRouter();
@@ -71,6 +72,7 @@ function Address({
             aid={aid}
             // tokens={tokens}
             addressTransactions={addressTransactions}
+            isLoading={isLoading}
           />
         </div>
       </GradientCardContainer>
@@ -103,10 +105,12 @@ function WalletSegmentTwo({
   aid,
   // tokens,
   addressTransactions,
+  isLoading,
 }: {
   aid: string;
   // tokens: WalletDetailTokenI | null;
   addressTransactions: AddressTransactionsProps;
+  isLoading?: boolean;
 }) {
   const [isTransactionClicked, setIsTransactionClicked] = useState(true);
   const selectedFontStyle = "text-white-50";
@@ -174,6 +178,7 @@ function WalletSegmentTwo({
         <TransactionDetails
           addressTransactions={addressTransactions}
           aid={aid}
+          isLoading={isLoading}
         />
       ) : (
         <div>

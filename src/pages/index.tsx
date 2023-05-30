@@ -9,6 +9,7 @@ import LatestDataApi from "@api/LatestDataApi";
 export default function Home({
   latestTransactions,
   latestBlocks,
+  isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
     <>
@@ -24,6 +25,7 @@ export default function Home({
           listPageUrl="/txs"
           detailsPageBaseUrl="/tx"
           containerClass="pt-8 md:pt-20"
+          isLoading={isLoading}
         />
         <LatestDataTable
           type="blocks"
@@ -33,6 +35,7 @@ export default function Home({
           detailsPageBaseUrl="/block"
           listPageUrl="/blocks"
           containerClass="pt-5 md:pt-6 lg:pt-5"
+          isLoading={isLoading}
         />
       </div>
     </>
@@ -42,6 +45,7 @@ export default function Home({
 interface LatestDataProps {
   latestTransactions: RowData[];
   latestBlocks: RowData[];
+  isLoading?: boolean;
 }
 
 export async function getServerSideProps(

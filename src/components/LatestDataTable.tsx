@@ -55,7 +55,7 @@ export default function LatestDataTable({
   amountLabel = "",
   containerClass = "",
 }: Props): JSX.Element {
-  const [isLoading] = useState(false); // TODO change back to false bfr commit
+  const [isLoading] = useState(false);
   return (
     <div
       data-testid={`latest-${type}-table`}

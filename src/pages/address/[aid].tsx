@@ -1,46 +1,40 @@
-import React, {
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import {
-  CursorPage,
-  CursorPagination,
-} from "@components/commons/CursorPagination";
+import React, { Dispatch, SetStateAction, useState } from "react";
+
 import GradientCardContainer from "@components/commons/GradientCardContainer";
-import LinkText from "@components/commons/LinkText";
-import NumericFormat from "@components/commons/NumericFormat";
-import { GreenTickIcon } from "@components/icons/GreenTickIcon";
-import { useUnitSuffix } from "hooks/useUnitSuffix";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { useRouter } from "next/router";
-import TransactionRow from "pages/txs/_components/TransactionRow";
-import { FiChevronDown, FiChevronUp, FiCopy } from "react-icons/fi";
-import { MdOutlineQrCode } from "react-icons/md";
-import { isAlphanumeric, truncateTextFromMiddle } from "shared/textHelper";
-import {
-  Token,
-  tokenPages,
-  tokens as tokenDetailList,
-} from "mockdata/TokenData";
-import { walletAddressData } from "mockdata/WalletAddressData";
-import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
-import { sleep } from "shared/sleep";
+import { isAlphanumeric, isNumeric } from "shared/textHelper";
+import { tokenPages, tokens as tokenDetailList } from "mockdata/TokenData";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
   InferGetServerSidePropsType,
 } from "next";
 import clsx from "clsx";
-import { RawTransactionI } from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
-import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
-import TokenRow from "./_components/TokenRow";
+
 import QrCode from "../../components/commons/QrCode";
 import WalletAddressApi from "../../api/WalletAddressApi";
+import { WalletAddressDetails } from "./_components/WalletAddressDetails";
+import {
+  AddressTransactionsProps,
+  WalletDetailProps,
+  // WalletDetailTokenI,
+  WalletDetails,
+} from "./_components/WalletDetails";
+import { BalanceDetails } from "./_components/BalanceDetails";
+import { TokenDetails } from "./_components/TokenDetails";
+import { TransactionDetails } from "./_components/TransactionDetails";
+
+enum TabTitle {
+  tokens = "Tokens",
+  transactions = "Transactions",
+}
+
+interface SegmentOneProps {
+  setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
+  detail: WalletDetailProps;
+}
 
 function Address({
   balance,
@@ -62,7 +56,7 @@ function Address({
             data-testid="address-details-title"
           >
             <span className="font-bold text-xl text-white-50">
-              {fixedTitle.walletAddress}
+              Wallet address
             </span>
           </div>
           <WalletSegmentOne
@@ -75,7 +69,8 @@ function Address({
       <GradientCardContainer className="relative">
         <div className="md:p-10 p-5">
           <WalletSegmentTwo
-            tokens={tokens}
+            aid={aid}
+            // tokens={tokens}
             addressTransactions={addressTransactions}
           />
         </div>
@@ -92,13 +87,8 @@ function Address({
   );
 }
 
-interface SegmentOneProps {
-  setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
-  detail: WalletDetailProps;
-}
-
-interface QrClickProps {
-  setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
+function TabSelectionIndicator() {
+  return <div className="brand-gradient-1 h-1 mt-[19.33px]" />;
 }
 
 function WalletSegmentOne({ setIsQrCodeClicked, detail }: SegmentOneProps) {
@@ -110,223 +100,82 @@ function WalletSegmentOne({ setIsQrCodeClicked, detail }: SegmentOneProps) {
   );
 }
 
-function WalletAddressDetails({ setIsQrCodeClicked }: QrClickProps) {
-  const [isWalletAddressCopied, setIsWalletAddressCopied] = useState(false);
-  const router = useRouter();
-  const aid = router.query.aid?.toString()!;
-  return (
-    <div>
-      {isWalletAddressCopied ? (
-        <div className="flex flex-row gap-x-2.5 items-center">
-          <LinkText
-            testId="wallet-address-copied"
-            label={fixedTitle.copied}
-            href={`/address/${aid}`}
-            customStyle="tracking-[0.01em]"
-          />
-          <GreenTickIcon data-testid="wallet-address-copied-green-tick-icon" />
-          <MdOutlineQrCode
-            role="button"
-            onClick={() => onQrCodeClick(setIsQrCodeClicked)}
-            className="text-white-50"
-          />
-        </div>
-      ) : (
-        <div className="flex flex-row gap-x-2.5 items-center">
-          <LinkText
-            testId="wallet-address"
-            label={truncateTextFromMiddle(aid, 11)}
-            href={`/address/${aid}`}
-            customStyle="tracking-[0.01em]"
-          />
-          <FiCopy
-            role="button"
-            data-testid="wallet-address-copy-icon"
-            onClick={() =>
-              onCopyAddressIconClick(setIsWalletAddressCopied, aid)
-            }
-            className="text-white-50"
-          />
-          <MdOutlineQrCode
-            data-testid="wallet-address-qr-icon"
-            role="button"
-            onClick={() => onQrCodeClick(setIsQrCodeClicked)}
-            className="text-white-50"
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function WalletDetails({ detail }: { detail: WalletDetailProps }) {
-  const [isTokenDropDownIconClicked, setIsTokenDropDownIconClicked] =
-    useState(false);
-  const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef, setIsTokenDropDownIconClicked);
-
-  return (
-    <div className="flex lg:flex-row md:flex-col flex-col gap-y-4 lg:gap-x-5">
-      <div className="flex flex-col lg:flex-row md:flex-row gap-y-4 lg:gap-x-5">
-        <div className="flex flex-col gap-y-1 lg:min-w-[265px] md:min-w-[294px]">
-          <div
-            data-testid="wallet-balance-title"
-            className="text-white-700 tracking-[0.01em]"
-          >
-            {fixedTitle.balance}
-          </div>
-          <NumericFormat
-            className="text-white-50 tracking-[0.01em] break-all"
-            thousandSeparator
-            value={detail.balance}
-            decimalScale={8}
-            data-testid="wallet-balance-value"
-          />
-        </div>
-        {/* hides token field for now */}
-        {detail.tokens !== null && (
-          <div className="flex flex-col gap-y-1 lg:w-[265px] md:w-[294px]">
-            <div
-              data-testid="wallet-tokens-title"
-              className="text-white-700 tracking-[0.01em]"
-            >
-              {fixedTitle.tokens}
-            </div>
-            <div ref={wrapperRef} className="relative">
-              <div
-                role="button"
-                tabIndex={0}
-                onKeyDown={() =>
-                  onTokenDropDownIconClick(
-                    setIsTokenDropDownIconClicked,
-                    isTokenDropDownIconClicked
-                  )
-                }
-                onClick={() =>
-                  onTokenDropDownIconClick(
-                    setIsTokenDropDownIconClicked,
-                    isTokenDropDownIconClicked
-                  )
-                }
-                className="flex flex-row items-center"
-              >
-                <div className="text-white-50 tracking-[0.01em] mr-[10px]">
-                  {detail.tokens.allTokens.length} {fixedTitle.tokens}
-                </div>
-                <div>
-                  {isTokenDropDownIconClicked ? (
-                    <FiChevronDown
-                      data-testid="wallet-tokens-dropdown-icon"
-                      size={24}
-                      className="text-white-700"
-                    />
-                  ) : (
-                    <FiChevronUp
-                      data-testid="wallet-tokens-up-icon"
-                      size={24}
-                      className="text-white-700"
-                    />
-                  )}
-                </div>
-                <div>
-                  <NumericFormat
-                    className="text-white-700 ml-[14px] tracking-[0.01em]"
-                    value={detail.tokens.value.toString()}
-                    thousandSeparator
-                    decimalScale={2}
-                    suffix=")"
-                    prefix="($"
-                    data-testid="wallet-tokens-value"
-                  />
-                </div>
-              </div>
-              {isTokenDropDownIconClicked && (
-                <TokenSearchDropDown
-                  data-testid="wallet-token-search-dropdown"
-                  addressTokens={detail.tokens.allTokens}
-                />
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-      <div className="flex flex-col gap-y-1 lg:w-[265px] md:w-[294px]">
-        <div
-          data-testid="wallet-transactions-title"
-          className="text-white-700 tracking-[0.01em]"
-        >
-          {fixedTitle.transactions}
-        </div>
-        <div
-          data-testid="wallet-transactions-value"
-          className="text-white-50 tracking-[0.01em]"
-        >
-          {useUnitSuffix(detail.transactionCount)}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TabSelectionIndicator() {
-  return <div className="brand-gradient-1 h-1 mt-[19.33px]" />;
-}
-
 function WalletSegmentTwo({
-  tokens,
+  aid,
+  // tokens,
   addressTransactions,
 }: {
-  tokens: WalletDetailTokenI | null;
-  addressTransactions: RawTransactionI[];
+  aid: string;
+  // tokens: WalletDetailTokenI | null;
+  addressTransactions: AddressTransactionsProps;
 }) {
   const [isTransactionClicked, setIsTransactionClicked] = useState(true);
-
   const selectedFontStyle = "text-white-50";
   const unselectedFontStyle = "text-white-700";
-
+  /* Hide tabs (since only one tab is available)
   const tabs = [
     {
-      title: fixedTitle.transactions,
+      title: TabTitle.transactions,
       isSelected: isTransactionClicked,
     },
-    // hide tokens tab for now
     ...(tokens !== null
       ? [
           {
-            title: fixedTitle.tokens,
+            title: TabTitle.tokens,
             isSelected: !isTransactionClicked,
           },
         ]
       : []),
   ];
+  */
+  const tabs = [];
+
+  const onOptionsClick = (
+    setIsTransactionOptionClicked: Dispatch<SetStateAction<boolean>>,
+    itemClicked: string
+  ) => {
+    if (itemClicked === TabTitle.tokens) {
+      setIsTransactionOptionClicked(false);
+    } else {
+      setIsTransactionOptionClicked(true);
+    }
+  };
 
   return (
     <div className="flex flex-col md:pt-[3.67px] pt-[23.67px]">
-      <div className="flex flex-row gap-x-6">
-        {tabs.map(({ title, isSelected }) => (
-          <div className="flex flex-col" key={title}>
-            <button
-              type="button"
-              className={clsx(
-                "font-medium",
-                isSelected ? selectedFontStyle : unselectedFontStyle
-              )}
-              data-testid={`wallet-${title}-options-title`}
-              onClick={() => onOptionsClick(setIsTransactionClicked, title)}
-            >
-              {title}
-            </button>
-            {isSelected && <TabSelectionIndicator />}
-          </div>
-        ))}
-      </div>
-      {isTransactionClicked ? (
-        <div className="lg:mt-5 lg:mb-[22.5px] md:mt-5 md:mb-5 mt-5 mb-7" />
-      ) : (
-        <BalanceDetails />
+      {tabs.length > 0 && (
+        <div className="flex flex-row gap-x-6">
+          {tabs.map(({ title, isSelected }) => (
+            <div className="flex flex-col" key={title}>
+              <button
+                type="button"
+                className={clsx(
+                  "font-medium",
+                  isSelected ? selectedFontStyle : unselectedFontStyle
+                )}
+                data-testid={`wallet-${title}-options-title`}
+                onClick={() => onOptionsClick(setIsTransactionClicked, title)}
+              >
+                {title}
+              </button>
+              {isSelected && <TabSelectionIndicator />}
+            </div>
+          ))}
+        </div>
       )}
+
+      {/* Enable if tabs are displayed 
+      {isTransactionClicked && (
+        <div className="lg:mt-5 lg:mb-[22.5px] md:mt-5 md:mb-5 mt-5 mb-7" />
+      )} */}
+
+      {!isTransactionClicked && <BalanceDetails />}
+
       {isTransactionClicked ? (
-        <TransactionDetails addressTransactions={addressTransactions} />
+        <TransactionDetails
+          addressTransactions={addressTransactions}
+          aid={aid}
+        />
       ) : (
         <div>
           <TokenDetails
@@ -338,304 +187,10 @@ function WalletSegmentTwo({
     </div>
   );
 }
-
-function BalanceDetails() {
-  const [isTokenIconClicked, setIsTokenIconClicked] = useState(false);
-  const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef, setIsTokenIconClicked);
-
-  return (
-    <div className="flex flex-col lg:flex-row md:flex-row gap-y-6 lg:gap-x-[109px] md:gap-x-[76px] mt-11 mb-[53px]">
-      <div className="flex flex-col gap-y-2">
-        <div
-          data-testid="wallet-networth-title"
-          className="text-white-700 tracking-[0.005em] text-sm"
-        >
-          {fixedTitle.networth}
-        </div>
-        <NumericFormat
-          data-testid="wallet-networth"
-          className="text-white-50 text-2xl font-bold"
-          value={walletAddressData.networth.toString()}
-          thousandSeparator
-          decimalScale={2}
-          prefix="$"
-        />
-      </div>
-      <div className="flex flex-col gap-y-2">
-        <div
-          data-testid="wallet-dmctx-balance-title"
-          className="text-white-700 tracking-[0.005em] text-sm"
-        >
-          {fixedTitle.dmctxBalance}
-        </div>
-        <NumericFormat
-          data-testid="wallet-dmctx-balance-dollar-value"
-          className="text-white-50 text-2xl font-bold"
-          thousandSeparator
-          value={walletAddressData.dmctxBalance.dollarValue.toString()}
-          decimalScale={2}
-          prefix="$"
-        />
-        <NumericFormat
-          data-testid="wallet-dmctx-balance-value"
-          className="text-white-700 tracking-[0.05em]"
-          thousandSeparator
-          value={walletAddressData.dmctxBalance.value.toString()}
-          decimalScale={8}
-        />
-      </div>
-      <div className="flex flex-col gap-y-2">
-        <div
-          data-testid="wallet-other-tokens-title"
-          className="text-white-700 text-sm tracking-[0.005em]"
-        >
-          {fixedTitle.otherTokens}
-        </div>
-        <NumericFormat
-          data-testid="wallet-other-tokens-dollar-value"
-          className="text-white-50 text-2xl font-bold"
-          thousandSeparator
-          value={walletAddressData.otherTokens.value.toString()}
-          decimalScale={2}
-          prefix="$"
-        />
-        <div ref={wrapperRef} className="relative">
-          <div
-            role="button"
-            tabIndex={0}
-            onKeyDown={() =>
-              onTokenDropDownIconClick(
-                setIsTokenIconClicked,
-                isTokenIconClicked
-              )
-            }
-            onClick={() =>
-              onTokenDropDownIconClick(
-                setIsTokenIconClicked,
-                isTokenIconClicked
-              )
-            }
-            className="flex flex-row items-center gap-x-[10.29px]"
-          >
-            <div
-              data-testid="wallet-other-tokens"
-              className="text-white-700 tracking-[0.005em]"
-            >
-              {walletAddressData.otherTokens.allTokens.length} Tokens
-            </div>
-            {isTokenIconClicked ? (
-              <FiChevronDown
-                data-testid="wallet-other-tokens-dropdown-icon"
-                size={24}
-                className="text-white-700"
-              />
-            ) : (
-              <FiChevronUp
-                data-testid="wallet-other-tokens-up-icon"
-                size={24}
-                className="text-white-700"
-              />
-            )}
-          </div>
-          {isTokenIconClicked && (
-            <TokenSearchDropDown
-              data-testid="wallet-other-tokens-dropdown"
-              addressTokens={walletAddressData.otherTokens.allTokens}
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-interface TransactionDetailsProps {
-  addressTransactions: RawTransactionI[];
-}
-
-function TransactionDetails({ addressTransactions }: TransactionDetailsProps) {
-  return (
-    <div>
-      <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
-        <h2
-          data-testid="address-txn-list-title"
-          className="font-bold text-xl text-white-50"
-        >
-          {fixedTitle.transactions}
-        </h2>
-      </div>
-      {addressTransactions.map((item) => (
-        <TransactionRow key={item.hash} rawData={item} />
-      ))}
-    </div>
-  );
-}
-
-interface TokenDetailsProps {
-  tokenList: Token[];
-  tokenListPage: CursorPage[];
-}
-
-function TokenDetails({ tokenList, tokenListPage }: TokenDetailsProps) {
-  const router = useRouter();
-  const id = router.query.aid;
-
-  return (
-    <div>
-      <div className="flex flex-col md:flex-row mb-9 justify-between md:items-center">
-        <h2
-          data-testid="address-token-list-title"
-          className="font-bold text-xl text-white-50"
-        >
-          {fixedTitle.tokens}
-        </h2>
-        <CursorPagination
-          pages={tokenListPage}
-          path={`/address/${id}`}
-          className="justify-end mt-5 md:mt-0"
-        />
-      </div>
-      <div className="hidden lg:block">
-        <div className="grid grid-cols-9 mb-5">
-          <div data-testid="wallet-tokens-asset-title">
-            <AddressTokenTableTitle title={fixedTitle.asset} />
-          </div>
-          <div data-testid="wallet-tokens-type-title">
-            <AddressTokenTableTitle title={fixedTitle.type} />
-          </div>
-          <div data-testid="wallet-tokens-symbol-title">
-            <AddressTokenTableTitle title={fixedTitle.symbol} />
-          </div>
-          <div
-            className="col-span-2 text-right pr-10"
-            data-testid="wallet-tokens-amount-title"
-          >
-            <AddressTokenTableTitle title={fixedTitle.amount} />
-          </div>
-          <div
-            className="text-right pr-5"
-            data-testid="wallet-tokens-price-title"
-          >
-            <AddressTokenTableTitle title={fixedTitle.price} />
-          </div>
-          <div className="text-right" data-testid="wallet-tokens-value-title">
-            <AddressTokenTableTitle title={fixedTitle.value} />
-          </div>
-          <div
-            className="col-span-2 text-right"
-            data-testid="wallet-tokens-contract-address-title"
-          >
-            <AddressTokenTableTitle title={fixedTitle.contractAddress} />
-          </div>
-        </div>
-        <div className="brand-gradient-1 h-[1px]" />
-      </div>
-      {tokenList.map((item) => (
-        <TokenRow key={item.contractAddress} data={item} />
-      ))}
-      <CursorPagination
-        pages={tokenListPage}
-        path={`/address/${id}`}
-        className="flex w-full md:justify-end mt-12 md:mt-10"
-      />
-    </div>
-  );
-}
-
-const onTokenDropDownIconClick = (
-  setIsTokenIconClicked: Dispatch<SetStateAction<boolean>>,
-  isTokenIconClicked: boolean
-) => {
-  if (isTokenIconClicked) {
-    setIsTokenIconClicked(false);
-  } else {
-    setIsTokenIconClicked(true);
-  }
-};
-
-const onOptionsClick = (
-  setIsTransactionClicked: Dispatch<SetStateAction<boolean>>,
-  itemClicked: string
-) => {
-  if (itemClicked === fixedTitle.tokens) {
-    setIsTransactionClicked(false);
-  } else {
-    setIsTransactionClicked(true);
-  }
-};
-
-const fixedTitle = {
-  walletAddress: "Wallet address",
-  balance: "Balance",
-  tokens: "Tokens",
-  transactions: "Transactions",
-  networth: "Net worth",
-  dmctxBalance: "DMCTx Balance",
-  otherTokens: "Other tokens",
-  copied: "Copied!",
-  asset: "Asset",
-  type: "Type",
-  symbol: "Symbol",
-  amount: "Amount",
-  price: "Price",
-  value: "Value",
-  contractAddress: "Contract Address",
-};
-
-const onCopyAddressIconClick = async (
-  onTextClick: Dispatch<SetStateAction<boolean>>,
-  address: string
-) => {
-  onTextClick(true);
-  navigator.clipboard.writeText(address);
-  await sleep(2000);
-  onTextClick(false);
-};
-
-const onQrCodeClick = (
-  setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>
-) => {
-  setIsQrCodeClicked(true);
-};
-
-function useOutsideAlerter(
-  ref: MutableRefObject<HTMLDivElement | null>,
-  setIsTokenClicked: Dispatch<SetStateAction<boolean>>
-) {
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        setIsTokenClicked(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
-}
-
-interface WalletDetailTokenI {
-  value: number;
-  allTokens: {
-    value: number;
-    symbol: string;
-  }[];
-}
-
-interface WalletDetailProps {
-  balance: string;
-  transactionCount: string;
-  tokens: WalletDetailTokenI | null;
-  addressTransactions: RawTransactionI[];
-}
-
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<WalletDetailProps>> {
-  const { network } = context.query;
+  const { network, ...params } = context.query;
   const aid = context.params?.aid?.toString().trim() as string;
 
   if (!isAlphanumeric(aid)) {
@@ -651,15 +206,33 @@ export async function getServerSideProps(
       network as NetworkConnection,
       aid
     );
-    const addressTransactions = await WalletAddressApi.getAddressTransactions(
-      network as NetworkConnection,
-      aid
-    );
+
+    const hasInvalidParams =
+      !isNumeric(params?.block_number as string) ||
+      !isNumeric(params?.items_count as string) ||
+      !isNumeric(params?.page_number as string) ||
+      !isNumeric(params?.index as string);
+
+    const addressTransactions = hasInvalidParams
+      ? await WalletAddressApi.getAddressTransactions(
+          network as NetworkConnection,
+          aid
+        )
+      : await WalletAddressApi.getAddressTransactions(
+          network as NetworkConnection,
+          aid,
+          params?.block_number as string,
+          params?.items_count as string,
+          params?.index as string
+        );
 
     return {
       props: {
-        balance: walletDetail.coin_balance,
-        addressTransactions: addressTransactions.items,
+        balance: walletDetail.coin_balance ?? "0",
+        addressTransactions: {
+          transactions: addressTransactions.items,
+          nextPageParams: addressTransactions.next_page_params,
+        },
         transactionCount: counters?.transactions_count,
         tokens: null, // passing null to temporary hide all tokens related UI
       },

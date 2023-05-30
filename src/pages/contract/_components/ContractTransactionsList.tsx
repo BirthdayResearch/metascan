@@ -3,7 +3,7 @@ import {
   CursorPagination,
 } from "@components/commons/CursorPagination";
 import { useRouter } from "next/router";
-import TransactionRow from "pages/txs/_components/TransactionRow";
+import TransactionRow from "@components/commons/TransactionRow";
 import { RawTransactionI } from "@api/types";
 import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
 

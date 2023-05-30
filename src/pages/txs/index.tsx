@@ -13,7 +13,7 @@ import { NetworkConnection } from "@contexts/Environment";
 import Pagination from "@components/commons/Pagination";
 import { RawTransactionI } from "@api/types";
 import { isNumeric } from "shared/textHelper";
-import TransactionRow from "./_components/TransactionRow";
+import TransactionRow from "@components/commons/TransactionRow";
 
 interface PageProps {
   transactions: RawTransactionI[];
@@ -75,20 +75,24 @@ export async function getServerSideProps(
     !isNumeric(params?.page_number as string) ||
     !isNumeric(params?.index as string);
 
-  // Fetch data from external API
-  const txs = hasInvalidParams
-    ? await TransactionsApi.getTransactions(network as NetworkConnection)
-    : await TransactionsApi.getTransactions(
-        network as NetworkConnection,
-        params?.block_number as string,
-        params?.items_count as string,
-        params?.index as string
-      );
-  const data = {
-    transactions: txs.items,
-    next_page_params: txs.next_page_params as TxnNextPageParamsProps,
-  };
+  try {
+    // Fetch data from external API
+    const txs = hasInvalidParams
+      ? await TransactionsApi.getTransactions(network as NetworkConnection)
+      : await TransactionsApi.getTransactions(
+          network as NetworkConnection,
+          params?.block_number as string,
+          params?.items_count as string,
+          params?.index as string
+        );
+    const data = {
+      transactions: txs.items,
+      next_page_params: txs.next_page_params as TxnNextPageParamsProps,
+    };
 
-  // Pass data to the page via props
-  return { props: { data } };
+    // Pass data to the page via props
+    return { props: { data } };
+  } catch (e) {
+    return { notFound: true };
+  }
 }

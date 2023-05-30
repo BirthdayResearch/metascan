@@ -8,14 +8,15 @@ interface PaginationProps<T> {
     items_count: string;
     page_number?: string;
   };
+  pathname?: string;
 }
 
 export default function Pagination<T>({
   nextPageParams: nextPageParamsProps,
+  pathname,
 }: PaginationProps<T>): JSX.Element {
   const router = useRouter();
-  const pathName = router.pathname;
-
+  const pathName = pathname ?? router.pathname;
   const currentPageNumber = Number.isNaN(Number(router.query.page_number))
     ? 1
     : Number(router.query.page_number);
@@ -53,7 +54,7 @@ export default function Pagination<T>({
       next: nextPageParams,
     };
 
-    if (nextPageParams === undefined) {
+    if (nextPageParamsProps === undefined) {
       return [pageButton.previous, pageButton.current];
     }
     if (pageNumber === 1) {
@@ -114,7 +115,7 @@ export default function Pagination<T>({
             pathName={pathName}
           />
         ))}
-      {nextPageParams && (
+      {nextPageParamsProps && (
         <NavigateButton type="Next" query={nextPageParams} pathName={pathName}>
           <FiArrowRight className="text-white-700" size={24} />
         </NavigateButton>

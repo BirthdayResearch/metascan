@@ -199,7 +199,7 @@ function BlockInfoDisplay({
       <div className="flex pt-5 md:pt-0">
         <LinkText
           testId={`block-details-link-${block}`}
-          href={`/txs?block=${block}`}
+          href={{ pathname: "/txs", query: { block } }}
         >
           <NumericFormat
             thousandSeparator

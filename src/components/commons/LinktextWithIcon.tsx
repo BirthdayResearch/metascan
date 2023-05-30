@@ -1,7 +1,8 @@
 import clsx from "clsx";
-import NextLink from "next/link";
+import { LinkProps } from "next/link";
 import { useState } from "react";
 import { IconType } from "react-icons";
+import { Link } from "./Link";
 
 interface IconProps {
   Icon: IconType;
@@ -15,8 +16,7 @@ export default function LinkTextWithIcon({
   customStyle,
   testId,
   icon,
-}: {
-  href: string;
+}: LinkProps & {
   label: string;
   customStyle?: string;
   testId?: string;
@@ -40,7 +40,7 @@ export default function LinkTextWithIcon({
   };
 
   return (
-    <NextLink
+    <Link
       data-testid={testId}
       href={href}
       className={`flex items-center text-lightBlue brand-gradient-1 active:brand-gradient-2 bg-clip-text hover:text-transparent transition-all ease-in duration-300 ${
@@ -55,6 +55,6 @@ export default function LinkTextWithIcon({
       {LinkIcon && icon.pos === "left" && <LinkIcon {...iconProps} />}
       {label}
       {LinkIcon && icon.pos === "right" && <LinkIcon {...iconProps} />}
-    </NextLink>
+    </Link>
   );
 }

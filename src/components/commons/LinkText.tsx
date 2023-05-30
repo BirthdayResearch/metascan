@@ -1,6 +1,7 @@
 import clsx from "clsx";
-import NextLink from "next/link";
+import { LinkProps } from "next/link";
 import { PropsWithChildren } from "react";
+import { Link } from "./Link";
 
 export default function LinkText({
   href,
@@ -8,14 +9,14 @@ export default function LinkText({
   customStyle,
   testId,
   children,
-}: PropsWithChildren<{
-  href: string;
-  label?: string;
-  customStyle?: string;
-  testId?: string;
-}>): JSX.Element {
+}: LinkProps &
+  PropsWithChildren<{
+    label?: string;
+    customStyle?: string;
+    testId?: string;
+  }>): JSX.Element {
   return (
-    <NextLink
+    <Link
       data-testid={testId}
       href={href}
       className={clsx(
@@ -25,6 +26,6 @@ export default function LinkText({
     >
       {label}
       {children}
-    </NextLink>
+    </Link>
   );
 }

@@ -12,10 +12,6 @@ import {
 } from "next";
 import clsx from "clsx";
 import { NetworkConnection } from "@contexts/Environment";
-// import {
-//   SkeletonLoader,
-//   SkeletonLoaderScreen,
-// } from "@components/skeletonLoaders/SkeletonLoader";
 
 import QrCode from "../../components/commons/QrCode";
 import WalletAddressApi from "../../api/WalletAddressApi";

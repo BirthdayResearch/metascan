@@ -73,7 +73,7 @@ export default function Transactions({
               Transactions
             </span>
             {isLoading ? (
-              <div className="bg-dark-200 h-6 w-[130px] absolute right-0 top-[72px] md:top-8 rounded-[5px]" />
+              <PaginationLoader customStyle="right-0 top-[72px] md:top-8" />
             ) : (
               <TxnPagination
                 onClick={handlePaginationClick}
@@ -91,7 +91,7 @@ export default function Transactions({
 
           <div className="relative h-10 md:h-6 lg:pt-1.5">
             {isLoading ? (
-              <PaginationLoader customStyle="right-0 bottom-0 md:-bottom-5 rounded-[5px]" />
+              <PaginationLoader customStyle="right-0 bottom-0 md:-bottom-5" />
             ) : (
               <TxnPagination
                 onClick={handlePaginationClick}

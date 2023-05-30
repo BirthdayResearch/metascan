@@ -89,7 +89,7 @@ export default function Blocks({
           )}
           <div className="relative h-10 md:h-6 lg:pt-1.5">
             {isLoading ? (
-              <PaginationLoader customStyle="right-0 bottom-0 md:-bottom-5 rounded-[5px]" />
+              <PaginationLoader customStyle="right-0 bottom-0 md:-bottom-5" />
             ) : (
               <BlockPagination
                 onClick={handlePaginationClick}

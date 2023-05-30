@@ -6,10 +6,15 @@ import { FiBox } from "react-icons/fi";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { getDuration } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
+import { useState } from "react";
 import Button from "./commons/Button";
 import GradientCardContainer from "./commons/GradientCardContainer";
 import LinkText from "./commons/LinkText";
 import NumericFormat from "./commons/NumericFormat";
+import {
+  SkeletonLoader,
+  SkeletonLoaderScreen,
+} from "./skeletonLoaders/SkeletonLoader";
 
 type DataType = "blocks" | "transactions";
 
@@ -50,6 +55,7 @@ export default function LatestDataTable({
   amountLabel = "",
   containerClass = "",
 }: Props): JSX.Element {
+  const [isLoading] = useState(false); // TODO change back to false bfr commit
   return (
     <div
       data-testid={`latest-${type}-table`}
@@ -65,26 +71,35 @@ export default function LatestDataTable({
               {title}
             </h2>
             <div className="md:order-last md:flex-1 md:pt-6 md:col-span-8">
-              {data.map((row, index) => (
-                <div key={row.transactionId}>
-                  <RowItem
-                    rowIndex={index}
-                    type={type}
-                    rowData={row}
-                    amountLabel={amountLabel}
-                    detailsPageBaseUrl={detailsPageBaseUrl}
-                  />
-                  <div
-                    className={clsx(
-                      "w-[calc(100% - 16px)] ml-8 h-5 border-b border-black-600",
-                      { hidden: data.length === index + 1 }
-                    )}
-                  />
-                </div>
-              ))}
+              {isLoading ? (
+                <SkeletonLoader
+                  screen={SkeletonLoaderScreen.MainTable}
+                  rows={5}
+                />
+              ) : (
+                <>
+                  {data.map((row, index) => (
+                    <div key={row.transactionId}>
+                      <RowItem
+                        rowIndex={index}
+                        type={type}
+                        rowData={row}
+                        amountLabel={amountLabel}
+                        detailsPageBaseUrl={detailsPageBaseUrl}
+                      />
+                      <div
+                        className={clsx(
+                          "w-[calc(100% - 16px)] ml-8 h-5 border-b border-black-600",
+                          { hidden: data.length === index + 1 }
+                        )}
+                      />
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
             <div className="pt-10 md:pt-0 md:col-span-3 md:col-end-auto">
-              <div className="md:flex md:justify-end md:text-rightt">
+              <div className="md:flex md:justify-end md:text-right">
                 <Button
                   testId={`view-${type}`}
                   label={`View all ${type}`}

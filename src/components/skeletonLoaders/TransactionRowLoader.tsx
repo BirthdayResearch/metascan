@@ -1,65 +1,43 @@
 export default function TransactionRowLoader() {
   return (
     <div>
-      {/* For desktop */}
-      <div className="hidden lg:block">
+      {/* For desktop and tablet */}
+      <div className="hidden md:block">
         <div className="grid grid-cols-8 lg:grid-cols-12 gap-5 py-4">
-          <div className="col-start-1 col-end-3">
+          {/* First col */}
+          <div className="col-start-1 col-end-3 lg:col-end-4 lg:mr-8">
             <div className="flex flex-row">
               <div className="w-6 h-6 rounded-full bg-dark-200" />
-              <div className="flex flex-col overflow-hidden ml-4 rounded-[5px]">
-                <div className="h-[14px] lg:h-6 w-[136px] bg-dark-200 rounded-[5px]" />
+              <div className="flex flex-col overflow-hidden ml-2 lg:ml-3 rounded-[5px] w-full">
+                <div className="h-3 lg:h-6 w-full bg-dark-200 rounded-[5px] ml-1" />
               </div>
             </div>
-            <div className="flex flex-row mt-[18px] lg:mt-3">
-              <div className="w-6" />
-              <div className="flex flex-col overflow-hidden ml-4 rounded-[5px]">
-                <div className="h-[14px] lg:h-6 w-[136px] bg-dark-200" />
-              </div>
+            {/* Second row */}
+            <div className="flex flex-col lg:flex-row ml-8 lg:ml-9 lg:mt-3">
+              <span className="w-full gap-y-2 grid">
+                <div className="h-3 lg:h-6 w-full bg-dark-200 rounded-[5px]" />
+                <div className="h-3 lg:h-6 w-full bg-dark-200 rounded-[5px] md:block lg:hidden" />
+              </span>
             </div>
           </div>
+          {/* Second col */}
           <div className="col-start-3 col-end-7 lg:col-start-4 lg:col-end-10">
-            <div className="h-[14px] lg:h-6 w-[212px] bg-dark-200 rounded-[5px]" />
-            <div className="grid grid-cols-4 lg:grid-cols-6 gap-5 mt-2 lg:mt-3">
-              <div className="h-[14px] lg:h-6 w-[136px] bg-dark-200 rounded-[5px]" />
-              <div className="h-[14px] lg:h-6 w-[136px] bg-dark-200 rounded-[5px] ml-12" />
+            {/* First row */}
+            <div className="h-3 lg:h-6 w-[176px] bg-dark-200 rounded-[5px]" />
+            {/* Second row */}
+            <div className="gap-y-2 grid grid-cols-2 lg:flex lg:flex-row lg:gap-x-[12px] w-10/12 lg:w-7/12 mt-2 lg:mt-3">
+              <div className="h-3 lg:h-6 w-10/12 lg:w-1/2 bg-dark-200 rounded-[5px]" />
+              <div className="h-3 lg:h-6 w-10/12 lg:w-1/2 bg-dark-200 rounded-[5px]" />
+              <div className="h-3 lg:h-6 w-10/12 bg-dark-200 rounded-[5px] lg:hidden" />
+              <div className="h-3 lg:h-6 w-10/12 bg-dark-200 rounded-[5px] lg:hidden" />
             </div>
           </div>
-          <div className="col-start-11 col-end-13 gap-2 grid justify-items-end justify-end">
-            <div className="h-[14px] lg:h-6 w-[136px] bg-dark-200 rounded-[5px]" />
-            <div className="h-[14px] lg:h-6 w-[136px] bg-dark-200 rounded-[5px]" />
-          </div>
-        </div>
-      </div>
-
-      {/* For tablet */}
-      <div className="hidden md:block lg:hidden">
-        <div className="grid grid-cols-8 gap-5 py-4">
-          <div className="col-start-1 col-end-3">
-            <div className="flex flex-row">
-              <div className="w-6 h-6 rounded-full bg-dark-200 mr-4" />
-              <div className="h-3 w-[136px] bg-dark-200 rounded-[5px]" />
+          {/* Third col */}
+          <div className="col-start-7 col-end-9 lg:col-start-10 lg:col-end-13">
+            <div className="h-3 lg:h-6 bg-dark-200 rounded-[5px]" />
+            <div className="mt-2 lg:mt-3 flex justify-end">
+              <div className="h-3 lg:h-6 w-9/12 bg-dark-200 rounded-[5px] md:hidden lg:block" />
             </div>
-            <div className="flex flex-col gap-3 items-end mt-2">
-              <div className="h-3 w-[103px] bg-dark-200 rounded-[5px]" />
-              <div className="h-3 w-[103px] bg-dark-200 rounded-[5px]" />
-            </div>
-          </div>
-          <div className="col-start-3 col-end-7 lg:col-start-4 lg:col-end-10">
-            <div className="h-3 w-[212px] bg-dark-200 rounded-[5px]" />
-            <div className="flex flex-row mt-[18px]">
-              <div className="flex flex-col gap-3">
-                <div className="h-3 w-[120px] bg-dark-200 rounded-[5px]" />
-                <div className="h-3 w-[120px] bg-dark-200 rounded-[5px] lg:ml-11" />
-              </div>
-              <div className="flex flex-col gap-3 ml-2">
-                <div className="h-3 w-[120px] bg-dark-200 rounded-[5px]" />
-                <div className="h-3 w-[120px] bg-dark-200 rounded-[5px] lg:ml-11" />
-              </div>
-            </div>
-          </div>
-          <div className="col-start-7 col-end-9 lg:col-start-11 lg:col-end-13 justify-self-end">
-            <div className="h-3 w-[136px] bg-dark-200 rounded-[5px]" />
           </div>
         </div>
       </div>
@@ -70,19 +48,19 @@ export default function TransactionRowLoader() {
           <div className="flex flex-row items-center">
             <div className="w-6 h-6 rounded-full bg-dark-200" />
             <div className="flex flex-col overflow-hidden ml-2 text-base">
-              <div className="h-3 w-[124px] bg-dark-200 rounded-[5px]" />
+              <div className="h-3 lg:h-6 w-[124px] bg-dark-200 rounded-[5px]" />
             </div>
           </div>
           <div className="text-right items-center flex">
-            <div className="h-3 w-[72px] bg-dark-200 rounded-[5px]" />
+            <div className="h-3 lg:h-6 w-[72px] bg-dark-200 rounded-[5px]" />
           </div>
         </div>
         <div className="ml-8 grid gap-4">
-          <div className="h-3 w-[176px] bg-dark-200 rounded-[5px]" />
-          <div className="h-3 w-[144px] bg-dark-200 rounded-[5px]" />
-          <div className="h-3 w-[144px] bg-dark-200 rounded-[5px]" />
-          <div className="h-3 w-[128px] bg-dark-200 rounded-[5px]" />
-          <div className="h-3 w-[184px] bg-dark-200 rounded-[5px]" />
+          <div className="h-3 lg:h-6 w-[176px] bg-dark-200 rounded-[5px]" />
+          <div className="h-3 lg:h-6 w-[144px] bg-dark-200 rounded-[5px]" />
+          <div className="h-3 lg:h-6 w-[144px] bg-dark-200 rounded-[5px]" />
+          <div className="h-3 lg:h-6 w-[128px] bg-dark-200 rounded-[5px]" />
+          <div className="h-3 lg:h-6 w-[184px] bg-dark-200 rounded-[5px]" />
         </div>
       </div>
       <div className="border-b border-black-600 ml-8 lg:ml-10" />

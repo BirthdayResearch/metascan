@@ -14,6 +14,12 @@ import BlocksApi, {
   BlockQueryParamsProps,
 } from "@api/BlocksApi";
 import { BlockProps } from "@api/types";
+import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
+import {
+  SkeletonLoader,
+  SkeletonLoaderScreen,
+} from "@components/skeletonLoaders/SkeletonLoader";
+import { useState } from "react";
 import BlockRow from "./_components/BlockRow";
 
 interface PageProps {
@@ -44,19 +50,36 @@ function BlockPagination({
 export default function Blocks({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const [isLoading] = useState(false);
+
   return (
     <Container className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
         <div className="p-5 md:p-10">
-          <div className="flex flex-col md:flex-row py-6 md:py-4 mb-6 justify-between md:items-center">
+          <div className="flex flex-col md:flex-row py-6 md:py-4 mb-6 justify-between md:items-center relative">
             <span className="font-bold text-2xl text-white-50">Blocks</span>
-            <BlockPagination nextPageParams={data.next_page_params} />
+            {isLoading ? (
+              <PaginationLoader customStyle="right-0 top-[72px] md:top-8" />
+            ) : (
+              <BlockPagination nextPageParams={data.next_page_params} />
+            )}
           </div>
-          {data.blocks.map((item) => (
-            <BlockRow key={item.height} data={item} />
-          ))}
-          <BlockPagination nextPageParams={data.next_page_params} />
+
+          {isLoading ? (
+            <SkeletonLoader rows={22} screen={SkeletonLoaderScreen.Block} />
+          ) : (
+            data.blocks.map((item) => (
+              <BlockRow key={item.height} data={item} />
+            ))
+          )}
+          <div className="relative h-10 md:h-6 lg:pt-1.5">
+            {isLoading ? (
+              <PaginationLoader customStyle="right-0 bottom-0 md:-bottom-5 rounded-[5px]" />
+            ) : (
+              <BlockPagination nextPageParams={data.next_page_params} />
+            )}
+          </div>
         </div>
       </GradientCardContainer>
     </Container>

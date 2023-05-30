@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { Link } from "./Link";
 
 interface PaginationProps<T> {
-  onClick: () => void;
+  onClick?: () => void;
   nextPageParams?: T & {
     items_count: string;
     page_number?: string;
@@ -84,7 +84,6 @@ export default function Pagination<T>({
 
   useEffect(() => {
     // bug: clicking on the arrow button will cause the page to go back to page 1
-    console.log("length", previousPagesParams.length);
     // If pageNumber > 1 and previousPagesParams (local state) is cleared, go back to page 1
     if (
       Number(router.query.page_number) > 1 &&
@@ -139,7 +138,7 @@ interface NumberButtonProps {
   active: boolean;
   pathName: string;
   query: any;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 function NumberButton({
@@ -184,7 +183,7 @@ function NavigateButton({
   type: "Next" | "Prev";
   pathName: string;
   query: any;
-  onClick: () => void;
+  onClick?: () => void;
 }>): JSX.Element {
   return (
     <Link href={{ pathname: pathName, query }}>

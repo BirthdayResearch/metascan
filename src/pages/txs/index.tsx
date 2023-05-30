@@ -18,6 +18,7 @@ import {
   SkeletonLoader,
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
+import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import TransactionRow from "./_components/TransactionRow";
 
 interface PageProps {
@@ -57,7 +58,7 @@ export default function Transactions({
     setIsLoading(true);
   };
 
-  // TODO @chloe causing bug for loading state
+  // TODO: @Pierre bug for loading state
   useEffect(() => {
     setIsLoading(false);
   }, [data]);
@@ -72,7 +73,7 @@ export default function Transactions({
               Transactions
             </span>
             {isLoading ? (
-              <div className="bg-dark-200 h-[24px] w-[130px] absolute right-0 top-[72px] md:top-8 rounded-[5px]" />
+              <div className="bg-dark-200 h-6 w-[130px] absolute right-0 top-[72px] md:top-8 rounded-[5px]" />
             ) : (
               <TxnPagination
                 onClick={handlePaginationClick}
@@ -88,11 +89,9 @@ export default function Transactions({
             ))
           )}
 
-          <div className="relative h-[40px] md:h-[24px] lg:pt-1.5">
+          <div className="relative h-10 md:h-6 lg:pt-1.5">
             {isLoading ? (
-              <div className="h-[24px]">
-                <div className="bg-dark-200 h-[24px] w-[130px] absolute right-0 bottom-4 md:bottom-0 lg:-bottom-5 rounded-[5px]" />
-              </div>
+              <PaginationLoader customStyle="right-0 bottom-0 md:-bottom-5 rounded-[5px]" />
             ) : (
               <TxnPagination
                 onClick={handlePaginationClick}

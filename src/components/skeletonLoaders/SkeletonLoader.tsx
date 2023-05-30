@@ -1,4 +1,6 @@
+import BlockRowLoader from "pages/blocks/_components/BlockRowLoader";
 import TransactionRowLoader from "./TransactionRowLoader";
+import RowItemLoader from "./RowItemLoader";
 
 interface SkeletonLoaderProp {
   rows: number;
@@ -6,7 +8,12 @@ interface SkeletonLoaderProp {
 }
 
 export enum SkeletonLoaderScreen {
+  // Main page
+  "MainTable" = "MainTable",
+
+  // Child pages
   "Tx" = "Tx",
+  "Block" = "Block",
 }
 
 export function SkeletonLoader(props: SkeletonLoaderProp): JSX.Element {
@@ -15,11 +22,27 @@ export function SkeletonLoader(props: SkeletonLoaderProp): JSX.Element {
 
   // eslint-disable-next-line default-case
   switch (screen) {
+    case SkeletonLoaderScreen.MainTable:
+      return (
+        <>
+          {skeletonRow.map((row) => (
+            <RowItemLoader key={row} />
+          ))}
+        </>
+      );
     case SkeletonLoaderScreen.Tx:
       return (
         <>
           {skeletonRow.map((row) => (
             <TransactionRowLoader key={row} />
+          ))}
+        </>
+      );
+    case SkeletonLoaderScreen.Block:
+      return (
+        <>
+          {skeletonRow.map((row) => (
+            <BlockRowLoader key={row} />
           ))}
         </>
       );

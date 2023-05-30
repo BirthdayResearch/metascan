@@ -37,6 +37,10 @@ import {
 import clsx from "clsx";
 import { RawTransactionI } from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
+import {
+  SkeletonLoader,
+  SkeletonLoaderScreen,
+} from "@components/skeletonLoaders/SkeletonLoader";
 import AddressTokenTableTitle from "./_components/AddressTokenTableTitle";
 import TokenRow from "./_components/TokenRow";
 import QrCode from "../../components/commons/QrCode";
@@ -455,6 +459,7 @@ interface TransactionDetailsProps {
 }
 
 function TransactionDetails({ addressTransactions }: TransactionDetailsProps) {
+  const [isLoading] = useState(false);
   return (
     <div>
       <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
@@ -465,9 +470,13 @@ function TransactionDetails({ addressTransactions }: TransactionDetailsProps) {
           {fixedTitle.transactions}
         </h2>
       </div>
-      {addressTransactions.map((item) => (
-        <TransactionRow key={item.hash} rawData={item} />
-      ))}
+      {isLoading ? (
+        <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
+      ) : (
+        addressTransactions.map((item) => (
+          <TransactionRow key={item.hash} rawData={item} />
+        ))
+      )}
     </div>
   );
 }

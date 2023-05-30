@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { LinkProps } from "next/link";
 import { PropsWithChildren } from "react";
-import { Link } from "./Link";
+import Link from "./Link";
 
 export default function LinkText({
   href,

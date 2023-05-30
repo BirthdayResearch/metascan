@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import clsx from "clsx";
 import { FiBox, FiFileText, FiSlash } from "react-icons/fi";
 import { TbLoaderQuarter } from "react-icons/tb";
-import { Link } from "@components/commons/Link";
+import Link from "@components/commons/Link";
 import { TransactionsIcon } from "@components/icons/Transactions";
 import { IconType } from "react-icons";
 import { SearchResultType } from "@store/search";

@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { LinkProps } from "next/link";
 import { useState } from "react";
 import { IconType } from "react-icons";
-import { Link } from "./Link";
+import Link from "./Link";
 
 interface IconProps {
   Icon: IconType;

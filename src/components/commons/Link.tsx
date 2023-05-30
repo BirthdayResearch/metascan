@@ -3,15 +3,15 @@ import { useNetwork } from "@contexts/NetworkContext";
 import { LinkProps as NextLinkProps } from "next/dist/client/link";
 import NextLink from "next/link";
 import { forwardRef, PropsWithChildren } from "react";
-import { UrlObject } from "url";
 
-export interface LinkUrlObject extends UrlObject {
-  query?: Record<string, string>;
+interface AdditionalLinkProps {
+  className?: string;
 }
 
-interface LinkProps extends NextLinkProps {
-  href: LinkUrlObject;
-}
+type LinkProps<T = any> = AdditionalLinkProps &
+  NextLinkProps & {
+    [key: string]: T;
+  };
 
 /**
  * Overrides the default next/link to provide ability to 'keep ?network= query string'.
@@ -21,7 +21,7 @@ interface LinkProps extends NextLinkProps {
  *
  * @param {PropsWithChildren<LinkProps>} props
  */
-export const Link = forwardRef<HTMLAnchorElement, PropsWithChildren<LinkProps>>(
+const Link = forwardRef<HTMLAnchorElement, PropsWithChildren<LinkProps>>(
   ({ href, children, ...props }, ref) => {
     const { connection } = useNetwork();
     const networkQuery = !getEnvironment().isDefaultConnection(connection)
@@ -53,3 +53,5 @@ export const Link = forwardRef<HTMLAnchorElement, PropsWithChildren<LinkProps>>(
     );
   }
 );
+
+export default Link;

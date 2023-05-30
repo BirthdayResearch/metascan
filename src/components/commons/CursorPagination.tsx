@@ -2,7 +2,7 @@ import { last, takeRight } from "lodash";
 import { GetServerSidePropsContext } from "next";
 import { PropsWithChildren } from "react";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
-import { Link } from "./Link";
+import Link from "./Link";
 
 export interface CursorPage {
   n: number;

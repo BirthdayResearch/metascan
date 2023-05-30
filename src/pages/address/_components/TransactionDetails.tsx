@@ -43,8 +43,7 @@ function TxnPagination({
   );
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export function TransactionDetails({
+export default function TransactionDetails({
   aid,
   addressTransactions: { transactions, nextPageParams },
 }: TransactionDetailsProps) {

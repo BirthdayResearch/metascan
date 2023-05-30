@@ -5,7 +5,7 @@ import { FiChevronDown, FiChevronUp } from "react-icons/fi";
 import { walletAddressData } from "mockdata/WalletAddressData";
 import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
 
-export function BalanceDetails() {
+export default function BalanceDetails() {
   const [isTokenIconClicked, setIsTokenIconClicked] = useState(false);
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, setIsTokenIconClicked);

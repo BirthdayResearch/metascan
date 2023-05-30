@@ -113,20 +113,24 @@ export async function getServerSideProps(
     !isNumeric(params?.items_count as string) ||
     !isNumeric(params?.page_number as string);
 
-  // Fetch data from external API
-  const blocks = hasInvalidParams
-    ? await BlocksApi.getBlocks(network as NetworkConnection)
-    : await BlocksApi.getBlocks(
-        network as NetworkConnection,
-        params?.block_number as string,
-        params?.items_count as string
-      );
+  try {
+    // Fetch data from external API
+    const blocks = hasInvalidParams
+      ? await BlocksApi.getBlocks(network as NetworkConnection)
+      : await BlocksApi.getBlocks(
+          network as NetworkConnection,
+          params?.block_number as string,
+          params?.items_count as string
+        );
 
-  const data = {
-    blocks: blocks.items as BlockProps[],
-    next_page_params: blocks.next_page_params as BlockNextPageParamsProps,
-  };
+    const data = {
+      blocks: blocks.items as BlockProps[],
+      next_page_params: blocks.next_page_params as BlockNextPageParamsProps,
+    };
 
-  // Pass data to the page via props
-  return { props: { data } };
+    // Pass data to the page via props
+    return { props: { data } };
+  } catch (e) {
+    return { notFound: true };
+  }
 }

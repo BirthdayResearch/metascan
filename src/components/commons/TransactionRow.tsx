@@ -27,6 +27,7 @@ export default function TransactionRow({
 }) {
   const data = transformTransactionData(rawData);
   const Icon = iconMapping[data.transactionType];
+
   return (
     <div>
       {/* for desktop and tablet */}

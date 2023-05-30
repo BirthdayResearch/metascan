@@ -292,10 +292,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return null;
   }
 
-  const block = await BlocksApi.getBlock(
-    context.query.network as NetworkConnection,
-    context.params.id as string
-  );
+  try {
+    const block = await BlocksApi.getBlock(
+      context.query.network as NetworkConnection,
+      context.params.id as string
+    );
 
-  return { props: { block } };
+    return { props: { block } };
+  } catch (e) {
+    return { notFound: true };
+  }
 }

@@ -120,7 +120,7 @@ export default function Pagination<T>({
             pathName={pathName}
           />
         ))}
-      {nextPageParamsProps && (
+      {nextPageParams && (
         <NavigateButton
           type="Next"
           query={nextPageParams}

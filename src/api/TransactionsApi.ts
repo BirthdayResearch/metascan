@@ -20,7 +20,7 @@ export default {
       { key: "items_count", value: itemsCount },
       { key: "index", value: index },
     ]);
-    const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}?${params}`);
+    const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}${params}`);
 
     return wrapResponse<RawTxnWithPaginationProps>(res);
   },

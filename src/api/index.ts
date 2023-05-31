@@ -8,7 +8,7 @@ export function wrapResponse<T>(res: Response): Promise<T> {
   return res.json();
 }
 
-const BLOCKSCOUT_ENDPOINT_MAINNET = "https://base-goerli.blockscout.com"; // TODO: Replace with MainNet blockscout URL
+const BLOCKSCOUT_ENDPOINT_MAINNET = "http://34.87.158.111:4000"; // TODO: Replace with MainNet blockscout URL
 const BLOCKSCOUT_ENDPOINT_TESTNET = "https://eth-goerli.blockscout.com"; // TODO: Replace with TestNet blockscout URL
 
 export const MAIN_LATEST_TRANSACTION_URL = "api/v2/main-page/transactions";
@@ -33,5 +33,5 @@ export function filterParams(params: { key: string; value }[]): string {
     }
   });
 
-  return queryParams?.trim() !== "" ? `?${queryParams}}` : queryParams;
+  return queryParams?.trim() !== "" ? `?${queryParams}` : queryParams;
 }

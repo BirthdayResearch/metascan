@@ -12,7 +12,7 @@ export default {
     network: NetworkConnection,
     blockNumber?: string,
     itemsCount?: string
-  ): Promise<BlocksResponseProps> => {
+  ): Promise<BlockWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
@@ -21,7 +21,7 @@ export default {
     ]);
     const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}${params}`);
 
-    return wrapResponse<BlocksResponseProps>(res);
+    return wrapResponse<BlockWithPaginationProps>(res);
   },
   getBlock: async (
     network: NetworkConnection,
@@ -52,7 +52,7 @@ export default {
   },
 };
 
-interface BlocksResponseProps {
+interface BlockWithPaginationProps {
   items: BlockProps[];
   next_page_params?: {
     block_number?: string;

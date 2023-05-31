@@ -7,15 +7,6 @@ import {
 } from "./index";
 import { RawTransactionI } from "./types";
 
-interface TransactionResponseProps {
-  items: RawTransactionI[];
-  next_page_params?: {
-    block_number?: string;
-    items_count?: string;
-    index?: string;
-  };
-}
-
 export default {
   getTransactions: async (
     network: NetworkConnection,
@@ -43,6 +34,15 @@ export default {
     return wrapResponse<RawTransactionI>(res);
   },
 };
+
+interface TransactionResponseProps {
+  items: RawTransactionI[];
+  next_page_params?: {
+    block_number?: string;
+    items_count?: string;
+    index?: string;
+  };
+}
 
 export interface TxnNextPageParamsProps {
   block_number: string;

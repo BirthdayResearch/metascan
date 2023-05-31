@@ -34,7 +34,7 @@ export default {
     blockNumber?: string,
     itemsCount?: string,
     index?: string
-  ): Promise<RawTransactionI[]> => {
+  ): Promise<TransactionResponseProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
@@ -44,6 +44,15 @@ export default {
     const res = await fetch(
       `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/transactions${params}`
     );
-    return wrapResponse<RawTransactionI[]>(res);
+    return wrapResponse<TransactionResponseProps>(res);
   },
 };
+
+interface TransactionResponseProps {
+  items: RawTransactionI[];
+  next_page_params?: {
+    block_number?: string;
+    items_count?: string;
+    index?: string;
+  };
+}

@@ -7,25 +7,6 @@ import {
 } from "./index";
 import { BlockProps, RawTransactionI } from "./types";
 
-interface BlocksResponseProps {
-  items: BlockProps[];
-  next_page_params?: {
-    block_number?: string;
-    items_count?: string;
-    index?: string;
-  };
-}
-
-// Todo(pierre): Create a T<generic> ResponseProps
-interface TransactionResponseProps {
-  items: RawTransactionI[];
-  next_page_params?: {
-    block_number?: string;
-    items_count?: string;
-    index?: string;
-  };
-}
-
 export default {
   getBlocks: async (
     network: NetworkConnection,
@@ -70,6 +51,25 @@ export default {
     return wrapResponse<TransactionResponseProps>(res);
   },
 };
+
+interface BlocksResponseProps {
+  items: BlockProps[];
+  next_page_params?: {
+    block_number?: string;
+    items_count?: string;
+    index?: string;
+  };
+}
+
+interface TransactionResponseProps {
+  items: RawTransactionI[];
+  next_page_params?: {
+    block_number?: string;
+    items_count?: string;
+    index?: string;
+  };
+}
+
 export interface BlockNextPageParamsProps {
   block_number: string;
   items_count: string;

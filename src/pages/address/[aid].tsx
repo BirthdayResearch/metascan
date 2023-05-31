@@ -13,6 +13,7 @@ import {
 import clsx from "clsx";
 import { NetworkConnection } from "@contexts/Environment";
 
+import { TxnNextPageParamsProps } from "@api/TransactionsApi";
 import QrCode from "../../components/commons/QrCode";
 import WalletAddressApi from "../../api/WalletAddressApi";
 import WalletAddressDetails from "./_components/WalletAddressDetails";
@@ -235,7 +236,8 @@ export async function getServerSideProps(
         balance: walletDetail.coin_balance ?? "0",
         addressTransactions: {
           transactions: addressTransactions.items,
-          nextPageParams: addressTransactions.next_page_params,
+          nextPageParams:
+            addressTransactions.next_page_params as TxnNextPageParamsProps,
         },
         transactionCount: counters?.transactions_count,
         tokens: null, // passing null to temporary hide all tokens related UI

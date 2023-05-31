@@ -12,7 +12,7 @@ interface PaginationProps<T> {
 }
 
 export default function Pagination<T>({
-  nextPageParams: nextPageParamsProps,
+  nextPageParams: nextPageParamsFromApi,
   pathname,
 }: PaginationProps<T>): JSX.Element {
   const router = useRouter();
@@ -21,7 +21,7 @@ export default function Pagination<T>({
     ? 1
     : Number(router.query.page_number);
   const nextPageParams = {
-    ...nextPageParamsProps,
+    ...nextPageParamsFromApi,
     ...{ page_number: currentPageNumber + 1 },
   };
 
@@ -54,7 +54,7 @@ export default function Pagination<T>({
       next: nextPageParams,
     };
 
-    if (nextPageParamsProps === undefined) {
+    if (nextPageParamsFromApi === undefined) {
       return [pageButton.previous, pageButton.current];
     }
     if (pageNumber === 1) {
@@ -116,8 +116,8 @@ export default function Pagination<T>({
             pathName={pathName}
           />
         ))}
-      {/* Clean up -> nextPageParamsProps and nextPageParamsProps  */}
-      {nextPageParamsProps && nextPageParams && (
+
+      {nextPageParamsFromApi && (
         <NavigateButton type="Next" query={nextPageParams} pathName={pathName}>
           <FiArrowRight className="text-white-700" size={24} />
         </NavigateButton>

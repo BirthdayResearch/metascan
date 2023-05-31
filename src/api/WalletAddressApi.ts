@@ -5,7 +5,7 @@ import {
   wrapResponse,
 } from "@api/index";
 import {
-  RawTransactionI,
+  RawTxnWithPaginationProps,
   WalletAddressCounterI,
   WalletAddressInfoI,
 } from "@api/types";
@@ -34,7 +34,7 @@ export default {
     blockNumber?: string,
     itemsCount?: string,
     index?: string
-  ): Promise<TransactionResponseProps> => {
+  ): Promise<RawTxnWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
@@ -44,15 +44,6 @@ export default {
     const res = await fetch(
       `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/transactions${params}`
     );
-    return wrapResponse<TransactionResponseProps>(res);
+    return wrapResponse<RawTxnWithPaginationProps>(res);
   },
 };
-
-interface TransactionResponseProps {
-  items: RawTransactionI[];
-  next_page_params?: {
-    block_number?: string;
-    items_count?: string;
-    index?: string;
-  };
-}

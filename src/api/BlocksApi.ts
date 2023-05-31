@@ -5,7 +5,7 @@ import {
   MAIN_BLOCKS_URL,
   wrapResponse,
 } from "./index";
-import { BlockProps, RawTransactionI } from "./types";
+import { BlockProps, RawTxnWithPaginationProps } from "./types";
 
 export default {
   getBlocks: async (
@@ -38,7 +38,7 @@ export default {
     blockNumber?: string,
     itemsCount?: string,
     index?: string
-  ): Promise<TransactionResponseProps> => {
+  ): Promise<RawTxnWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
@@ -48,21 +48,12 @@ export default {
     const res = await fetch(
       `${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}/transactions${params}`
     );
-    return wrapResponse<TransactionResponseProps>(res);
+    return wrapResponse<RawTxnWithPaginationProps>(res);
   },
 };
 
 interface BlocksResponseProps {
   items: BlockProps[];
-  next_page_params?: {
-    block_number?: string;
-    items_count?: string;
-    index?: string;
-  };
-}
-
-interface TransactionResponseProps {
-  items: RawTransactionI[];
   next_page_params?: {
     block_number?: string;
     items_count?: string;

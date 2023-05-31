@@ -73,6 +73,14 @@ interface DecodedTxInput {
   method_call: string;
   parameters: TxParameters[];
 }
+export interface RawTxnWithPaginationProps {
+  items: RawTransactionI[];
+  next_page_params?: {
+    block_number?: string;
+    items_count?: string;
+    index?: string;
+  };
+}
 
 export interface RawTransactionI {
   tx_types: string[];

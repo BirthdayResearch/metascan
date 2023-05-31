@@ -8,6 +8,16 @@ import {
 import { BlockProps, RawTransactionI } from "./types";
 
 interface BlocksResponseProps {
+  items: BlockProps[];
+  next_page_params?: {
+    block_number?: string;
+    items_count?: string;
+    index?: string;
+  };
+}
+
+// Todo(pierre): Create a T<generic> ResponseProps
+interface TransactionResponseProps {
   items: RawTransactionI[];
   next_page_params?: {
     block_number?: string;
@@ -21,7 +31,7 @@ export default {
     network: NetworkConnection,
     blockNumber?: string,
     itemsCount?: string
-  ): Promise<BlockProps[]> => {
+  ): Promise<BlocksResponseProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
@@ -30,7 +40,7 @@ export default {
     ]);
     const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}${params}`);
 
-    return wrapResponse<BlockProps[]>(res);
+    return wrapResponse<BlocksResponseProps>(res);
   },
   getBlock: async (
     network: NetworkConnection,
@@ -47,7 +57,7 @@ export default {
     blockNumber?: string,
     itemsCount?: string,
     index?: string
-  ): Promise<BlocksResponseProps> => {
+  ): Promise<TransactionResponseProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
@@ -57,7 +67,7 @@ export default {
     const res = await fetch(
       `${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}/transactions${params}`
     );
-    return wrapResponse<BlocksResponseProps>(res);
+    return wrapResponse<TransactionResponseProps>(res);
   },
 };
 export interface BlockNextPageParamsProps {

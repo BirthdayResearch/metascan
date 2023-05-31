@@ -15,6 +15,7 @@ interface TransactionResponseProps {
     index?: string;
   };
 }
+
 export default {
   getTransactions: async (
     network: NetworkConnection,

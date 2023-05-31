@@ -7,7 +7,11 @@ import clsx from "clsx";
 import useCopyToClipboard from "hooks/useCopyToClipboard";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { useRouter } from "next/router";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import {
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  InferGetServerSidePropsType,
+} from "next";
 import { useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
@@ -17,11 +21,20 @@ import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
 import BlocksApi from "@api/BlocksApi";
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
+import { BlockProps, RawTransactionI } from "@api/types";
 import BlockTransactionList from "./_components/BlockTransactionList";
 
+interface PageProps {
+  block: BlockProps;
+  blockTransactions: {
+    transactions: RawTransactionI[];
+    nextPageParams: TxnNextPageParamsProps;
+  };
+}
+
 export default function Block({
-  block,
-  blockTransactions,
+  data: { block, blockTransactions },
+  isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   const blockNumber = new BigNumber(router.query.id as string);
@@ -147,6 +160,7 @@ export default function Block({
           blockNumber={blockNumber.toFixed(0)}
           transactions={blockTransactions.transactions}
           nextPageParams={blockTransactions.nextPageParams}
+          isLoading={isLoading}
         />
       </div>
     </div>
@@ -285,10 +299,13 @@ function GasUsedRow({
   );
 }
 
-export async function getServerSideProps(context: GetServerSidePropsContext) {
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<{ data: PageProps; isLoading?: boolean }>> {
   const { network, ...params } = context.query;
+
   if (context.params?.id === undefined) {
-    return null;
+    return { notFound: true };
   }
 
   const blockId = context.params?.id?.toString().trim() as string;
@@ -320,11 +337,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
     return {
       props: {
-        block,
-        blockTransactions: {
-          transactions: blockTransactions.items,
-          nextPageParams:
-            blockTransactions.next_page_params as TxnNextPageParamsProps,
+        data: {
+          block,
+          blockTransactions: {
+            transactions: blockTransactions.items,
+            nextPageParams:
+              blockTransactions.next_page_params as TxnNextPageParamsProps,
+          },
         },
       },
     };

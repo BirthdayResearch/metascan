@@ -4,7 +4,11 @@ import {
   getBaseUrl,
   wrapResponse,
 } from "@api/index";
-import { WalletAddressCounterI, WalletAddressInfoI } from "@api/types";
+import {
+  RawTransactionI,
+  WalletAddressCounterI,
+  WalletAddressInfoI,
+} from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
 
 export default {
@@ -30,7 +34,7 @@ export default {
     blockNumber?: string,
     itemsCount?: string,
     index?: string
-  ): Promise<any> => {
+  ): Promise<RawTransactionI[]> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
@@ -40,6 +44,6 @@ export default {
     const res = await fetch(
       `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/transactions${params}`
     );
-    return wrapResponse<WalletAddressCounterI>(res);
+    return wrapResponse<RawTransactionI[]>(res);
   },
 };

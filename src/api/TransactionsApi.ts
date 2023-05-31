@@ -10,8 +10,8 @@ import { RawTransactionI } from "./types";
 interface TransactionResponseProps {
   items: RawTransactionI[];
   next_page_params?: {
-    blockNumber?: string;
-    itemsCount?: string;
+    block_number?: string;
+    items_count?: string;
     index?: string;
   };
 }

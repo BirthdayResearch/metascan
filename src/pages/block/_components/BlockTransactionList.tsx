@@ -1,22 +1,47 @@
-import { RawTransactionI } from "@api/types";
 import {
-  CursorPage,
-  CursorPagination,
-} from "@components/commons/CursorPagination";
+  TxnNextPageParamsProps,
+  TxnQueryParamsProps,
+} from "@api/TransactionsApi";
+import { RawTransactionI } from "@api/types";
+
 import GradientCardContainer from "@components/commons/GradientCardContainer";
+import Pagination from "@components/commons/Pagination";
 import TransactionRow from "@components/commons/TransactionRow";
 
-interface Props {
+interface PageProps {
   blockNumber: string;
-  blockTransactions: RawTransactionI[];
-  pages: CursorPage[];
+  transactions: RawTransactionI[];
+  nextPageParams?: TxnNextPageParamsProps;
+}
+
+function BlockPagination({
+  blockNumber,
+  nextPageParams,
+}: {
+  nextPageParams?: TxnNextPageParamsProps;
+  blockNumber: string;
+}) {
+  return (
+    <Pagination<TxnQueryParamsProps>
+      nextPageParams={
+        nextPageParams
+          ? {
+              block_number: nextPageParams.block_number,
+              items_count: nextPageParams.items_count,
+              index: nextPageParams.index,
+            }
+          : undefined
+      }
+      pathname={`/block/${blockNumber}`}
+    />
+  );
 }
 
 export default function BlockTransactionList({
   blockNumber,
-  blockTransactions,
-  pages,
-}: Props): JSX.Element {
+  transactions,
+  nextPageParams,
+}: PageProps): JSX.Element {
   return (
     <GradientCardContainer>
       <div className="p-5 md:p-10">
@@ -27,19 +52,17 @@ export default function BlockTransactionList({
           >
             Transactions
           </h2>
-          <CursorPagination
-            pages={pages}
-            path={`/block/${blockNumber}`}
-            className="justify-end mt-5 md:mt-0"
+          <BlockPagination
+            nextPageParams={nextPageParams}
+            blockNumber={blockNumber}
           />
         </div>
-        {blockTransactions.map((item) => (
+        {transactions.map((item) => (
           <TransactionRow key={item.hash} rawData={item} />
         ))}
-        <CursorPagination
-          pages={pages}
-          path={`/block/${blockNumber}`}
-          className="flex w-full md:justify-end mt-12 md:mt-10"
+        <BlockPagination
+          nextPageParams={nextPageParams}
+          blockNumber={blockNumber}
         />
       </div>
     </GradientCardContainer>

@@ -7,24 +7,22 @@ import clsx from "clsx";
 import useCopyToClipboard from "hooks/useCopyToClipboard";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { useRouter } from "next/router";
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
 import { getDuration, getTimeAgo } from "shared/durationHelper";
-import { truncateTextFromMiddle } from "shared/textHelper";
+import { isNumeric, truncateTextFromMiddle } from "shared/textHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
 import BlocksApi from "@api/BlocksApi";
-import { BlockProps } from "@api/types";
+import { TxnNextPageParamsProps } from "@api/TransactionsApi";
+import BlockTransactionList from "./_components/BlockTransactionList";
 
-// TODO: Replace `any` with proper types
-interface Props {
-  block: BlockProps;
-  // blockTransactions: any;
-}
-
-export default function Block({ block }: Props) {
+export default function Block({
+  block,
+  blockTransactions,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   const blockNumber = new BigNumber(router.query.id as string);
   const prevBlockNumber = blockNumber.minus(1);
@@ -144,13 +142,13 @@ export default function Block({ block }: Props) {
       </GradientCardContainer>
 
       {/* Block transaction list */}
-      {/* <div data-testid="block-transaction-list" className="mt-6">
+      <div data-testid="block-transaction-list" className="mt-6">
         <BlockTransactionList
           blockNumber={blockNumber.toFixed(0)}
-          blockTransactions={data.blockTransactions}
-          pages={data.pages}
+          transactions={blockTransactions.transactions}
+          nextPageParams={blockTransactions.nextPageParams}
         />
-      </div> */}
+      </div>
     </div>
   );
 }
@@ -288,17 +286,48 @@ function GasUsedRow({
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { network, ...params } = context.query;
   if (context.params?.id === undefined) {
     return null;
   }
 
+  const blockId = context.params?.id?.toString().trim() as string;
+
   try {
     const block = await BlocksApi.getBlock(
-      context.query.network as NetworkConnection,
-      context.params.id as string
+      network as NetworkConnection,
+      blockId
     );
 
-    return { props: { block } };
+    const hasInvalidParams =
+      !isNumeric(params?.block_number as string) ||
+      !isNumeric(params?.items_count as string) ||
+      !isNumeric(params?.page_number as string) ||
+      !isNumeric(params?.index as string);
+
+    const blockTransactions = hasInvalidParams
+      ? await BlocksApi.getBlockTransactions(
+          network as NetworkConnection,
+          blockId
+        )
+      : await BlocksApi.getBlockTransactions(
+          network as NetworkConnection,
+          blockId,
+          params?.block_number as string,
+          params?.items_count as string,
+          params?.index as string
+        );
+
+    return {
+      props: {
+        block,
+        blockTransactions: {
+          transactions: blockTransactions.items,
+          nextPageParams:
+            blockTransactions.next_page_params as TxnNextPageParamsProps,
+        },
+      },
+    };
   } catch (e) {
     return { notFound: true };
   }

@@ -116,7 +116,7 @@ export default function Pagination<T>({
             pathName={pathName}
           />
         ))}
-      {nextPageParams && (
+      {nextPageParamsProps && nextPageParams && (
         <NavigateButton type="Next" query={nextPageParams} pathName={pathName}>
           <FiArrowRight className="text-white-700" size={24} />
         </NavigateButton>

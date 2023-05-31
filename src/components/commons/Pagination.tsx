@@ -82,6 +82,7 @@ export default function Pagination<T>({
   }, [router.query]);
 
   useEffect(() => {
+    // bug: clicking on the arrow button will cause the page to go back to page 1
     // If pageNumber > 1 and previousPagesParams (local state) is cleared, go back to page 1
     if (
       Number(router.query.page_number) > 1 &&
@@ -115,7 +116,7 @@ export default function Pagination<T>({
             pathName={pathName}
           />
         ))}
-      {nextPageParamsProps && (
+      {nextPageParams && (
         <NavigateButton type="Next" query={nextPageParams} pathName={pathName}>
           <FiArrowRight className="text-white-700" size={24} />
         </NavigateButton>
@@ -139,17 +140,23 @@ function NumberButton({
 }: NumberButtonProps): JSX.Element {
   if (active) {
     return (
-      <div className="bg-black-500 rounded h-6 w-6 flex items-center justify-center cursor-not-allowed">
+      <button
+        type="button"
+        className="bg-black-500 rounded h-6 w-6 flex items-center justify-center cursor-not-allowed"
+      >
         <span className="font-medium text-white-50">{n}</span>
-      </div>
+      </button>
     );
   }
 
   return (
     <Link href={{ pathname: pathName, query }}>
-      <div className="rounded cursor-pointer h-6 w-6 flex items-center justify-center">
+      <button
+        type="button"
+        className="rounded cursor-pointer h-6 w-6 flex items-center justify-center"
+      >
         <span className="font-medium text-white-50">{n}</span>
-      </div>
+      </button>
     </Link>
   );
 }
@@ -166,12 +173,13 @@ function NavigateButton({
 }>): JSX.Element {
   return (
     <Link href={{ pathname: pathName, query }}>
-      <div
+      <button
+        type="button"
         data-testid={`Pagination.${type}`}
         className="text-white-700 cursor-pointer h-6 w-6 flex items-center justify-center"
       >
         {children}
-      </div>
+      </button>
     </Link>
   );
 }

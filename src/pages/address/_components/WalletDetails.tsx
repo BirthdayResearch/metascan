@@ -25,9 +25,14 @@ export interface WalletDetailProps {
   transactionCount: string;
   tokens: WalletDetailTokenI | null;
   addressTransactions: AddressTransactionsProps;
+  isLoading?: boolean;
 }
 
-export function WalletDetails({ detail }: { detail: WalletDetailProps }) {
+export default function WalletDetails({
+  detail,
+}: {
+  detail: WalletDetailProps;
+}) {
   const [isTokenDropDownIconClicked, setIsTokenDropDownIconClicked] =
     useState(false);
   const wrapperRef = useRef(null);

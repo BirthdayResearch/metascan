@@ -15,16 +15,15 @@ import { NetworkConnection } from "@contexts/Environment";
 
 import QrCode from "../../components/commons/QrCode";
 import WalletAddressApi from "../../api/WalletAddressApi";
-import { WalletAddressDetails } from "./_components/WalletAddressDetails";
-import {
+import WalletAddressDetails from "./_components/WalletAddressDetails";
+import WalletDetails, {
   AddressTransactionsProps,
   WalletDetailProps,
   // WalletDetailTokenI,
-  WalletDetails,
 } from "./_components/WalletDetails";
-import { BalanceDetails } from "./_components/BalanceDetails";
-import { TokenDetails } from "./_components/TokenDetails";
-import { TransactionDetails } from "./_components/TransactionDetails";
+import BalanceDetails from "./_components/BalanceDetails";
+import TokenDetails from "./_components/TokenDetails";
+import TransactionDetails from "./_components/TransactionDetails";
 
 enum TabTitle {
   tokens = "Tokens",
@@ -41,6 +40,7 @@ function Address({
   transactionCount,
   addressTransactions,
   tokens,
+  isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
   const router = useRouter();
@@ -72,6 +72,7 @@ function Address({
             aid={aid}
             // tokens={tokens}
             addressTransactions={addressTransactions}
+            isLoading={isLoading}
           />
         </div>
       </GradientCardContainer>
@@ -104,10 +105,12 @@ function WalletSegmentTwo({
   aid,
   // tokens,
   addressTransactions,
+  isLoading,
 }: {
   aid: string;
   // tokens: WalletDetailTokenI | null;
   addressTransactions: AddressTransactionsProps;
+  isLoading?: boolean;
 }) {
   const [isTransactionClicked, setIsTransactionClicked] = useState(true);
   const selectedFontStyle = "text-white-50";
@@ -175,6 +178,7 @@ function WalletSegmentTwo({
         <TransactionDetails
           addressTransactions={addressTransactions}
           aid={aid}
+          isLoading={isLoading}
         />
       ) : (
         <div>

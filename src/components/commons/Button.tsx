@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import Link from "./Link";
 
 type ButtonSize = "small" | "medium" | "large";
 
@@ -33,9 +34,9 @@ export default function Button({
   disabled = false,
   customStyle,
 }: ButtonProps): JSX.Element {
-  if (href !== null) {
+  if (href) {
     return (
-      <a href={href} className={clsx({ "pointer-events-none": disabled })}>
+      <Link href={href} className={clsx({ "pointer-events-none": disabled })}>
         <ButtonElement
           size={size}
           label={label}
@@ -43,7 +44,7 @@ export default function Button({
           onClick={onClick}
           customStyle={customStyle}
         />
-      </a>
+      </Link>
     );
   }
 

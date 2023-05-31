@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, PropsWithChildren } from "react";
 import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { useRouter } from "next/router";
-import { Link } from "./Link";
+import Link from "./Link";
 
 interface PaginationProps<T> {
   nextPageParams?: T & {

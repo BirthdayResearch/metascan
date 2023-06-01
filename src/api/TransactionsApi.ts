@@ -31,8 +31,7 @@ export default {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}/${txnHash}`);
 
-    const wrappedRes = await wrapResponse<RawTransactionI>(res);
-    return wrappedRes;
+    return wrapResponse<RawTransactionI>(res);
   },
 };
 export interface TxnNextPageParamsProps {

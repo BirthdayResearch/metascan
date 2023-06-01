@@ -30,8 +30,7 @@ export default {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}`);
 
-    const wrappedRes = await wrapResponse<BlockProps>(res);
-    return wrappedRes;
+    return wrapResponse<BlockProps>(res);
   },
   getBlockTransactions: async (
     network: NetworkConnection,

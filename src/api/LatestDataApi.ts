@@ -4,6 +4,7 @@ import { getTimeAgo } from "shared/durationHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
 import { utils } from "ethers";
+import { BURN_ADDRESS_HASH } from "shared/constants";
 import {
   getBaseUrl,
   MAIN_LATEST_BLOCK_URL,
@@ -59,8 +60,8 @@ export default {
         transactionId: data.hash,
         tokenAmount: utils.formatEther(data.value),
         txnOrBlockInfo: {
-          from: data.from.hash,
-          to: data.to?.hash || null,
+          from: data.from.hash ?? BURN_ADDRESS_HASH,
+          to: data.to?.hash ?? BURN_ADDRESS_HASH,
           transactionType,
         },
         time,

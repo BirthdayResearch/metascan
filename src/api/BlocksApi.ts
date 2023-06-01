@@ -5,14 +5,14 @@ import {
   MAIN_BLOCKS_URL,
   wrapResponse,
 } from "./index";
-import { BlockProps } from "./types";
+import { BlockProps, RawTxnWithPaginationProps } from "./types";
 
 export default {
   getBlocks: async (
     network: NetworkConnection,
     blockNumber?: string,
     itemsCount?: string
-  ): Promise<any> => {
+  ): Promise<BlockWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
@@ -21,19 +21,47 @@ export default {
     ]);
     const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}${params}`);
 
-    return wrapResponse<BlockProps[]>(res);
+    return wrapResponse<BlockWithPaginationProps>(res);
   },
   getBlock: async (
     network: NetworkConnection,
     blockId: string
-  ): Promise<any> => {
+  ): Promise<BlockProps> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}`);
 
     const wrappedRes = await wrapResponse<BlockProps>(res);
     return wrappedRes;
   },
+  getBlockTransactions: async (
+    network: NetworkConnection,
+    blockId: string,
+    blockNumber?: string,
+    itemsCount?: string,
+    index?: string
+  ): Promise<RawTxnWithPaginationProps> => {
+    const baseUrl = getBaseUrl(network);
+    const params = filterParams([
+      { key: "block_number", value: blockNumber },
+      { key: "items_count", value: itemsCount },
+      { key: "index", value: index },
+    ]);
+    const res = await fetch(
+      `${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}/transactions${params}`
+    );
+    return wrapResponse<RawTxnWithPaginationProps>(res);
+  },
 };
+
+interface BlockWithPaginationProps {
+  items: BlockProps[];
+  next_page_params?: {
+    block_number?: string;
+    items_count?: string;
+    index?: string;
+  };
+}
+
 export interface BlockNextPageParamsProps {
   block_number: string;
   items_count: string;

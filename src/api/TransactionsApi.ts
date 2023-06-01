@@ -5,32 +5,24 @@ import {
   getBaseUrl,
   wrapResponse,
 } from "./index";
-import { RawTransactionI } from "./types";
+import { RawTransactionI, RawTxnWithPaginationProps } from "./types";
 
-interface TransactionResponseProps {
-  items: RawTransactionI[];
-  next_page_params?: {
-    blockNumber?: string;
-    itemsCount?: string;
-    index?: string;
-  };
-}
 export default {
   getTransactions: async (
     network: NetworkConnection,
     blockNumber?: string,
     itemsCount?: string,
     index?: string
-  ): Promise<TransactionResponseProps> => {
+  ): Promise<RawTxnWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
       { key: "items_count", value: itemsCount },
       { key: "index", value: index },
     ]);
-    const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}?${params}`);
+    const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}${params}`);
 
-    return wrapResponse<TransactionResponseProps>(res);
+    return wrapResponse<RawTxnWithPaginationProps>(res);
   },
   getTransaction: async (
     network: NetworkConnection,
@@ -43,7 +35,6 @@ export default {
     return wrappedRes;
   },
 };
-
 export interface TxnNextPageParamsProps {
   block_number: string;
   items_count: string;

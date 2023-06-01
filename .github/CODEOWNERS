@@ -4,8 +4,8 @@
 /.github/                                       @thedoublejay @kyleleow @pierregee
 /.husky/                                        @thedoublejay @kyleleow @pierregee
 
-/src                                            @thedoublejay @kyleleow @pierregee @fullstackninja864 @lykalabrada @veralygit
-/public                                         @thedoublejay @kyleleow @pierregee @fullstackninja864 @lykalabrada @veralygit
+/src                                            @thedoublejay @kyleleow @pierregee @fullstackninja864 @lykalabrada
+/public                                         @thedoublejay @kyleleow @pierregee @fullstackninja864 @lykalabrada
 
 netlify.toml                                    @thedoublejay @kyleleow @pierregee
 tsconfig.json                                   @thedoublejay @kyleleow @pierregee

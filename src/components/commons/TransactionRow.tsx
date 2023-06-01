@@ -26,8 +26,9 @@ export default function TransactionRow({
   rawData: RawTransactionI;
 }) {
   const data = transformTransactionData(rawData);
-  const Icon = iconMapping[data.transactionType] ?? TransactionsIcon; // TODO: finalise transaction types
-
+  const Icon =
+    iconMapping[data.transactionType] ??
+    iconMapping[TransactionType.ContractCall];
   return (
     <div>
       {/* for desktop and tablet */}

@@ -28,7 +28,6 @@ export const iconMapping = {
   [TransactionType.ContractCall]: FiFileText,
   [TransactionType.Tokenized]: TransactionsIcon,
   [TransactionType.CoinTransfer]: TransactionsIcon,
-  [TransactionType.CoinTransfer]: TransactionsIcon,
 };
 
 export default function TransactionRow({

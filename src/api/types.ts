@@ -66,10 +66,10 @@ export enum RawTransactionType {
 }
 
 export enum TransactionType {
-  TokenMinting = "Minting token",
-  TokenBurning = "Burning token",
-  TokenTransfer = "Transfer token",
-  TokenCreate = "Create token",
+  TokenMinting = "Token minting",
+  TokenBurning = "Token burning",
+  TokenTransfer = "Token transfer",
+  TokenCreate = "Token creation",
 
   ContractCreation = "Contract creation",
   ContractCall = "Contract call",

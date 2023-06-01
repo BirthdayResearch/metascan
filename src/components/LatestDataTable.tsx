@@ -1,11 +1,11 @@
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
-import { TransactionType } from "mockdata/TransactionData";
 import { iconMapping as txnIconMapping } from "@components/commons/TransactionRow";
 import { FiBox } from "react-icons/fi";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { getDuration } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
+import { TransactionType } from "@api/types";
 import Button from "./commons/Button";
 import GradientCardContainer from "./commons/GradientCardContainer";
 import LinkText from "./commons/LinkText";

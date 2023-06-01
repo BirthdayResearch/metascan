@@ -1,11 +1,12 @@
 import { utils } from "ethers";
 import {
   RawTransactionI,
+  RawTransactionType,
   TransactionI,
   TransactionStatus,
   TransactionType,
 } from "@api/types";
-import { DFI_TOKEN_SYMBOL } from "./constants";
+import { BURN_ADDRESS_HASH, DFI_TOKEN_SYMBOL } from "./constants";
 import { getTimeAgo } from "./durationHelper";
 
 /**
@@ -25,13 +26,50 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     );
   }
 
-  //  TODO: Revisit tx types mapping
-  const type = tx.tx_types?.length > 0 ? tx.tx_types[0] : null;
+  // Use the last index of tx_types as the type
+  const type =
+    tx.tx_types?.length > 0 ? tx.tx_types[tx.tx_types.length - 1] : null;
+  const fromHash = tx.from.hash ?? BURN_ADDRESS_HASH;
+  const toHash = tx.to?.hash ?? BURN_ADDRESS_HASH;
+
   let transactionType = TransactionType.Transaction;
-  if (type?.includes("contract")) {
+
+  if (
+    type === RawTransactionType.TokenTransfer &&
+    fromHash === BURN_ADDRESS_HASH &&
+    toHash !== BURN_ADDRESS_HASH
+  ) {
+    transactionType = TransactionType.TokenBurning;
+  } else if (
+    type === RawTransactionType.TokenTransfer &&
+    fromHash !== BURN_ADDRESS_HASH &&
+    toHash === BURN_ADDRESS_HASH
+  ) {
+    transactionType = TransactionType.TokenMinting;
+  } else if (
+    type === RawTransactionType.TokenTransfer &&
+    fromHash !== BURN_ADDRESS_HASH &&
+    toHash !== BURN_ADDRESS_HASH
+  ) {
+    transactionType = TransactionType.TokenTransfer;
+  } else if (
+    type === RawTransactionType.TokenTransfer &&
+    fromHash === BURN_ADDRESS_HASH &&
+    toHash === BURN_ADDRESS_HASH
+  ) {
+    transactionType = TransactionType.TokenCreate;
+  } else if (type === RawTransactionType.ContractCall) {
     transactionType = TransactionType.ContractCall;
-  } else if (type?.includes("token")) {
+  } else if (type === RawTransactionType.TokenTransfer) {
+    transactionType = TransactionType.TokenTransfer;
+  } else if (type === RawTransactionType.Tokenized) {
     transactionType = TransactionType.Tokenized;
+  } else if (type === RawTransactionType.CoinTransfer) {
+    transactionType = TransactionType.Transaction; // TODO: Revisit to check difference of coin transfer and transaction
+  } else if (type === RawTransactionType.ContractCreation) {
+    transactionType = TransactionType.ContractCreation;
+  } else {
+    transactionType = TransactionType.Transaction;
   }
 
   return {
@@ -40,8 +78,8 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     hash: tx.hash,
     amount: dfiAmount,
     symbol: DFI_TOKEN_SYMBOL, // TODO: Revisit tx symbol
-    from: tx.from.hash,
-    to: tx.to?.hash ?? null,
+    from: fromHash,
+    to: toHash,
     status:
       tx.status === "ok"
         ? TransactionStatus.Confirmed

@@ -1,8 +1,8 @@
-import TokenStatsDisplay from "@components/TokenStatsDisplay";
+// import GroupStatisticCard from "@components/GroupStatisticCard";
+// import TokenStatsDisplay from "@components/TokenStatsDisplay";
 import { HomeTitle } from "@components/HomeTitle";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { GetServerSidePropsResult, InferGetServerSidePropsType } from "next";
-import GroupStatisticCard from "@components/GroupStatisticCard";
 import LatestDataTable, { RowData } from "@components/LatestDataTable";
 import LatestDataApi from "@api/LatestDataApi";
 
@@ -15,16 +15,17 @@ export default function Home({
     <>
       <HomeTitle />
       <div className="px-1 md:px-0">
-        <SearchBar containerClass="lg:px-[196px] my-10" />
-        <TokenStatsDisplay />
-        <GroupStatisticCard />
+        <SearchBar containerClass="lg:px-[196px] mb-0" />
+        {/* <TokenStatsDisplay /> */}
+        {/* <GroupStatisticCard /> */}
+        {/* TODO: Add blocks and txs summary card */}
         <LatestDataTable
           type="transactions"
           title="Latest transactions"
           data={latestTransactions}
           listPageUrl="/txs"
           detailsPageBaseUrl="/tx"
-          containerClass="pt-8 md:pt-20"
+          containerClass="pt-8 md:pt-16"
           isLoading={isLoading}
         />
         <LatestDataTable

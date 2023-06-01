@@ -15,7 +15,11 @@ import {
 import { useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
-import { getDuration, getTimeAgo } from "shared/durationHelper";
+import {
+  formatDateToUTC,
+  getDuration,
+  getTimeAgo,
+} from "shared/durationHelper";
 import { isNumeric, truncateTextFromMiddle } from "shared/textHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
@@ -41,6 +45,8 @@ export default function Block({
   const prevBlockNumber = blockNumber.minus(1);
   const nextBlockNumber = blockNumber.plus(1); // TODO: check if nextBlockNumber exists when api is readys
   const timeago = getTimeAgo(block.timestamp);
+  const timeDuration = getDuration(Number(timeago));
+  const timeInUTC = formatDateToUTC(block.timestamp);
 
   return (
     <div
@@ -103,10 +109,8 @@ export default function Block({
               </div>
               <div className="text-white-700 mt-1 flex flex-col md:flex-row">
                 <span className="order-last md:order-first pt-1 md:pt-0">
-                  {getDuration(timeago)} ago
+                  {`${timeDuration} ago (${timeInUTC} +UTC)`}
                 </span>
-                <span className="hidden md:inline">&nbsp;-&nbsp;</span>
-                <span>{block.timestamp}</span>
               </div>
             </div>
           </div>
@@ -142,12 +146,12 @@ export default function Block({
               <DetailRow
                 testId="base-fee"
                 label="Base fee"
-                value={new BigNumber(block.base_fee_per_gas).toFixed(8)}
+                value={new BigNumber(block.base_fee_per_gas ?? 0).toFixed(8)}
               />
               <DetailRow
                 testId="burnt-fee"
                 label="Burnt fee"
-                value={new BigNumber(block.burnt_fees).toFixed(8)}
+                value={new BigNumber(block.burnt_fees ?? 0).toFixed(8)}
               />
             </div>
           </div>

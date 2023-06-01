@@ -3,6 +3,7 @@ import { RowData } from "@components/LatestDataTable";
 import { getTimeAgo } from "shared/durationHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
+import { utils } from "ethers";
 import {
   getBaseUrl,
   MAIN_LATEST_BLOCK_URL,
@@ -56,7 +57,7 @@ export default {
 
       return {
         transactionId: data.hash,
-        tokenAmount: data.value,
+        tokenAmount: utils.formatEther(data.value),
         txnOrBlockInfo: {
           from: data.from.hash,
           to: data.to?.hash || null,

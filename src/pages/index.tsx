@@ -15,7 +15,7 @@ export default function Home({
     <>
       <HomeTitle />
       <div className="px-1 md:px-0">
-        <SearchBar containerClass="lg:px-[196px] my-10" />
+        <SearchBar containerClass="lg:px-[196px] mb-0" />
         {/* <TokenStatsDisplay /> */}
         {/* <GroupStatisticCard /> */}
         {/* TODO: Add blocks and txs summary card */}
@@ -25,7 +25,7 @@ export default function Home({
           data={latestTransactions}
           listPageUrl="/txs"
           detailsPageBaseUrl="/tx"
-          containerClass="pt-8 md:pt-20"
+          containerClass="pt-8 md:pt-16"
           isLoading={isLoading}
         />
         <LatestDataTable

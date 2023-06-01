@@ -18,6 +18,17 @@ import { transformTransactionData } from "shared/transactionDataHelper";
 export const iconMapping = {
   [TransactionType.ContractCall]: FiFileText,
   [TransactionType.Transaction]: TransactionsIcon,
+
+  // TODO: add correct icon for each tx type
+  [TransactionType.TokenMinting]: TransactionsIcon,
+  [TransactionType.TokenBurning]: TransactionsIcon,
+  [TransactionType.TokenTransfer]: TransactionsIcon,
+  [TransactionType.TokenCreate]: TransactionsIcon,
+  [TransactionType.ContractCreation]: FiFileText,
+  [TransactionType.ContractCall]: FiFileText,
+  [TransactionType.Tokenized]: TransactionsIcon,
+  [TransactionType.CoinTransfer]: TransactionsIcon,
+  [TransactionType.CoinTransfer]: TransactionsIcon,
 };
 
 export default function TransactionRow({
@@ -26,9 +37,7 @@ export default function TransactionRow({
   rawData: RawTransactionI;
 }) {
   const data = transformTransactionData(rawData);
-  const Icon =
-    iconMapping[data.transactionType] ??
-    iconMapping[TransactionType.ContractCall];
+  const Icon = iconMapping[data.transactionType];
   return (
     <div>
       {/* for desktop and tablet */}

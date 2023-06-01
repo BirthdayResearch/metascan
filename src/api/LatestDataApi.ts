@@ -1,10 +1,10 @@
-import { TransactionType } from "mockdata/TransactionData";
 import { RowData } from "@components/LatestDataTable";
 import { getTimeAgo } from "shared/durationHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
 import { utils } from "ethers";
 import { BURN_ADDRESS_HASH } from "shared/constants";
+import { getTransactionType } from "shared/transactionDataHelper";
 import {
   getBaseUrl,
   MAIN_LATEST_BLOCK_URL,
@@ -46,14 +46,15 @@ export default {
     const txnRows = Math.min(responseTxnData.length, MAX_ROW);
 
     return responseTxnData.slice(0, txnRows).map((data) => {
+      const fromHash = data.from.hash ?? BURN_ADDRESS_HASH;
+      const toHash = data.to?.hash ?? BURN_ADDRESS_HASH;
+
       // TODO temporary workaround to display txn type icons
-      const type: string | undefined =
-        data.tx_types !== undefined && data.tx_types.length > 0
-          ? data.tx_types[0]
-          : undefined;
-      const transactionType = type?.includes("contract")
-        ? TransactionType.ContractCall
-        : TransactionType.Transaction;
+      const transactionType = getTransactionType({
+        txTypes: data.tx_types,
+        fromHash,
+        toHash,
+      });
       const time = getTimeAgo(data.timestamp);
 
       return {

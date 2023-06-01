@@ -26,13 +26,57 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     );
   }
 
-  // Use the last index of tx_types as the type
-  const type =
-    tx.tx_types?.length > 0 ? tx.tx_types[tx.tx_types.length - 1] : null;
   const fromHash = tx.from.hash ?? BURN_ADDRESS_HASH;
   const toHash = tx.to?.hash ?? BURN_ADDRESS_HASH;
+  const transactionType = getTransactionType({
+    txTypes: tx.tx_types,
+    fromHash,
+    toHash,
+  });
 
+  return {
+    transactionType,
+    type: tx.type,
+    hash: tx.hash,
+    amount: dfiAmount,
+    symbol: DFI_TOKEN_SYMBOL, // TODO: Revisit tx symbol
+    from: fromHash,
+    to: toHash,
+    status:
+      tx.status === "ok"
+        ? TransactionStatus.Confirmed
+        : TransactionStatus.Reverted,
+    timeInSec: getTimeAgo(tx.timestamp),
+    timestamp: tx.timestamp,
+    nonce: tx.nonce,
+    blockNumber: tx.block,
+    value: utils.formatEther(tx.value),
+    fee: utils.formatEther(tx.fee.value),
+    gasUsed: tx.gas_used,
+    gasLimit: tx.gas_limit,
+    gasPrice: utils.formatUnits(tx.gas_price, "gwei").toString(),
+    maxFeePerGas: tx.max_fee_per_gas,
+    maxPriorityFeePerGas: tx.max_priority_fee_per_gas,
+    rawInput: tx.raw_input,
+    decodedInput: tx.decoded_input,
+    revertReason: tx.revert_reason,
+    method: tx.method,
+    confirmations: tx.confirmations,
+  };
+};
+
+export const getTransactionType = ({
+  txTypes,
+  fromHash,
+  toHash,
+}: {
+  txTypes: string[];
+  fromHash: string | null;
+  toHash: string | null;
+}) => {
   let transactionType = TransactionType.Transaction;
+  // Use the last index of tx_types as the type
+  const type = txTypes?.length > 0 ? txTypes[txTypes.length - 1] : null;
 
   if (
     type === RawTransactionType.TokenTransfer &&
@@ -72,33 +116,5 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     transactionType = TransactionType.Transaction;
   }
 
-  return {
-    transactionType,
-    type: tx.type,
-    hash: tx.hash,
-    amount: dfiAmount,
-    symbol: DFI_TOKEN_SYMBOL, // TODO: Revisit tx symbol
-    from: fromHash,
-    to: toHash,
-    status:
-      tx.status === "ok"
-        ? TransactionStatus.Confirmed
-        : TransactionStatus.Reverted,
-    timeInSec: getTimeAgo(tx.timestamp),
-    timestamp: tx.timestamp,
-    nonce: tx.nonce,
-    blockNumber: tx.block,
-    value: utils.formatEther(tx.value),
-    fee: utils.formatEther(tx.fee.value),
-    gasUsed: tx.gas_used,
-    gasLimit: tx.gas_limit,
-    gasPrice: utils.formatUnits(tx.gas_price, "gwei").toString(),
-    maxFeePerGas: tx.max_fee_per_gas,
-    maxPriorityFeePerGas: tx.max_priority_fee_per_gas,
-    rawInput: tx.raw_input,
-    decodedInput: tx.decoded_input,
-    revertReason: tx.revert_reason,
-    method: tx.method,
-    confirmations: tx.confirmations,
-  };
+  return transactionType;
 };

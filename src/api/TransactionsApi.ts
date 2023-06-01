@@ -39,7 +39,8 @@ export default {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}/${txnHash}`);
 
-    return wrapResponse<RawTransactionI>(res);
+    const wrappedRes = await wrapResponse<RawTransactionI>(res);
+    return wrappedRes;
   },
 };
 

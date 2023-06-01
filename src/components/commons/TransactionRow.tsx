@@ -26,7 +26,7 @@ export default function TransactionRow({
   rawData: RawTransactionI;
 }) {
   const data = transformTransactionData(rawData);
-  const Icon = iconMapping[data.transactionType];
+  const Icon = iconMapping[data.transactionType] ?? TransactionsIcon; // TODO: finalise transaction types
 
   return (
     <div>

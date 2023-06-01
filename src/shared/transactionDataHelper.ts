@@ -54,7 +54,7 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     fee: utils.formatEther(tx.fee.value),
     gasUsed: tx.gas_used,
     gasLimit: tx.gas_limit,
-    gasPrice: tx.gas_price,
+    gasPrice: utils.formatUnits(tx.gas_price, "gwei").toString(),
     maxFeePerGas: tx.max_fee_per_gas,
     maxPriorityFeePerGas: tx.max_priority_fee_per_gas,
     rawInput: tx.raw_input,

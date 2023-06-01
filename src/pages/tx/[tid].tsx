@@ -8,7 +8,7 @@ import useWindowDimensions from "hooks/useWindowDimensions";
 import { formatDateToUTC, getDuration } from "shared/durationHelper";
 import { transformTransactionData } from "shared/transactionDataHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
-import { ETH_TOKEN_SYMBOL } from "shared/constants";
+import { GWEI_SYMBOL } from "shared/constants";
 import TransactionsApi from "@api/TransactionsApi";
 import { TransactionI, TransactionType } from "@api/types";
 
@@ -25,13 +25,13 @@ import { NetworkConnection } from "@contexts/Environment";
 import BoldedTitle from "./_components/BoldedTitle";
 
 function Transaction({ txDetails }: { txDetails: TransactionI }) {
-  const amount = { value: txDetails.amount, symbol: txDetails.symbol };
-  const gasPrice = { value: txDetails.gasPrice, symbol: ETH_TOKEN_SYMBOL };
+  const amount = { value: txDetails.value, symbol: txDetails.symbol };
+  const transactionFee = { value: txDetails.fee, symbol: txDetails.symbol };
+  const gasPrice = { value: txDetails.gasPrice, symbol: GWEI_SYMBOL };
   const gasUsedPercentage = new BigNumber(txDetails.gasUsed)
     .dividedBy(txDetails.gasLimit)
     .multipliedBy(100)
     .toFixed(2);
-  const transactionFee = { value: txDetails.fee, symbol: ETH_TOKEN_SYMBOL };
 
   return (
     <div className="px-1 md:px-0 mt-12">
@@ -50,7 +50,6 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
           <TransactionDetailSegmentOne
             transactionId={txDetails.hash}
             amount={amount}
-            valuePrice="0" // TODO: Get value price in USD
             status={txDetails.status}
             blockNumber={txDetails.blockNumber}
             confirmations={txDetails.confirmations}
@@ -89,7 +88,6 @@ interface TransactionDetailSegmentOneProp {
     value: string;
     symbol: string;
   };
-  valuePrice: string;
   status: string;
   blockNumber: string;
   confirmations: number;
@@ -112,7 +110,6 @@ interface TransactionDetailSegmentOneProp {
 function TransactionDetailSegmentOne({
   transactionId,
   amount,
-  valuePrice,
   status,
   blockNumber,
   confirmations,
@@ -174,7 +171,9 @@ function TransactionDetailSegmentOne({
             />
           </div>
 
-          <NumericFormat
+          {/*
+          // TODO: Confirm if we need value price in USD
+           <NumericFormat
             data-testid="transaction-value-price"
             className="text-white-700 tracking-[0.01em] h-[22px] leading-[22.4px]"
             thousandSeparator
@@ -188,7 +187,7 @@ function TransactionDetailSegmentOne({
             }
             prefix="$"
             decimalScale={2}
-          />
+          /> */}
         </div>
         {/* 2nd flex */}
         <div className="flex flex-col lg:items-end md:items-end items-start">
@@ -272,20 +271,23 @@ function TransactionDetailSegmentOne({
               />
             </div>
           </div>
-          <div className="flex flex-col gap-y-1 lg:col-start-3 md:col-start-2 md:row-start-1">
-            <div
-              data-testid="transaction-fee-title"
-              className="text-white-700 tracking-[0.01em]"
-            >
-              {fixedTitle.transactionType}
+          {/* TODO: finalize transaction types */}
+          {type && (
+            <div className="flex flex-col gap-y-1 lg:col-start-3 md:col-start-2 md:row-start-1">
+              <div
+                data-testid="transaction-fee-title"
+                className="text-white-700 tracking-[0.01em]"
+              >
+                {fixedTitle.transactionType}
+              </div>
+              <div
+                data-testid="transaction-type"
+                className="text-white-50 tracking-[0.01em]"
+              >
+                {type}
+              </div>
             </div>
-            <div
-              data-testid="transaction-type"
-              className="text-white-50 tracking-[0.01em]"
-            >
-              {type}
-            </div>
-          </div>
+          )}
           <div className="flex flex-col gap-y-1 lg:row-auto md:row-start-3">
             <div
               data-testid="transaction-details-from-title"
@@ -635,7 +637,7 @@ function TransactionDetailSegmentTwo({
                 className="text-white-50 whitespace-normal tracking-[0.01em]"
                 thousandSeparator
                 value={gasPrice.value}
-                decimalScale={8}
+                decimalScale={0}
                 suffix={` ${gasPrice.symbol}`}
               />
             </div>
@@ -658,7 +660,12 @@ function TransactionDetailSegmentTwo({
           </div>
           <div className="row-start-3 col-start-2 lg:col-span-2">
             <div className="text-white-50 tracking-[0.01em] whitespace-normal">
-              {useUnitSuffix(gasLimit)}
+              <NumericFormat
+                data-testid="desktop-transaction-gas-limit"
+                thousandSeparator
+                value={gasLimit}
+                decimalScale={0}
+              />
             </div>
           </div>
           <div className="row-start-4 col-start-1">

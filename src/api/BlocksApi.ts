@@ -30,7 +30,8 @@ export default {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}`);
 
-    return wrapResponse<BlockProps>(res);
+    const wrappedRes = await wrapResponse<BlockProps>(res);
+    return wrappedRes;
   },
 };
 export interface BlockNextPageParamsProps {

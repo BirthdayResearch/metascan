@@ -49,7 +49,6 @@ export default {
       const fromHash = data.from.hash ?? BURN_ADDRESS_HASH;
       const toHash = data.to?.hash ?? BURN_ADDRESS_HASH;
 
-      // TODO temporary workaround to display txn type icons
       const transactionType = getTransactionType({
         txTypes: data.tx_types,
         fromHash,

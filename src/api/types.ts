@@ -56,10 +56,26 @@ export enum TransactionStatus {
   Reverted = "Reverted",
 }
 
-export enum TransactionType {
-  ContractCall = "Contract call",
+export enum RawTransactionType {
   Transaction = "Transaction",
   Tokenized = "Tokenized",
+  ContractCreation = "contract_creation",
+  ContractCall = "contract_call",
+  CoinTransfer = "coin_transfer",
+  TokenTransfer = "token_transfer",
+}
+
+export enum TransactionType {
+  TokenMinting = "Token minting",
+  TokenBurning = "Token burning",
+  TokenTransfer = "Token transfer",
+  TokenCreate = "Token creation",
+
+  ContractCreation = "Contract creation",
+  ContractCall = "Contract call",
+  Tokenized = "Tokenized", // not in DMC
+  CoinTransfer = "Coin transfer",
+  Transaction = "Transaction",
 }
 
 interface TxParameters {

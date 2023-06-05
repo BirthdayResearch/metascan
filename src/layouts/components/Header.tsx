@@ -23,12 +23,12 @@ const MenuItems = [
     testId: "Desktop.HeaderLink.Transactions",
     imagePath: "/menu/Transactions.svg",
   },
-  // {
-  //   label: "Verified Contracts",
-  //   pathname: "/contracts",
-  //   testId: "Desktop.HeaderLink.VerifiedContracts",
-  //   imagePath: "/menu/VerifiedContracts.svg",
-  // },
+  {
+    label: "Contracts",
+    pathname: "/contracts",
+    testId: "Desktop.HeaderLink.Contracts",
+    imagePath: "/menu/VerifiedContracts.svg",
+  },
 ];
 
 export function Header(): JSX.Element {

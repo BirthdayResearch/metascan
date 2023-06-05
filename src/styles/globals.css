@@ -27,6 +27,30 @@ body {
     scrollbar-width: none; /* Firefox */
   }
 
+  /* Add custom style to textarea scrollbar */
+  .textarea-scrollbar::-webkit-scrollbar {
+    width: 24px;
+    border-top-right-radius: 10px;
+    background: #121212;
+  }
+  .textarea-scrollbar::-webkit-scrollbar-thumb {
+    background: #ffffff;
+    width: 8px;
+    border: 8px #121212 solid;
+    border-bottom: none;
+  }
+  .textarea-scrollbar::-webkit-scrollbar-track {
+    box-shadow: none;
+  }
+  .textarea-scrollbar::-webkit-resizer {
+    background: #121212;
+    border-bottom-right-radius: 10px;
+    display: none;
+  }
+  .textarea-scrollbar::-webkit-scrollbar-corner {
+    display: none;
+  }
+
   /* To style :before and :after of button border to have color transition on hover */
   .button-border {
     content: "";

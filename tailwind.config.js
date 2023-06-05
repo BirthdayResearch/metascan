@@ -154,6 +154,9 @@ module.exports = {
       fontFamily: {
         "space-mono": ["Space Mono", "sans-serif"],
       },
+      fontSize: {
+        xxs: ["10px", "12px"],
+      },
     },
   },
   plugins: [require("@tailwindcss/line-clamp")],

@@ -33,7 +33,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
   const titleFontCss =
     "text-white-700 break-all leading-[22.4px] tracking-[0.01em] lg:leading-[24px] lg:-tracking-[0.02em]";
   const valueFontCss = "text-white-50 leading-[24px] -tracking-[0.02em]";
-  const rowCss = "flex flex-col gap-y-2";
+  const rowCss = "flex md:flex-col justify-between md:justify-normal gap-y-2";
 
   return (
     <div className="px-1 md:px-0 mt-12 antialiased">
@@ -63,7 +63,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
             {`${timeDuration} ago (${timeInUTC} +UTC)`}
           </div>
 
-          <div className="flex flex-col md:grid md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-8 mt-9 lg:mt-[30px]">
+          <div className="flex flex-col md:grid md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-3 md:gap-y-8 mt-9 lg:mt-[30px]">
             {/* Block */}
             <div className={rowCss}>
               <div

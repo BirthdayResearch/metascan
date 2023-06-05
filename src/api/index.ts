@@ -13,6 +13,7 @@ export const MAIN_LATEST_BLOCK_URL = "api/v2/main-page/blocks";
 export const MAIN_BLOCKS_URL = "api/v2/blocks";
 export const TRANSACTIONS_URL = "api/v2/transactions";
 export const WALLET_ADDRESS_URL = "api/v2/addresses";
+export const SMART_CONTRACT_URL = "api/v2/smart-contracts";
 
 export const getBaseUrl = (network: NetworkConnection) => {
   if (network === NetworkConnection.TestNet) {

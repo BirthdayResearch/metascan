@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, PropsWithChildren } from "react";
 import { FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import { useRouter } from "next/router";
+import clsx from "clsx";
 import Link from "./Link";
 
 interface PaginationProps<T> {
@@ -9,11 +10,13 @@ interface PaginationProps<T> {
     page_number?: string;
   };
   pathname?: string;
+  containerClass?: string;
 }
 
 export default function Pagination<T>({
   nextPageParams: nextPageParamsFromApi,
   pathname,
+  containerClass,
 }: PaginationProps<T>): JSX.Element {
   const router = useRouter();
   const pathName = pathname ?? router.pathname;
@@ -94,7 +97,12 @@ export default function Pagination<T>({
   }, [router.query]);
 
   return (
-    <div className="flex space-x-1 flex-row justify-end mt-4">
+    <div
+      className={clsx(
+        "flex space-x-1 flex-row justify-end mt-4",
+        containerClass
+      )}
+    >
       {previousPageQuery && (
         <NavigateButton
           type="Prev"

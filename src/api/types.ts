@@ -163,3 +163,34 @@ export interface BlockProps {
   timestamp: string;
   tx_count: number;
 }
+
+export interface SmartContractProps {
+  address: {
+    hash: string;
+    implementation_name: string | null;
+    is_contract: boolean;
+    is_verified: boolean | null;
+    name: string;
+    private_tags: string[];
+    public_tags: string[];
+    watchlist_names: string[];
+  };
+  coin_balance: number;
+  compiler_version: string;
+  has_constructor_args: boolean;
+  language: string;
+  market_cap: number | null;
+  optimization_enabled: boolean;
+  tx_count: number | null;
+  verified_at: string;
+}
+
+export interface SmartContractPageParamsProps {
+  items_count: string;
+  smart_contract_id: string;
+}
+
+export interface SmartContractWithPaginationProps {
+  items: SmartContractProps[];
+  next_page_params: SmartContractPageParamsProps;
+}

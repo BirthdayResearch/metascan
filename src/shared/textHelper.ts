@@ -40,5 +40,5 @@ export function isNumeric(input: string): boolean {
 export function hexToUtf8(hexValue: string): string {
   const hexWithoutPrefix = hexValue.slice(2);
   const utf8String = Buffer.from(hexWithoutPrefix, "hex").toString("utf-8");
-  return utf8String;
+  return utf8String.replace(/\0/g, ""); // removes NULL (ASCII value 0)
 }

@@ -112,7 +112,7 @@ export default function GasDetails({
       )}
       {transactionType === TransactionType.Tokenized && (
         <div className="lg:col-span-2 lg:col-start-5 col-start-4 row-start-2 ">
-          <WithCopy textToCopy={from} testId="token-from">
+          <WithCopy textToCopy={from} testId="token-from" copyIconStyle="mb-1">
             <LinkText
               customStyle="tracking-[0.01em]"
               testId="token-transferred-from"
@@ -137,7 +137,7 @@ export default function GasDetails({
       )}
       {transactionType === TransactionType.Tokenized && to && (
         <div className="lg:col-start-5 col-start-4 row-start-3 lg:col-span-2">
-          <WithCopy textToCopy={to} testId="token-to">
+          <WithCopy textToCopy={to} testId="token-to" copyIconStyle="mb-1">
             <LinkText
               testId="token-transferred-to"
               label={truncateTextFromMiddle(

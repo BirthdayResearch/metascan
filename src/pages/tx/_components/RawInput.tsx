@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { useEffect, useState, useRef } from "react";
 import { hexToUtf8 } from "shared/textHelper";
 import BoldedTitle from "./BoldedTitle";
+import WithCopy from "./WithCopy";
 
 enum InputDisplay {
   Hex = "hex",
@@ -42,6 +43,14 @@ export default function RawInput({ hex }: { hex: string }) {
           selectedId={selectedId}
           onClick={setSelectedId}
         />
+        <div className="ml-auto">
+          <WithCopy
+            textToCopy={displayedInput}
+            testId="raw-input"
+            copyIconStyle="w-4 h-4 md:w-6 md:h-6 mb-0"
+            successCopyStyle="text-sm lg:text-base gap-x-1"
+          />
+        </div>
       </div>
       <textarea
         ref={textareaRef}
@@ -80,7 +89,7 @@ function RawInputSelectButton({
       type="button"
       data-testid={`${id}-btn`}
       className={clsx(
-        "font-medium text-sm leading-[18.2px] w-[122px] px-4 py-2 mr-2 rounded-[24px]",
+        "font-semibold md:font-medium text-xs md:text-sm leading-[18.2px] px-4 py-2 mr-2 rounded-[24px]",
         isSelected
           ? "bg-white-50 text-black-900"
           : "bg-black-600 text-white-50 hover:opacity-70"

@@ -1,6 +1,7 @@
 import { Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
 import { FiCopy } from "react-icons/fi";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
+import clsx from "clsx";
 
 const COPY_SUCCESS = "Copied!";
 
@@ -8,9 +9,13 @@ export default function WithCopy({
   textToCopy,
   testId,
   children,
+  copyIconStyle,
+  successCopyStyle,
 }: PropsWithChildren<{
   textToCopy: string;
   testId: string;
+  copyIconStyle?: string;
+  successCopyStyle?: string;
 }>) {
   const [isCopied, setIsCopied] = useState(false);
 
@@ -27,11 +32,14 @@ export default function WithCopy({
   };
 
   return (
-    <div className="inline-block">
+    <div className="inline-block align-text-bottom">
       {isCopied ? (
         <div
           data-testid={`${testId}-copied`}
-          className="flex flex-row gap-x-2.5 items-center"
+          className={clsx(
+            "flex flex-row gap-x-2.5 items-center",
+            successCopyStyle
+          )}
         >
           <span className="text-lightBlue tracking-[0.01em] leading-[22.4px]">
             {COPY_SUCCESS}
@@ -44,7 +52,7 @@ export default function WithCopy({
           <FiCopy
             role="button"
             onClick={() => onCopyAddressIconClick(setIsCopied, textToCopy)}
-            className="text-white-50 inline-block ml-2 mb-1"
+            className={clsx("text-white-50 inline-block ml-2", copyIconStyle)}
           />
         </>
       )}

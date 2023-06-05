@@ -33,7 +33,8 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
   const titleFontCss =
     "text-white-700 break-all leading-[22.4px] tracking-[0.01em] lg:leading-[24px] lg:-tracking-[0.02em]";
   const valueFontCss = "text-white-50 leading-[24px] -tracking-[0.02em]";
-  const rowCss = "flex md:flex-col justify-between md:justify-normal gap-y-2";
+  const rowCss =
+    "flex md:flex-col justify-between md:justify-normal gap-y-2 h-6 md:h-auto";
 
   return (
     <div className="px-1 md:px-0 mt-12 antialiased">
@@ -50,11 +51,15 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
             />
           </div>
           <div className="">
-            <WithCopy textToCopy={txDetails.hash} testId="transaction-id">
-              <span className="text-white-50 text-lg md:text-2xl font-semibold md:leading-9 break-all -tracking-[0.02em] md:tracking-normal">
-                {txDetails.hash}
-              </span>
-            </WithCopy>
+            <span className="text-white-50 text-lg md:text-2xl font-semibold md:leading-9 break-all -tracking-[0.02em] md:tracking-normal">
+              {txDetails.hash}
+            </span>
+            <WithCopy
+              textToCopy={txDetails.hash}
+              testId="transaction-id"
+              copyIconStyle="md:mb-1"
+              successCopyStyle="ml-2"
+            />
           </div>
           <div
             data-testid="transaction-timestamp"
@@ -152,6 +157,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
               <WithCopy
                 textToCopy={txDetails.from}
                 testId="transaction-details-from"
+                copyIconStyle="mb-1"
               >
                 <LinkText
                   customStyle="tracking-[0.01em]"
@@ -170,6 +176,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
                 <WithCopy
                   textToCopy={txDetails.to}
                   testId="transaction-details-to"
+                  copyIconStyle="mb-1"
                 >
                   <LinkText
                     customStyle="tracking-[0.01em]"

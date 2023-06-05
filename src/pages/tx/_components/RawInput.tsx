@@ -13,7 +13,7 @@ export default function RawInput({ hex }: { hex: string }) {
   return (
     <div>
       <BoldedTitle
-        className="lg:pt-14 md:pt-14 pt-16 pb-6"
+        className="pb-6"
         testId="transaction-raw-input-title"
         title="Raw input"
       />

@@ -108,6 +108,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
                 Transaction type
               </div>
               <div data-testid="transaction-type" className={valueFontCss}>
+                {/* TODO: Add transaction type icon */}
                 {txDetails.transactionType}
               </div>
             </div>

@@ -1,15 +1,17 @@
 import clsx from "clsx";
 import { useEffect, useState, useRef } from "react";
-
+import { hexToUtf8 } from "shared/textHelper";
 import BoldedTitle from "./BoldedTitle";
 
+enum InputDisplay {
+  Hex = "hex",
+  Utf8 = "utf-8",
+}
+
 export default function RawInput({ hex }: { hex: string }) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [selectedId, setSelectedId] = useState<InputDisplay>(InputDisplay.Hex);
   const [allowResize, setAllowResize] = useState(false);
-  const [isRawInputExpanded, setIsRawInputExpanded] = useState(false);
-  const onRawInputClick = () => {
-    setIsRawInputExpanded(!isRawInputExpanded);
-  };
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     const scrollHeight = textareaRef.current?.scrollHeight ?? 0;
@@ -19,6 +21,7 @@ export default function RawInput({ hex }: { hex: string }) {
     }
   }, [textareaRef]);
 
+  const displayedInput = selectedId === InputDisplay.Hex ? hex : hexToUtf8(hex);
   return (
     <div>
       <BoldedTitle
@@ -27,16 +30,18 @@ export default function RawInput({ hex }: { hex: string }) {
         title="Raw input"
       />
       <div className="flex flex-row items-center lg:mb-[14px] mb-3">
-        <div
-          data-testid="transaction-hex-title"
-          role="button"
-          tabIndex={0}
-          onKeyDown={onRawInputClick}
-          onClick={onRawInputClick}
-          className="text-white-50 pr-[10.29px]"
-        >
-          Hex (Default)
-        </div>
+        <RawInputSelectButton
+          label="Hex (Default)"
+          id={InputDisplay.Hex}
+          selectedId={selectedId}
+          onClick={setSelectedId}
+        />
+        <RawInputSelectButton
+          label="UTF-8"
+          id={InputDisplay.Utf8}
+          selectedId={selectedId}
+          onClick={setSelectedId}
+        />
       </div>
       <textarea
         ref={textareaRef}
@@ -46,7 +51,7 @@ export default function RawInput({ hex }: { hex: string }) {
           allowResize ? "resize-y" : "resize-none"
         )}
         disabled
-        value={hex}
+        value={displayedInput}
       />
       {/* custom style for scrollbar resizer */}
       {allowResize && (
@@ -55,5 +60,34 @@ export default function RawInput({ hex }: { hex: string }) {
         </div>
       )}
     </div>
+  );
+}
+
+function RawInputSelectButton({
+  label,
+  id,
+  selectedId,
+  onClick,
+}: {
+  label: string;
+  id: InputDisplay;
+  selectedId: string;
+  onClick: (id: InputDisplay) => void;
+}) {
+  const isSelected = selectedId === id;
+  return (
+    <button
+      type="button"
+      data-testid={`${id}-btn`}
+      className={clsx(
+        "font-medium text-sm leading-[18.2px] w-[122px] px-4 py-2 mr-2 rounded-[24px]",
+        isSelected
+          ? "bg-white-50 text-black-900"
+          : "bg-black-600 text-white-50 hover:opacity-70"
+      )}
+      onClick={() => !isSelected && onClick(id)}
+    >
+      {label}
+    </button>
   );
 }

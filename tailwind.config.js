@@ -126,6 +126,7 @@ module.exports = {
       },
       screens: {
         "2.5xl": "1440px",
+        xs: { max: "320px" },
       },
       keyframes: {
         "fade-in": {

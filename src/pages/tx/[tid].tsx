@@ -31,11 +31,11 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
   const timeInUTC = formatDateToUTC(txDetails.timestamp);
 
   const titleFontCss =
-    "text-white-700 break-all leading-[22.4px] tracking-[0.01em] lg:leading-[24px] lg:-tracking-[0.02em] min-w-[100px]";
+    "text-white-700 break-words leading-[22.4px] tracking-[0.01em] lg:leading-[24px] lg:-tracking-[0.02em] min-w-[100px]";
   const valueFontCss =
-    "block text-white-50 leading-[24px] -tracking-[0.02em] text-end md:text-start break-words";
+    "block break-words text-white-50 leading-[24px] -tracking-[0.02em] text-end md:text-start xs:text-start";
   const rowCss =
-    "flex md:flex-col justify-between md:justify-normal gap-y-2 gap-x-1";
+    "flex md:flex-col justify-between md:justify-normal gap-y-2 gap-x-1 xs:flex-col xs:gap-y-1";
 
   return (
     <div className="px-1 md:px-0 mt-12 antialiased">

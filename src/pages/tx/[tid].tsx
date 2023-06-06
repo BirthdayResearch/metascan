@@ -1,1113 +1,261 @@
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
-import { Dispatch, SetStateAction, useState } from "react";
-import { FiCopy, FiChevronUp, FiChevronDown } from "react-icons/fi";
+import { FiX } from "react-icons/fi";
+import { IoMdCheckmarkCircle } from "react-icons/io";
 
-import { useUnitSuffix } from "hooks/useUnitSuffix";
-import useWindowDimensions from "hooks/useWindowDimensions";
 import { formatDateToUTC, getDuration } from "shared/durationHelper";
 import { transformTransactionData } from "shared/transactionDataHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { GWEI_SYMBOL } from "shared/constants";
 import TransactionsApi from "@api/TransactionsApi";
-import { TransactionI, TransactionType } from "@api/types";
+import { TransactionI } from "@api/types";
 
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import NumericFormat from "@components/commons/NumericFormat";
 import LinkText from "@components/commons/LinkText";
-import Tooltip from "@components/commons/Tooltip";
-import { InfoIcon } from "@components/icons/InfoIcon";
-import { ConfirmCheck } from "@components/icons/ConfirmCheck";
-import { RejectedCross } from "@components/icons/RejectedCross";
-import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import { NetworkConnection } from "@contexts/Environment";
+
 import BoldedTitle from "./_components/BoldedTitle";
+import GasDetails from "./_components/GasDetails";
+import RawInput from "./_components/RawInput";
+import WithCopy from "./_components/WithCopy";
 
 function Transaction({ txDetails }: { txDetails: TransactionI }) {
-  const amount = { value: txDetails.value, symbol: txDetails.symbol };
-  const transactionFee = { value: txDetails.fee, symbol: txDetails.symbol };
   const gasPrice = { value: txDetails.gasPrice, symbol: GWEI_SYMBOL };
   const gasUsedPercentage = new BigNumber(txDetails.gasUsed)
     .dividedBy(txDetails.gasLimit)
     .multipliedBy(100)
     .toFixed(2);
+  const timeDuration = getDuration(Number(txDetails.timeInSec));
+  const timeInUTC = formatDateToUTC(txDetails.timestamp);
+
+  const titleFontCss =
+    "text-white-700 break-all leading-[22.4px] tracking-[0.01em] lg:leading-[24px] lg:-tracking-[0.02em] min-w-[100px]";
+  const valueFontCss =
+    "block text-white-50 leading-[24px] -tracking-[0.02em] text-end md:text-start break-words";
+  const rowCss =
+    "flex md:flex-col justify-between md:justify-normal gap-y-2 gap-x-1";
 
   return (
-    <div className="px-1 md:px-0 mt-12">
+    <div className="px-1 md:px-0 mt-12 antialiased">
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
         <div className="p-5 pt-8 pb-8 md:p-10">
           <div
-            className="flex flex-row lg:mb-8 md:mb-6 mb-6"
+            className="flex flex-row lg:mb-8 mb-6"
             data-testid="transaction-details-title"
           >
             <BoldedTitle
-              className="text-2xl"
-              title={fixedTitle.transactionDetails}
+              className="md:text-xl -tracking-[0.02em] md:tracking-[0.01em]"
+              title="Transaction details"
             />
           </div>
-          <TransactionDetailSegmentOne
-            transactionId={txDetails.hash}
-            amount={amount}
-            status={txDetails.status}
-            blockNumber={txDetails.blockNumber}
-            confirmations={txDetails.confirmations}
-            timeInSec={txDetails.timeInSec}
-            timestamp={txDetails.timestamp}
-            transactionFee={transactionFee}
-            transactionType={txDetails.transactionType}
-            nonce={txDetails.nonce}
-            address={{
-              from: txDetails.from,
-              to: txDetails.to,
-              contractAddress: "", // TODO: Revisit contract address can be removed
-            }}
-            type={txDetails.type}
+          <div className="">
+            <span className="text-white-50 text-lg md:text-2xl font-semibold md:leading-9 break-all -tracking-[0.02em] md:tracking-normal">
+              {txDetails.hash}
+            </span>
+            <WithCopy
+              textToCopy={txDetails.hash}
+              testId="transaction-id"
+              copyIconStyle="md:mb-1"
+              successCopyStyle="ml-2"
+            />
+          </div>
+          <div
+            data-testid="transaction-timestamp"
+            className="text-white-700 mt-1 -tracking-[0.02em]"
+          >
+            {`${timeDuration} ago (${timeInUTC} +UTC)`}
+          </div>
+
+          <div className="flex flex-col md:grid md:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-3 md:gap-y-8 mt-9 lg:mt-[30px]">
+            {/* Block */}
+            <div className={rowCss}>
+              <div
+                data-testid="transaction-block-title"
+                className="text-white-700 tracking-[0.01em]"
+              >
+                Block
+              </div>
+              <div className="flex flex-row gap-x-2.5 items-center">
+                <LinkText
+                  customStyle="tracking-[0.01em]"
+                  testId="transaction-block"
+                  label={txDetails.blockNumber}
+                  href={`/block/${txDetails.blockNumber}`}
+                />
+              </div>
+            </div>
+            {/* Confirmations */}
+            <div className={rowCss}>
+              <div
+                data-testid="transaction-block-title"
+                className={titleFontCss}
+              >
+                Confirmation
+              </div>
+              <div className="flex flex-row gap-x-2.5 items-center">
+                <NumericFormat
+                  data-testid="transaction-confirmations"
+                  className={valueFontCss}
+                  value={txDetails.confirmations ?? "0"}
+                  decimalScale={0}
+                  suffix={txDetails.confirmations > 1 ? " blocks" : " block"}
+                />
+              </div>
+            </div>
+            {/* Transaction type */}
+            <div className={rowCss}>
+              <div
+                data-testid="transaction-type-title"
+                className={titleFontCss}
+              >
+                Transaction type
+              </div>
+              <div data-testid="transaction-type" className={valueFontCss}>
+                {/* TODO: Add transaction type icon */}
+                {txDetails.transactionType}
+              </div>
+            </div>
+            {/* Transaction status */}
+            <div className={rowCss}>
+              <div
+                data-testid="transaction-status-title"
+                className={titleFontCss}
+              >
+                Status
+              </div>
+              <div
+                className={clsx(
+                  "flex items-center",
+                  txDetails.status.toLowerCase() === "confirmed"
+                    ? "text-green-800"
+                    : "text-red-800"
+                )}
+              >
+                <div
+                  data-testid="transaction-status"
+                  className={clsx(
+                    "text-sm  -tracking-[0.01em] ",
+                    "md:text-base md:font-semibold md:-tracking-[0.02em]"
+                  )}
+                >
+                  {txDetails.status}
+                </div>
+                {txDetails.status.toLowerCase() === "confirmed" ? (
+                  <IoMdCheckmarkCircle size={20} className=" ml-1" />
+                ) : (
+                  <FiX size={20} className=" ml-1" />
+                )}
+              </div>
+            </div>
+            {/* From */}
+            <div className={rowCss}>
+              <div data-testid="from-title" className={titleFontCss}>
+                From
+              </div>
+              <WithCopy
+                textToCopy={txDetails.from}
+                testId="transaction-details-from"
+                copyIconStyle="mb-1"
+              >
+                <LinkText
+                  customStyle="tracking-[0.01em]"
+                  testId="transaction-details-from"
+                  label={truncateTextFromMiddle(txDetails.from, 4)}
+                  href={`/address/${txDetails.from}`}
+                />
+              </WithCopy>
+            </div>
+            {/* To */}
+            {txDetails.to && (
+              <div className={rowCss}>
+                <div data-testid="to-title" className={titleFontCss}>
+                  To
+                </div>
+                <WithCopy
+                  textToCopy={txDetails.to}
+                  testId="transaction-details-to"
+                  copyIconStyle="mb-1"
+                >
+                  <LinkText
+                    customStyle="tracking-[0.01em]"
+                    testId="transaction-details-to"
+                    label={truncateTextFromMiddle(txDetails.to, 4)}
+                    href={`/address/${txDetails.to}`}
+                  />
+                </WithCopy>
+              </div>
+            )}
+            {/* Amount */}
+            <div className={rowCss}>
+              <div
+                data-testid="transaction-amount-title"
+                className={titleFontCss}
+              >
+                Amount
+              </div>
+              <div>
+                <NumericFormat
+                  data-testid="transaction-amount"
+                  className={valueFontCss}
+                  thousandSeparator
+                  value={txDetails.value}
+                  decimalScale={8}
+                  suffix={` ${txDetails.symbol}`}
+                />
+              </div>
+            </div>
+            {/* Transaction fee */}
+            <div className={rowCss}>
+              <div data-testid="transaction-fee-title" className={titleFontCss}>
+                Transaction fee
+              </div>
+              <div>
+                <NumericFormat
+                  data-testid="transaction-fee"
+                  className={valueFontCss}
+                  thousandSeparator
+                  value={txDetails.fee}
+                  decimalScale={8}
+                  suffix={` ${txDetails.symbol}`}
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className={clsx(
+              "border-b border-black-600",
+              "mt-9 mb-6",
+              "md:mt-[58px] md:mb-9",
+              "lg:mt-[38px] lg:mb-11"
+            )}
           />
-          <div className="border-b border-black-600 lg:my-11 md:mt-9 md:mb-11 mt-10 mb-[52px]" />
-          <TransactionDetailSegmentTwo
+          <GasDetails
             gasPrice={gasPrice}
             gasLimit={txDetails.gasLimit}
             gasUsed={txDetails.gasUsed}
             gasUsedPercentage={gasUsedPercentage}
+            nonce={txDetails.nonce}
             from={txDetails.from}
             to={txDetails.to}
             transactionType={txDetails.transactionType}
-            hex={txDetails.rawInput}
           />
+          <div
+            className={clsx(
+              "border-b border-black-600",
+              "mt-9 mb-6",
+              "md:mt-14 md:mb-9",
+              "lg:mt-10 lg:mb-11"
+            )}
+          />
+          <RawInput hex={txDetails.rawInput} />
         </div>
       </GradientCardContainer>
     </div>
   );
 }
-
-interface TransactionDetailSegmentOneProp {
-  transactionId: string;
-  amount: {
-    value: string;
-    symbol: string;
-  };
-  status: string;
-  blockNumber: string;
-  confirmations: number;
-  timeInSec: number;
-  timestamp: string;
-  transactionFee: {
-    value: string;
-    symbol: string;
-  };
-  transactionType: TransactionType;
-  nonce: number;
-  address: {
-    from: string;
-    to: string | null;
-    contractAddress: string;
-  };
-  type: number;
-}
-
-function TransactionDetailSegmentOne({
-  transactionId,
-  amount,
-  status,
-  blockNumber,
-  confirmations,
-  timeInSec,
-  timestamp,
-  transactionFee,
-  transactionType,
-  nonce,
-  address,
-  type,
-}: TransactionDetailSegmentOneProp) {
-  const [isFromAddressCopied, setIsFromAddressCopied] = useState(false);
-  const [isToAddressCopied, setIsToAddressCopied] = useState(false);
-  const [isTransactionIdCopied, setIsTransationIdCopied] = useState(false);
-  const windowDimension = useWindowDimensions().width;
-
-  const timeDuration = getDuration(Number(timeInSec));
-  const timeInUTC = formatDateToUTC(timestamp);
-
-  return (
-    <div className="flex flex-col gap-y-10">
-      {/* first row */}
-      <div className="flex flex-col lg:flex-row md:flex-row gap-y-[41.5px]">
-        {/* 1st flex */}
-        <div className="flex flex-col grow">
-          {isTransactionIdCopied ? (
-            <div className="flex flex-row gap-x-2.5 items-center mb-2 h-[22px]">
-              <LinkText
-                testId="transaction-id-copied"
-                label={fixedTitle.copied}
-                href={`/address/${transactionId}`}
-                customStyle="tracking-[0.01em] leading-[22.4px]"
-              />
-              <GreenTickIcon data-testid="transaction-id-copied-green-tick-icon" />
-            </div>
-          ) : (
-            <div className="flex flex-row gap-x-2.5 items-center mb-2 h-[22px]">
-              <span className="text-white-50 tracking-[0.01em] leading-[22.4px]">
-                {truncateTextFromMiddle(transactionId, 11)}
-              </span>
-              <FiCopy
-                role="button"
-                data-testid="transaction-id-copy-icon"
-                onClick={() =>
-                  onCopyAddressIconClick(setIsTransationIdCopied, transactionId)
-                }
-                className="text-white-50"
-              />
-            </div>
-          )}
-
-          <div className="lg:h-[42px] md:h-[31px] h-[26px] align-middle mb-1">
-            <NumericFormat
-              data-testid="transaction-token-price"
-              className="text-white-50 lg:text-[32px] md:text-2xl text-xl font-bold lg:leading-[41.6px] md:leading-[31.2px] leading-[26px]"
-              value={amount.value ?? "0"}
-              decimalScale={amount.value ? 8 : 2}
-              suffix={` ${amount.symbol}`}
-            />
-          </div>
-
-          {/*
-          // TODO: Confirm if we need value price in USD
-           <NumericFormat
-            data-testid="transaction-value-price"
-            className="text-white-700 tracking-[0.01em] h-[22px] leading-[22.4px]"
-            thousandSeparator
-            value={
-              [
-                TransactionType.ContractCall,
-                TransactionType.Tokenized,
-              ].includes(transactionType)
-                ? valuePrice
-                : "0"
-            }
-            prefix="$"
-            decimalScale={2}
-          /> */}
-        </div>
-        {/* 2nd flex */}
-        <div className="flex flex-col lg:items-end md:items-end items-start">
-          {status.toLowerCase() === "confirmed" ? (
-            <div className="flex flex-row items-center lg:mb-[23px] md:mb-[14px] mb-[5.5px] ">
-              <div
-                data-testid="transaction-confirm-status"
-                className="text-green-800 font-bold lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px] leading-[20.8px] h-[21px]"
-              >
-                {status}
-              </div>
-              <ConfirmCheck />
-            </div>
-          ) : (
-            <div className="flex flex-row lg:mb-[23px] md:mb-[14px] mb-[5.5px] ">
-              <div
-                data-testid="transaction-revert-status"
-                className="text-red-800 font-bold lg:mr-[10.57px] md:mr-[10.57px] mr-[6.57px] leading-[20.8px] h-[21px]"
-              >
-                {status}
-              </div>
-              <RejectedCross />
-            </div>
-          )}
-          <div className="flex flex-row items-center mb-1 h-[22px]">
-            <div className="lg:order-first md:order-first order-last">
-              <Tooltip text={`Confirmed by ${confirmations} blocks`}>
-                <InfoIcon className="lg:mr-[8.67px] md:mr-[8.67px] ml-[9.33px]" />
-              </Tooltip>
-            </div>
-            <div
-              data-testid="transaction-confirmed-blocks"
-              className="text-white-700 tracking-[0.01em] leading-[22.4px]"
-            >
-              Confirmed by {confirmations} blocks
-            </div>
-          </div>
-
-          <div
-            data-testid="transaction-timestamp"
-            className="text-white-700 tracking-[0.01em] h-[22px] leading-[22.4px]"
-          >
-            {`${timeDuration} ago (${timeInUTC} +UTC)`}
-          </div>
-        </div>
-      </div>
-      {/* desktop & tablet */}
-      <div className="hidden md:block">
-        <div className="grid lg:grid-cols-6 lg:grid-rows-2 md:grid-cols-4 md:grid-rows-3 grid-rows-7 gap-y-5">
-          <div className="flex flex-col gap-y-1 lg:col-start-1 md:col-start-3">
-            <div
-              data-testid="transaction-fee-title"
-              className="text-white-700 tracking-[0.01em]"
-            >
-              {fixedTitle.transactionFee}
-            </div>
-            <div>
-              <NumericFormat
-                data-testid="transaction-fee"
-                className="text-white-50 tracking-[0.01em]"
-                thousandSeparator
-                value={transactionFee.value}
-                decimalScale={8}
-                suffix={` ${transactionFee.symbol}`}
-              />
-            </div>
-          </div>
-          <div className="flex flex-col gap-y-1 lg:col-start-2 md:col-start-1 row-start-1">
-            <div
-              data-testid="transaction-block-title"
-              className="text-white-700 tracking-[0.01em]"
-            >
-              {fixedTitle.block}
-            </div>
-            <div className="flex flex-row gap-x-2.5 items-center">
-              <LinkText
-                customStyle="tracking-[0.01em]"
-                testId="transaction-block"
-                label={blockNumber}
-                href={`/block/${blockNumber}`}
-              />
-            </div>
-          </div>
-          {/* TODO: finalize transaction types */}
-          {type && (
-            <div className="flex flex-col gap-y-1 lg:col-start-3 md:col-start-2 md:row-start-1">
-              <div
-                data-testid="transaction-fee-title"
-                className="text-white-700 tracking-[0.01em]"
-              >
-                {fixedTitle.transactionType}
-              </div>
-              <div
-                data-testid="transaction-type"
-                className="text-white-50 tracking-[0.01em]"
-              >
-                {type}
-              </div>
-            </div>
-          )}
-          <div className="flex flex-col gap-y-1 lg:row-auto md:row-start-3">
-            <div
-              data-testid="transaction-details-from-title"
-              className="text-white-700 tracking-[0.01em]"
-            >
-              {fixedTitle.from}
-            </div>
-            <div>
-              {isFromAddressCopied ? (
-                <div className="flex flex-row gap-x-2.5 items-center">
-                  <LinkText
-                    customStyle="tracking-[0.01em]"
-                    testId="transaction-details-from-copied"
-                    label={fixedTitle.copied}
-                    href={`/address/${address.from}`}
-                  />
-                  <GreenTickIcon />
-                </div>
-              ) : (
-                <div className="flex flex-row gap-x-2.5 items-center">
-                  <LinkText
-                    customStyle="tracking-[0.01em]"
-                    testId="transaction-details-from"
-                    label={truncateTextFromMiddle(
-                      address.from,
-                      windowDimension >= 760 ? 5 : 11
-                    )}
-                    href={`/address/${address.from}`}
-                  />
-                  <FiCopy
-                    role="button"
-                    onClick={() =>
-                      onCopyAddressIconClick(
-                        setIsFromAddressCopied,
-                        address.from
-                      )
-                    }
-                    className="text-white-50 h-[22px]"
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-          {address.to && (
-            <div className="flex flex-col gap-y-1 lg:row-auto md:row-start-3">
-              <div
-                data-testid="transaction-details-to-title"
-                className="text-white-700 tracking-[0.01em]"
-              >
-                {fixedTitle.to}
-              </div>
-              {isToAddressCopied ? (
-                <div className="flex flex-row gap-x-2.5 items-center">
-                  <LinkText
-                    testId="transaction-details-to-copied"
-                    label={fixedTitle.copied}
-                    href={`/address/${address.to}`}
-                  />
-                  <GreenTickIcon />
-                </div>
-              ) : (
-                <div className="flex flex-row gap-x-2.5 items-center">
-                  {transactionType === TransactionType.ContractCall && (
-                    <div
-                      data-testid="transaction-details-to-contract-title"
-                      className="text-white-50"
-                    >
-                      {fixedTitle.contract}
-                    </div>
-                  )}
-                  <LinkText
-                    testId="transaction-details-to"
-                    label={truncateTextFromMiddle(
-                      address.to,
-                      windowDimension >= 760 ? 4 : 11
-                    )}
-                    href={`/address/${address.to}`}
-                  />
-                  <FiCopy
-                    role="button"
-                    onClick={() =>
-                      onCopyAddressIconClick(
-                        setIsToAddressCopied,
-                        address.to ?? ""
-                      )
-                    }
-                    className="text-white-50 h-[22px]"
-                  />
-                </div>
-              )}
-            </div>
-          )}
-          <div className="flex flex-col gap-y-1 col-start-1 row-start-2">
-            <div className="flex flex-row items-center grow">
-              <div
-                data-testid="transaction-nonce-title"
-                className="text-white-700 tracking-[0.01em]"
-              >
-                {fixedTitle.nonce}
-              </div>
-              <Tooltip text={fixedTitle.nonce}>
-                <InfoIcon
-                  data-testid="desktop-transaction-nonce-icon"
-                  className="ml-[9.33px] mr-[8.67px]"
-                />
-              </Tooltip>
-            </div>
-            <div
-              data-testid="transaction-nonce"
-              className="text-white-50 tracking-[0.01em]"
-            >
-              {nonce}
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* mobile */}
-      <div className="md:hidden grid grid-rows-7 gap-y-4">
-        <div className="flex flex-col gap-y-1">
-          <div
-            data-testid="transaction-fee-title"
-            className="text-white-700 tracking-[0.01em]"
-          >
-            {fixedTitle.transactionFee}
-          </div>
-          <div>
-            <NumericFormat
-              data-testid="transaction-fee"
-              className="text-white-50 tracking-[0.01em]"
-              thousandSeparator
-              value={transactionFee.value}
-              decimalScale={8}
-              suffix={` ${transactionFee.symbol}`}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-1 md:row-auto">
-          <div
-            data-testid="transaction-block-title"
-            className="text-white-700 tracking-[0.01em]"
-          >
-            {fixedTitle.block}
-          </div>
-          <div className="flex flex-row gap-x-2.5 items-center">
-            <LinkText
-              customStyle="tracking-[0.01em]"
-              testId="transaction-block"
-              label={blockNumber}
-              href={`/block/${blockNumber}`}
-            />
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-1">
-          <div
-            data-testid="transaction-fee-title"
-            className="text-white-700 tracking-[0.01em]"
-          >
-            {fixedTitle.transactionType}
-          </div>
-          <div
-            data-testid="transaction-type"
-            className="text-white-50 tracking-[0.01em]"
-          >
-            {transactionType}
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-1">
-          <div className="flex flex-row items-center grow">
-            <div
-              data-testid="transaction-nonce-title"
-              className="text-white-700 tracking-[0.01em]"
-            >
-              {fixedTitle.nonce}
-            </div>
-            <Tooltip text={fixedTitle.nonce}>
-              <InfoIcon
-                data-testid="transaction-nonce-icon"
-                className="ml-[9.33px] mr-[8.67px]"
-              />
-            </Tooltip>
-          </div>
-          <div
-            data-testid="transaction-nonce"
-            className="text-white-50 tracking-[0.01em]"
-          >
-            {nonce}
-          </div>
-        </div>
-        <div className="flex flex-col gap-y-1 mt-9">
-          <div
-            data-testid="transaction-details-from-title"
-            className="text-white-700 tracking-[0.01em]"
-          >
-            {fixedTitle.from}
-          </div>
-          <div>
-            {isFromAddressCopied ? (
-              <div className="flex flex-row gap-x-2.5 items-center">
-                <LinkText
-                  customStyle="tracking-[0.01em]"
-                  testId="transaction-details-from-copied"
-                  label={fixedTitle.copied}
-                  href={`/address/${address.from}`}
-                />
-                <GreenTickIcon />
-              </div>
-            ) : (
-              <div className="flex flex-row gap-x-2.5 items-center">
-                <LinkText
-                  customStyle="tracking-[0.01em]"
-                  testId="transaction-details-from"
-                  label={truncateTextFromMiddle(
-                    address.from,
-                    windowDimension >= 760 ? 4 : 11
-                  )}
-                  href={`/address/${address.from}`}
-                />
-                <FiCopy
-                  role="button"
-                  onClick={() =>
-                    onCopyAddressIconClick(setIsFromAddressCopied, address.from)
-                  }
-                  className="text-white-50 h-[22px]"
-                />
-              </div>
-            )}
-          </div>
-        </div>
-        {address.to && (
-          <div className="flex flex-col gap-y-1">
-            <div
-              data-testid="transaction-details-to-title"
-              className="text-white-700 tracking-[0.01em]"
-            >
-              {fixedTitle.to}
-            </div>
-            {isToAddressCopied ? (
-              <div className="flex flex-row gap-x-2.5 items-center">
-                <LinkText
-                  testId="transaction-details-to-copied"
-                  label={fixedTitle.copied}
-                  href={`/address/${address.to}`}
-                />
-                <GreenTickIcon />
-              </div>
-            ) : (
-              <div className="flex flex-row gap-x-2.5 items-center">
-                {transactionType === TransactionType.ContractCall && (
-                  <div
-                    data-testid="transaction-details-to-contract-title"
-                    className="text-white-50"
-                  >
-                    {fixedTitle.contract}
-                  </div>
-                )}
-                <LinkText
-                  testId="transaction-details-to"
-                  label={truncateTextFromMiddle(
-                    address.to,
-                    windowDimension >= 760 ? 4 : 11
-                  )}
-                  href={`/address/${address.to}`}
-                />
-                <FiCopy
-                  role="button"
-                  onClick={() =>
-                    onCopyAddressIconClick(
-                      setIsToAddressCopied,
-                      address.to ?? ""
-                    )
-                  }
-                  className="text-white-50 h-[22px]"
-                />
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-interface TransactionDetailSegmentTwoProps {
-  gasPrice: {
-    value: string;
-    symbol: string;
-  };
-  gasLimit: string;
-  gasUsed: string;
-  gasUsedPercentage: string;
-  from: string;
-  to: string | null;
-  transactionType: TransactionType;
-  hex: string;
-}
-
-function TransactionDetailSegmentTwo({
-  gasPrice,
-  gasLimit,
-  gasUsed,
-  gasUsedPercentage,
-  from,
-  to,
-  transactionType,
-  hex,
-}: TransactionDetailSegmentTwoProps) {
-  const [isRawInputExpanded, setIsRawInputExpanded] = useState(false);
-  const [isFromAddressCopied, setIsFromAddressCopied] = useState(false);
-  const [isToAddressCopied, setIsToAddressCopied] = useState(false);
-  const windowDimension = useWindowDimensions().width;
-
-  const onRawInputClick = () => {
-    setIsRawInputExpanded(!isRawInputExpanded);
-  };
-
-  return (
-    <div>
-      {/* desktop tablet */}
-      <div className="hidden md:block">
-        <div className="grid grid-rows-4 lg:grid-cols-6 md:grid-cols-4 lg:gap-x-0 gap-x-5">
-          <div>
-            <BoldedTitle
-              title={fixedTitle.gasDetail}
-              testId="desktop-transaction-gas-detail-title"
-            />
-          </div>
-          <div className="row-start-2 col-start-1">
-            <div className="flex flex-row items-center grow">
-              <div
-                data-testid="desktop-transaction-gas-price-title"
-                className="text-white-700 tracking-[0.01em]"
-              >
-                {fixedTitle.gasPrice}
-              </div>
-              <Tooltip text={fixedTitle.gasPrice}>
-                <InfoIcon
-                  data-testid="desktop-transaction-gas-price-icon"
-                  className="ml-[9.33px] mr-[8.67px]"
-                />
-              </Tooltip>
-            </div>
-          </div>
-          <div className="row-start-2 col-start-2 lg:col-span-2">
-            <div className="flex">
-              <NumericFormat
-                data-testid="desktop-transaction-gas-price"
-                className="text-white-50 whitespace-normal tracking-[0.01em]"
-                thousandSeparator
-                value={gasPrice.value}
-                decimalScale={0}
-                suffix={` ${gasPrice.symbol}`}
-              />
-            </div>
-          </div>
-          <div className="row-start-3 col-start-1">
-            <div className="flex flex-row items-center grow">
-              <div
-                data-testid="desktop-transaction-gas-limit-title"
-                className="text-white-700 tracking-[0.01em]"
-              >
-                {fixedTitle.gasLimit}
-              </div>
-              <Tooltip text={fixedTitle.gasLimit}>
-                <InfoIcon
-                  data-testid="desktop-transaction-gas-limit-icon"
-                  className="ml-[9.33px] mr-[8.67px]"
-                />
-              </Tooltip>
-            </div>
-          </div>
-          <div className="row-start-3 col-start-2 lg:col-span-2">
-            <div className="text-white-50 tracking-[0.01em] whitespace-normal">
-              <NumericFormat
-                data-testid="desktop-transaction-gas-limit"
-                thousandSeparator
-                value={gasLimit}
-                decimalScale={0}
-              />
-            </div>
-          </div>
-          <div className="row-start-4 col-start-1">
-            <div className="flex flex-row items-center grow">
-              <div
-                data-testid="desktop-transaction-gas-used-title"
-                className="text-white-700 w-[101px] tracking-[0.01em]"
-              >
-                {fixedTitle.gasUsed}
-              </div>
-              <Tooltip text={fixedTitle.gasUsed}>
-                <InfoIcon
-                  data-testid="desktop-transaction-gas-used-icon"
-                  className="ml-[9.33px] mr-[8.67px]"
-                />
-              </Tooltip>
-            </div>
-          </div>
-          <div className="row-start-4 col-start-2 lg:col-span-2">
-            <div className="flex flex-col">
-              <NumericFormat
-                data-testid="desktop-transaction-gas-used"
-                className="text-white-50 tracking-[0.01em] whitespace-normal"
-                thousandSeparator
-                value={gasUsed}
-                decimalScale={0}
-              />
-              <NumericFormat
-                data-testid="desktop-transaction-gas-used-percentage"
-                className="text-white-700 tracking-[0.02em] text-xs mt-1"
-                thousandSeparator
-                value={gasUsedPercentage}
-                decimalScale={2}
-                suffix="%"
-              />
-            </div>
-          </div>
-          {transactionType === fixedTitle.tokenized && (
-            <div className="lg:col-start-4 col-start-3 row-start-1 col-span-2">
-              <BoldedTitle
-                title={fixedTitle.tokenTransferred}
-                testId="desktop-transaction-token-transferred-title"
-              />
-            </div>
-          )}
-          {transactionType === fixedTitle.tokenized && (
-            <div className="lg:col-start-4 col-start-3 row-start-2">
-              <div
-                data-testid="desktop-transaction-token-transferred-from-title"
-                className="text-white-700 tracking-[0.01em]"
-              >
-                {fixedTitle.from}
-              </div>
-            </div>
-          )}
-          {transactionType === fixedTitle.tokenized && (
-            <div className="lg:col-span-2 lg:col-start-5 col-start-4 row-start-2 ">
-              {isFromAddressCopied ? (
-                <div className="flex flex-row items-center gap-x-2.5">
-                  <LinkText
-                    testId="desktop-transaction-token-transferred-from-copied"
-                    label={fixedTitle.copied}
-                    href={`/address/${from}`}
-                  />
-                  <GreenTickIcon data-testid="desktop-transaction-token-transferred-from-green-tick-icon" />
-                </div>
-              ) : (
-                <div className="flex flex-row items-center gap-x-2.5">
-                  <LinkText
-                    customStyle="tracking-[0.01em]"
-                    testId="desktop-transaction-token-transferred-from"
-                    label={truncateTextFromMiddle(
-                      from,
-                      windowDimension <= 1280 ? 4 : 11
-                    )}
-                    href={`/address/${from}`}
-                  />
-                  <FiCopy
-                    role="button"
-                    data-testid="desktop-transaction-token-transferred-from-copy-icon"
-                    onClick={() =>
-                      onCopyAddressIconClick(setIsFromAddressCopied, from)
-                    }
-                    className="text-white-50"
-                  />
-                </div>
-              )}
-            </div>
-          )}
-          {transactionType === fixedTitle.tokenized && to && (
-            <div className="lg:col-start-4 col-start-3 row-start-3">
-              <div
-                data-testid="desktop-transaction-token-transferred-to-title"
-                className="text-white-700 tracking-[0.01em]"
-              >
-                {fixedTitle.to}
-              </div>
-            </div>
-          )}
-          {transactionType === fixedTitle.tokenized && to && (
-            <div className="lg:col-start-5 col-start-4 row-start-3 lg:col-span-2">
-              {isToAddressCopied ? (
-                <div className="flex flex-row items-center gap-x-2.5">
-                  <LinkText
-                    testId="desktop-transaction-token-transferred-to-copied"
-                    label={fixedTitle.copied}
-                    href={`/address/${to}`}
-                  />
-                  <GreenTickIcon data-testid="desktop-transaction-token-transferred-to-green-tick-icon" />
-                </div>
-              ) : (
-                <div className="flex flex-row items-center gap-x-2.5">
-                  <LinkText
-                    testId="desktop-transaction-token-transferred-to"
-                    label={truncateTextFromMiddle(
-                      to,
-                      windowDimension <= 1280 ? 4 : 11
-                    )}
-                    href={`/address/${to}`}
-                  />
-                  <FiCopy
-                    role="button"
-                    data-testid="transaction-token-transferred-to-copy-icon"
-                    onClick={() =>
-                      onCopyAddressIconClick(setIsToAddressCopied, to)
-                    }
-                    className="text-white-50 h-[22px]"
-                  />
-                </div>
-              )}
-            </div>
-          )}
-          {transactionType === fixedTitle.tokenized && (
-            <div className="lg:col-start-4 col-start-3 row-start-4">
-              <div
-                data-testid="desktop-transaction-token-transferred-for-title"
-                className="text-white-700 tracking-[0.01em]"
-              >
-                {fixedTitle.for}
-              </div>
-            </div>
-          )}
-
-          {/* Commented because we have no token txs for now
-           {type === fixedTitle.tokenized && (
-            <div className="lg:col-start-5 col-start-4 row-start-4 col-span-2">
-              <NumericFormat
-                data-testid="desktop-transaction-token-transferred-for"
-                className="text-white-50 tracking-[0.01em] whitespace-normal"
-                thousandSeparator
-                value={forToken.value}
-                decimalScale={8}
-                suffix={` ${forToken.symbol}`}
-              />
-            </div>
-          )} */}
-        </div>
-      </div>
-      {/* mobile */}
-      <div className="md:hidden flex flex-col gap-y-16">
-        <div className="flex flex-col gap-y-6">
-          <BoldedTitle
-            title={fixedTitle.gasDetail}
-            testId="transaction-gas-detail-title"
-          />
-          <div className="flex flex-row">
-            <div className="flex flex-row items-center grow">
-              <div
-                data-testid="transaction-gas-price-title"
-                className="text-white-700 tracking-[0.01em]"
-              >
-                {fixedTitle.gasPrice}
-              </div>
-              <Tooltip text={fixedTitle.gasPrice}>
-                <InfoIcon
-                  data-testid="transaction-gas-price-icon"
-                  className="ml-[9.33px] mr-[8.67px]"
-                />
-              </Tooltip>
-            </div>
-            <div className="flex text-right">
-              <NumericFormat
-                data-testid="transaction-gas-price"
-                className="text-white-50 whitespace-normal tracking-[0.01em]"
-                thousandSeparator
-                value={gasPrice.value}
-                decimalScale={8}
-                suffix={` ${gasPrice.symbol}`}
-              />
-            </div>
-          </div>
-          <div className="flex flex-row">
-            <div className="flex flex-row items-center grow">
-              <div
-                data-testid="transaction-gas-limit-title"
-                className="text-white-700 tracking-[0.01em]"
-              >
-                {fixedTitle.gasLimit}
-              </div>
-              <Tooltip text={fixedTitle.gasLimit}>
-                <InfoIcon
-                  data-testid="transaction-gas-limit-icon"
-                  className="ml-[9.33px] mr-[8.67px]"
-                />
-              </Tooltip>
-            </div>
-            <div className="text-right">
-              <div className="text-white-50 tracking-[0.01em] whitespace-normal">
-                {useUnitSuffix(gasLimit)}
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-row">
-            <div className="flex flex-row items-center grow">
-              <div
-                data-testid="transaction-gas-used-title"
-                className="text-white-700 w-[101px] tracking-[0.01em]"
-              >
-                {fixedTitle.gasUsed}
-              </div>
-              <Tooltip text={fixedTitle.gasUsed}>
-                <InfoIcon
-                  data-testid="transaction-gas-used-icon"
-                  className="ml-[9.33px] mr-[8.67px]"
-                />
-              </Tooltip>
-            </div>
-            <div className="flex flex-col">
-              <NumericFormat
-                data-testid="transaction-gas-used"
-                className="text-white-50 tracking-[0.01em] whitespace-normal text-right"
-                thousandSeparator
-                value={gasUsed}
-                decimalScale={0}
-              />
-              <NumericFormat
-                data-testid="transaction-gas-used-percentage"
-                className="text-white-700 tracking-[0.02em] text-xs mt-1 text-right"
-                thousandSeparator
-                value={gasUsedPercentage}
-                decimalScale={2}
-                suffix="%"
-              />
-            </div>
-          </div>
-        </div>
-        {transactionType === TransactionType.Tokenized && (
-          <div className="flex flex-col gap-y-6">
-            <BoldedTitle
-              title={fixedTitle.tokenTransferred}
-              testId="transaction-token-transferred-title"
-            />
-            <div className="flex flex-row">
-              <div className="grow">
-                <div
-                  data-testid="transaction-token-transferred-from-title"
-                  className="text-white-700 tracking-[0.01em]"
-                >
-                  {fixedTitle.from}
-                </div>
-              </div>
-              {isFromAddressCopied ? (
-                <div className="flex flex-row items-center gap-x-2.5">
-                  <LinkText
-                    testId="transaction-token-transferred-from-copied"
-                    label={fixedTitle.copied}
-                    href={`/address/${from}`}
-                  />
-                  <GreenTickIcon data-testid="transaction-token-transferred-from-green-tick-icon" />
-                </div>
-              ) : (
-                <div className="flex flex-row items-center gap-x-2.5">
-                  <div className={clsx({ "mr-[10px]": isFromAddressCopied })}>
-                    <LinkText
-                      customStyle="tracking-[0.01em]"
-                      testId="transaction-token-transferred-from"
-                      label={truncateTextFromMiddle(
-                        from,
-                        windowDimension <= 1280 ? 4 : 11
-                      )}
-                      href={`/address/${from}`}
-                    />
-                  </div>
-                  <FiCopy
-                    role="button"
-                    data-testid="transaction-token-transferred-from-copy-icon"
-                    onClick={() =>
-                      onCopyAddressIconClick(setIsFromAddressCopied, from)
-                    }
-                    className="text-white-50"
-                  />
-                </div>
-              )}
-            </div>
-            {to && (
-              <div className="flex flex-row">
-                <div className="grow">
-                  <div
-                    data-testid="transaction-token-transferred-to-title"
-                    className="text-white-700"
-                  >
-                    {fixedTitle.to}
-                  </div>
-                </div>
-                <div>
-                  {isToAddressCopied ? (
-                    <div className="flex flex-row items-center gap-x-2.5">
-                      <LinkText
-                        testId="transaction-token-transferred-to-copied"
-                        label={fixedTitle.copied}
-                        href={`/address/${to}`}
-                      />
-                      <GreenTickIcon data-testid="transaction-token-transferred-to-green-tick-icon" />
-                    </div>
-                  ) : (
-                    <div className="flex flex-row items-center gap-x-2.5 ">
-                      <div className={clsx({ "mr-[10px]": isToAddressCopied })}>
-                        <LinkText
-                          testId="transaction-token-transferred-to"
-                          label={truncateTextFromMiddle(
-                            to,
-                            windowDimension <= 1280 ? 4 : 11
-                          )}
-                          href={`/address/${to}`}
-                        />
-                      </div>
-                      <FiCopy
-                        role="button"
-                        data-testid="transaction-token-transferred-to-copy-icon"
-                        onClick={() =>
-                          onCopyAddressIconClick(setIsToAddressCopied, to)
-                        }
-                        className="text-white-50"
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-            {/* Commented because we have no token txs for now
-            <div className="flex flex-row">
-              <div className="grow">
-                <div
-                  data-testid="transaction-token-transferred-for-title"
-                  className="text-white-700 tracking-[0.01em]"
-                >
-                  {fixedTitle.for}
-                </div>
-              </div>
-              <div className="flex lg:text-left md:text-left text-right">
-                <NumericFormat
-                  data-testid="transaction-token-transferred-for"
-                  className="text-white-50 tracking-[0.01em]"
-                  thousandSeparator
-                  value={forToken.value}
-                  decimalScale={8}
-                  suffix={` ${forToken.symbol}`}
-                />
-              </div> 
-            </div> */}
-          </div>
-        )}
-      </div>
-      <div>
-        <BoldedTitle
-          className="lg:pt-14 md:pt-14 pt-16 pb-6"
-          testId="transaction-raw-input-title"
-          title={fixedTitle.rawInput}
-        />
-        <div
-          className={clsx("flex flex-row items-center lg:mb-[14px] mb-3", {
-            "mb-3": isRawInputExpanded,
-          })}
-        >
-          <div
-            data-testid="transaction-hex-title"
-            role="button"
-            tabIndex={0}
-            onKeyDown={onRawInputClick}
-            onClick={onRawInputClick}
-            className="text-white-50 pr-[10.29px]"
-          >
-            {fixedTitle.hex}
-          </div>
-          <div
-            data-testid="transaction-hex-icon"
-            role="button"
-            tabIndex={0}
-            onKeyDown={onRawInputClick}
-            onClick={onRawInputClick}
-          >
-            <div className="grid ">
-              <FiChevronDown
-                size={24}
-                className={clsx(
-                  "col-start-1 row-start-1 text-white-700",
-                  isRawInputExpanded
-                    ? "transition-opacity duration-300 ease-out opacity-0"
-                    : "opacity-100"
-                )}
-              />
-              <FiChevronUp
-                size={24}
-                className={clsx(
-                  "col-start-1 row-start-1 text-white-700",
-                  isRawInputExpanded
-                    ? "opacity-100"
-                    : "transition-opacity duration-300 ease-out opacity-0"
-                )}
-              />
-            </div>
-          </div>
-        </div>
-        {isRawInputExpanded && (
-          <div
-            data-testid="transaction-hex"
-            className={clsx(
-              " transition-opacity rounded-lg font-space-mono tracking-[-0.04em] break-all bg-black-800 lg:py-6 md:py-5 py-4 lg:px-10 md:px-8 px-4 border-[1px] border-black-600 text-white-50 text-xs"
-            )}
-          >
-            {hex}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-const sleep = (ms: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-
-const onCopyAddressIconClick = async (
-  onTextClick: Dispatch<SetStateAction<boolean>>,
-  address: string
-) => {
-  onTextClick(true);
-  navigator.clipboard.writeText(address);
-  await sleep(2000);
-  onTextClick(false);
-};
 
 export async function getServerSideProps(context) {
   const {
@@ -1126,28 +274,5 @@ export async function getServerSideProps(context) {
     return { notFound: true };
   }
 }
-
-const fixedTitle = {
-  transactionFee: "Transaction fee",
-  block: "Block",
-  transactionType: "Transaction Type",
-  nonce: "Nonce",
-  from: "From",
-  to: "To",
-  contractAddress: "Contract Address",
-  gasDetail: "Gas detail",
-  gasPrice: "Gas price",
-  gasLimit: "Gas limit",
-  gasUsed: "Gas used by transaction",
-  tokenTransferred: "Token transferred",
-  for: "For",
-  rawInput: "Raw input",
-  hex: "Hex (Default)",
-  transfer: "Transfer",
-  transactionDetails: "Transaction details",
-  contract: "Contract",
-  copied: "Copied!",
-  tokenized: "tokenized",
-};
 
 export default Transaction;

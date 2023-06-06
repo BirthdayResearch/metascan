@@ -269,8 +269,6 @@ export async function getServerSideProps(context) {
     );
     const txDetails = transformTransactionData(data);
 
-    console.log({ txDetails });
-
     return { props: { txDetails } };
   } catch (e) {
     return { notFound: true };

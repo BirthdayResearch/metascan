@@ -1,3 +1,5 @@
+import { NetworkConnection } from "@contexts/Environment";
+
 export function wrapResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
     throw new Error(`Failed to fetch data: ${res.status}`);
@@ -12,15 +14,12 @@ export const MAIN_BLOCKS_URL = "api/v2/blocks";
 export const TRANSACTIONS_URL = "api/v2/transactions";
 export const WALLET_ADDRESS_URL = "api/v2/addresses";
 
-export const getBaseUrl = () => process.env.RPC_URL_TESTNET;
-
-/* TODO: Uncomment when MainNet is enabled
 export const getBaseUrl = (network: NetworkConnection) => {
   if (network === NetworkConnection.TestNet) {
     return process.env.RPC_URL_TESTNET;
   }
-  return process.env.RPC_URL_MAINNET;
-}; */
+  return process.env.RPC_URL_TESTNET; // TODO: Replace with RPC_URL_MAINNET when MainNet is enabled
+};
 
 export function filterParams(params: { key: string; value }[]): string {
   let queryParams = "";

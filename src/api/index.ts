@@ -18,7 +18,7 @@ export const getBaseUrl = (network: NetworkConnection) => {
   if (network === NetworkConnection.TestNet) {
     return process.env.RPC_URL_TESTNET;
   }
-  return process.env.RPC_URL_MAINNET;
+  return process.env.RPC_URL_TESTNET; // TODO: Replace with RPC_URL_MAINNET when MainNet is enabled
 };
 
 export function filterParams(params: { key: string; value }[]): string {

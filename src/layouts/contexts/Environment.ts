@@ -41,7 +41,7 @@ export function getEnvironment(): Environment {
   switch (type) {
     case "production":
       return new Environment("Production", false, [
-        NetworkConnection.MainNet,
+        // NetworkConnection.MainNet, // TODO: Enable MainNet
         NetworkConnection.TestNet,
       ]);
     case "development":

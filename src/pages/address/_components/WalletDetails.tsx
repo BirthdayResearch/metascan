@@ -6,6 +6,7 @@ import { useOutsideAlerter } from "@hooks/useOutsideAlerter";
 import NumericFormat from "@components/commons/NumericFormat";
 import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
+import { DFI_TOKEN_SYMBOL } from "shared/constants";
 
 export interface WalletDetailTokenI {
   value: number;
@@ -65,6 +66,7 @@ export default function WalletDetails({
             value={detail.balance}
             decimalScale={8}
             data-testid="wallet-balance-value"
+            suffix={` ${DFI_TOKEN_SYMBOL}`}
           />
         </div>
         {/* hides token field for now */}

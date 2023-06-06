@@ -101,7 +101,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
                   className={valueFontCss}
                   value={txDetails.confirmations ?? "0"}
                   decimalScale={0}
-                  suffix={` blocks`}
+                  suffix={txDetails.confirmations > 1 ? " blocks" : " block"}
                 />
               </div>
             </div>

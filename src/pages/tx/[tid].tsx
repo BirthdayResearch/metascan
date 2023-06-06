@@ -31,7 +31,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
   const timeInUTC = formatDateToUTC(txDetails.timestamp);
 
   const titleFontCss =
-    "text-white-700 break-all leading-[22.4px] tracking-[0.01em] lg:leading-[24px] lg:-tracking-[0.02em] min-w-fit";
+    "text-white-700 break-all leading-[22.4px] tracking-[0.01em] lg:leading-[24px] lg:-tracking-[0.02em] min-w-[100px]";
   const valueFontCss =
     "block text-white-50 leading-[24px] -tracking-[0.02em] text-end md:text-start break-words";
   const rowCss =

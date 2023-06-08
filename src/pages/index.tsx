@@ -32,7 +32,6 @@ export default function Home({
           type="blocks"
           title="Latest blocks"
           data={latestBlocks}
-          amountLabel="Reward"
           detailsPageBaseUrl="/block"
           listPageUrl="/blocks"
           containerClass="pt-5 md:pt-6 lg:pt-5"

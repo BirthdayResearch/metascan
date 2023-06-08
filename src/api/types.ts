@@ -113,6 +113,7 @@ export interface RawTransactionI {
   gas_used: string;
   gas_limit: string;
   gas_price: string;
+  position: number;
   max_fee_per_gas: string | null;
   max_priority_fee_per_gas: string | null;
   raw_input: string;
@@ -134,6 +135,7 @@ export interface TransactionI {
   timeInSec: number;
   timestamp: string;
   nonce: number;
+  position: number;
   blockNumber: string;
   value: string;
   fee: string;

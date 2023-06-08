@@ -241,6 +241,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
             from={txDetails.from}
             to={txDetails.to}
             transactionType={txDetails.transactionType}
+            position={txDetails.position}
           />
           <div
             className={clsx(

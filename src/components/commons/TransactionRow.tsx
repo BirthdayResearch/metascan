@@ -1,5 +1,3 @@
-import { FiFileText } from "react-icons/fi";
-import { TransactionsIcon } from "@components/icons/Transactions";
 import BigNumber from "bignumber.js";
 import { ConfirmCheck } from "@components/icons/ConfirmCheck";
 import { RejectedCross } from "@components/icons/RejectedCross";
@@ -14,17 +12,24 @@ import {
   TransactionType,
 } from "@api/types";
 import { transformTransactionData } from "shared/transactionDataHelper";
+import { TokenTransferIcon } from "@components/icons/TokenTransfer";
+import {
+  FiFileText,
+  FiFilePlus,
+  FiPlusCircle,
+  FiMinusCircle,
+} from "react-icons/fi";
+import { TransactionsIcon } from "@components/icons/Transactions";
 
 export const iconMapping = {
-  [TransactionType.ContractCall]: FiFileText,
   [TransactionType.Transaction]: TransactionsIcon,
 
   // TODO: add correct icon for each tx type
-  [TransactionType.TokenMinting]: TransactionsIcon,
-  [TransactionType.TokenBurning]: TransactionsIcon,
-  [TransactionType.TokenTransfer]: TransactionsIcon,
+  [TransactionType.TokenMinting]: FiPlusCircle,
+  [TransactionType.TokenBurning]: FiMinusCircle,
+  [TransactionType.TokenTransfer]: TokenTransferIcon,
   [TransactionType.TokenCreate]: TransactionsIcon,
-  [TransactionType.ContractCreation]: FiFileText,
+  [TransactionType.ContractCreation]: FiFilePlus,
   [TransactionType.ContractCall]: FiFileText,
   [TransactionType.Tokenized]: TransactionsIcon,
   [TransactionType.CoinTransfer]: TransactionsIcon,

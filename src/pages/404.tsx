@@ -1,8 +1,19 @@
 import clsx from "clsx";
+import { useRouter } from "next/router";
+import { getTopLevelRoute } from "shared/urlHelper";
 import Button from "@components/commons/Button";
+import DetailPageNotFound from "@components/DetailPageNotFound";
+
+const DETAIL_PAGES = ["/tx", "/block", "/address", "/contract"];
 
 export default function Page404() {
-  return (
+  const router = useRouter();
+  const currentPath = getTopLevelRoute(router.asPath);
+  const isDetailsPage = DETAIL_PAGES.includes(currentPath);
+
+  return isDetailsPage ? (
+    <DetailPageNotFound path={currentPath} />
+  ) : (
     <div
       className={clsx("px-1 pt-16", "lg:w-3/5")}
       data-testid="page-not-found"

@@ -128,6 +128,19 @@ export interface RawTransactionI {
   token_transfers?: any;
 }
 
+export interface TokenTransferProps {
+  fromHash: string;
+  toHash: string;
+  type: string;
+  forToken: {
+    from: string;
+    to: string;
+    value: string;
+    address: string;
+    type: string;
+    symbol: string;
+  };
+}
 export interface TransactionI {
   transactionType: TransactionType;
   type: number;
@@ -155,17 +168,7 @@ export interface TransactionI {
   revertReason: string | null;
   method: string | null;
   confirmations: number;
-  tokenTransfers?: {
-    fromHash: string;
-    toHash: string;
-    forToken: {
-      from: string;
-      to: string;
-      value: string;
-      address: string;
-      type: string;
-    };
-  }[];
+  tokenTransfers?: TokenTransferProps[];
 }
 
 export interface BlockProps {

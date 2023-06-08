@@ -5,20 +5,9 @@ import NumericFormat from "@components/commons/NumericFormat";
 import LinkText from "@components/commons/LinkText";
 import DetailRow from "@components/commons/DetailRow";
 import clsx from "clsx";
+import { TokenTransferProps } from "@api/types";
 import BoldedTitle from "./BoldedTitle";
 import WithCopy from "./WithCopy";
-
-interface TokenTransferProps {
-  fromHash: string;
-  toHash: string;
-  forToken: {
-    from: string;
-    to: string;
-    value: string;
-    address: string;
-    type: string;
-  };
-}
 
 export default function TokenTransferDetails({
   displayTitle,
@@ -91,6 +80,7 @@ export default function TokenTransferDetails({
                 thousandSeparator
                 value={forToken.value}
                 decimalScale={8}
+                suffix={` ${forToken.symbol}`}
                 // TODO: Display symbol of the token here
               />
             </div>

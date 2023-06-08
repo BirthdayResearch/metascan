@@ -3,6 +3,7 @@ import {
   RawTransactionI,
   RawTransactionType,
   RawTxTokenTransfersProps,
+  TokenTransferProps,
   TransactionI,
   TransactionStatus,
   TransactionType,
@@ -86,9 +87,13 @@ const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
     forToken: {
       from: tokenTransfer.to.hash,
       to: tokenTransfer.from.hash,
-      value: utils.formatEther(tokenTransfer.token.total_supply), // TODO: Incorrect value displayed
+      value: utils.formatUnits(
+        tokenTransfer.total.value,
+        tokenTransfer.total.decimals
+      ),
       address: tokenTransfer.token.address,
       type: tokenTransfer.token.type,
+      symbol: tokenTransfer.token.symbol ?? "",
     },
     type: tokenTransfer.type,
   }));
@@ -104,18 +109,7 @@ export const getTransactionType = ({
   txTypes,
 }: {
   toHash: string | null;
-  tokenTransfers: {
-    fromHash: string;
-    toHash: string;
-    forToken: {
-      from: string;
-      to: string;
-      value: string;
-      address: string;
-      type: string;
-    };
-    type;
-  }[];
+  tokenTransfers: TokenTransferProps[];
   isFromContract: boolean;
   isToContract: boolean;
   txTypes: string[];

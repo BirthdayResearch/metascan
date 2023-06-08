@@ -17,9 +17,10 @@ import LinkText from "@components/commons/LinkText";
 import { NetworkConnection } from "@contexts/Environment";
 
 import BoldedTitle from "./_components/BoldedTitle";
-import GasDetails from "./_components/GasDetails";
 import RawInput from "./_components/RawInput";
 import WithCopy from "./_components/WithCopy";
+import GasDetails from "./_components/GasDetails";
+import TokenTransferDetails from "./_components/TokenTransferDetails";
 
 function Transaction({ txDetails }: { txDetails: TransactionI }) {
   const gasPrice = { value: txDetails.gasPrice, symbol: GWEI_SYMBOL };
@@ -242,6 +243,12 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
             to={txDetails.to}
             transactionType={txDetails.transactionType}
           />
+          {txDetails.tokenTransfers && txDetails.tokenTransfers.length > 0 && (
+            <TokenTransferDetails
+              displayTitle="Tokens Transferred"
+              tokenTransfers={txDetails.tokenTransfers}
+            />
+          )}
           <div
             className={clsx(
               "border-b border-black-600",

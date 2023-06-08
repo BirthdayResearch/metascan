@@ -2,6 +2,7 @@ import { utils } from "ethers";
 import {
   RawTransactionI,
   RawTransactionType,
+  RawTxTokenTransfersProps,
   TransactionI,
   TransactionStatus,
   TransactionType,
@@ -28,10 +29,17 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
 
   const fromHash = tx.from.hash ?? BURN_ADDRESS_HASH;
   const toHash = tx.to?.hash ?? BURN_ADDRESS_HASH;
+  const isFromContract = tx.from.is_contract;
+  const isToContract = tx.to?.is_contract ?? false;
+
+  const tokenTransfers =
+    tx.token_transfers?.length > 0 ? getTokenTransfers(tx.token_transfers) : [];
   const transactionType = getTransactionType({
-    txTypes: tx.tx_types,
-    fromHash,
     toHash,
+    tokenTransfers,
+    isFromContract,
+    isToContract,
+    txTypes: tx.tx_types,
   });
 
   return {
@@ -42,6 +50,8 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     symbol: DFI_TOKEN_SYMBOL, // TODO: Revisit tx symbol
     from: fromHash,
     to: toHash,
+    isFromContract,
+    isToContract,
     status:
       tx.status === "ok"
         ? TransactionStatus.Confirmed
@@ -62,59 +72,112 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     revertReason: tx.revert_reason,
     method: tx.method,
     confirmations: tx.confirmations,
+    tokenTransfers: tx.token_transfers
+      ? getTokenTransfers(tx.token_transfers)
+      : undefined,
   };
 };
 
+// To get Tokens minted
+const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
+  tokenTransfers.map((tokenTransfer) => ({
+    fromHash: tokenTransfer.from.hash,
+    toHash: tokenTransfer.to.hash,
+    forToken: {
+      from: tokenTransfer.to.hash,
+      to: tokenTransfer.from.hash,
+      value: utils.formatEther(tokenTransfer.token.total_supply), // TODO: Incorrect value displayed
+      address: tokenTransfer.token.address,
+      type: tokenTransfer.token.type,
+    },
+    type: tokenTransfer.type,
+  }));
+
+/*
+  Equivalent logic of transaction_display_type from blockscout
+*/
 export const getTransactionType = ({
-  txTypes,
-  fromHash,
   toHash,
+  tokenTransfers,
+  isFromContract,
+  isToContract,
+  txTypes,
 }: {
-  txTypes: string[];
-  fromHash: string | null;
   toHash: string | null;
+  tokenTransfers: {
+    fromHash: string;
+    toHash: string;
+    forToken: {
+      from: string;
+      to: string;
+      value: string;
+      address: string;
+      type: string;
+    };
+    type;
+  }[];
+  isFromContract: boolean;
+  isToContract: boolean;
+  txTypes: string[];
 }) => {
   let transactionType = TransactionType.Transaction;
-  // Use the last index of tx_types as the type
-  const type = txTypes?.length > 0 ? txTypes[txTypes.length - 1] : null;
+  // Note: tokenTransfers is always null in transactions list api
+  // To workaround the missing data, tx_types is used to determine if it involvesTokenTransfers
+  const involvesTokenTransfers =
+    tokenTransfers?.length > 0 ||
+    (txTypes.includes(RawTransactionType.TokenTransfer) &&
+      !txTypes.includes(RawTransactionType.ContractCreation));
+  const involvesCoinTransfer =
+    txTypes.includes(RawTransactionType.CoinTransfer) &&
+    !txTypes.includes(RawTransactionType.ContractCreation);
+  const involvesContract = isFromContract || isToContract;
 
-  if (
-    type === RawTransactionType.TokenTransfer &&
-    fromHash === BURN_ADDRESS_HASH &&
-    toHash !== BURN_ADDRESS_HASH
-  ) {
-    transactionType = TransactionType.TokenBurning;
-  } else if (
-    type === RawTransactionType.TokenTransfer &&
-    fromHash !== BURN_ADDRESS_HASH &&
-    toHash === BURN_ADDRESS_HASH
-  ) {
-    transactionType = TransactionType.TokenMinting;
-  } else if (
-    type === RawTransactionType.TokenTransfer &&
-    fromHash !== BURN_ADDRESS_HASH &&
-    toHash !== BURN_ADDRESS_HASH
-  ) {
-    transactionType = TransactionType.TokenTransfer;
-  } else if (
-    type === RawTransactionType.TokenTransfer &&
-    fromHash === BURN_ADDRESS_HASH &&
-    toHash === BURN_ADDRESS_HASH
-  ) {
-    transactionType = TransactionType.TokenCreate;
-  } else if (type === RawTransactionType.ContractCall) {
-    transactionType = TransactionType.ContractCall;
-  } else if (type === RawTransactionType.TokenTransfer) {
-    transactionType = TransactionType.TokenTransfer;
-  } else if (type === RawTransactionType.Tokenized) {
-    transactionType = TransactionType.Tokenized;
-  } else if (type === RawTransactionType.CoinTransfer) {
-    transactionType = TransactionType.Transaction; // TODO: Revisit to check difference of coin transfer and transaction
-  } else if (type === RawTransactionType.ContractCreation) {
+  if (involvesTokenTransfers) {
+    transactionType = getTransactionTypeFromTokenTransfers(tokenTransfers);
+  } else if (toHash === BURN_ADDRESS_HASH) {
     transactionType = TransactionType.ContractCreation;
+  } else if (involvesContract) {
+    transactionType = TransactionType.ContractCall;
+  } else if (involvesCoinTransfer) {
+    transactionType = TransactionType.CoinTransfer;
   } else {
     transactionType = TransactionType.Transaction;
   }
 
   return transactionType;
+};
+
+/*
+  Equivalent logic of get_transaction_type_from_token_transfers from blockscout
+*/
+const getTransactionTypeFromTokenTransfers = (
+  tokenTransfers: {
+    fromHash: string;
+    toHash: string;
+    type: string;
+  }[]
+) => {
+  if (tokenTransfers.length > 0) {
+    if (
+      tokenTransfers.filter((tt) => tt.type === RawTransactionType.TokenBurning)
+        .length === tokenTransfers.length
+    ) {
+      return TransactionType.TokenBurning;
+    }
+    if (
+      tokenTransfers.filter((tt) => tt.type === RawTransactionType.TokenMinting)
+        .length === tokenTransfers.length
+    ) {
+      return TransactionType.TokenMinting;
+    }
+    if (
+      tokenTransfers.filter(
+        (tt) => tt.type === RawTransactionType.TokenCreation
+      ).length === tokenTransfers.length
+    ) {
+      return TransactionType.TokenCreate;
+    }
+  }
+
+  return TransactionType.TokenTransfer;
 };

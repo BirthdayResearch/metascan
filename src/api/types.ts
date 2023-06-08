@@ -62,6 +62,11 @@ export enum RawTransactionType {
   ContractCreation = "contract_creation",
   ContractCall = "contract_call",
   CoinTransfer = "coin_transfer",
+
+  // Token Transfer Types
+  TokenBurning = "token_burning",
+  TokenMinting = "token_minting",
+  TokenCreation = "token_spawning",
   TokenTransfer = "token_transfer",
 }
 
@@ -103,8 +108,8 @@ export interface RawTransactionI {
   type: number;
   hash: string;
   value: string;
-  from: { hash: string };
-  to: { hash: string } | null;
+  from: { hash: string; is_contract: boolean };
+  to: { hash: string; is_contract: boolean } | null;
   status: string;
   timestamp: string;
   nonce: number;
@@ -120,6 +125,7 @@ export interface RawTransactionI {
   revert_reason: string | null;
   method: string | null;
   confirmations: number;
+  token_transfers?: any;
 }
 
 export interface TransactionI {
@@ -130,6 +136,8 @@ export interface TransactionI {
   symbol: string;
   from: string;
   to: string | null;
+  isFromContract: boolean;
+  isToContract: boolean;
   status: TransactionStatus;
   timeInSec: number;
   timestamp: string;
@@ -147,6 +155,17 @@ export interface TransactionI {
   revertReason: string | null;
   method: string | null;
   confirmations: number;
+  tokenTransfers?: {
+    fromHash: string;
+    toHash: string;
+    forToken: {
+      from: string;
+      to: string;
+      value: string;
+      address: string;
+      type: string;
+    };
+  }[];
 }
 
 export interface BlockProps {
@@ -162,4 +181,35 @@ export interface BlockProps {
   rewards: any; // TODO: Dependent to DMC rewards
   timestamp: string;
   tx_count: number;
+}
+
+interface RawTokenTransferDirectionProps {
+  hash: string;
+  implementation_name?: string;
+  is_contract: boolean;
+  is_verified: boolean;
+  name?: string;
+  private_tags: [];
+  public_tags: [];
+  watchlist_names: [];
+}
+export interface RawTxTokenTransfersProps {
+  block_hash;
+  from: RawTokenTransferDirectionProps;
+  to: RawTokenTransferDirectionProps;
+  token: {
+    address: string;
+    decimals?: string | number;
+    exhange_rate?: string | number;
+    holders: string;
+    name?: string;
+    symbol?: string;
+    total_supply: string;
+    type: string;
+  };
+  type: string;
+  total: {
+    decimals?: string | number;
+    value: string;
+  };
 }

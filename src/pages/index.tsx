@@ -3,7 +3,8 @@
 import { HomeTitle } from "@components/HomeTitle";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { GetServerSidePropsResult, InferGetServerSidePropsType } from "next";
-import LatestDataTable, { RowData } from "@components/LatestDataTable";
+import { RowData } from "@components/types";
+import LatestDataTable from "@components/LatestDataTable";
 import LatestDataApi from "@api/LatestDataApi";
 
 export default function Home({

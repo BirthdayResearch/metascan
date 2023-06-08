@@ -1,10 +1,10 @@
 import { utils } from "ethers";
-import { RowData } from "@components/LatestDataTable";
 import { getTimeAgo } from "shared/durationHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
 import { BURN_ADDRESS_HASH } from "shared/constants";
 import { getTransactionType } from "shared/transactionDataHelper";
+import { RowData } from "@components/types";
 import {
   getBaseUrl,
   MAIN_LATEST_BLOCK_URL,

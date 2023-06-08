@@ -24,7 +24,7 @@ const ErrorMessages = {
 export default function DetailPageNotFound({ path }: { path: string }) {
   const trimmedPath = path.charAt(1).toUpperCase() + path.slice(2); // eg. /block -> Block
   const type: SearchResultType =
-    trimmedPath === "tx"
+    trimmedPath === "Tx"
       ? SearchResultType.Transaction
       : SearchResultType[trimmedPath];
 

@@ -1,20 +1,21 @@
-import GradientCardContainer from "@components/commons/GradientCardContainer";
-import LinkText from "@components/commons/LinkText";
-import LinkTextWithIcon from "@components/commons/LinktextWithIcon";
-import NumericFormat from "@components/commons/NumericFormat";
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
-import useCopyToClipboard from "hooks/useCopyToClipboard";
-import { SearchBar } from "layouts/components/searchbar/SearchBar";
+import { utils } from "ethers";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
+import { MdCheckCircle } from "react-icons/md";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
   InferGetServerSidePropsType,
 } from "next";
-import { useEffect, useState } from "react";
-import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
-import { MdCheckCircle } from "react-icons/md";
+import GradientCardContainer from "@components/commons/GradientCardContainer";
+import LinkText from "@components/commons/LinkText";
+import LinkTextWithIcon from "@components/commons/LinktextWithIcon";
+import NumericFormat from "@components/commons/NumericFormat";
+import useCopyToClipboard from "hooks/useCopyToClipboard";
+import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import {
   formatDateToUTC,
   getDuration,
@@ -113,21 +114,44 @@ export default function Block({
           {/* Details */}
           <div className="border-t border-black-600 pt-8 text-white-50 flex flex-col md:flex-row md:gap-5">
             <div className="w-full md:w-1/2">
-              <FeeRecipientRow
+              <AddressRow
                 label="Fee recipient"
                 feeRecipient={block.miner.hash}
+              />
+              <AddressRow
+                label="Parent Hash"
+                feeRecipient={block.parent_hash}
+              />
+              <DetailRow
+                testId="block-size"
+                label="Size"
+                value={`${block.size}`}
+                decimalScale={0}
+                suffix=" bytes"
               />
               <DetailRow
                 testId="block-reward-amount"
                 label="Reward"
                 value={getRewards(block.rewards)}
+                suffix=" DFI"
               />
-              <GasUsedRow
-                label="Gas used"
-                gasUsed={block.gas_used}
-                gasPercentage={new BigNumber(block.gas_used_percentage).toFixed(
-                  2
-                )}
+            </div>
+            <div className="w-full md:w-1/2">
+              <DetailRow
+                testId="base-fee"
+                label="Base fee"
+                value={utils
+                  .formatUnits(block.base_fee_per_gas, "gwei")
+                  .toString()}
+                decimalScale={9}
+                suffix=" Gwei" // TODO: Confirm if this is Gwei, DFI or ETH
+              />
+              <DetailRow
+                testId="burnt-fee"
+                label="Burnt fee"
+                value={utils.formatEther(block.burnt_fees)}
+                decimalScale={10}
+                suffix=" DFI" // TODO: Confirm if this is DFI or ETH
               />
               <DetailRow
                 testId="gas-limit"
@@ -135,17 +159,12 @@ export default function Block({
                 value={block.gas_limit}
                 decimalScale={0}
               />
-            </div>
-            <div className="w-full md:w-1/2">
-              <DetailRow
-                testId="base-fee"
-                label="Base fee"
-                value={new BigNumber(block.base_fee_per_gas ?? 0).toFixed(8)}
-              />
-              <DetailRow
-                testId="burnt-fee"
-                label="Burnt fee"
-                value={new BigNumber(block.burnt_fees ?? 0).toFixed(8)}
+              <GasUsedRow
+                label="Gas used"
+                gasUsed={block.gas_used}
+                gasPercentage={new BigNumber(block.gas_used_percentage).toFixed(
+                  2
+                )}
               />
             </div>
           </div>
@@ -207,7 +226,7 @@ function DetailRow({
   );
 }
 
-function FeeRecipientRow({
+function AddressRow({
   label,
   feeRecipient,
 }: {

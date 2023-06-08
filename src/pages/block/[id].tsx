@@ -93,12 +93,7 @@ export default function Block({
               data-testid="block-number"
               className="text-white-50 font-bold text-[32px]"
             >
-              <NumericFormat
-                thousandSeparator
-                value={blockNumber}
-                decimalScale={0}
-                prefix="#"
-              />
+              <NumericFormat value={blockNumber} decimalScale={0} prefix="#" />
             </div>
             <div className="flex flex-col items-start md:items-end pt-6 md:pt-0">
               <div
@@ -125,8 +120,7 @@ export default function Block({
               <DetailRow
                 testId="block-reward-amount"
                 label="Reward"
-                // TODO(pierregee): Dependent to how DMC rewards pass the data
-                value={getRewards(block.rewards[0]).toFixed(8)}
+                value={getRewards(block.rewards)}
               />
               <GasUsedRow
                 label="Gas used"

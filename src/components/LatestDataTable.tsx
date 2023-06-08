@@ -160,12 +160,7 @@ function RowItem({
           href={detailsPageLink}
         >
           {type === "blocks" ? (
-            <NumericFormat
-              thousandSeparator
-              value={transactionId}
-              decimalScale={0}
-              prefix="#"
-            />
+            <NumericFormat value={transactionId} decimalScale={0} prefix="#" />
           ) : (
             truncateTextFromMiddle(transactionId, 5)
           )}
@@ -214,7 +209,7 @@ function BlockInfoDisplay({
       <div className="flex pt-5 md:pt-0">
         <LinkText
           testId={`block-details-link-${block}`}
-          href={{ pathname: "/txs", query: { block } }}
+          href={`/block/${block}`}
         >
           <NumericFormat
             thousandSeparator

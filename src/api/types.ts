@@ -135,13 +135,13 @@ export interface TransactionI {
   timeInSec: number;
   timestamp: string;
   nonce: number;
-  position: number;
   blockNumber: string;
   value: string;
   fee: string;
   gasUsed: string;
   gasLimit: string;
   gasPrice: string;
+  position: number;
   maxFeePerGas: string | null;
   maxPriorityFeePerGas: string | null;
   rawInput: string;

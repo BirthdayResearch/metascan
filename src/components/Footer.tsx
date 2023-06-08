@@ -7,23 +7,17 @@ const MenuItems = [
     category: "Ecosystem",
     childLink: [
       {
-        imagePath: "/menu/dmc-explorer.svg",
-        testId: "DeFiMetaChain",
-        label: "DeFiMetaChain",
-        href: "https://defimetachain.org/",
-      },
-      {
         imagePath: "/menu/defichain-com.svg",
         testId: "DeFiChain.com",
         label: "DeFiChain.com",
         href: "https://defichain.com",
       },
-      {
-        imagePath: "/menu/VerifiedContracts.svg",
-        testId: "Verified Contracts",
-        label: "Verified Contracts",
-        href: "",
-      },
+      // {
+      //   imagePath: "/menu/VerifiedContracts.svg",
+      //   testId: "Verified Contracts",
+      //   label: "Verified Contracts",
+      //   href: "",
+      // },
     ],
   },
   {
@@ -47,12 +41,6 @@ const MenuItems = [
     category: "Blog",
     href: "",
     childLink: [
-      {
-        imagePath: "/menu/whitepaper.svg",
-        testId: "Whitepaper",
-        label: "Whitepaper",
-        href: "",
-      },
       {
         imagePath: "/menu/github.svg",
         testId: "GitHub",

@@ -81,7 +81,6 @@ export default function TokenTransferDetails({
                 value={forToken.value}
                 decimalScale={8}
                 suffix={` ${forToken.symbol}`}
-                // TODO: Display symbol of the token here
               />
             </div>
           </DetailRow>

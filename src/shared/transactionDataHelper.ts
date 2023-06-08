@@ -80,7 +80,7 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
 };
 
 // To get Tokens minted
-const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
+export const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
   tokenTransfers.map((tokenTransfer) => ({
     fromHash: tokenTransfer.from.hash,
     toHash: tokenTransfer.to.hash,

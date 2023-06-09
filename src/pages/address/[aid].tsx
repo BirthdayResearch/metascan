@@ -15,6 +15,7 @@ import clsx from "clsx";
 import { NetworkConnection } from "@contexts/Environment";
 
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
+import TransactionDetails from "@components/TransactionDetails";
 import QrCode from "../../components/commons/QrCode";
 import WalletAddressApi from "../../api/WalletAddressApi";
 import WalletAddressDetails from "./_components/WalletAddressDetails";
@@ -25,7 +26,6 @@ import WalletDetails, {
 } from "./_components/WalletDetails";
 import BalanceDetails from "./_components/BalanceDetails";
 import TokenDetails from "./_components/TokenDetails";
-import TransactionDetails from "./_components/TransactionDetails";
 
 enum TabTitle {
   tokens = "Tokens",
@@ -178,8 +178,8 @@ function WalletSegmentTwo({
 
       {isTransactionClicked ? (
         <TransactionDetails
-          addressTransactions={addressTransactions}
-          aid={aid}
+          data={addressTransactions}
+          pathname={`/address/${aid}`}
           isLoading={isLoading}
         />
       ) : (

@@ -22,7 +22,7 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
   let dfiAmount = "0";
   if (amountIndex && amountIndex > -1) {
     dfiAmount = utils.formatEther(
-      tx.decoded_input?.parameters[amountIndex].value as string
+      (tx.decoded_input?.parameters[amountIndex].value as string) ?? "0"
     );
   }
 
@@ -50,11 +50,11 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     timestamp: tx.timestamp,
     nonce: tx.nonce,
     blockNumber: tx.block,
-    value: utils.formatEther(tx.value),
-    fee: utils.formatEther(tx.fee.value),
+    value: utils.formatEther(tx.value ?? "0"),
+    fee: utils.formatEther(tx.fee.value ?? "0"),
     gasUsed: tx.gas_used,
     gasLimit: tx.gas_limit,
-    gasPrice: utils.formatUnits(tx.gas_price, "gwei").toString(),
+    gasPrice: utils.formatUnits(tx.gas_price ?? "0", "gwei").toString(),
     position: tx.position,
     maxFeePerGas: tx.max_fee_per_gas,
     maxPriorityFeePerGas: tx.max_priority_fee_per_gas,

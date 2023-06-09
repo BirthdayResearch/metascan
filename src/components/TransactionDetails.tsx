@@ -9,24 +9,29 @@ import {
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
-import { AddressTransactionsProps } from "./WalletDetails";
+import { RawTransactionI } from "@api/types";
+
+interface TransactionsProps {
+  transactions: RawTransactionI[];
+  nextPageParams: TxnNextPageParamsProps;
+}
 
 interface TransactionDetailsProps {
-  aid: string;
-  addressTransactions: AddressTransactionsProps;
+  data: TransactionsProps;
+  pathname: string;
   isLoading?: boolean;
 }
 
 function TxnPagination({
-  aid,
+  pathname,
   nextPageParams,
 }: {
-  aid: string;
+  pathname: string;
   nextPageParams: TxnNextPageParamsProps;
 }) {
   return (
     <Pagination<TxnQueryParamsProps>
-      pathname={`/address/${aid}`}
+      pathname={pathname}
       nextPageParams={
         nextPageParams
           ? {
@@ -41,8 +46,8 @@ function TxnPagination({
 }
 
 export default function TransactionDetails({
-  aid,
-  addressTransactions: { transactions, nextPageParams },
+  data: { transactions, nextPageParams },
+  pathname,
   isLoading,
 }: TransactionDetailsProps) {
   const isTxnListEmpty = transactions.length === 0;
@@ -66,7 +71,10 @@ export default function TransactionDetails({
             {isLoading && (
               <PaginationLoader customStyle="right-1 top-0 md:top-0" />
             )}
-            <TxnPagination aid={aid} nextPageParams={nextPageParams} />
+            <TxnPagination
+              pathname={pathname}
+              nextPageParams={nextPageParams}
+            />
           </div>
 
           {isLoading ? (
@@ -80,7 +88,10 @@ export default function TransactionDetails({
             {isLoading && (
               <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
             )}
-            <TxnPagination aid={aid} nextPageParams={nextPageParams} />
+            <TxnPagination
+              pathname={pathname}
+              nextPageParams={nextPageParams}
+            />
           </div>
         </>
       )}

@@ -14,6 +14,7 @@ import GradientCardContainer from "@components/commons/GradientCardContainer";
 import LinkText from "@components/commons/LinkText";
 import LinkTextWithIcon from "@components/commons/LinktextWithIcon";
 import NumericFormat from "@components/commons/NumericFormat";
+import TransactionDetails from "@components/TransactionDetails";
 import useCopyToClipboard from "hooks/useCopyToClipboard";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import {
@@ -27,7 +28,6 @@ import { NetworkConnection } from "@contexts/Environment";
 import BlocksApi from "@api/BlocksApi";
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
 import { BlockProps, RawTransactionI } from "@api/types";
-import BlockTransactionList from "./_components/BlockTransactionList";
 
 interface PageProps {
   block: BlockProps;
@@ -141,7 +141,7 @@ export default function Block({
                 testId="base-fee"
                 label="Base fee"
                 value={utils
-                  .formatUnits(block.base_fee_per_gas, "gwei")
+                  .formatUnits(block.base_fee_per_gas ?? "0", "gwei")
                   .toString()}
                 decimalScale={9}
                 suffix=" Gwei" // TODO: Confirm if this is Gwei, DFI or ETH
@@ -149,7 +149,7 @@ export default function Block({
               <DetailRow
                 testId="burnt-fee"
                 label="Burnt fee"
-                value={utils.formatEther(block.burnt_fees)}
+                value={utils.formatEther(block.burnt_fees ?? "0")}
                 decimalScale={10}
                 suffix=" DFI" // TODO: Confirm if this is DFI or ETH
               />
@@ -173,12 +173,20 @@ export default function Block({
 
       {/* Block transaction list */}
       <div data-testid="block-transaction-list" className="mt-6">
-        <BlockTransactionList
-          blockNumber={blockNumber.toFixed(0)}
-          transactions={blockTransactions.transactions}
-          nextPageParams={blockTransactions.nextPageParams}
-          isLoading={isLoading}
-        />
+        <GradientCardContainer className="relative">
+          <div className="md:p-10 p-5">
+            <div className="flex flex-col md:pt-[3.67px] pt-[23.67px]">
+              <TransactionDetails
+                data={{
+                  transactions: blockTransactions.transactions,
+                  nextPageParams: blockTransactions.nextPageParams,
+                }}
+                pathname={`/block/${blockNumber}`}
+                isLoading={isLoading}
+              />
+            </div>
+          </div>
+        </GradientCardContainer>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 interface TransactionsIconProps {
   className: string;
-  size: number;
+  size?: number;
 }
 
 export function TransactionsIcon({
@@ -8,7 +8,13 @@ export function TransactionsIcon({
   size = 24,
 }: TransactionsIconProps): JSX.Element {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+    >
       <path
         d="M12 14H18V20"
         strokeWidth="1.5"

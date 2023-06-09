@@ -14,6 +14,7 @@ import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import NumericFormat from "@components/commons/NumericFormat";
 import LinkText from "@components/commons/LinkText";
+import { iconMapping } from "@components/commons/TransactionRow";
 import { NetworkConnection } from "@contexts/Environment";
 
 import DetailRow from "@components/commons/DetailRow";
@@ -32,6 +33,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
   const timeDuration = getDuration(Number(txDetails.timeInSec));
   const timeInUTC = formatDateToUTC(txDetails.timestamp);
 
+  const Icon = iconMapping[txDetails.transactionType];
   const titleFontCss =
     "text-white-700 break-words leading-[22.4px] tracking-[0.01em] lg:leading-[24px] lg:-tracking-[0.02em] min-w-[100px]";
   const valueFontCss =
@@ -115,8 +117,14 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
               >
                 Transaction type
               </div>
-              <div data-testid="transaction-type" className={valueFontCss}>
-                {/* TODO: Add transaction type icon */}
+              <div
+                data-testid="transaction-type"
+                className={clsx(
+                  "flex gap-1 md:gap-2 items-center",
+                  valueFontCss
+                )}
+              >
+                <Icon className="text-white-50 stroke-white-50 w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
                 {txDetails.transactionType}
               </div>
             </div>

@@ -68,7 +68,7 @@ export default {
 
       return {
         transactionId: data.hash,
-        tokenAmount: utils.formatEther(data.value),
+        tokenAmount: utils.formatEther(data.value ?? "0"),
         txnOrBlockInfo: {
           from: data.from.hash ?? BURN_ADDRESS_HASH,
           to: data.to?.hash ?? BURN_ADDRESS_HASH,

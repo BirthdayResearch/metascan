@@ -104,7 +104,7 @@ export default function GasDetails({
           </DetailRow>
           <DetailRow
             label="Position in block"
-            tooltip=" The position refers to the index number assigned to a transaction within a block on the blockchain"
+            tooltip="The position refers to the index number assigned to a transaction within a block on the blockchain"
           >
             <NumericFormat
               data-testid="position"

@@ -134,14 +134,14 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
           )}
 
           <div className="relative flex w-full px-8 py-[22px] rounded-lg bg-black-500 black-gradient-1">
-            <Combobox.Button as="div" className="flex w-full mr-2">
-              <FiSearch size={24} className="text-white-50 mr-2 self-center" />
+            <Combobox.Button as="div" className="flex w-full gap-2">
+              <FiSearch size={24} className="text-white-50 self-center" />
               <Combobox.Input
                 as="input"
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 placeholder="Search for txn hash / block height"
-                className="h-full w-full focus:outline-none bg-transparent caret-lightBlue placeholder-black-50 text-white-50 text-xl"
+                className="h-full w-full focus:outline-none bg-transparent caret-lightBlue placeholder-white-700 placeholder-opacity-50 text-white-50 text-xl tracking-[0.01em]"
                 data-testid="searchBar-input"
                 displayValue={(item: SearchResult) => item?.title}
                 onChange={onChangeDebounceHandler}

@@ -16,7 +16,7 @@ export default function Home({
     <>
       <HomeTitle />
       <div className="px-1 md:px-0">
-        <SearchBar containerClass="lg:px-[196px] mb-0" />
+        <SearchBar containerClass="2.5xl:px-[196px] mb-0" />
         {/* <TokenStatsDisplay /> */}
         {/* <GroupStatisticCard /> */}
         {/* TODO: Add blocks and txs summary card */}

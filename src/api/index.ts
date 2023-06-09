@@ -17,9 +17,9 @@ export const SMART_CONTRACT_URL = "api/v2/smart-contracts";
 
 export const getBaseUrl = (network: NetworkConnection) => {
   if (network === NetworkConnection.TestNet) {
-    return process.env.RPC_URL_TESTNET;
+    return process.env.NEXT_PUBLIC_RPC_URL_TESTNET;
   }
-  return process.env.RPC_URL_MAINNET;
+  return process.env.NEXT_PUBLIC_RPC_URL_TESTNET; // TODO: Replace with NEXT_PUBLIC_RPC_URL_MAINNET when MainNet is enabled
 };
 
 export function filterParams(params: { key: string; value }[]): string {

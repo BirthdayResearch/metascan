@@ -5,10 +5,12 @@ import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import { TimeComponent } from "@components/commons/TimeComponent";
 import { getTimeAgo } from "shared/durationHelper";
+import { getRewards } from "shared/getRewards";
 
 // Used the data returned from API as is (snake_case) to reduce the number of loops,
 export default function BlockRow({ data }: { data: any }) {
   const timestamp = getTimeAgo(data.timestamp);
+  const reward = getRewards(data.rewards) ?? "0";
   return (
     <div>
       {/* for desktop and tablet */}
@@ -20,8 +22,7 @@ export default function BlockRow({ data }: { data: any }) {
           <div className="col-start-3 col-end-7 lg:col-start-3 lg:col-end-9">
             <div className="flex md:flex-col lg:flex-row">
               <RewardComponent
-                // TODO(Pierre): Dependent to how DMC would return the rewards
-                amount={data.rewards[0] ?? "0"}
+                amount={reward}
                 symbol="DFI"
                 containerClass="lg:w-1/2"
               />
@@ -50,11 +51,7 @@ export default function BlockRow({ data }: { data: any }) {
       <div className="md:hidden py-6">
         <BlockHeightComponent blockHeight={data.height} />
         <div className="ml-8">
-          <RewardComponent
-            amount={data.rewards[0] ?? "0"}
-            symbol="DFI"
-            containerClass="mt-2"
-          />
+          <RewardComponent amount={reward} symbol="DFI" containerClass="mt-2" />
           <RecipientComponent value={data.miner.hash} containerClass="mt-4" />
           <TxnCountComponent count={data.tx_count} containerClass="mt-4" />
           <TimeComponent time={timestamp} containerClass="mt-4" />
@@ -78,12 +75,7 @@ function BlockHeightComponent({
         href={`/block/${blockHeight}`}
         customStyle="ml-2 lg:ml-4"
       >
-        <NumericFormat
-          thousandSeparator
-          value={blockHeight}
-          decimalScale={0}
-          prefix="#"
-        />
+        <NumericFormat value={blockHeight} decimalScale={0} prefix="#" />
       </LinkText>
     </div>
   );

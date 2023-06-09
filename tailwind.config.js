@@ -126,6 +126,7 @@ module.exports = {
       },
       screens: {
         "2.5xl": "1440px",
+        xs: { max: "320px" },
       },
       keyframes: {
         "fade-in": {
@@ -153,6 +154,9 @@ module.exports = {
       },
       fontFamily: {
         "space-mono": ["Space Mono", "sans-serif"],
+      },
+      fontSize: {
+        xxs: ["10px", "12px"],
       },
     },
   },

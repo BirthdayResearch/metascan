@@ -3,7 +3,8 @@
 import { HomeTitle } from "@components/HomeTitle";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { GetServerSidePropsResult, InferGetServerSidePropsType } from "next";
-import LatestDataTable, { RowData } from "@components/LatestDataTable";
+import { RowData } from "@components/types";
+import LatestDataTable from "@components/LatestDataTable";
 import LatestDataApi from "@api/LatestDataApi";
 
 export default function Home({
@@ -15,7 +16,7 @@ export default function Home({
     <>
       <HomeTitle />
       <div className="px-1 md:px-0">
-        <SearchBar containerClass="lg:px-[196px] mb-0" />
+        <SearchBar containerClass="2.5xl:px-[196px] mb-0" />
         {/* <TokenStatsDisplay /> */}
         {/* <GroupStatisticCard /> */}
         {/* TODO: Add blocks and txs summary card */}
@@ -32,7 +33,6 @@ export default function Home({
           type="blocks"
           title="Latest blocks"
           data={latestBlocks}
-          amountLabel="Reward"
           detailsPageBaseUrl="/block"
           listPageUrl="/blocks"
           containerClass="pt-5 md:pt-6 lg:pt-5"

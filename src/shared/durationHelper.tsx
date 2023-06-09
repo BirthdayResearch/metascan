@@ -41,7 +41,10 @@ function secondsToTime(value: number): {
 }
 
 export function getDuration(seconds: number): string {
-  const { y, m, d, h, min, s } = secondsToTime(seconds);
+  if (seconds < 60) {
+    return "< 1 min";
+  }
+  const { y, m, d, h, min } = secondsToTime(seconds);
   const yDisplay = y > 0 ? `${y}y` : "";
   const mDisplay =
     m > 0 ? ` ${y > 0 ? padStart(m.toString(), 2, "0") : m}m` : "";
@@ -51,8 +54,7 @@ export function getDuration(seconds: number): string {
     h > 0 ? ` ${d > 0 ? padStart(h.toString(), 2, "0") : h}hr` : "";
   const minDisplay =
     min > 0 ? ` ${h > 0 ? padStart(min.toString(), 2, "0") : min}min` : "";
-  const sDisplay = s > 0 ? ` ${padStart(s.toString(), 2, "0")}s` : "";
-  return `${yDisplay}${mDisplay}${dDisplay}${hDisplay}${minDisplay}${sDisplay}`;
+  return `${yDisplay}${mDisplay}${dDisplay}${hDisplay}${minDisplay}`;
 }
 
 export function getTimeAgo(timestamp: string): number {

@@ -118,6 +118,7 @@ export interface RawTransactionI {
   gas_used: string;
   gas_limit: string;
   gas_price: string;
+  position: number;
   max_fee_per_gas: string | null;
   max_priority_fee_per_gas: string | null;
   raw_input: string;
@@ -161,6 +162,7 @@ export interface TransactionI {
   gasUsed: string;
   gasLimit: string;
   gasPrice: string;
+  position: number;
   maxFeePerGas: string | null;
   maxPriorityFeePerGas: string | null;
   rawInput: string;
@@ -184,6 +186,8 @@ export interface BlockProps {
   rewards: any; // TODO: Dependent to DMC rewards
   timestamp: string;
   tx_count: number;
+  parent_hash: string;
+  size: number;
 }
 
 interface RawTokenTransferDirectionProps {

@@ -242,6 +242,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
             from={txDetails.from}
             to={txDetails.to}
             transactionType={txDetails.transactionType}
+            position={txDetails.position}
           />
           {txDetails.tokenTransfers && txDetails.tokenTransfers.length > 0 && (
             <TokenTransferDetails

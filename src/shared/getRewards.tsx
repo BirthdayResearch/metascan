@@ -1,7 +1,6 @@
-import BigNumber from "bignumber.js";
+import { utils } from "ethers";
 
-// TODO(pierregee): Dependent to how DMC rewards pass the data
-export const getRewards = (rewards): BigNumber =>
-  new BigNumber(
+export const getRewards = (rewards): string =>
+  utils.formatEther(
     rewards !== undefined && rewards.length > 0 ? rewards[0].reward : 0
   );

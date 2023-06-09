@@ -1,5 +1,5 @@
 interface TokenTransferIconProps {
-  size: number;
+  size?: number;
 }
 
 export function TokenTransferIcon({

@@ -182,6 +182,7 @@ export default function Block({
                   nextPageParams: blockTransactions.nextPageParams,
                 }}
                 pathname={`/block/${blockNumber}`}
+                type="block"
                 isLoading={isLoading}
               />
             </div>

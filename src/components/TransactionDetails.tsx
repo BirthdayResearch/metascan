@@ -19,6 +19,7 @@ interface TransactionsProps {
 interface TransactionDetailsProps {
   data: TransactionsProps;
   pathname: string;
+  type: "address" | "block";
   isLoading?: boolean;
 }
 
@@ -47,6 +48,7 @@ function TxnPagination({
 
 export default function TransactionDetails({
   data: { transactions, nextPageParams },
+  type,
   pathname,
   isLoading,
 }: TransactionDetailsProps) {
@@ -55,7 +57,7 @@ export default function TransactionDetails({
     <div>
       <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
         <h2
-          data-testid="address-txn-list-title"
+          data-testid={`${type}-txn-list-title`}
           className="font-bold text-xl text-white-50"
         >
           {isTxnListEmpty ? "No transactions" : "Transactions"}
@@ -63,7 +65,7 @@ export default function TransactionDetails({
       </div>
       {isTxnListEmpty ? (
         <div className="text-white-50">
-          There are no transactions found in this address
+          {`There are no transactions found in this ${type}`}
         </div>
       ) : (
         <>

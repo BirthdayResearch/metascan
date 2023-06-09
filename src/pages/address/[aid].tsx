@@ -180,6 +180,7 @@ function WalletSegmentTwo({
         <TransactionDetails
           data={addressTransactions}
           pathname={`/address/${aid}`}
+          type="address"
           isLoading={isLoading}
         />
       ) : (

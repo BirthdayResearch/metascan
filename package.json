@@ -30,7 +30,7 @@
     "recharts": "^2.6.2"
   },
   "devDependencies": {
-    "@cypress/code-coverage": "^3.10.5",
+    "@cypress/code-coverage": "^3.10.7",
     "@netlify/plugin-lighthouse": "^4.1.1",
     "@netlify/plugin-nextjs": "^4.37.1",
     "@tailwindcss/line-clamp": "^0.4.4",

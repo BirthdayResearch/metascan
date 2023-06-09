@@ -71,6 +71,8 @@ export const transactions: TransactionI[] = [
     revertReason: null,
     method: null,
     confirmations: 1,
+    isFromContract: true,
+    isToContract: true,
   },
   {
     transactionType: TransactionType.Transaction,
@@ -99,6 +101,8 @@ export const transactions: TransactionI[] = [
     revertReason: null,
     method: null,
     confirmations: 1,
+    isFromContract: true,
+    isToContract: true,
   },
   {
     transactionType: TransactionType.Transaction,
@@ -126,6 +130,8 @@ export const transactions: TransactionI[] = [
     revertReason: null,
     method: null,
     confirmations: 1,
+    isFromContract: true,
+    isToContract: true,
   },
   {
     transactionType: TransactionType.Transaction,
@@ -153,6 +159,8 @@ export const transactions: TransactionI[] = [
     revertReason: null,
     method: null,
     confirmations: 6,
+    isFromContract: true,
+    isToContract: true,
   },
   {
     transactionType: TransactionType.Transaction,
@@ -180,6 +188,8 @@ export const transactions: TransactionI[] = [
     revertReason: null,
     method: null,
     confirmations: 10,
+    isFromContract: true,
+    isToContract: true,
   },
   {
     transactionType: TransactionType.ContractCall,
@@ -207,6 +217,8 @@ export const transactions: TransactionI[] = [
     revertReason: null,
     method: null,
     confirmations: 10,
+    isFromContract: true,
+    isToContract: true,
   },
   {
     transactionType: TransactionType.ContractCall,
@@ -234,6 +246,8 @@ export const transactions: TransactionI[] = [
     revertReason: null,
     method: null,
     confirmations: 10,
+    isFromContract: true,
+    isToContract: true,
   },
   {
     transactionType: TransactionType.Transaction,
@@ -261,6 +275,8 @@ export const transactions: TransactionI[] = [
     revertReason: null,
     method: null,
     confirmations: 10,
+    isFromContract: true,
+    isToContract: true,
   },
 ];
 export const pages = [

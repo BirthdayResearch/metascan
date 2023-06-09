@@ -3,7 +3,10 @@ import { getTimeAgo } from "shared/durationHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
 import { BURN_ADDRESS_HASH } from "shared/constants";
-import { getTransactionType } from "shared/transactionDataHelper";
+import {
+  getTokenTransfers,
+  getTransactionType,
+} from "shared/transactionDataHelper";
 import { RowData } from "@components/types";
 import {
   getBaseUrl,
@@ -46,13 +49,20 @@ export default {
     const txnRows = Math.min(responseTxnData.length, MAX_ROW);
 
     return responseTxnData.slice(0, txnRows).map((data) => {
-      const fromHash = data.from.hash ?? BURN_ADDRESS_HASH;
       const toHash = data.to?.hash ?? BURN_ADDRESS_HASH;
+      const isFromContract = data.from.is_contract;
+      const isToContract = data.to?.is_contract ?? false;
+      const tokenTransfers =
+        data.token_transfers?.length > 0
+          ? getTokenTransfers(data.token_transfers)
+          : [];
 
       const transactionType = getTransactionType({
-        txTypes: data.tx_types,
-        fromHash,
         toHash,
+        tokenTransfers,
+        isFromContract,
+        isToContract,
+        txTypes: data.tx_types,
       });
       const time = getTimeAgo(data.timestamp);
 

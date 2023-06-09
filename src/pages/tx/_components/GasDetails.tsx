@@ -4,8 +4,8 @@ import { TransactionType } from "@api/types";
 
 import NumericFormat from "@components/commons/NumericFormat";
 import LinkText from "@components/commons/LinkText";
-import Tooltip from "@components/commons/Tooltip";
-import { InfoIcon } from "@components/icons/InfoIcon";
+import DetailRow from "@components/commons/DetailRow";
+import clsx from "clsx";
 import BoldedTitle from "./BoldedTitle";
 import WithCopy from "./WithCopy";
 
@@ -40,6 +40,14 @@ export default function GasDetails({
 
   return (
     <>
+      <div
+        className={clsx(
+          "border-b border-black-600",
+          "mt-9 mb-6",
+          "md:mt-[58px] md:mb-9",
+          "lg:mt-[38px] lg:mb-11"
+        )}
+      />
       <div>
         <BoldedTitle title="Gas detail" testId="gas-detail-title" />
         <div className="flex flex-col gap-y-4 mt-[22px] md:mt-[30px]">
@@ -200,33 +208,5 @@ export default function GasDetails({
       </div>
     )} */}
     </>
-  );
-}
-
-function DetailRow({
-  label,
-  tooltip,
-  children,
-}: {
-  label: string;
-  tooltip: string;
-  children: any;
-}) {
-  const testId = label.replaceAll(" ", "");
-  return (
-    <div className="flex items-start gap-8 justify-between md:justify-normal">
-      <div className="flex flex-row items-center md:w-[212px]">
-        <div
-          data-testid={`${testId}-title`}
-          className="text-white-700 tracking-[0.01em]"
-        >
-          {label}
-        </div>
-        <Tooltip text={tooltip}>
-          <InfoIcon data-testid={`${testId}-icon`} className="ml-1 md:ml-2" />
-        </Tooltip>
-      </div>
-      {children}
-    </div>
   );
 }

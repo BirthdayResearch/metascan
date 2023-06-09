@@ -45,6 +45,7 @@ export default function TransactionDetails({
   addressTransactions: { transactions, nextPageParams },
   isLoading,
 }: TransactionDetailsProps) {
+  const isTxnListEmpty = transactions.length === 0;
   return (
     <div>
       <div className="flex flex-col md:flex-row justify-between md:items-center mb-6">
@@ -52,27 +53,37 @@ export default function TransactionDetails({
           data-testid="address-txn-list-title"
           className="font-bold text-xl text-white-50"
         >
-          Transactions
+          {isTxnListEmpty ? "No transactions" : "Transactions"}
         </h2>
       </div>
-      <div className="relative">
-        {isLoading && <PaginationLoader customStyle="right-1 top-0 md:top-0" />}
-        <TxnPagination aid={aid} nextPageParams={nextPageParams} />
-      </div>
-
-      {isLoading ? (
-        <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
+      {isTxnListEmpty ? (
+        <div className="text-white-50">
+          There are no transactions found in this address
+        </div>
       ) : (
-        transactions.map((item) => (
-          <TransactionRow key={item.hash} rawData={item} />
-        ))
+        <>
+          <div className="relative">
+            {isLoading && (
+              <PaginationLoader customStyle="right-1 top-0 md:top-0" />
+            )}
+            <TxnPagination aid={aid} nextPageParams={nextPageParams} />
+          </div>
+
+          {isLoading ? (
+            <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
+          ) : (
+            transactions.map((item) => (
+              <TransactionRow key={item.hash} rawData={item} />
+            ))
+          )}
+          <div className="relative h-10 md:h-6 lg:pt-1.5">
+            {isLoading && (
+              <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
+            )}
+            <TxnPagination aid={aid} nextPageParams={nextPageParams} />
+          </div>
+        </>
       )}
-      <div className="relative h-10 md:h-6 lg:pt-1.5">
-        {isLoading && (
-          <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
-        )}
-        <TxnPagination aid={aid} nextPageParams={nextPageParams} />
-      </div>
     </div>
   );
 }

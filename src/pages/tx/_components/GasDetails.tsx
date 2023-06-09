@@ -18,6 +18,7 @@ interface Props {
   gasUsed: string;
   gasUsedPercentage: string;
   nonce: number;
+  position: number;
   from: string;
   to: string | null;
   transactionType: TransactionType;
@@ -29,6 +30,7 @@ export default function GasDetails({
   gasUsed,
   gasUsedPercentage,
   nonce,
+  position,
   from,
   to,
   transactionType,
@@ -41,7 +43,10 @@ export default function GasDetails({
       <div>
         <BoldedTitle title="Gas detail" testId="gas-detail-title" />
         <div className="flex flex-col gap-y-4 mt-[22px] md:mt-[30px]">
-          <DetailRow label="Gas price" tooltip="Gas price">
+          <DetailRow
+            label="Gas price"
+            tooltip="Cost per unit of gas specified for the transaction"
+          >
             <NumericFormat
               data-testid="gas-price"
               className={rowValueFont}
@@ -51,7 +56,10 @@ export default function GasDetails({
               suffix={` ${gasPrice.symbol}`}
             />
           </DetailRow>
-          <DetailRow label="Gas limit" tooltip="Gas limit">
+          <DetailRow
+            label="Gas limit"
+            tooltip="Maximum amount of gas allocated for the transaction"
+          >
             <NumericFormat
               data-testid="gas-limit"
               className={rowValueFont}
@@ -60,7 +68,10 @@ export default function GasDetails({
               decimalScale={0}
             />
           </DetailRow>
-          <DetailRow label="Gas used by txn" tooltip="Gas used by txn">
+          <DetailRow
+            label="Gas used by txn"
+            tooltip="Amount of gas actually used"
+          >
             <div className="flex flex-col">
               <NumericFormat
                 data-testid="gas-used"
@@ -79,12 +90,27 @@ export default function GasDetails({
               />
             </div>
           </DetailRow>
-          <DetailRow label="Nonce" tooltip="Nonce">
+          <DetailRow
+            label="Nonce"
+            tooltip="Number of transaction sent from the sender’s address"
+          >
             <NumericFormat
               data-testid="nonce"
               className={rowValueFont}
               thousandSeparator
               value={nonce}
+              decimalScale={0}
+            />
+          </DetailRow>
+          <DetailRow
+            label="Position in block"
+            tooltip="The position refers to the index number assigned to a transaction within a block on the blockchain"
+          >
+            <NumericFormat
+              data-testid="position"
+              className={rowValueFont}
+              thousandSeparator
+              value={position}
               decimalScale={0}
             />
           </DetailRow>

@@ -7,7 +7,7 @@ export default function DetailRow({
   children,
 }: {
   label: string;
-  tooltip: string;
+  tooltip?: string;
   children: any;
 }) {
   const testId = label.replaceAll(" ", "");
@@ -20,9 +20,11 @@ export default function DetailRow({
         >
           {label}
         </div>
-        <Tooltip text={tooltip}>
-          <InfoIcon data-testid={`${testId}-icon`} className="ml-1 md:ml-2" />
-        </Tooltip>
+        {tooltip && (
+          <Tooltip text={tooltip}>
+            <InfoIcon data-testid={`${testId}-icon`} className="ml-1 md:ml-2" />
+          </Tooltip>
+        )}
       </div>
       {children}
     </div>

@@ -130,8 +130,16 @@ export interface RawTransactionI {
 }
 
 export interface TokenTransferProps {
-  fromHash: string;
-  toHash: string;
+  from: {
+    hash: string;
+    isContract: boolean;
+    isVerified: boolean;
+  };
+  to: {
+    hash: string;
+    isContract: boolean;
+    isVerified: boolean;
+  };
   type: string;
   forToken: {
     from: string;

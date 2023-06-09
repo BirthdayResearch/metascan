@@ -83,8 +83,16 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
 // To get Tokens minted
 export const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
   tokenTransfers.map((tokenTransfer) => ({
-    fromHash: tokenTransfer.from.hash,
-    toHash: tokenTransfer.to.hash,
+    from: {
+      hash: tokenTransfer.from.hash,
+      isContract: tokenTransfer.from.is_contract,
+      isVerified: tokenTransfer.from.is_verified,
+    },
+    to: {
+      hash: tokenTransfer.to.hash,
+      isContract: tokenTransfer.to.is_contract,
+      isVerified: tokenTransfer.to.is_verified,
+    },
     forToken: {
       from: tokenTransfer.to.hash,
       to: tokenTransfer.from.hash,
@@ -146,11 +154,7 @@ export const getTransactionType = ({
   Equivalent logic of get_transaction_type_from_token_transfers from blockscout
 */
 const getTransactionTypeFromTokenTransfers = (
-  tokenTransfers: {
-    fromHash: string;
-    toHash: string;
-    type: string;
-  }[]
+  tokenTransfers: TokenTransferProps[]
 ) => {
   if (tokenTransfers.length > 0) {
     if (

@@ -16,6 +16,7 @@ import NumericFormat from "@components/commons/NumericFormat";
 import LinkText from "@components/commons/LinkText";
 import { NetworkConnection } from "@contexts/Environment";
 
+import DetailRow from "@components/commons/DetailRow";
 import BoldedTitle from "./_components/BoldedTitle";
 import RawInput from "./_components/RawInput";
 import WithCopy from "./_components/WithCopy";
@@ -151,44 +152,6 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
                 )}
               </div>
             </div>
-            {/* From */}
-            <div className={rowCss}>
-              <div data-testid="from-title" className={titleFontCss}>
-                From
-              </div>
-              <WithCopy
-                textToCopy={txDetails.from}
-                testId="transaction-details-from"
-                copyIconStyle="mb-1"
-              >
-                <LinkText
-                  customStyle="tracking-[0.01em]"
-                  testId="transaction-details-from"
-                  label={truncateTextFromMiddle(txDetails.from, 4)}
-                  href={`/address/${txDetails.from}`}
-                />
-              </WithCopy>
-            </div>
-            {/* To */}
-            {txDetails.to && (
-              <div className={rowCss}>
-                <div data-testid="to-title" className={titleFontCss}>
-                  To
-                </div>
-                <WithCopy
-                  textToCopy={txDetails.to}
-                  testId="transaction-details-to"
-                  copyIconStyle="mb-1"
-                >
-                  <LinkText
-                    customStyle="tracking-[0.01em]"
-                    testId="transaction-details-to"
-                    label={truncateTextFromMiddle(txDetails.to, 4)}
-                    href={`/address/${txDetails.to}`}
-                  />
-                </WithCopy>
-              </div>
-            )}
             {/* Amount */}
             <div className={rowCss}>
               <div
@@ -233,6 +196,47 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
               "lg:mt-[38px] lg:mb-11"
             )}
           />
+
+          {/* From */}
+          <DetailRow label="From" className="mb-7">
+            <WithCopy
+              textToCopy={txDetails.from}
+              testId="transaction-details-from"
+              copyIconStyle="mb-1"
+            >
+              <LinkText
+                customStyle="tracking-[0.01em]"
+                testId="transaction-details-from"
+                label={truncateTextFromMiddle(txDetails.from, 4)}
+                href={`/address/${txDetails.from}`}
+              />
+            </WithCopy>
+          </DetailRow>
+          {/* To */}
+          {txDetails.to && (
+            <DetailRow
+              label={
+                txDetails.isToContract ? "Interacted with contract (To)" : "To"
+              }
+              className="mb-7"
+            >
+              <WithCopy
+                textToCopy={txDetails.to}
+                testId="transaction-details-to"
+                copyIconStyle="mb-1"
+              >
+                <LinkText
+                  customStyle="tracking-[0.01em]"
+                  testId="transaction-details-to"
+                  label={truncateTextFromMiddle(txDetails.to, 4)}
+                  href={`/address/${txDetails.to}`}
+                />
+              </WithCopy>
+            </DetailRow>
+          )}
+          {txDetails.tokenTransfers && txDetails.tokenTransfers.length > 0 && (
+            <TokenTransferDetails tokenTransfers={txDetails.tokenTransfers} />
+          )}
           <GasDetails
             gasPrice={gasPrice}
             gasLimit={txDetails.gasLimit}
@@ -244,12 +248,6 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
             transactionType={txDetails.transactionType}
             position={txDetails.position}
           />
-          {txDetails.tokenTransfers && txDetails.tokenTransfers.length > 0 && (
-            <TokenTransferDetails
-              displayTitle="Tokens Transferred"
-              tokenTransfers={txDetails.tokenTransfers}
-            />
-          )}
           <div
             className={clsx(
               "border-b border-black-600",

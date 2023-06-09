@@ -1,10 +1,10 @@
-import { RowData } from "@components/LatestDataTable";
+import { utils } from "ethers";
 import { getTimeAgo } from "shared/durationHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
-import { utils } from "ethers";
 import { BURN_ADDRESS_HASH } from "shared/constants";
 import { getTransactionType } from "shared/transactionDataHelper";
+import { RowData } from "@components/types";
 import {
   getBaseUrl,
   MAIN_LATEST_BLOCK_URL,
@@ -28,7 +28,7 @@ export default {
 
       return {
         transactionId: data.height.toString(),
-        tokenAmount: reward.toFixed(),
+        tokenAmount: reward,
         txnOrBlockInfo: {
           transactionsPerBlock: data.tx_count?.toString(),
           blockTimeInSec: null,

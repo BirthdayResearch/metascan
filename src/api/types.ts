@@ -162,4 +162,6 @@ export interface BlockProps {
   rewards: any; // TODO: Dependent to DMC rewards
   timestamp: string;
   tx_count: number;
+  parent_hash: string;
+  size: number;
 }

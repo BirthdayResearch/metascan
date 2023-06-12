@@ -7,9 +7,9 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { StoreProvider } from "@contexts/StoreProvider";
 import { Header } from "./components/Header";
 
-const title = "DMC Explorer";
+const title = "MetaScan";
 const description =
-  "DeFi Blockchain, enabling decentralized finance with Bitcoin-grade security, strength and immutability. A blockchain dedicated to fast, intelligent and transparent financial services, accessible by everyone.";
+  "Connecting old and new worlds. A blockchain dedicated to fast, intelligent and transparent decentralized financial services, accessible by everyone.";
 
 /**
  * Default Layout with <Head> providing default Metadata for SEO

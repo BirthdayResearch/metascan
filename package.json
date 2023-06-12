@@ -21,7 +21,7 @@
     "@waveshq/standard-web": "^0.52.1",
     "bignumber.js": "^9.1.1",
     "clsx": "^1.2.1",
-    "dayjs": "^1.11.7",
+    "dayjs": "^1.11.8",
     "dayjs-plugin-utc": "^0.1.2",
     "ethers": "^5.7.2",
     "lodash": "^4.17.21",

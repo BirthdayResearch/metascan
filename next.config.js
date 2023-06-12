@@ -17,7 +17,7 @@ const securityHeaders = [
       `font-src fonts.gstatic.com;` +
       `connect-src 'self' 34.87.158.111:4000 ${
         process.env.NODE_ENV === "development"
-          ? `ws://localhost:3000/_next/webpack-hmr`
+          ? `ws://localhost:3000/_next/webpack-hmr base-goerli.blockscout.com eth-goerli.blockscout.com`
           : ""
       };`,
   },

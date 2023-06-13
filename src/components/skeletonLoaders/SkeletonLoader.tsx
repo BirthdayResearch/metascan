@@ -1,6 +1,7 @@
 import BlockRowLoader from "pages/blocks/_components/BlockRowLoader";
 import TransactionRowLoader from "./TransactionRowLoader";
 import RowItemLoader from "./RowItemLoader";
+import SmartContractLoader from "./SmartContractLoader";
 
 interface SkeletonLoaderProp {
   rows: number;
@@ -14,6 +15,7 @@ export enum SkeletonLoaderScreen {
   // Child pages
   "Tx" = "Tx",
   "Block" = "Block",
+  "Contract" = "Contract",
 }
 
 export function SkeletonLoader(props: SkeletonLoaderProp): JSX.Element {
@@ -43,6 +45,14 @@ export function SkeletonLoader(props: SkeletonLoaderProp): JSX.Element {
         <>
           {skeletonRow.map((row) => (
             <BlockRowLoader key={row} />
+          ))}
+        </>
+      );
+    case SkeletonLoaderScreen.Contract:
+      return (
+        <>
+          {skeletonRow.map((row) => (
+            <SmartContractLoader key={row} />
           ))}
         </>
       );

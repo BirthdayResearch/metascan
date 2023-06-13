@@ -29,8 +29,11 @@ export default {
   ): Promise<BlockProps> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}`);
-
-    return wrapResponse<BlockProps>(res);
+    const block = (await await res.json()) as BlockProps;
+    if (!res.ok && !block.hash) {
+      throw new Error(`Failed to fetch data: ${res.status}`);
+    }
+    return block;
   },
   getBlockTransactions: async (
     network: NetworkConnection,

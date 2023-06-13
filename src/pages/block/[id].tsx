@@ -1,7 +1,6 @@
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
 import { utils } from "ethers";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
@@ -41,8 +40,7 @@ export default function Block({
   data: { block, blockTransactions },
   isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
-  const blockNumber = new BigNumber(router.query.id as string);
+  const blockNumber = new BigNumber(block.height);
   const prevBlockNumber = blockNumber.minus(1);
   const nextBlockNumber = blockNumber.plus(1); // TODO: check if nextBlockNumber exists when api is readys
   const timeago = getTimeAgo(block.timestamp);
@@ -341,6 +339,16 @@ export async function getServerSideProps(
       network as NetworkConnection,
       blockId
     );
+
+    // Handle block that has lost consensus (reorg)
+    if (!block.height && block.hash) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/block/${block.hash}`,
+        },
+      };
+    }
 
     const hasInvalidParams =
       !isNumeric(params?.block_number as string) ||

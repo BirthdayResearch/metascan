@@ -188,6 +188,7 @@ export interface BlockProps {
   gas_used: string;
   gas_used_percentage: number;
   height: number;
+  hash: string;
   miner: {
     hash: string;
   };

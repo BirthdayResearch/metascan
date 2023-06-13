@@ -89,7 +89,7 @@ interface TxParameters {
   value: string;
 }
 
-interface DecodedTxInput {
+export interface DecodedTxInput {
   method_id: string;
   method_call: string;
   parameters: TxParameters[];

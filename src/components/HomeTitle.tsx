@@ -1,19 +1,15 @@
-export function HomeTitle(): JSX.Element {
+import clsx from "clsx";
+
+export default function HomeTitle(): JSX.Element {
   return (
     <div className="flex flex-col items-center text-center mt-[88px] md:mt-24 mx-1 md:mx-[148px] lg:mx-0">
       <span
-        className="
-          font-bold
-          text-[44px]
-          leading-[56px]
-          md:text-[56px]
-          md:leading-[72px]
-          lg:text-[84px]
-          lg:leading-[101px]
-          text-white-50
-        "
+        className={clsx(
+          "font-semibold text-white-50 text-[32px] leading-10 -tracking-[0.01em]",
+          "md:text-5xl md:leading-[56px] md:-tracking-[0.02em]"
+        )}
       >
-        DeFiScan for Meta Chain
+        Block explorer for MetaChain
       </span>
     </div>
   );

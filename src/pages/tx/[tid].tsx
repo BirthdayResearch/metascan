@@ -23,8 +23,13 @@ import RawInput from "./_components/RawInput";
 import WithCopy from "./_components/WithCopy";
 import GasDetails from "./_components/GasDetails";
 import TokenTransferDetails from "./_components/TokenTransferDetails";
+import DecodedInput from "./_components/DecodedInput";
 
-function Transaction({ txDetails }: { txDetails: TransactionI }) {
+export default function Transaction({
+  txDetails,
+}: {
+  txDetails: TransactionI;
+}) {
   const gasPrice = { value: txDetails.gasPrice, symbol: GWEI_SYMBOL };
   const gasUsedPercentage = new BigNumber(txDetails.gasUsed)
     .dividedBy(txDetails.gasLimit)
@@ -196,15 +201,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
               </div>
             </div>
           </div>
-          <div
-            className={clsx(
-              "border-b border-black-600",
-              "mt-9 mb-6",
-              "md:mt-[58px] md:mb-9",
-              "lg:mt-[38px] lg:mb-11"
-            )}
-          />
-
+          <SectionDivider />
           {/* From */}
           <DetailRow label="From" className="mb-7">
             <WithCopy
@@ -256,18 +253,30 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
             transactionType={txDetails.transactionType}
             position={txDetails.position}
           />
-          <div
-            className={clsx(
-              "border-b border-black-600",
-              "mt-9 mb-6",
-              "md:mt-14 md:mb-9",
-              "lg:mt-10 lg:mb-11"
-            )}
-          />
+          <SectionDivider />
           <RawInput hex={txDetails.rawInput} />
+          {txDetails.decodedInput && (
+            <>
+              <SectionDivider />
+              <DecodedInput input={txDetails.decodedInput} />
+            </>
+          )}
         </div>
       </GradientCardContainer>
     </div>
+  );
+}
+
+function SectionDivider() {
+  return (
+    <div
+      className={clsx(
+        "border-b border-black-600",
+        "mt-9 mb-6",
+        "md:mt-14 md:mb-9",
+        "lg:mt-10 lg:mb-11"
+      )}
+    />
   );
 }
 
@@ -288,5 +297,3 @@ export async function getServerSideProps(context) {
     return { notFound: true };
   }
 }
-
-export default Transaction;

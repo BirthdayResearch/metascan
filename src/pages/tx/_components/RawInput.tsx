@@ -56,7 +56,7 @@ export default function RawInput({ hex }: { hex: string }) {
         ref={textareaRef}
         data-testid="transaction-hex"
         className={clsx(
-          "textarea-scrollbar w-full transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-black-800 border-[1px] border-black-600 text-white-50 text-xs p-4 lg:px-10",
+          "textarea-scrollbar w-full h-[200px] md:h-28 lg:h-auto transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-black-800 border-[1px] border-black-600 text-white-50 p-4 lg:px-10",
           allowResize ? "resize-y" : "resize-none"
         )}
         disabled

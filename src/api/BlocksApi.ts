@@ -29,7 +29,7 @@ export default {
   ): Promise<BlockProps> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}`);
-    const block = (await await res.json()) as BlockProps;
+    const block = (await res.json()) as BlockProps;
     if (!res.ok && !block.hash) {
       throw new Error(`Failed to fetch data: ${res.status}`);
     }

@@ -112,7 +112,7 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
     <Combobox>
       <div
         className={clsx(
-          "flex w-full items-center justify-self-center mx-auto my-10",
+          "flex w-full items-center justify-self-center mx-auto my-6 md:my-10 lg:my-6",
           containerClass
         )}
       >

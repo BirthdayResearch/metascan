@@ -1,33 +1,30 @@
 import BigNumber from "bignumber.js";
-import clsx from "clsx";
 import { utils } from "ethers";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { FiArrowLeft, FiArrowRight, FiCopy } from "react-icons/fi";
-import { MdCheckCircle } from "react-icons/md";
+import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
   InferGetServerSidePropsType,
 } from "next";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
-import LinkText from "@components/commons/LinkText";
 import LinkTextWithIcon from "@components/commons/LinktextWithIcon";
 import NumericFormat from "@components/commons/NumericFormat";
 import TransactionDetails from "@components/TransactionDetails";
-import useCopyToClipboard from "hooks/useCopyToClipboard";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import {
   formatDateToUTC,
   getDuration,
   getTimeAgo,
 } from "shared/durationHelper";
-import { isNumeric, truncateTextFromMiddle } from "shared/textHelper";
+import { isNumeric } from "shared/textHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
 import BlocksApi from "@api/BlocksApi";
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
 import { BlockProps, RawTransactionI } from "@api/types";
+import AddressRow from "./_components/AddressRow";
+import DetailRow from "./_components/DetailRow";
+import GasUsedRow from "./_components/GasUsedRow";
 
 interface PageProps {
   block: BlockProps;
@@ -41,8 +38,7 @@ export default function Block({
   data: { block, blockTransactions },
   isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
-  const blockNumber = new BigNumber(router.query.id as string);
+  const blockNumber = new BigNumber(block.height);
   const prevBlockNumber = blockNumber.minus(1);
   const nextBlockNumber = blockNumber.plus(1); // TODO: check if nextBlockNumber exists when api is readys
   const timeago = getTimeAgo(block.timestamp);
@@ -115,12 +111,20 @@ export default function Block({
           <div className="border-t border-black-600 pt-8 text-white-50 flex flex-col md:flex-row md:gap-5">
             <div className="w-full md:w-1/2">
               <AddressRow
-                label="Fee recipient"
-                feeRecipient={block.miner.hash}
+                testId="block-hash"
+                label="Hash"
+                address={block.hash}
+                disableLink
               />
               <AddressRow
+                testId="fee-recipient"
+                label="Fee recipient"
+                address={block.miner.hash}
+              />
+              <AddressRow
+                testId="parent-hash"
                 label="Parent Hash"
-                feeRecipient={block.parent_hash}
+                address={block.parent_hash}
               />
               <DetailRow
                 testId="block-size"
@@ -193,138 +197,6 @@ export default function Block({
   );
 }
 
-const style = {
-  container: "flex gap-5 py-3 md:gap-0",
-  labelWidth: "w-1/2 md:shrink-0 lg:w-1/3",
-  valueWidth: "flex-1 text-right md:text-left",
-};
-
-function DetailRow({
-  testId,
-  label,
-  value,
-  decimalScale = 8,
-  suffix = "",
-}: {
-  testId: string;
-  label: string;
-  value: string;
-  decimalScale?: number;
-  suffix?: string;
-}): JSX.Element {
-  return (
-    <div className={clsx(style.container)}>
-      <div
-        data-testid={`${testId}-label`}
-        className={clsx("text-white-700", style.labelWidth)}
-      >
-        {label}
-      </div>
-      <div
-        data-testid={testId}
-        className={clsx("text-white-50", style.valueWidth)}
-      >
-        <NumericFormat
-          thousandSeparator
-          value={value}
-          decimalScale={decimalScale}
-          suffix={suffix}
-        />
-      </div>
-    </div>
-  );
-}
-
-function AddressRow({
-  label,
-  feeRecipient,
-}: {
-  label: string;
-  feeRecipient: string;
-}): JSX.Element {
-  const { copy } = useCopyToClipboard();
-  const [showSuccessCopy, setShowSuccessCopy] = useState(false);
-
-  useEffect(() => {
-    if (showSuccessCopy) {
-      setTimeout(() => setShowSuccessCopy(false), 3000);
-    }
-  }, [showSuccessCopy]);
-
-  return (
-    <div className={clsx("justify-between md:justify-start", style.container)}>
-      <div
-        data-testid="fee-recipient-label"
-        className={clsx("text-white-700", style.labelWidth)}
-      >
-        {label}
-      </div>
-      {showSuccessCopy ? (
-        <div data-testid="copy-success-msg" className="flex items-center">
-          <span className="text-lightBlue">Copied!</span>
-          <MdCheckCircle size={20} className="ml-2 text-green-800" />
-        </div>
-      ) : (
-        <div className="flex">
-          <LinkText
-            testId="fee-recipient-mobile"
-            href={`/address/${feeRecipient}`}
-            label={truncateTextFromMiddle(feeRecipient, 4)}
-            customStyle={clsx("inline-flex xl:hidden", style.valueWidth)}
-          />
-          <LinkText
-            testId="fee-recipient-desktop"
-            href={`/address/${feeRecipient}`}
-            label={truncateTextFromMiddle(feeRecipient, 13)}
-            customStyle={clsx("hidden xl:inline-flex", style.valueWidth)}
-          />
-          <FiCopy
-            size={20}
-            className="ml-2 self-center cursor-pointer"
-            onClick={() => {
-              copy(feeRecipient);
-              setShowSuccessCopy(true);
-            }}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-function GasUsedRow({
-  label,
-  gasUsed,
-  gasPercentage,
-}: {
-  label: string;
-  gasUsed: string;
-  gasPercentage: string;
-}): JSX.Element {
-  return (
-    <div className={clsx(style.container)}>
-      <div
-        data-testid="gas-used-label"
-        className={clsx("text-white-700", style.labelWidth)}
-      >
-        {label}
-      </div>
-      <div className={clsx(style.valueWidth)}>
-        <div data-testid="gas-used" className="text-white-50">
-          <NumericFormat
-            thousandSeparator
-            value={new BigNumber(gasUsed)}
-            decimalScale={0}
-          />
-        </div>
-        <div data-testid="gas-pct" className="text-white-700 text-xs pt-1">
-          {gasPercentage}%
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<{ data: PageProps; isLoading?: boolean }>> {
@@ -341,6 +213,16 @@ export async function getServerSideProps(
       network as NetworkConnection,
       blockId
     );
+
+    // Handle block that has lost consensus (reorg)
+    if (!block.height && block.hash) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/block/${block.hash}`,
+        },
+      };
+    }
 
     const hasInvalidParams =
       !isNumeric(params?.block_number as string) ||

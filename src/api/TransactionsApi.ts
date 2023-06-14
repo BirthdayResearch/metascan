@@ -1,11 +1,16 @@
 import { NetworkConnection } from "@contexts/Environment";
 import {
   TRANSACTIONS_URL,
+  V1_TRANSACTION_URL,
   filterParams,
   getBaseUrl,
   wrapResponse,
 } from "./index";
-import { RawTransactionI, RawTxnWithPaginationProps } from "./types";
+import {
+  RawTransactionI,
+  RawTransactionV1,
+  RawTxnWithPaginationProps,
+} from "./types";
 
 export default {
   getTransactions: async (
@@ -30,8 +35,16 @@ export default {
   ): Promise<RawTransactionI> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}/${txnHash}`);
+    const transaction = await wrapResponse<RawTransactionI>(res);
 
-    return wrapResponse<RawTransactionI>(res);
+    // Missing confirmation workaround
+    if (transaction.confirmations === 0) {
+      const resV1 = await fetch(`${baseUrl}/${V1_TRANSACTION_URL}${txnHash}`);
+      const tx = (await resV1.json()) as RawTransactionV1;
+      transaction.confirmations = tx.result?.confirmations ?? 0;
+    }
+
+    return transaction;
   },
 };
 export interface TxnNextPageParamsProps {

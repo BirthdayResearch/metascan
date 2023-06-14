@@ -229,3 +229,10 @@ export interface RawTxTokenTransfersProps {
     value: string;
   };
 }
+
+// V1 API response
+export interface RawTransactionV1 {
+  message: string;
+  result: RawTransactionI | null;
+  status: string;
+}

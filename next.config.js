@@ -15,7 +15,7 @@ const securityHeaders = [
       };` +
       `style-src 'self' fonts.googleapis.com 'unsafe-inline';` +
       `font-src fonts.gstatic.com;` +
-      `connect-src 'self' 35.197.159.154:4000 ${
+      `connect-src 'self' https://blockscout-index.changi.dfi.team ${
         process.env.NODE_ENV === "development"
           ? `ws://localhost:3000/_next/webpack-hmr base-goerli.blockscout.com eth-goerli.blockscout.com 34.87.158.111:4000`
           : ""

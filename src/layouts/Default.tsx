@@ -63,7 +63,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
           content="https://meta.defiscan.live/metascan_share.png"
         />
         <meta name="twitter:image:alt" content={title} />
-        <meta name="twitter:card" content="/metascan_share.png" />
+        <meta name="twitter:card" content="summary_large_image" />
 
         <link rel="icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />

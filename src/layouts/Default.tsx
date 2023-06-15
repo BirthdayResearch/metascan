@@ -5,7 +5,7 @@ import { NetworkProvider } from "@contexts/NetworkContext";
 import Head from "next/head";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { StoreProvider } from "@contexts/StoreProvider";
-import { Header } from "./components/Header";
+import Header from "./components/Header";
 
 const title = "MetaScan";
 const description =

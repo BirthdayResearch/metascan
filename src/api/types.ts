@@ -89,7 +89,7 @@ interface TxParameters {
   value: string;
 }
 
-interface DecodedTxInput {
+export interface DecodedTxInput {
   method_id: string;
   method_call: string;
   parameters: TxParameters[];
@@ -188,6 +188,7 @@ export interface BlockProps {
   gas_used: string;
   gas_used_percentage: number;
   height: number;
+  hash: string;
   miner: {
     hash: string;
   };
@@ -227,6 +228,13 @@ export interface RawTxTokenTransfersProps {
     decimals?: string | number;
     value: string;
   };
+}
+
+// V1 API response
+export interface RawTransactionV1 {
+  message: string;
+  result: RawTransactionI | null;
+  status: string;
 }
 
 export interface SmartContractProps {

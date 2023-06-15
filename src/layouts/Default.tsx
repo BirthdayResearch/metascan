@@ -9,7 +9,7 @@ import Header from "./components/Header";
 
 const title = "MetaScan";
 const description =
-  "Connecting old and new worlds. A blockchain dedicated to fast, intelligent and transparent decentralized financial services, accessible by everyone.";
+  "MetaScan is a block explorer for MetaChain - a decentralized network connecting the worlds of Bitcoin and Ethereum.";
 
 /**
  * Default Layout with <Head> providing default Metadata for SEO

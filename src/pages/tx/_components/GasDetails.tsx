@@ -55,14 +55,9 @@ export default function GasDetails({
             label="Gas price"
             tooltip="Cost per unit of gas specified for the transaction"
           >
-            <NumericFormat
-              data-testid="gas-price"
-              className={rowValueFont}
-              thousandSeparator
-              value={gasPrice.value}
-              decimalScale={0}
-              suffix={` ${gasPrice.symbol}`}
-            />
+            <span data-testid="gas-price" className={rowValueFont}>
+              {gasPrice.value} {gasPrice.symbol}
+            </span>
           </DetailRow>
           <DetailRow
             label="Gas limit"

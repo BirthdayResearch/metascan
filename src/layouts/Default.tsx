@@ -10,6 +10,7 @@ import Header from "./components/Header";
 const title = "MetaScan";
 const description =
   "MetaScan is a block explorer for MetaChain - a decentralized network connecting the worlds of Bitcoin and Ethereum.";
+const website = "https://meta.defiscan.live";
 
 /**
  * Default Layout with <Head> providing default Metadata for SEO
@@ -49,6 +50,20 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
           name="og:description"
           content={description}
         />
+        <meta name="og:image" content="/metascan_share.png" />
+        <meta name="og:url" content={website} />
+        <meta name="og:description" content={description} />
+
+        <meta name="twitter:card" content={description} />
+        <meta name="twitter:site" content={website} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta
+          name="twitter:image"
+          content="https://meta.defiscan.live/metascan_share.png"
+        />
+        <meta name="twitter:image:alt" content={title} />
+        <meta name="twitter:card" content="summary_large_image" />
 
         <link rel="icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />

@@ -8,6 +8,7 @@ import { StoreProvider } from "@contexts/StoreProvider";
 import Header from "./components/Header";
 
 const title = "MetaScan";
+export const appName = "meta.defiscan.live";
 const description =
   "MetaScan is a block explorer for MetaChain - a decentralized network connecting the worlds of Bitcoin and Ethereum.";
 const website = "https://meta.defiscan.live";
@@ -44,7 +45,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
 
         <meta key="og:locale" name="og:locale" content="en_US" />
         <meta key="og:title" name="og:title" content={title} />
-        <meta key="og:site_name" name="og:site_name" content={title} />
+        <meta key="og:site_name" name="og:site_name" content={appName} />
         <meta
           key="og:description"
           name="og:description"
@@ -52,7 +53,6 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
         />
         <meta name="og:image" content="/metascan_share.png" />
         <meta name="og:url" content={website} />
-        <meta name="og:description" content={description} />
 
         <meta name="twitter:card" content={description} />
         <meta name="twitter:site" content={website} />
@@ -63,7 +63,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
           content="https://meta.defiscan.live/metascan_share.png"
         />
         <meta name="twitter:image:alt" content={title} />
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="/metascan_share.png" />
 
         <link rel="icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />

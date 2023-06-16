@@ -1,6 +1,4 @@
 import BigNumber from "bignumber.js";
-import { ConfirmCheck } from "@components/icons/ConfirmCheck";
-import { RejectedCross } from "@components/icons/RejectedCross";
 import clsx from "clsx";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import LinkText from "@components/commons/LinkText";
@@ -20,6 +18,7 @@ import {
   FiMinusCircle,
 } from "react-icons/fi";
 import { TransactionsIcon } from "@components/icons/Transactions";
+import TransactionRowStatus from "./TransactionRowStatus";
 
 export const iconMapping = {
   [TransactionType.Transaction]: TransactionsIcon,
@@ -134,23 +133,17 @@ export default function TransactionRow({
   );
 }
 
-function StatusComponent({ status }: { status: string }): JSX.Element {
-  const Icon =
-    status === TransactionStatus.Confirmed ? ConfirmCheck : RejectedCross;
+function StatusComponent({
+  status,
+}: {
+  status: TransactionStatus;
+}): JSX.Element {
   return (
     <div className="flex flex-row">
-      <span className="text-white-700 text-base hidden xl:block">Status:</span>
-      <span
-        className={clsx(
-          "hidden md:block text-base xl:ml-1 mr-2",
-          status === TransactionStatus.Confirmed
-            ? "text-green-800"
-            : "text-red-800"
-        )}
-      >
-        {status}
+      <span className="text-white-700 text-base hidden xl:block xl:mr-1">
+        Status:
       </span>
-      <Icon size={24} />
+      <TransactionRowStatus status={status} />
     </div>
   );
 }

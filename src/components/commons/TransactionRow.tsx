@@ -81,7 +81,7 @@ export default function TransactionRow({
           </div>
           <div className="col-start-7 col-end-9 xl:col-start-11 xl:col-end-13 justify-self-end">
             <StatusComponent status={data.status} />
-            <div className="text-right mr-8 mt-2 xl:mt-3">
+            <div className="text-right mt-2 xl:mt-3">
               <TimeComponent time={data.timeInSec} />
             </div>
           </div>

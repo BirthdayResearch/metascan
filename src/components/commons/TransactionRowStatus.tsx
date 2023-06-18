@@ -1,7 +1,8 @@
 import clsx from "clsx";
 import { TransactionStatus } from "@api/types";
-import { ConfirmCheck } from "@components/icons/ConfirmCheck";
-import { RejectedCross } from "@components/icons/RejectedCross";
+import { CgSpinner } from "react-icons/cg";
+import { FiX } from "react-icons/fi";
+import { IoMdCheckmarkCircle } from "react-icons/io";
 
 export default function TransactionRowStatus({
   status,
@@ -10,14 +11,11 @@ export default function TransactionRowStatus({
 }) {
   const statusMap = {
     [TransactionStatus.Success]: {
-      icon: ConfirmCheck,
+      icon: IoMdCheckmarkCircle,
       color: "text-green-800",
     },
-    [TransactionStatus.Failed]: { icon: RejectedCross, color: "text-red-800" },
-    [TransactionStatus.Pending]: {
-      icon: RejectedCross,
-      color: "text-white-50",
-    },
+    [TransactionStatus.Failed]: { icon: FiX, color: "text-red-800" },
+    [TransactionStatus.Pending]: { icon: CgSpinner, color: "text-orange-700" },
   };
   const Icon = statusMap[status].icon;
   const textColor = statusMap[status].color;

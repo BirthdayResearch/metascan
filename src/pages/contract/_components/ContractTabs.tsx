@@ -25,12 +25,12 @@ export default function ContractTabs({
       />
       <ButtonTab
         testId={
-          selectedTab === ContractTabsTitle.Code
+          selectedTab === ContractTabsTitle.Contract
             ? "contract-code-options-clicked-title"
             : "contract-code-options-title"
         }
-        active={selectedTab === ContractTabsTitle.Code}
-        tab={ContractTabsTitle.Code}
+        active={selectedTab === ContractTabsTitle.Contract}
+        tab={ContractTabsTitle.Contract}
         setSelectedTab={setSelectedTab}
       />
       <ButtonTab
@@ -46,24 +46,6 @@ export default function ContractTabs({
     </div>
   );
 }
-
-const onOptionsClick = (
-  setSelectedTab: Dispatch<SetStateAction<ContractTabsTitle>>,
-  itemClicked: ContractTabsTitle
-) => {
-  switch (itemClicked) {
-    case ContractTabsTitle.Transactions:
-      setSelectedTab(ContractTabsTitle.Transactions);
-      break;
-    case ContractTabsTitle.Tokens:
-      setSelectedTab(ContractTabsTitle.Tokens);
-      break;
-    case ContractTabsTitle.Code:
-    default:
-      setSelectedTab(ContractTabsTitle.Code);
-      break;
-  }
-};
 
 function ButtonTab({
   active,
@@ -85,7 +67,7 @@ function ButtonTab({
           active ? "text-white-50" : "text-white-700"
         )}
         data-testid={testId}
-        onClick={() => onOptionsClick(setSelectedTab, tab)}
+        onClick={() => setSelectedTab(tab)}
       >
         {tab}
       </button>

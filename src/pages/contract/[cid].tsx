@@ -1,12 +1,17 @@
+import { useState, Dispatch, SetStateAction } from "react";
+import {
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  InferGetServerSidePropsType,
+} from "next";
+import { useRouter } from "next/router";
+import { FiCopy } from "react-icons/fi";
+import { MdOutlineQrCode } from "react-icons/md";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useState } from "react";
-import { FiCopy } from "react-icons/fi";
-import { MdOutlineQrCode } from "react-icons/md";
 import {
   isAlphanumeric,
   isNumeric,
@@ -16,11 +21,6 @@ import QrCode from "@components/commons/QrCode";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import { sleep } from "shared/sleep";
 import { ContractTabsTitle } from "enum/contractTabsTitle";
-import {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  InferGetServerSidePropsType,
-} from "next";
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
 import { utils } from "ethers";
 import WalletAddressApi from "@api/WalletAddressApi";
@@ -197,7 +197,20 @@ function ContractSegmentTwo({
           />
         </div>
       )}
-      {/* {selectedTab === ContractTabsTitle.Tokens && (
+      {/* {selectedTab === ContractTabsTitle.Contract && (
+        <ContractCode
+        contractName={data.verifiedContractData.contractName}
+        compilerVersion={data.verifiedContractData.compilerVersion}
+        evmVersion={data.verifiedContractData.evmVersion}
+        optimizedEnabled={data.verifiedContractData.optimizationEnabled}
+        optimizationRuns={data.verifiedContractData.optimazationRuns}
+        verifiedAt={data.verifiedContractData.verifiedAt}
+        codes={data.verifiedContractData.codes}
+        pages={data.readContractPages}
+        writeContractData={data.verifiedContractData.writeContractData}
+        />
+      )}
+       {selectedTab === ContractTabsTitle.Tokens && (
         <ContractTokensList
           contractTokenList={data.tokens}
           contractTokenListPage={data.tokenPages}
@@ -205,20 +218,8 @@ function ContractSegmentTwo({
           otherTokens={data.verifiedContractData.otherTokens}
           networth={data.verifiedContractData.networth}
         />
-      )} */}
-      {/* {selectedTab === ContractTabsTitle.Code && (
-        <ContractCode
-          contractName={data.verifiedContractData.contractName}
-          compilerVersion={data.verifiedContractData.compilerVersion}
-          evmVersion={data.verifiedContractData.evmVersion}
-          optimizedEnabled={data.verifiedContractData.optimizationEnabled}
-          optimizationRuns={data.verifiedContractData.optimazationRuns}
-          verifiedAt={data.verifiedContractData.verifiedAt}
-          codes={data.verifiedContractData.codes}
-          pages={data.readContractPages}
-          writeContractData={data.verifiedContractData.writeContractData}
-        />
-      )} */}
+      )} 
+      */}
     </div>
   );
 }

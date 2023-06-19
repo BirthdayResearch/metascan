@@ -1,7 +1,7 @@
 import { CursorPage } from "@components/commons/CursorPagination";
 import clsx from "clsx";
 import { CodeOptions } from "enum/codeOptions";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import ReadContract, { CodesData } from "./ReadContract";
 import WriteContract from "./WriteContract";
 import { WriteData } from "./WriteContractInputItem";
@@ -29,18 +29,28 @@ export default function ContractCode({
   pages,
   writeContractData,
 }: ContractCodeProps) {
-  const [isReadContractClicked, setIsReadContractClicked] = useState(true);
+  const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Code);
   return (
     <div className="mt-10">
       <div className="flex flex-row gap-x-2">
         <button
           type="button"
-          onClick={() => {
-            onOptionsClick(setIsReadContractClicked, CodeOptions.Read);
-          }}
+          onClick={() => setActiveTab(CodeOptions.Code)}
           className={clsx(
             "whitespace-nowrap py-2 px-4 rounded-[24px] text-sm font-medium",
-            isReadContractClicked
+            activeTab === CodeOptions.Code
+              ? "bg-white-50 text-black-900"
+              : "text-white-50 bg-black-600"
+          )}
+        >
+          {CodeOptions.Code}
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab(CodeOptions.Read)}
+          className={clsx(
+            "whitespace-nowrap py-2 px-4 rounded-[24px] text-sm font-medium",
+            activeTab === CodeOptions.Read
               ? "bg-white-50 text-black-900"
               : "text-white-50 bg-black-600"
           )}
@@ -49,20 +59,18 @@ export default function ContractCode({
         </button>
         <button
           type="button"
-          onClick={() => {
-            onOptionsClick(setIsReadContractClicked, CodeOptions.Write);
-          }}
+          onClick={() => setActiveTab(CodeOptions.Write)}
           className={clsx(
             "whitespace-nowrap py-2 px-4 rounded-[24px] text-sm font-medium",
-            isReadContractClicked
-              ? "text-white-50 bg-black-600"
-              : "bg-white-50 text-black-900"
+            activeTab === CodeOptions.Write
+              ? "bg-white-50 text-black-900"
+              : "text-white-50 bg-black-600"
           )}
         >
           {CodeOptions.Write}
         </button>
       </div>
-      {isReadContractClicked ? (
+      {activeTab === CodeOptions.Code && (
         <ReadContract
           contractName={contractName}
           compilerVersion={compilerVersion}
@@ -73,26 +81,15 @@ export default function ContractCode({
           codes={codes}
           pages={pages}
         />
-      ) : (
+      )}
+      {activeTab === CodeOptions.Read && (
+        <div className="text-white-50 py-10">
+          / ** TODO: ADD READ METHODS. ** /
+        </div>
+      )}
+      {activeTab === CodeOptions.Write && (
         <WriteContract writeContractData={writeContractData} />
       )}
     </div>
   );
 }
-
-const onOptionsClick = (
-  setIsReadContractClicked: Dispatch<SetStateAction<boolean>>,
-  itemClicked: CodeOptions
-) => {
-  switch (itemClicked) {
-    case CodeOptions.Read:
-      setIsReadContractClicked(true);
-      break;
-    case CodeOptions.Write:
-      setIsReadContractClicked(false);
-      break;
-    default:
-      setIsReadContractClicked(true);
-      break;
-  }
-};

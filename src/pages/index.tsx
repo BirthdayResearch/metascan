@@ -98,28 +98,24 @@ export default function Home() {
         {/* <TokenStatsDisplay /> */}
         {/* <GroupStatisticCard /> */}
         {/* TODO: Add blocks and txs summary card */}
-        {latestTransactions && (
-          <LatestDataTable
-            type="transactions"
-            title="Latest transactions"
-            data={latestTransactions}
-            listPageUrl="/txs"
-            detailsPageBaseUrl="/tx"
-            containerClass="pt-8 md:pt-16"
-            isLoading={isLoading}
-          />
-        )}
-        {latestBlocks && (
-          <LatestDataTable
-            type="blocks"
-            title="Latest blocks"
-            data={latestBlocks}
-            detailsPageBaseUrl="/block"
-            listPageUrl="/blocks"
-            containerClass="pt-5 md:pt-6 lg:pt-5"
-            isLoading={isLoading}
-          />
-        )}
+        <LatestDataTable
+          type="transactions"
+          title="Latest transactions"
+          data={latestTransactions}
+          listPageUrl="/txs"
+          detailsPageBaseUrl="/tx"
+          containerClass="pt-8 md:pt-16"
+          isLoading={isLoading}
+        />
+        <LatestDataTable
+          type="blocks"
+          title="Latest blocks"
+          data={latestBlocks}
+          detailsPageBaseUrl="/block"
+          listPageUrl="/blocks"
+          containerClass="pt-5 md:pt-6 lg:pt-5"
+          isLoading={isLoading}
+        />
       </div>
     </>
   );

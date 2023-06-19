@@ -14,7 +14,7 @@ type DataType = "blocks" | "transactions";
 interface Props {
   type: DataType;
   title: string;
-  data: RowData[];
+  data?: RowData[];
   listPageUrl: string;
   detailsPageBaseUrl: string;
   containerClass?: string;

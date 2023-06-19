@@ -41,6 +41,13 @@ export default function TransactionRow({
 }) {
   const data = transformTransactionData(rawData);
   const Icon = iconMapping[data.transactionType];
+  const fromPathname = data.isFromContract
+    ? `/contract/${data.from}`
+    : `/address/${data.from}`;
+  const toPathName = data.isToContract
+    ? `/contract/${data.to}`
+    : `/address/${data.to}`;
+
   return (
     <div>
       {/* for desktop and tablet */}
@@ -65,14 +72,14 @@ export default function TransactionRow({
             <div className="grid grid-cols-4 xl:grid-cols-6 gap-5 mt-2 xl:mt-3">
               <TransactionLinkRow
                 label="From"
-                pathname={`/address/${data.from}`}
+                pathname={fromPathname}
                 value={data.from}
                 containerClass="flex flex-col xl:flex-row col-start-1 col-end-3"
               />
               {data.to && (
                 <TransactionLinkRow
                   label="To"
-                  pathname={`/address/${data.to}`}
+                  pathname={toPathName}
                   value={data.to}
                   containerClass="flex flex-col xl:flex-row col-start-3 col-end-5"
                 />
@@ -116,13 +123,13 @@ export default function TransactionRow({
           />
           <TransactionLinkRow
             label="From"
-            pathname={`/address/${data.from}`}
+            pathname={fromPathname}
             value={data.from}
             containerClass="flex flex-row mt-4 w-5/6"
           />
           <TransactionLinkRow
             label="To"
-            pathname={`/address/${data.to}`}
+            pathname={toPathName}
             value={data.to}
             containerClass="flex flex-row mt-4 w-5/6"
           />

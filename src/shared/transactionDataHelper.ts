@@ -42,6 +42,10 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     isToContract,
     txTypes: tx.tx_types,
   });
+  const transactionStatus = getTransactionStatus({
+    status: tx.status,
+    block: tx.block,
+  });
 
   return {
     transactionType,
@@ -53,10 +57,8 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     to: toHash,
     isFromContract,
     isToContract,
-    status:
-      tx.status === "ok"
-        ? TransactionStatus.Confirmed
-        : TransactionStatus.Reverted,
+    status: transactionStatus,
+    result: tx.result,
     timeInSec: getTimeAgo(tx.timestamp),
     timestamp: tx.timestamp,
     nonce: tx.nonce,
@@ -106,6 +108,25 @@ export const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
     },
     type: tokenTransfer.type,
   }));
+
+/*
+  Equivalent logic of transaction_to_status from blockscout
+*/
+export const getTransactionStatus = ({
+  status,
+  block,
+}: {
+  status: string;
+  block: string;
+}): TransactionStatus => {
+  if (status === null && block === null) {
+    return TransactionStatus.Pending;
+  }
+  if (status === "ok") {
+    return TransactionStatus.Success;
+  }
+  return TransactionStatus.Failed;
+};
 
 /*
   Equivalent logic of transaction_display_type from blockscout

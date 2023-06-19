@@ -2,12 +2,7 @@
  * TODO: Remove file once api is available
  */
 
-import { TransactionI } from "@api/types";
-
-export enum TransactionStatus {
-  Confirmed = "Confirmed",
-  Reverted = "Reverted",
-}
+import { TransactionI, TransactionStatus } from "@api/types";
 
 export enum TransactionType {
   ContractCall = "Contract call",
@@ -52,7 +47,8 @@ export const transactions: TransactionI[] = [
     amount: "100.00000012345",
     from: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
     to: "0xaab27b150451726sdsd738aa1d0a94505c8729bd1",
-    status: TransactionStatus.Confirmed,
+    status: TransactionStatus.Success,
+    result: "success",
     symbol: "DMTCx",
     timeInSec: 221,
     timestamp: "2023-04-27T02:28:10.000000Z",
@@ -81,7 +77,8 @@ export const transactions: TransactionI[] = [
     amount: "11000230.00000012345",
     from: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
     to: "0xaab27b150451726sdsd738aa1d0a94505c8729bd1",
-    status: TransactionStatus.Reverted,
+    status: TransactionStatus.Failed,
+    result: "execution reverted",
     symbol: "DMTCx",
     timeInSec: 1221,
     timestamp: "2023-04-25T01:18:02.000000Z",
@@ -111,7 +108,8 @@ export const transactions: TransactionI[] = [
     amount: "21.00000012345",
     from: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
     to: "0xaab27b150451726sdsd738aa1d0a94505c8729bd1",
-    status: TransactionStatus.Confirmed,
+    status: TransactionStatus.Success,
+    result: "success",
     symbol: "DMTCx",
     timeInSec: 32323,
     timestamp: "2023-04-25T01:18:02.000000Z",
@@ -140,7 +138,8 @@ export const transactions: TransactionI[] = [
     amount: "3.00000012345",
     from: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
     to: "0xaab27b150451726sdsd738aa1d0a94505c8729bd1",
-    status: TransactionStatus.Confirmed,
+    status: TransactionStatus.Success,
+    result: "sucess",
     symbol: "DMTCx",
     timeInSec: 32323,
     timestamp: "2023-04-25T01:18:02.000000Z",
@@ -169,7 +168,8 @@ export const transactions: TransactionI[] = [
     amount: "434.00000012345",
     from: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
     to: "0xaab27b150451726sdsd738aa1d0a94505c8729bd1",
-    status: TransactionStatus.Reverted,
+    status: TransactionStatus.Failed,
+    result: "awaiting_internal_transactions",
     symbol: "DMTCx",
     timeInSec: 32355,
     timestamp: "2023-04-25T01:18:02.000000Z",
@@ -198,7 +198,8 @@ export const transactions: TransactionI[] = [
     amount: "11.00000012345",
     from: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
     to: "0xaab27b150451726sdsd738aa1d0a94505c8729bd1",
-    status: TransactionStatus.Confirmed,
+    status: TransactionStatus.Success,
+    result: "success",
     symbol: "DMTCx",
     timeInSec: 32356,
     timestamp: "2023-04-25T01:18:12.000000Z",
@@ -227,7 +228,8 @@ export const transactions: TransactionI[] = [
     amount: "121.00000012345",
     from: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
     to: "0xaab27b150451726sdsd738aa1d0a94505c8729bd1",
-    status: TransactionStatus.Confirmed,
+    status: TransactionStatus.Success,
+    result: "success",
     symbol: "DMTCx",
     timeInSec: 32390,
     timestamp: "2023-04-25T01:18:02.000000Z",
@@ -256,7 +258,8 @@ export const transactions: TransactionI[] = [
     amount: "11.00000012345",
     from: "0xaab27b150451726ecsds38aa1d0a94505c8729bd1",
     to: "0xaab27b150451726sdsd738aa1d0a94505c8729bd1",
-    status: TransactionStatus.Confirmed,
+    status: TransactionStatus.Success,
+    result: "success",
     symbol: "DMTCx",
     timeInSec: 32500,
     timestamp: "2023-04-25T01:18:02.000000Z",

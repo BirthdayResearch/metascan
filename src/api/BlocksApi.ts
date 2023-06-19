@@ -5,7 +5,11 @@ import {
   MAIN_BLOCKS_URL,
   wrapResponse,
 } from "./index";
-import { BlockProps, RawTxnWithPaginationProps } from "./types";
+import {
+  BlockProps,
+  BlockWithPaginationProps,
+  RawTxnWithPaginationProps,
+} from "./types";
 
 export default {
   getBlocks: async (
@@ -54,15 +58,6 @@ export default {
     return wrapResponse<RawTxnWithPaginationProps>(res);
   },
 };
-
-interface BlockWithPaginationProps {
-  items: BlockProps[];
-  next_page_params?: {
-    block_number?: string;
-    items_count?: string;
-    index?: string;
-  };
-}
 
 export interface BlockNextPageParamsProps {
   block_number: string;

@@ -1,13 +1,15 @@
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
+import { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { FiX } from "react-icons/fi";
 import { IoMdCheckmarkCircle } from "react-icons/io";
+import { useRouter } from "next/router";
 
 import { formatDateToUTC, getDuration } from "shared/durationHelper";
 import { transformTransactionData } from "shared/transactionDataHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import { GWEI_SYMBOL } from "shared/constants";
-import TransactionsApi from "@api/TransactionsApi";
 import { TransactionI } from "@api/types";
 
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
@@ -15,9 +17,12 @@ import GradientCardContainer from "@components/commons/GradientCardContainer";
 import NumericFormat from "@components/commons/NumericFormat";
 import LinkText from "@components/commons/LinkText";
 import { iconMapping } from "@components/commons/TransactionRow";
-import { NetworkConnection } from "@contexts/Environment";
 
 import DetailRow from "@components/commons/DetailRow";
+import { useNetwork } from "@contexts/NetworkContext";
+import { useTransactionResultMutation } from "@store/transactions";
+import DetailPageNotFound from "@components/DetailPageNotFound";
+import { getTopLevelRoute } from "shared/urlHelper";
 import BoldedTitle from "./_components/BoldedTitle";
 import RawInput from "./_components/RawInput";
 import WithCopy from "./_components/WithCopy";
@@ -25,11 +30,44 @@ import GasDetails from "./_components/GasDetails";
 import TokenTransferDetails from "./_components/TokenTransferDetails";
 import DecodedInput from "./_components/DecodedInput";
 
-export default function Transaction({
-  txDetails,
-}: {
-  txDetails: TransactionI;
-}) {
+export default function Transaction() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [txDetails, setTxDetails] = useState<TransactionI>();
+  const { connection } = useNetwork();
+  const [transactionResultMutation] = useTransactionResultMutation();
+  const router = useRouter();
+
+  const fetchTransaction = async () => {
+    setIsLoading(true);
+    const results = await transactionResultMutation({
+      network: connection,
+      txnHash: router.query.tid as string,
+    }).unwrap();
+    // TODO: Add missing confirmation workaround
+    const transformTx = transformTransactionData(results);
+
+    setTxDetails(transformTx);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchTransaction();
+  }, []);
+
+  if (isLoading) {
+    // TODO: Handle properly
+    return (
+      <FaSpinner
+        size={40}
+        className="text-white-50 animate-spin m-auto h-[40vh]"
+      />
+    );
+  }
+  if (!txDetails) {
+    const currentPath = getTopLevelRoute(router.asPath);
+    return <DetailPageNotFound path={currentPath} />;
+  }
+
   const gasPrice = { value: txDetails.gasPrice, symbol: GWEI_SYMBOL };
   const gasUsedPercentage = new BigNumber(txDetails.gasUsed)
     .dividedBy(txDetails.gasLimit)
@@ -278,22 +316,4 @@ function SectionDivider() {
       )}
     />
   );
-}
-
-export async function getServerSideProps(context) {
-  const {
-    params: { tid },
-    query: { network },
-  } = context;
-  try {
-    const data = await TransactionsApi.getTransaction(
-      network as NetworkConnection,
-      tid
-    );
-    const txDetails = transformTransactionData(data);
-
-    return { props: { txDetails } };
-  } catch (e) {
-    return { notFound: true };
-  }
 }

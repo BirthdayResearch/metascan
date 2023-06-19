@@ -1,34 +1,28 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import TransactionsApi, {
+import {
   TxnNextPageParamsProps,
   TxnQueryParamsProps,
 } from "@api/TransactionsApi";
-import {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  InferGetServerSidePropsType,
-} from "next";
-import { NetworkConnection } from "@contexts/Environment";
+import { RawTxnWithPaginationProps } from "@api/types";
+
 import Pagination from "@components/commons/Pagination";
-import { RawTransactionI } from "@api/types";
-import { isNumeric } from "shared/textHelper";
+
 import {
   SkeletonLoader,
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import TransactionRow from "@components/commons/TransactionRow";
-
-interface PageProps {
-  transactions: RawTransactionI[];
-  next_page_params: TxnNextPageParamsProps;
-}
+import { useTransactionsResultMutation } from "@store/transactions";
+import { useNetwork } from "@contexts/NetworkContext";
 
 function TxnPagination({
   nextPageParams,
 }: {
-  nextPageParams: TxnNextPageParamsProps;
+  nextPageParams?: TxnNextPageParamsProps;
 }) {
   return (
     <Pagination<TxnQueryParamsProps>
@@ -45,10 +39,30 @@ function TxnPagination({
   );
 }
 
-export default function Transactions({
-  data,
-  isLoading,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Transactions() {
+  const [data, setData] = useState<RawTxnWithPaginationProps>();
+  const [isLoading, setIsLoading] = useState(true);
+  const { connection } = useNetwork();
+  const [transactionsResultMutation] = useTransactionsResultMutation();
+  const router = useRouter();
+
+  const fetchTransactions = async () => {
+    setIsLoading(true);
+    const results = await transactionsResultMutation({
+      network: connection,
+      blockNumber: router.query.block_number as string,
+      itemsCount: router.query.items_count as string,
+      index: router.query.index as string,
+    }).unwrap();
+    // TODO: Handle pagination
+    setData(results);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
@@ -58,60 +72,29 @@ export default function Transactions({
             <span className="font-bold text-2xl text-white-50">
               Transactions
             </span>
-            {isLoading && (
+            {isLoading ? (
               <PaginationLoader customStyle="right-0 top-[72px] md:top-8" />
+            ) : (
+              <TxnPagination nextPageParams={data?.next_page_params} />
             )}
-            <TxnPagination nextPageParams={data.next_page_params} />
           </div>
           {isLoading ? (
             <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
           ) : (
-            data.transactions.map((tx) => (
+            data?.items.map((tx) => (
               <TransactionRow key={tx.hash} rawData={tx} />
             ))
           )}
 
           <div className="relative h-10 md:h-6 lg:pt-1.5">
-            {isLoading && (
+            {isLoading ? (
               <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
+            ) : (
+              <TxnPagination nextPageParams={data?.next_page_params} />
             )}
-            <TxnPagination nextPageParams={data.next_page_params} />
           </div>
         </div>
       </GradientCardContainer>
     </div>
   );
-}
-
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<GetServerSidePropsResult<{ data: PageProps; isLoading?: boolean }>> {
-  const { network, ...params } = context.query;
-  // Avoid fetching if some params are not valid
-  const hasInvalidParams =
-    !isNumeric(params?.block_number as string) ||
-    !isNumeric(params?.items_count as string) ||
-    !isNumeric(params?.page_number as string) ||
-    !isNumeric(params?.index as string);
-
-  try {
-    // Fetch data from external API
-    const txs = hasInvalidParams
-      ? await TransactionsApi.getTransactions(network as NetworkConnection)
-      : await TransactionsApi.getTransactions(
-          network as NetworkConnection,
-          params?.block_number as string,
-          params?.items_count as string,
-          params?.index as string
-        );
-    const data = {
-      transactions: txs.items,
-      next_page_params: txs.next_page_params as TxnNextPageParamsProps,
-    };
-
-    // Pass data to the page via props
-    return { props: { data } };
-  } catch (e) {
-    return { notFound: true };
-  }
 }

@@ -94,13 +94,16 @@ export interface DecodedTxInput {
   method_call: string;
   parameters: TxParameters[];
 }
+
+export interface TxnNextPageParamsProps {
+  block_number: string;
+  items_count: string;
+  index: string;
+}
+
 export interface RawTxnWithPaginationProps {
   items: RawTransactionI[];
-  next_page_params?: {
-    block_number?: string;
-    items_count?: string;
-    index?: string;
-  };
+  next_page_params?: TxnNextPageParamsProps;
 }
 
 export interface RawTransactionI {
@@ -179,6 +182,16 @@ export interface TransactionI {
   method: string | null;
   confirmations: number;
   tokenTransfers?: TokenTransferProps[];
+}
+
+export interface BlockNextPageParamsProps {
+  block_number: string;
+  items_count: string;
+}
+
+export interface BlockWithPaginationProps {
+  items: BlockProps[];
+  next_page_params?: BlockNextPageParamsProps;
 }
 
 export interface BlockProps {

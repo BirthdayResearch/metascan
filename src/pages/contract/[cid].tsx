@@ -247,7 +247,6 @@ export async function getServerSideProps(
   const { network, ...params } = context.query;
   const cid = params?.cid?.toString().trim() as string;
 
-  console.log({ cid });
   if (!isAlphanumeric(cid)) {
     return { notFound: true };
   }

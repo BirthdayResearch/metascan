@@ -39,7 +39,7 @@ const MenuItems = [
         imagePath: "/menu/github.svg",
         testId: "GitHub",
         label: "GitHub",
-        href: "https://github.com/DeFiCh/metachain",
+        href: "https://github.com/BirthdayResearch/metascan",
       },
     ],
   },

@@ -15,22 +15,22 @@ export default function ContractTabs({
     <div className="flex flex-row gap-x-4 md:pt-[3.67px] pt-[19.67px]">
       <ButtonTab
         testId={
-          selectedTab === ContractTabsTitle.Code
-            ? "contract-code-options-clicked-title"
-            : "contract-code-options-title"
-        }
-        active={selectedTab === ContractTabsTitle.Code}
-        tab={ContractTabsTitle.Code}
-        setSelectedTab={setSelectedTab}
-      />
-      <ButtonTab
-        testId={
           selectedTab === ContractTabsTitle.Transactions
             ? "contract-transaction-options-clicked-title"
             : "contract-transaction-options-title"
         }
         active={selectedTab === ContractTabsTitle.Transactions}
         tab={ContractTabsTitle.Transactions}
+        setSelectedTab={setSelectedTab}
+      />
+      <ButtonTab
+        testId={
+          selectedTab === ContractTabsTitle.Contract
+            ? "contract-code-options-clicked-title"
+            : "contract-code-options-title"
+        }
+        active={selectedTab === ContractTabsTitle.Contract}
+        tab={ContractTabsTitle.Contract}
         setSelectedTab={setSelectedTab}
       />
       <ButtonTab
@@ -46,24 +46,6 @@ export default function ContractTabs({
     </div>
   );
 }
-
-const onOptionsClick = (
-  setSelectedTab: Dispatch<SetStateAction<ContractTabsTitle>>,
-  itemClicked: ContractTabsTitle
-) => {
-  switch (itemClicked) {
-    case ContractTabsTitle.Transactions:
-      setSelectedTab(ContractTabsTitle.Transactions);
-      break;
-    case ContractTabsTitle.Tokens:
-      setSelectedTab(ContractTabsTitle.Tokens);
-      break;
-    case ContractTabsTitle.Code:
-    default:
-      setSelectedTab(ContractTabsTitle.Code);
-      break;
-  }
-};
 
 function ButtonTab({
   active,
@@ -85,7 +67,7 @@ function ButtonTab({
           active ? "text-white-50" : "text-white-700"
         )}
         data-testid={testId}
-        onClick={() => onOptionsClick(setSelectedTab, tab)}
+        onClick={() => setSelectedTab(tab)}
       >
         {tab}
       </button>

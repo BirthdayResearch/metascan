@@ -1,20 +1,22 @@
+import { Dispatch, SetStateAction, useState } from "react";
+import { GetServerSidePropsResult } from "next";
+import { useRouter } from "next/router";
+import { FiCopy } from "react-icons/fi";
+import { MdOutlineQrCode } from "react-icons/md";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { readContractPages, verifiedContractData } from "mockdata/ContractData";
-import { pages, transactions } from "mockdata/TransactionData";
+import { pages } from "mockdata/TransactionData";
 import { tokenPages, tokens } from "mockdata/TokenData";
-import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useState } from "react";
-import { FiCopy } from "react-icons/fi";
-import { MdOutlineQrCode } from "react-icons/md";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import QrCode from "@components/commons/QrCode";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import { sleep } from "shared/sleep";
 import { ContractTabsTitle } from "enum/contractTabsTitle";
+import TransactionsApi from "@api/TransactionsApi";
 import ContractTabs from "./_components/ContractTabs";
 import ContractTokensList from "./_components/ContractTokensList";
 import ContractTransactionsList from "./_components/ContractTransactionsList";
@@ -144,7 +146,7 @@ function ContractSegmentOne({
 }
 
 function ContractSegmentTwo({ data }) {
-  const [selectedTab, setSelectedTab] = useState(ContractTabsTitle.Code);
+  const [selectedTab, setSelectedTab] = useState(ContractTabsTitle.Contract);
 
   return (
     <div>
@@ -164,7 +166,7 @@ function ContractSegmentTwo({ data }) {
           networth={data.verifiedContractData.networth}
         />
       )}
-      {selectedTab === ContractTabsTitle.Code && (
+      {selectedTab === ContractTabsTitle.Contract && (
         <ContractCode
           contractName={data.verifiedContractData.contractName}
           compilerVersion={data.verifiedContractData.compilerVersion}
@@ -201,12 +203,15 @@ const fixedTitle = {
   copied: "Copied!",
 };
 
-export async function getServerSideProps() {
-  // Fetch data from external API
+export async function getServerSideProps(
+  context
+): Promise<GetServerSidePropsResult<any>> {
+  const { network } = context.query;
+  const txs = await TransactionsApi.getTransactions(network); // TODO: Call correct api to fetch contract txs
   const data = {
     verifiedContractData,
     pages,
-    transactions,
+    transactions: txs,
     tokenPages,
     tokens,
     readContractPages,

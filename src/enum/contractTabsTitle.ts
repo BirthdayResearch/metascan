@@ -1,5 +1,5 @@
 export enum ContractTabsTitle {
-  Code = "Code",
   Transactions = "Transactions",
+  Contract = "Contract",
   Tokens = "Tokens",
 }

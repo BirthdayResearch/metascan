@@ -101,7 +101,7 @@ export default function Home() {
         <LatestDataTable
           type="transactions"
           title="Latest transactions"
-          data={latestTransactions}
+          data={latestTransactions ?? []}
           listPageUrl="/txs"
           detailsPageBaseUrl="/tx"
           containerClass="pt-8 md:pt-16"
@@ -110,7 +110,7 @@ export default function Home() {
         <LatestDataTable
           type="blocks"
           title="Latest blocks"
-          data={latestBlocks}
+          data={latestBlocks ?? []}
           detailsPageBaseUrl="/block"
           listPageUrl="/blocks"
           containerClass="pt-5 md:pt-6 lg:pt-5"
@@ -120,34 +120,3 @@ export default function Home() {
     </>
   );
 }
-
-// interface LatestDataProps {
-//   latestTransactions: RowData[];
-//   latestBlocks: RowData[];
-//   isLoading?: boolean;
-// }
-
-// export async function getServerSideProps(
-//   context
-// ): Promise<GetServerSidePropsResult<LatestDataProps>> {
-//   try {
-//     const { network } = context.query;
-//     const latestTransactions = await LatestDataApi.getLatestTransactions(
-//       network
-//     );
-//     const latestBlocks = await LatestDataApi.getLatestBlocks(network);
-//     return {
-//       props: {
-//         latestTransactions,
-//         latestBlocks,
-//       },
-//     };
-//   } catch (e) {
-//     return {
-//       props: {
-//         latestTransactions: [],
-//         latestBlocks: [],
-//       },
-//     };
-//   }
-// }

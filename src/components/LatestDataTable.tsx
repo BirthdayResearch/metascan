@@ -14,7 +14,7 @@ type DataType = "blocks" | "transactions";
 interface Props {
   type: DataType;
   title: string;
-  data?: RowData[];
+  data: RowData[] | [];
   listPageUrl: string;
   detailsPageBaseUrl: string;
   containerClass?: string;
@@ -51,32 +51,30 @@ export default function LatestDataTable({
                   rows={5}
                 />
               ) : (
-                <>
-                  {data.map((row, index) => (
-                    <div key={row.transactionId}>
-                      {type === "blocks" ? (
-                        <BlockRowItem
-                          rowIndex={index}
-                          rowData={row}
-                          detailsPageBaseUrl={detailsPageBaseUrl}
-                        />
-                      ) : (
-                        <TransactionRowItem
-                          rowIndex={index}
-                          rowData={row}
-                          detailsPageBaseUrl={detailsPageBaseUrl}
-                        />
-                      )}
-
-                      <div
-                        className={clsx(
-                          "w-[calc(100% - 16px)] h-7 md:h-5 border-b border-black-600",
-                          { hidden: data.length === index + 1 }
-                        )}
+                data.map((row, index) => (
+                  <div key={row.transactionId}>
+                    {type === "blocks" ? (
+                      <BlockRowItem
+                        rowIndex={index}
+                        rowData={row}
+                        detailsPageBaseUrl={detailsPageBaseUrl}
                       />
-                    </div>
-                  ))}
-                </>
+                    ) : (
+                      <TransactionRowItem
+                        rowIndex={index}
+                        rowData={row}
+                        detailsPageBaseUrl={detailsPageBaseUrl}
+                      />
+                    )}
+
+                    <div
+                      className={clsx(
+                        "w-[calc(100% - 16px)] h-7 md:h-5 border-b border-black-600",
+                        { hidden: data.length === index + 1 }
+                      )}
+                    />
+                  </div>
+                ))
               )}
             </div>
             <div className="pt-[45px] md:pt-0 md:col-span-3 md:col-end-auto">

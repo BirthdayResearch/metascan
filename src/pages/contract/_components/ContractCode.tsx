@@ -43,7 +43,7 @@ export default function ContractCode({
               : "text-white-50 bg-black-600"
           )}
         >
-          {CodeOptions.Read}
+          {CodeOptions.Code}
         </button>
         <button
           type="button"

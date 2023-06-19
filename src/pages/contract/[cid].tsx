@@ -197,7 +197,20 @@ function ContractSegmentTwo({
           />
         </div>
       )}
-      {/* {selectedTab === ContractTabsTitle.Tokens && (
+      {/* {selectedTab === ContractTabsTitle.Contract && (
+        <ContractCode
+        contractName={data.verifiedContractData.contractName}
+        compilerVersion={data.verifiedContractData.compilerVersion}
+        evmVersion={data.verifiedContractData.evmVersion}
+        optimizedEnabled={data.verifiedContractData.optimizationEnabled}
+        optimizationRuns={data.verifiedContractData.optimazationRuns}
+        verifiedAt={data.verifiedContractData.verifiedAt}
+        codes={data.verifiedContractData.codes}
+        pages={data.readContractPages}
+        writeContractData={data.verifiedContractData.writeContractData}
+        />
+      )}
+       {selectedTab === ContractTabsTitle.Tokens && (
         <ContractTokensList
           contractTokenList={data.tokens}
           contractTokenListPage={data.tokenPages}
@@ -205,20 +218,8 @@ function ContractSegmentTwo({
           otherTokens={data.verifiedContractData.otherTokens}
           networth={data.verifiedContractData.networth}
         />
-      )}
-      {selectedTab === ContractTabsTitle.Contract && (
-        <ContractCode
-          contractName={data.verifiedContractData.contractName}
-          compilerVersion={data.verifiedContractData.compilerVersion}
-          evmVersion={data.verifiedContractData.evmVersion}
-          optimizedEnabled={data.verifiedContractData.optimizationEnabled}
-          optimizationRuns={data.verifiedContractData.optimazationRuns}
-          verifiedAt={data.verifiedContractData.verifiedAt}
-          codes={data.verifiedContractData.codes}
-          pages={data.readContractPages}
-          writeContractData={data.verifiedContractData.writeContractData}
-        />
-      )} */}
+      )} 
+      */}
     </div>
   );
 }

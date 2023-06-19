@@ -283,7 +283,7 @@ export async function getServerSideProps(
         balance: utils.formatEther(contractDetail.coin_balance ?? "0"),
         detail: contractDetail,
         addressTransactions: {
-          transactions: [],
+          transactions: addressTransactions.items,
           nextPageParams:
             addressTransactions.next_page_params as TxnNextPageParamsProps,
         },

@@ -187,13 +187,15 @@ function ContractSegmentTwo({
     <div>
       <ContractTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
       {selectedTab === ContractTabsTitle.Transactions && (
-        <TransactionDetails
-          data={transactions}
-          pathname={`/contract/${addressHash}`}
-          type="address"
-          isLoading={isLoading}
-          isHeaderDisplayed={false}
-        />
+        <div className="mt-8">
+          <TransactionDetails
+            data={transactions}
+            pathname={`/contract/${addressHash}`}
+            type="address"
+            isLoading={isLoading}
+            isHeaderDisplayed={false}
+          />
+        </div>
       )}
       {/* {selectedTab === ContractTabsTitle.Tokens && (
         <ContractTokensList
@@ -281,7 +283,7 @@ export async function getServerSideProps(
         balance: utils.formatEther(contractDetail.coin_balance ?? "0"),
         detail: contractDetail,
         addressTransactions: {
-          transactions: addressTransactions.items,
+          transactions: [],
           nextPageParams:
             addressTransactions.next_page_params as TxnNextPageParamsProps,
         },

@@ -2,8 +2,6 @@ import BigNumber from "bignumber.js";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { FiX } from "react-icons/fi";
-import { IoMdCheckmarkCircle } from "react-icons/io";
 import { useRouter } from "next/router";
 
 import { formatDateToUTC, getDuration } from "shared/durationHelper";
@@ -23,6 +21,7 @@ import { useNetwork } from "@contexts/NetworkContext";
 import { useTransactionResultMutation } from "@store/transactions";
 import DetailPageNotFound from "@components/DetailPageNotFound";
 import { getTopLevelRoute } from "shared/urlHelper";
+import TransactionRowStatus from "@components/commons/TransactionRowStatus";
 import BoldedTitle from "./_components/BoldedTitle";
 import RawInput from "./_components/RawInput";
 import WithCopy from "./_components/WithCopy";
@@ -179,29 +178,7 @@ export default function Transaction() {
               >
                 Status
               </div>
-              <div
-                className={clsx(
-                  "flex items-center",
-                  txDetails.status.toLowerCase() === "confirmed"
-                    ? "text-green-800"
-                    : "text-red-800"
-                )}
-              >
-                <div
-                  data-testid="transaction-status"
-                  className={clsx(
-                    "text-sm  -tracking-[0.01em] ",
-                    "md:text-base md:font-semibold md:-tracking-[0.02em]"
-                  )}
-                >
-                  {txDetails.status}
-                </div>
-                {txDetails.status.toLowerCase() === "confirmed" ? (
-                  <IoMdCheckmarkCircle size={20} className=" ml-1" />
-                ) : (
-                  <FiX size={20} className=" ml-1" />
-                )}
-              </div>
+              <TransactionRowStatus status={txDetails.status} />{" "}
             </div>
             {/* Amount */}
             <div className={rowCss}>

@@ -15,22 +15,22 @@ export default function ContractTabs({
     <div className="flex flex-row gap-x-4 md:pt-[3.67px] pt-[19.67px]">
       <ButtonTab
         testId={
-          selectedTab === ContractTabsTitle.Code
-            ? "contract-code-options-clicked-title"
-            : "contract-code-options-title"
-        }
-        active={selectedTab === ContractTabsTitle.Code}
-        tab={ContractTabsTitle.Code}
-        setSelectedTab={setSelectedTab}
-      />
-      <ButtonTab
-        testId={
           selectedTab === ContractTabsTitle.Transactions
             ? "contract-transaction-options-clicked-title"
             : "contract-transaction-options-title"
         }
         active={selectedTab === ContractTabsTitle.Transactions}
         tab={ContractTabsTitle.Transactions}
+        setSelectedTab={setSelectedTab}
+      />
+      <ButtonTab
+        testId={
+          selectedTab === ContractTabsTitle.Code
+            ? "contract-code-options-clicked-title"
+            : "contract-code-options-title"
+        }
+        active={selectedTab === ContractTabsTitle.Code}
+        tab={ContractTabsTitle.Code}
         setSelectedTab={setSelectedTab}
       />
       <ButtonTab

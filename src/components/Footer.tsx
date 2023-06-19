@@ -12,12 +12,6 @@ const MenuItems = [
         label: "DeFiChain.com",
         href: "https://defichain.com",
       },
-      // {
-      //   imagePath: "/menu/VerifiedContracts.svg",
-      //   testId: "Verified Contracts",
-      //   label: "Verified Contracts",
-      //   href: "",
-      // },
     ],
   },
   {

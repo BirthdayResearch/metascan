@@ -117,13 +117,13 @@ export default function TransactionRow({
           <TransactionLinkRow
             label="From"
             pathname={`/address/${data.from}`}
-            value={data.hash}
+            value={data.from}
             containerClass="flex flex-row mt-4 w-5/6"
           />
           <TransactionLinkRow
             label="To"
             pathname={`/address/${data.to}`}
-            value={data.hash}
+            value={data.to}
             containerClass="flex flex-row mt-4 w-5/6"
           />
         </div>

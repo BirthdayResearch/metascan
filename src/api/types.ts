@@ -159,7 +159,7 @@ export interface TransactionI {
   amount: string;
   symbol: string;
   from: string;
-  to: string | null;
+  to: string;
   isFromContract: boolean;
   isToContract: boolean;
   status: TransactionStatus;

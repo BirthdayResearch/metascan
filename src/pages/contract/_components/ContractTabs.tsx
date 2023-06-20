@@ -12,7 +12,7 @@ export default function ContractTabs({
   setSelectedTab,
 }: ContractOptionsProps) {
   return (
-    <div className="flex flex-row gap-x-4 md:pt-[3.67px] pt-[19.67px]">
+    <div className="flex flex-row gap-x-4">
       <ButtonTab
         testId={
           selectedTab === ContractTabsTitle.Transactions
@@ -71,7 +71,7 @@ function ButtonTab({
       >
         {tab}
       </button>
-      {active && <div className="brand-gradient-1 h-1 mt-[19.33px]" />}
+      {active && <div className="brand-gradient-1 h-1 mt-3" />}
     </div>
   );
 }

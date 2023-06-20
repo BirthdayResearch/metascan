@@ -1,37 +1,52 @@
-import { CursorPage } from "@components/commons/CursorPagination";
 import clsx from "clsx";
 import { CodeOptions } from "enum/codeOptions";
-import { useState } from "react";
-import ReadContract, { CodesData } from "./ReadContract";
-import WriteContract from "./WriteContract";
-import { WriteData } from "./WriteContractInputItem";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useLazyGetContractMethodsQuery } from "@store/smartContract";
+import { useNetwork } from "@contexts/NetworkContext";
+import { ContractMethodType, SmartContractMethod } from "@api/types";
+import ReadWriteContract from "./ReadWriteContract";
 
-interface ContractCodeProps {
-  contractName: string;
-  compilerVersion: string;
-  evmVersion: string;
-  optimizedEnabled: boolean;
-  optimizationRuns: number;
-  verifiedAt: string;
-  codes: CodesData[];
-  pages: CursorPage[];
-  writeContractData: WriteData[];
-}
+export default function ContractCode() {
+  const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Read);
+  const [contractMethods, setContractMethods] = useState<{
+    read: SmartContractMethod[];
+    write: SmartContractMethod[];
+  }>({
+    read: [],
+    write: [],
+  });
 
-export default function ContractCode({
-  contractName,
-  compilerVersion,
-  evmVersion,
-  optimizedEnabled,
-  optimizationRuns,
-  verifiedAt,
-  codes,
-  pages,
-  writeContractData,
-}: ContractCodeProps) {
-  const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Code);
+  const { connection } = useNetwork();
+  const [getContractMethods] = useLazyGetContractMethodsQuery();
+
+  const router = useRouter();
+  const contractId = router.query.cid as string;
+
+  const fetchContractMethods = async () => {
+    const readMethods = await getContractMethods({
+      network: connection,
+      smartContractId: contractId,
+      method: "read",
+    });
+    const writeMethods = await getContractMethods({
+      network: connection,
+      smartContractId: contractId,
+      method: "write",
+    });
+    // TODO: Add proxy
+    setContractMethods({
+      read: readMethods.data ?? [],
+      write: writeMethods.data ?? [],
+    });
+  };
+
+  useEffect(() => {
+    fetchContractMethods();
+  }, []);
+
   return (
-    <div className="mt-10">
+    <div>
       <div className="flex flex-row gap-x-2">
         <button
           type="button"
@@ -71,7 +86,10 @@ export default function ContractCode({
         </button>
       </div>
       {activeTab === CodeOptions.Code && (
-        <ReadContract
+        <div className="text-white-50 py-10">
+          / ** TODO: ADD CONTRACT CODE ** /
+          {/* 
+          <ReadContract
           contractName={contractName}
           compilerVersion={compilerVersion}
           evmVersion={evmVersion}
@@ -80,15 +98,22 @@ export default function ContractCode({
           verifiedAt={verifiedAt}
           codes={codes}
           pages={pages}
-        />
-      )}
-      {activeTab === CodeOptions.Read && (
-        <div className="text-white-50 py-10">
-          / ** TODO: ADD READ METHODS. ** /
+        /> */}
         </div>
       )}
+      {activeTab === CodeOptions.Read && (
+        <ReadWriteContract
+          title="Read contract"
+          type={ContractMethodType.Read}
+          methods={contractMethods.read}
+        />
+      )}
       {activeTab === CodeOptions.Write && (
-        <WriteContract writeContractData={writeContractData} />
+        <ReadWriteContract
+          title="Write contract"
+          type={ContractMethodType.Write}
+          methods={contractMethods.write}
+        />
       )}
     </div>
   );

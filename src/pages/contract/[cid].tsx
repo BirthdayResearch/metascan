@@ -31,6 +31,7 @@ import TransactionDetails from "@components/TransactionDetails";
 import { WalletAddressInfoI } from "@api/types";
 import VerifiedContractSubtitle from "./_components/VerifiedContractSubtitle";
 import ContractTabs from "./_components/ContractTabs";
+import ContractCode from "./_components/ContractCode";
 
 interface ContractDetailProps {
   addressTransactions: AddressTransactionsProps;
@@ -70,15 +71,11 @@ export default function VerifiedContract({
           />
         </div>
       </GradientCardContainer>
-      <GradientCardContainer className="relative mt-6">
-        <div className="md:p-10 px-5 py-10">
-          <ContractSegmentTwo
-            addressHash={cid}
-            isLoading={isLoading}
-            transactions={addressTransactions}
-          />
-        </div>
-      </GradientCardContainer>
+      <ContractSegmentTwo
+        addressHash={cid}
+        isLoading={isLoading}
+        transactions={addressTransactions}
+      />
       {isQrCodeClicked && (
         <QrCode
           data-testid="contract-qr-code"
@@ -179,38 +176,31 @@ function ContractSegmentTwo({
   isLoading?: boolean;
   transactions: AddressTransactionsProps;
 }) {
-  const [selectedTab, setSelectedTab] = useState(
-    ContractTabsTitle.Transactions
-  );
+  const [selectedTab, setSelectedTab] = useState(ContractTabsTitle.Contract);
 
   return (
     <div>
-      <ContractTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-      {selectedTab === ContractTabsTitle.Transactions && (
-        <div className="mt-8">
-          <TransactionDetails
-            data={transactions}
-            pathname={`/contract/${addressHash}`}
-            type="address"
-            isLoading={isLoading}
-            isHeaderDisplayed={false}
-          />
-        </div>
-      )}
-      {/* {selectedTab === ContractTabsTitle.Contract && (
-        <ContractCode
-        contractName={data.verifiedContractData.contractName}
-        compilerVersion={data.verifiedContractData.compilerVersion}
-        evmVersion={data.verifiedContractData.evmVersion}
-        optimizedEnabled={data.verifiedContractData.optimizationEnabled}
-        optimizationRuns={data.verifiedContractData.optimazationRuns}
-        verifiedAt={data.verifiedContractData.verifiedAt}
-        codes={data.verifiedContractData.codes}
-        pages={data.readContractPages}
-        writeContractData={data.verifiedContractData.writeContractData}
+      <div className="relative mt-10 lg:mt-8">
+        <ContractTabs
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
         />
-      )}
-       {selectedTab === ContractTabsTitle.Tokens && (
+      </div>
+      <GradientCardContainer className="relative mt-6 p-5 md:p-10">
+        <div className="p-5 md:p-10">
+          {selectedTab === ContractTabsTitle.Transactions && (
+            <div className="mt-8">
+              <TransactionDetails
+                data={transactions}
+                pathname={`/contract/${addressHash}`}
+                type="address"
+                isLoading={isLoading}
+                isHeaderDisplayed={false}
+              />
+            </div>
+          )}
+          {selectedTab === ContractTabsTitle.Contract && <ContractCode />}
+          {/* {selectedTab === ContractTabsTitle.Tokens && (
         <ContractTokensList
           contractTokenList={data.tokens}
           contractTokenListPage={data.tokenPages}
@@ -220,6 +210,8 @@ function ContractSegmentTwo({
         />
       )} 
       */}
+        </div>
+      </GradientCardContainer>
     </div>
   );
 }

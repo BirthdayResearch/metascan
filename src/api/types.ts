@@ -270,3 +270,14 @@ export interface SmartContractWithPaginationProps {
   items: SmartContractProps[];
   next_page_params: SmartContractPageParamsProps;
 }
+
+export interface SCVersionsBuilds {
+  build: string;
+  longVersion: string;
+  sha256: string;
+  path: string;
+  version: string;
+}
+export interface SCVersionsResponseProps {
+  builds: SCVersionsBuilds[];
+}

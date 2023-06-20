@@ -206,7 +206,7 @@ export default function VerifiedContract() {
                 href="/contract/verify/terms"
                 className="text-lightBlue brand-gradient-1 active:brand-gradient-2 bg-clip-text hover:text-transparent transition-all ease-in duration-300"
               >
-                terms of service
+                Terms of Service
               </a>
             </div>
             <ContinueBtn

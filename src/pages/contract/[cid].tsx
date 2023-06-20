@@ -186,7 +186,7 @@ function ContractSegmentTwo({
           setSelectedTab={setSelectedTab}
         />
       </div>
-      <GradientCardContainer className="relative mt-6 p-5 md:p-10">
+      <GradientCardContainer className="relative mt-6">
         <div className="p-5 md:p-10">
           {selectedTab === ContractTabsTitle.Transactions && (
             <div className="mt-8">

@@ -18,7 +18,7 @@ export default function VerifiedContract() {
   // todo add validations
   const router = useRouter();
   const queryAddress = router.query.address;
-  const [address, setAddress] = useState(queryAddress ?? "");
+  const [address, setAddress] = useState((queryAddress as string) ?? "");
   const defaultValue = { label: "", value: "" };
   const [compiler, setCompiler] = useState(defaultValue);
   const [version, setVersion] = useState(defaultValue);

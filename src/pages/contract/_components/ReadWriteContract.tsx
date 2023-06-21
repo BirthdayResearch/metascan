@@ -26,9 +26,9 @@ export default function ReadWriteContract({
           }}
         />
       </div>
-      {methods?.map((item, index) => (
+      {methods.map((item, index) => (
         <ContractMethod
-          key={item.method_id}
+          key={item.name}
           type={type}
           method={item}
           index={index}

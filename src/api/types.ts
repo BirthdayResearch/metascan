@@ -290,7 +290,7 @@ export interface SmartContractOutputWithValue {
 export interface SmartContractMethod {
   inputs: SmartContractInputOutput[] | [];
   outputs: SmartContractInputOutput[] | SmartContractOutputWithValue[];
-  method_id: string;
+  method_id?: string;
   name: string;
   names?: string[];
   stateMutability: string;

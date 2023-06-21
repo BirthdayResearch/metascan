@@ -17,7 +17,7 @@ export default function ContractMethod({
   type: ContractMethodType;
 }) {
   const [open, setOpen] = useState(false);
-  const id = method.method_id;
+  const id = method.name;
   const displayForm = method.inputs.length > 0;
   return (
     <div
@@ -50,11 +50,7 @@ export default function ContractMethod({
             </div>
           )}
           {displayForm ? (
-            <ContractMethodForm
-              id={method.method_id}
-              type={type}
-              inputs={method.inputs}
-            />
+            <ContractMethodForm id={id} type={type} inputs={method.inputs} />
           ) : (
             <ContractMethodResult
               outputs={method.outputs as SmartContractOutputWithValue[]}

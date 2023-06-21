@@ -43,6 +43,7 @@ export default function ContractMethodForm({
           //   console.log("INPUT!", userInput);
         }}
         disabled={
+          // TODO: refactor to be more readable
           Object.keys(userInput).filter((i) => userInput[i]).length <
           inputs.length
         }

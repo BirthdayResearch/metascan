@@ -20,7 +20,7 @@ export default function Dropdown({
       >
         <div className="relative bg-dark-100 rounded-[10px] border-[0.5px] border-dark-200 focus-within:border focus-within:border-white-900">
           <Listbox.Button className="relative px-4 py-[18px] w-full cursor-default text-left shadow-md">
-            {value?.label === "" ? (
+            {value?.value === "" ? (
               <span className="text-black-500 text-lg">{placeholder}</span>
             ) : (
               <span className="text-white-50 text-lg">{value?.label}</span>
@@ -30,7 +30,7 @@ export default function Dropdown({
                 size={16}
                 className={clsx(
                   "h-4 w-4 text-black-500 stroke-white-50 stroke-[1.5px]",
-                  { "text-white-50": value?.label !== "" }
+                  { "text-white-50": value?.value !== "" }
                 )}
                 aria-hidden="true"
               />

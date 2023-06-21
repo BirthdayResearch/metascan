@@ -35,6 +35,20 @@ export default {
     const res = await fetch(VYPER_VERSIONS_URL);
     return wrapResponse<SCVersionsResponseProps>(res);
   },
+  verifySmartContract: async (
+    network: NetworkConnection,
+    data
+  ): Promise<any> => {
+    const baseUrl = getBaseUrl(network);
+    const res = await fetch(
+      `${baseUrl}/verify_smart_contract/contract_verifications`,
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    return wrapResponse<any>(res);
+  },
 };
 
 export interface SmartContractQueryParamsProps

@@ -1,4 +1,5 @@
 export default function Terms() {
+  const textStyle = "text-base md:text-lg -tracking-[0.02em] text-white-50";
   return (
     <div className="px-1 md:px-0 mt-12 w-full lg:w-8/12 mb-14 md:mb-8 lg:mb-6">
       <div className="mb-12">
@@ -19,17 +20,15 @@ export default function Terms() {
           (“Company,” “we,” or “us”).
         </div>
         <div className="mt-16">
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
-            1. ELIGIBILITY
-          </div>
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
+          <div className={textStyle}>1. ELIGIBILITY</div>
+          <div className={textStyle}>
             You represent and warrant that you: (a) are of legal age to form a
             binding contract; (b) have not previously been suspended or removed
             from using our Services; and (c) have full power and authority to
             enter into this agreement and in doing so will not violate any other
             agreement to which you are a party.
           </div>
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
+          <div className={textStyle}>
             If you are registering to use the Services on behalf of a legal
             entity, you further represent and warrant that (i) such legal entity
             is duly organized and validly existing under the applicable laws of
@@ -38,37 +37,35 @@ export default function Terms() {
           </div>
         </div>
         <div className="mt-6">
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
-            2. ACCOUNT REGISTRATION
-          </div>
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
+          <div className={textStyle}>2. ACCOUNT REGISTRATION</div>
+          <div className={textStyle}>
             You must create an account with Company to access the Services
             (“Account”). When you create an Account, you agree to:
           </div>
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
+          <div className={textStyle}>
             (a) create a strong password that you do not use for any other
             website or online service;
           </div>
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
+          <div className={textStyle}>
             (b) provide accurate and truthful information;
           </div>
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
+          <div className={textStyle}>
             (c) maintain and promptly update your Account information;
           </div>
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
+          <div className={textStyle}>
             (d) maintain the security of your Account by protecting your Account
             password and restricting access to your computer and your Account;
           </div>
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
+          <div className={textStyle}>
             (e) promptly notify us if you discover or otherwise suspect any
             security breaches related to your Account; and
           </div>
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
+          <div className={textStyle}>
             (f) take responsibility for all activities that occur under your
             Account and accept all risks of any authorized or unauthorized
             access to your Account, to the maximum extent permitted by law.
           </div>
-          <div className="text-base md:text-lg -tracking-[0.02em] text-white-50">
+          <div className={textStyle}>
             When you create an Account, we assign you an account identifier that
             you must retain to access your Account.
           </div>

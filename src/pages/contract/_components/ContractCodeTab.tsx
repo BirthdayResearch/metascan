@@ -169,35 +169,45 @@ export default function ContractCodeTab(): JSX.Element {
 
       <ContractCodeBlock
         key={contractDetail.name}
-        fileName={contractDetail.name}
+        fileName={contractDetail.fileName}
         code={contractDetail.sourceCode}
-        codeBlockHeight={482}
-        length={1}
+        codeBlockHeight={200}
+        length={contractDetail.numberOfFiles}
         index={1}
       />
+
+      {contractDetail.additionalSourceCodes?.length > 0 &&
+        contractDetail.additionalSourceCodes.map((code, index) => (
+          <ContractCodeBlock
+            key={code.filePath}
+            fileName={code.fileName}
+            code={code.sourceCode}
+            codeBlockHeight={200}
+            length={contractDetail.numberOfFiles}
+            index={index + 2}
+          />
+        ))}
 
       <ContractCodeBlock
         key={contractDetail.name}
         fileName="Contract ABI"
         code={JSON.stringify(contractDetail.abi, null, 2)}
-        codeBlockHeight={216}
+        codeBlockHeight={200}
       />
-
       {contractDetail.creationBytecode && (
         <ContractCodeBlock
           key={contractDetail.name}
           fileName="Contract Creation Code"
           code={contractDetail.creationBytecode}
-          codeBlockHeight={216}
+          codeBlockHeight={200}
         />
       )}
-
       {contractDetail.deployedBytecode && (
         <ContractCodeBlock
           key={contractDetail.name}
           fileName="Deployed ByteCode"
           code={contractDetail.deployedBytecode}
-          codeBlockHeight={216}
+          codeBlockHeight={200}
         />
       )}
     </>

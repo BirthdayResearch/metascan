@@ -49,7 +49,7 @@ export interface ContractProps {
 }
 
 /**
- * This function is called from component to directly transform data from component instead of reducers to minimize loops
+ * This function is invoked from the component itself to directly transform data, bypassing the need for reducers and minimizing unnecessary loops
  * @param tx raw contract data from the api
  * @returns formatted contract data
  */

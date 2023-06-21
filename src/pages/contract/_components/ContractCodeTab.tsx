@@ -29,7 +29,7 @@ export default function ContractCodeTab(): JSX.Element {
       </div>
       {/* desktop */}
       <div className="hidden lg:block">
-        <div className="grid grid-cols-4 grid-rows-2 gap-y-8">
+        <div className="grid grid-cols-3 grid-rows-2 gap-y-8">
           <div className="flex flex-col gap-y-1">
             <VerifiedContractSubtitle title={fixedTitle.contractName} />
             <div className="text-white-50 tracking-[0.01em] break-words">
@@ -191,6 +191,6 @@ const fixedTitle = {
   evmVersion: "EVM version",
   optimizationEnabled: "Optimization enabled",
   optimizationRuns: "Optimization runs",
-  verifiedAt: "Verified at",
+  verifiedAt: "Verified on",
   codeSource: "Code Source",
 };

@@ -15,17 +15,19 @@ export default function VerifiedContract() {
   const [sourceCode, setSourceCode] = useState("");
   const [optimizationRuns, setOptimizationRuns] = useState("");
   const [name, setName] = useState("");
+  const [editStepOne, setEditStepOne] = useState(true);
   const [stepOneDetails, setStepOneDetails] = useState({
     address: (queryAddress as string) ?? "",
-    compiler: "",
-    version: "",
-    license: "",
+    compiler: defaultDropdownValue,
+    version: defaultDropdownValue,
+    license: defaultDropdownValue,
   });
 
   const { connection } = useNetwork();
 
   const onSubmitStepOne = (data) => {
     setStepOneDetails(data);
+    setEditStepOne(false);
   };
 
   const submitForm = async () => {
@@ -73,6 +75,8 @@ export default function VerifiedContract() {
   return (
     <div>
       <StepOne
+        isEditing={editStepOne}
+        setIsEditing={setEditStepOne}
         onSubmit={onSubmitStepOne}
         defaultDropdownValue={defaultDropdownValue}
       />

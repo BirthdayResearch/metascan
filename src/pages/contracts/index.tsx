@@ -1,7 +1,10 @@
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
-import { SmartContractPageParamsProps, SmartContractProps } from "@api/types";
+import {
+  SmartContractPageParamsProps,
+  SmartContractListItemProps,
+} from "@api/types";
 import SmartContractApi, {
   SmartContractQueryParamsProps,
 } from "@api/SmartContractApi";
@@ -18,7 +21,7 @@ import {
 import VerifiedContractRow from "./_components/VerifiedContractRow";
 
 interface PageProps {
-  items: SmartContractProps[];
+  items: SmartContractListItemProps[];
   next_page_params: SmartContractPageParamsProps;
 }
 

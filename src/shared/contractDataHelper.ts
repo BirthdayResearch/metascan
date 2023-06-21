@@ -21,8 +21,8 @@ export interface ContractProps {
   compilerSettings?: string;
   compilerVersion: string;
   constructorArgs: string;
-  creationBytecode: string;
-  deployedBytecode: string;
+  creationBytecode?: string;
+  deployedBytecode?: string;
   evmVersion: string;
   isChangedBytecode: boolean;
   isFullyVerified: boolean;

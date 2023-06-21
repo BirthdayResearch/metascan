@@ -22,8 +22,8 @@ export interface RawContractProps {
   compiler_settings?: string;
   compiler_version: string;
   constructor_args: string;
-  creation_bytecode: string;
-  deployed_bytecode: string;
+  creation_bytecode?: string;
+  deployed_bytecode?: string;
   evm_version: string;
   is_changed_bytecode: boolean;
   is_fully_verified: boolean;

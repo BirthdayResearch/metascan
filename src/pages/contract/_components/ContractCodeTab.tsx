@@ -5,6 +5,7 @@ import { useNetwork } from "@contexts/NetworkContext";
 import { transformContractData } from "shared/contractDataHelper";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
+import ContractCodeBlock from "./ContractCodeBlock";
 
 export default function ContractCodeTab(): JSX.Element {
   const router = useRouter();
@@ -166,20 +167,39 @@ export default function ContractCodeTab(): JSX.Element {
         </div>
       </div>
 
-      <div className="text-white-50 font-bold text-xl lg:mt-[86.5px] md:mt-[89.5px] mt-[86.5px]">
-        {fixedTitle.codeSource}
-      </div>
+      <ContractCodeBlock
+        key={contractDetail.name}
+        fileName={contractDetail.name}
+        code={contractDetail.sourceCode}
+        codeBlockHeight={482}
+        length={1}
+        index={1}
+      />
 
-      {/* TODO: Add codes */}
-      {/* {codes.map((item, index) => (
-        <ReadContractCodeFile
-          key={item.fileName}
-          fileName={item.fileName}
-          code={item.code}
-          length={codes.length}
-          index={index + 1}
+      <ContractCodeBlock
+        key={contractDetail.name}
+        fileName="Contract ABI"
+        code={JSON.stringify(contractDetail.abi, null, 2)}
+        codeBlockHeight={216}
+      />
+
+      {contractDetail.creationBytecode && (
+        <ContractCodeBlock
+          key={contractDetail.name}
+          fileName="Contract Creation Code"
+          code={contractDetail.creationBytecode}
+          codeBlockHeight={216}
         />
-      ))} */}
+      )}
+
+      {contractDetail.deployedBytecode && (
+        <ContractCodeBlock
+          key={contractDetail.name}
+          fileName="Deployed ByteCode"
+          code={contractDetail.deployedBytecode}
+          codeBlockHeight={216}
+        />
+      )}
     </>
   );
 }
@@ -192,5 +212,4 @@ const fixedTitle = {
   optimizationEnabled: "Optimization enabled",
   optimizationRuns: "Optimization runs",
   verifiedAt: "Verified on",
-  codeSource: "Code Source",
 };

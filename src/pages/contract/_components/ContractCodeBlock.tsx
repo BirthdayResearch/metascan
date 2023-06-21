@@ -2,20 +2,22 @@ import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { FiCopy, FiShare2, FiMaximize, FiMinimize } from "react-icons/fi";
 import { sleep } from "shared/sleep";
-import { CodeBlock } from "react-code-blocks";
 import clsx from "clsx";
 import Tooltip from "@components/commons/Tooltip";
+import { CodeBlock } from "react-code-blocks";
 
-export default function ReadContractCodeFile({
+export default function ContractCodeBlock({
   fileName,
   code,
+  codeBlockHeight,
   length,
   index,
 }: {
   fileName: string;
   code: string;
-  length: number;
-  index: number;
+  codeBlockHeight: number;
+  length?: number;
+  index?: number;
 }) {
   const [isCodeCopied, setIsCodeCopied] = useState(false);
   const [isCodeExpanded, setIsCodeExpanded] = useState(false);
@@ -62,9 +64,11 @@ export default function ReadContractCodeFile({
         <div className="flex grow tracking-[0.01em]">
           <div
             data-testid={`${fileName}-code-title`}
-            className="md:w-auto w-[87px] md:text-xl text-white-700"
+            className="md:w-auto w-[87px] text-white-700"
           >
-            File {index} of {length}: {fileName}
+            {length && index
+              ? `File ${index} of ${length}: ${fileName}`
+              : fileName}
           </div>
         </div>
         <div className="flex flex-row md:gap-x-6 gap-x-4">
@@ -115,8 +119,8 @@ export default function ReadContractCodeFile({
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           className={clsx(
-            "px-[19px] py-4 ",
-            isCodeExpanded ? "h-full" : "h-[482px] over"
+            "px-[19px] py-4",
+            isCodeExpanded ? "h-full" : `h-[${codeBlockHeight}px] over`
           )}
         >
           <CodeBlock

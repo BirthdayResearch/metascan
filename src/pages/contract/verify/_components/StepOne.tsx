@@ -14,7 +14,7 @@ enum ContractLanguage {
   Vyper = "Vyper",
 }
 
-function ContinueBtn({
+export function ActionButton({
   onClick,
   disabled,
   label,
@@ -41,7 +41,7 @@ function ContinueBtn({
     >
       <span
         className={clsx(
-          "text-black-900 font-semibold tracking-[0.02em] text-xl"
+          "text-black-900 font-semibold -tracking-[0.01em] text-xl"
         )}
       >
         {label}
@@ -50,9 +50,17 @@ function ContinueBtn({
   );
 }
 
-function ContractDetailRow({ label, value }: { label: string; value: string }) {
+function ContractDetailRow({
+  label,
+  value,
+  containerClass,
+}: {
+  label: string;
+  value: string;
+  containerClass?: string;
+}) {
   return (
-    <div className="flex flex-col">
+    <div className={clsx("flex flex-col", containerClass)}>
       <div className="text-white-700 text-sm mb-1 -tracking-[0.01em]">
         {label}
       </div>
@@ -69,7 +77,6 @@ export default function StepOne({
   onSubmit,
   defaultDropdownValue,
 }) {
-  // todo add validations
   const router = useRouter();
   const queryAddress = router.query.address;
   const [address, setAddress] = useState((queryAddress as string) ?? "");
@@ -246,7 +253,7 @@ export default function StepOne({
               <InputComponent
                 label="Enter contract address to verify"
                 value={address}
-                setValue={setAddress}
+                setValue={(value: string) => setAddress(value)}
                 error={checkAddress(address)}
                 placeholder="0x…"
               />
@@ -306,7 +313,7 @@ export default function StepOne({
                     Terms of Service
                   </a>
                 </div>
-                <ContinueBtn
+                <ActionButton
                   label="Continue"
                   testId="continue"
                   onClick={onFormSubmit}
@@ -324,9 +331,18 @@ export default function StepOne({
           </div>
           <ContractDetailRow label="Contract address" value={address} />
           <div className="flex flex-col md:flex-row mt-4 space-y-4 md:space-y-0 md:space-x-5 justify-between">
-            <ContractDetailRow label="Compiler" value={compiler.label} />
-            <ContractDetailRow label="Compiler version" value={version.label} />
             <ContractDetailRow
+              containerClass="md:w-1/3"
+              label="Compiler"
+              value={compiler.label}
+            />
+            <ContractDetailRow
+              containerClass="md:w-1/3"
+              label="Compiler version"
+              value={version.label}
+            />
+            <ContractDetailRow
+              containerClass="md:w-1/3"
               label="Open source license type"
               value={license.label}
             />

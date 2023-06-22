@@ -3,27 +3,60 @@ import { Listbox, Transition } from "@headlessui/react";
 import { MdCheckCircle } from "react-icons/md";
 import { CgChevronDown } from "react-icons/cg";
 
+interface OptionsI {
+  label: string;
+  value: string;
+  [key: string]: string;
+}
+
+export type DropdownOptions<T = any> = OptionsI & {
+  [key: string]: T;
+};
+
 export default function Dropdown({
   value,
   label,
   options,
   onChange,
   placeholder,
+  labelClass,
+  labelClassName,
+  dropdownContainerClassName,
+}: {
+  value: DropdownOptions;
+  label: string;
+  options: DropdownOptions[];
+  onChange: (val: DropdownOptions) => void;
+  placeholder: string;
+  labelClass?: string;
+  labelClassName?: string;
+  dropdownContainerClassName?: string;
 }) {
   return (
     <div>
-      <div className="text-lg mb-2 text-white-700">{label}</div>
+      <div className={clsx("text-lg mb-2 text-white-700", labelClassName)}>
+        {label}
+      </div>
       <Listbox
         value={value}
         onChange={onChange}
         disabled={options.length === 0}
       >
         <div className="relative bg-dark-100 rounded-[10px] border-[0.5px] border-dark-200 focus-within:border focus-within:border-white-900">
-          <Listbox.Button className="relative px-4 py-[18px] w-full cursor-default text-left shadow-md">
+          <Listbox.Button
+            className={clsx(
+              "relative px-4 py-[18px] w-full cursor-default text-left shadow-md",
+              dropdownContainerClassName
+            )}
+          >
             {value?.value === "" ? (
-              <span className="text-black-500 text-lg">{placeholder}</span>
+              <span className={clsx("text-black-500 text-lg", labelClass)}>
+                {placeholder}
+              </span>
             ) : (
-              <span className="text-white-50 text-lg">{value?.label}</span>
+              <span className={clsx("text-white-50 text-lg", labelClass)}>
+                {value?.label}
+              </span>
             )}
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
               <CgChevronDown
@@ -42,15 +75,20 @@ export default function Dropdown({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute mt-2 max-h-60 w-full overflow-auto rounded-md bg-dark-100 py-2 focus:outline-none text-lg z-10">
+            <Listbox.Options className="absolute mt-2 max-h-60 w-full overflow-auto rounded-md bg-dark-100 py-2 focus:outline-none text-lg z-10 border border-white-900 shadow-[0_4px_4px_rgba(0,0,0,0.25)]">
               {options.map((option) => (
                 <Listbox.Option
                   key={option.value}
-                  className="relative cursor-pointer select-none py-2 px-4"
+                  className="relative cursor-pointer select-none py-2 p-4"
                   value={option}
                 >
                   <div className="flex flex-row justify-between">
-                    <span className="block truncate text-white-50">
+                    <span
+                      className={clsx(
+                        "block truncate text-white-50",
+                        labelClass
+                      )}
+                    >
                       {option.label}
                     </span>
                     {option.value === value.value ? (

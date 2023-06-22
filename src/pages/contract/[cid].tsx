@@ -36,13 +36,13 @@ import ContractCode from "./_components/ContractCode";
 interface ContractDetailProps {
   addressTransactions: AddressTransactionsProps;
   balance: string;
-  detail: WalletAddressInfoI;
+  addressDetail: WalletAddressInfoI;
   isLoading?: boolean;
 }
 
 export default function VerifiedContract({
   addressTransactions,
-  detail,
+  addressDetail,
   balance,
   isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -65,7 +65,7 @@ export default function VerifiedContract({
             <VerifiedGreenTickIcon size={18} />
           </div>
           <ContractSegmentOne
-            creator={detail.creator_address_hash}
+            creator={addressDetail.creator_address_hash ?? ""}
             balance={{ value: balance, symbol: DMX_TOKEN_SYMBOL }}
             setIsQrCodeClicked={setIsQrCodeClicked}
           />
@@ -100,6 +100,7 @@ function ContractSegmentOne({
   const [isContractAddressCopied, setIsContractAddressCopied] = useState(false);
   const router = useRouter();
   const cid = router.query.cid?.toString()!;
+
   return (
     <div className="flex flex-col lg:gap-y-[37px] gap-y-[33px]">
       <div>
@@ -247,7 +248,7 @@ export async function getServerSideProps(
   }
 
   try {
-    const contractDetail = await WalletAddressApi.getDetail(
+    const addressDetail = await WalletAddressApi.getDetail(
       network as NetworkConnection,
       cid
     );
@@ -273,8 +274,8 @@ export async function getServerSideProps(
 
     return {
       props: {
-        balance: utils.formatEther(contractDetail.coin_balance ?? "0"),
-        detail: contractDetail,
+        balance: utils.formatEther(addressDetail.coin_balance ?? "0"),
+        addressDetail,
         addressTransactions: {
           transactions: addressTransactions.items,
           nextPageParams:

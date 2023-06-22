@@ -1,15 +1,16 @@
 import clsx from "clsx";
-import { CodeOptions } from "enum/codeOptions";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { CodeOptions } from "enum/codeOptions";
 import { useLazyGetContractMethodsQuery } from "@store/smartContract";
 import { useNetwork } from "@contexts/NetworkContext";
 import { ContractMethodType, SmartContractMethod } from "@api/types";
 import ConnectButton from "./ConnectButton";
+import ContractCodeTab from "./ContractCodeTab";
 import ReadWriteContract from "./ReadWriteContract";
 
 export default function ContractCode() {
-  const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Read);
+  const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Code);
   const [contractMethods, setContractMethods] = useState<{
     read: SmartContractMethod[];
     write: SmartContractMethod[];
@@ -91,18 +92,7 @@ export default function ContractCode() {
       </div>
       {activeTab === CodeOptions.Code && (
         <div className="text-white-50 py-10">
-          / ** TODO: ADD CONTRACT CODE ** /
-          {/* 
-          <ReadContract
-          contractName={contractName}
-          compilerVersion={compilerVersion}
-          evmVersion={evmVersion}
-          optimizedEnabled={optimizedEnabled}
-          optimizationRuns={optimizationRuns}
-          verifiedAt={verifiedAt}
-          codes={codes}
-          pages={pages}
-        /> */}
+          {activeTab === CodeOptions.Code && <ContractCodeTab />}
         </div>
       )}
       {activeTab === CodeOptions.Read && (

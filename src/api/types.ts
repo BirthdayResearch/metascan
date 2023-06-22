@@ -240,7 +240,7 @@ export interface RawTransactionV1 {
   status: string;
 }
 
-export interface SmartContractProps {
+export interface SmartContractListItemProps {
   address: {
     hash: string;
     implementation_name: string | null;
@@ -267,7 +267,7 @@ export interface SmartContractPageParamsProps {
 }
 
 export interface SmartContractWithPaginationProps {
-  items: SmartContractProps[];
+  items: SmartContractListItemProps[];
   next_page_params: SmartContractPageParamsProps;
 }
 

@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useAccount } from "wagmi";
 import { readContract, writeContract } from "@wagmi/core";
+import { parseEther } from "viem";
 import {
   ContractMethodType,
   SmartContractInputOutput,
   SmartContractMethod,
   SmartContractOutputWithValue,
+  StateMutability,
 } from "@api/types";
 import ContractMethodTextInput from "./ContractMethodTextInput";
 import SubmitButton from "./SubmitButton";
+import { DFI_TOKEN_SYMBOL } from "shared/constants";
 
 export default function ContractMethodForm({
   id,
@@ -23,6 +27,7 @@ export default function ContractMethodForm({
 }) {
   const router = useRouter();
   const contractId = router.query.cid as string;
+  const { isConnected, address } = useAccount();
 
   // TODO: refactor to be more readable
   const initValues = Object.fromEntries(
@@ -31,15 +36,19 @@ export default function ContractMethodForm({
   const [userInput, setUserInput] = useState<{ [k: string]: string }>(
     initValues
   );
+
+  const [dfiValue, setDfiValue] = useState("");
   const [result, setResult] = useState<SmartContractOutputWithValue[]>([]);
   const [error, setError] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
 
+  const isPayable = method.stateMutability === StateMutability.Payable;
   const isReadMethod = [
     ContractMethodType.Read,
     ContractMethodType.ReadProxy,
   ].includes(type);
 
+  console.log({ address });
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
@@ -48,6 +57,7 @@ export default function ContractMethodForm({
         abi: [method],
         functionName: method.name,
         args: [...Object.values(userInput)],
+        ...(dfiValue && { value: parseEther(`${Number(dfiValue)}`) }),
       };
       if (type === ContractMethodType.Write) {
         const { hash } = await writeContract(config);
@@ -57,7 +67,7 @@ export default function ContractMethodForm({
         formatResultBasedOnOutput(data);
       }
     } catch (e) {
-      setError(e.message);
+      setError(e.shortMessage ?? e.message);
     } finally {
       setIsLoading(false);
     }
@@ -79,6 +89,15 @@ export default function ContractMethodForm({
 
   return (
     <div className="flex flex-col gap-6 mt-4">
+      {type === ContractMethodType.Write && isPayable && (
+        <ContractMethodTextInput
+          label="Value"
+          value={dfiValue}
+          setValue={(value) => setDfiValue(value)}
+          placeholder={`value (${DFI_TOKEN_SYMBOL})`}
+          type="number"
+        />
+      )}
       {inputs.map((input: SmartContractInputOutput, index: number) => (
         <ContractMethodTextInput
           key={input.name}
@@ -86,7 +105,6 @@ export default function ContractMethodForm({
           value={userInput[index]}
           setValue={(value) => setUserInput({ ...userInput, [index]: value })}
           placeholder={`${input.name} (${input.type})`}
-          error="" // TODO: Check if any error handling is needed
         />
       ))}
       <div className="flex gap-4">
@@ -97,7 +115,10 @@ export default function ContractMethodForm({
           disabled={
             // TODO: refactor to be more readable
             Object.keys(userInput).filter((i) => userInput[i]).length <
-              inputs.length || isLoading
+              inputs.length ||
+            isLoading ||
+            (!isReadMethod && !isConnected) ||
+            (isPayable && !dfiValue)
           }
         />
         {type === ContractMethodType.Write && result?.length > 0 && (
@@ -135,7 +156,7 @@ export default function ContractMethodForm({
           ))}
         </div>
       )}
-      {error && <div className="text-red-700 italic mt-4">{error}</div>}
+      {error && <div className="text-red-700 italic -mt-4">{error}</div>}
     </div>
   );
 }

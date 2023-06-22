@@ -273,8 +273,13 @@ export interface SmartContractWithPaginationProps {
 
 // TODO (Lyka): Check if we can add typings
 // type InputOutputType = "address" | "_owner" | "uint256" | "bool";
-// type MutabilityType = "view" | "nonpayable";
 // type MethodType = "function";
+export enum StateMutability {
+  "Payable" = "payable",
+  "Nonpayable" = "nonpayable",
+  "View" = "view",
+  "Pure" = "pure",
+}
 
 export interface SmartContractInputOutput {
   internalType: string;
@@ -293,7 +298,7 @@ export interface SmartContractMethod {
   method_id?: string;
   name: string;
   names?: string[];
-  stateMutability: string;
+  stateMutability: StateMutability;
   type: string;
   description?: string; // TODO: Check if possible to get
   error?: string;

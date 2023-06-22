@@ -10,7 +10,8 @@ import ContractCodeTab from "./ContractCodeTab";
 import ReadWriteContract from "./ReadWriteContract";
 
 export default function ContractCode() {
-  const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Code);
+  // TODO (lyka): set default tab back to CodeOptions.Code
+  const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Read);
   const [contractMethods, setContractMethods] = useState<{
     read: SmartContractMethod[];
     write: SmartContractMethod[];

@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { SMART_CONTRACT_URL, getBaseUrl } from "@api/index";
+import { StateMutability } from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
 
 interface DataFlowProps {
@@ -13,7 +14,7 @@ interface ContractAbiProps {
   outputs?: DataFlowProps[];
   name?: string;
   type: string;
-  stateMutability?: string;
+  stateMutability?: StateMutability;
   anonymous?: boolean;
 }
 

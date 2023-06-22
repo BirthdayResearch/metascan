@@ -4,6 +4,7 @@ import {
   ContractMethodType,
   SmartContractMethod,
   SmartContractOutputWithValue,
+  StateMutability,
 } from "@api/types";
 import ContractMethodForm from "./ContractMethodForm";
 
@@ -18,7 +19,9 @@ export default function ContractMethod({
 }) {
   const [open, setOpen] = useState(false);
   const id = method.name;
-  const displayForm = method.inputs.length > 0;
+  const displayForm =
+    method.inputs.length > 0 ||
+    method.stateMutability === StateMutability.Payable;
   return (
     <div
       data-testid={`${id}-contract-method-row`}

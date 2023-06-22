@@ -177,6 +177,7 @@ function ContractSegmentTwo({
   isLoading?: boolean;
   transactions: AddressTransactionsProps;
 }) {
+  // TODO (lyka): set default tab back to ContractTabsTitle.Transactions
   const [selectedTab, setSelectedTab] = useState(ContractTabsTitle.Contract);
 
   return (

@@ -1,16 +1,32 @@
+import clsx from "clsx";
 import { ConnectKitButton } from "connectkit";
+import { truncateTextFromMiddle } from "shared/textHelper";
 
 export default function ConnectButton() {
   return (
-    // TODO: refine ui to follow figma design
     <ConnectKitButton.Custom>
       {({ isConnected, address, show }) => (
         <button
           type="button"
-          className="border-[0.5px] border-black-500 rounded-lg px-3 py-[10px] font-semibold text-white-50 hover:opacity-70"
+          className="flex gap-2 items-center border-[0.5px] border-black-500 rounded-lg px-3 py-[10px] text-white-50 hover:opacity-70"
           onClick={show}
         >
-          {isConnected ? address : "Connect to Web3"}
+          <div
+            className={clsx(
+              "rounded-full w-2 h-2",
+              isConnected ? "bg-green-800" : "bg-red-800"
+            )}
+          />
+          {isConnected ? (
+            <>
+              <span className="font-medium">Connected:</span>
+              <span>
+                Web3 [{truncateTextFromMiddle(address?.toString() ?? "", 5)}]
+              </span>
+            </>
+          ) : (
+            <span className="font-medium">Connect to Web3</span>
+          )}
         </button>
       )}
     </ConnectKitButton.Custom>

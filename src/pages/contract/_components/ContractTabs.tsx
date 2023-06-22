@@ -71,7 +71,7 @@ function ButtonTab({
       >
         {tab}
       </button>
-      {active && <div className="brand-gradient-1 h-1 mt-[19.33px]" />}
+      {active && <div className="brand-gradient-1 h-1 mt-3" />}
     </div>
   );
 }

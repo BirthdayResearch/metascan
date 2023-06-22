@@ -1,4 +1,4 @@
-import { SmartContractProps } from "@api/types";
+import { SmartContractListItemProps } from "@api/types";
 import LinkText from "@components/commons/LinkText";
 import clsx from "clsx";
 import { formatDateToUTC } from "shared/durationHelper";
@@ -45,7 +45,7 @@ const fixedTitle = {
 export default function VerifiedContractRow({
   data,
 }: {
-  data: SmartContractProps;
+  data: SmartContractListItemProps;
 }) {
   return (
     <>

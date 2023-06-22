@@ -168,7 +168,6 @@ export default function ContractCodeTab(): JSX.Element {
       </div>
 
       <ContractCodeBlock
-        key={contractDetail.name}
         fileName={contractDetail.fileName}
         code={contractDetail.sourceCode}
         codeBlockHeight={200}
@@ -189,14 +188,12 @@ export default function ContractCodeTab(): JSX.Element {
         ))}
 
       <ContractCodeBlock
-        key={contractDetail.name}
         fileName="Contract ABI"
         code={JSON.stringify(contractDetail.abi, null, 2)}
         codeBlockHeight={200}
       />
       {contractDetail.creationBytecode && (
         <ContractCodeBlock
-          key={contractDetail.name}
           fileName="Contract Creation Code"
           code={contractDetail.creationBytecode}
           codeBlockHeight={200}
@@ -204,7 +201,6 @@ export default function ContractCodeTab(): JSX.Element {
       )}
       {contractDetail.deployedBytecode && (
         <ContractCodeBlock
-          key={contractDetail.name}
           fileName="Deployed ByteCode"
           code={contractDetail.deployedBytecode}
           codeBlockHeight={200}

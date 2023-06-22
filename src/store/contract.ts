@@ -38,11 +38,11 @@ export interface RawContractProps {
   optimization_runs?: any;
   source_code: string;
   verified_at: string;
-  file_path: string;
+  file_path?: string;
 
   // Contract with multiple files stored here
   additional_sources: {
-    file_path: string;
+    file_path?: string;
     source_code: string;
   }[];
 }

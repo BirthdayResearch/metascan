@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useLazyGetContractMethodsQuery } from "@store/smartContract";
 import { useNetwork } from "@contexts/NetworkContext";
 import { ContractMethodType, SmartContractMethod } from "@api/types";
+import ConnectButton from "./ConnectButton";
 import ReadWriteContract from "./ReadWriteContract";
 
 export default function ContractCode() {
@@ -84,6 +85,9 @@ export default function ContractCode() {
         >
           {CodeOptions.Write}
         </button>
+      </div>
+      <div className="mt-4 md:mt-5 lg:mt-8">
+        <ConnectButton />
       </div>
       {activeTab === CodeOptions.Code && (
         <div className="text-white-50 py-10">

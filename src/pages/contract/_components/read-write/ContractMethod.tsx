@@ -50,7 +50,13 @@ export default function ContractMethod({
             </div>
           )}
           {displayForm ? (
-            <ContractMethodForm id={id} type={type} inputs={method.inputs} />
+            // TODO: refactor ContractMethodForm props
+            <ContractMethodForm
+              id={id}
+              type={type}
+              inputs={method.inputs}
+              method={method}
+            />
           ) : (
             <ContractMethodResult
               outputs={method.outputs as SmartContractOutputWithValue[]}

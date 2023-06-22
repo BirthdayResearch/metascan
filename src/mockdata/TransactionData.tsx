@@ -2,7 +2,7 @@
  * TODO: Remove file once api is available
  */
 
-import { RawTransactionI, TransactionStatus } from "@api/types";
+import { TransactionI, TransactionStatus } from "@api/types";
 
 export enum TransactionType {
   ContractCall = "Contract call",
@@ -39,7 +39,7 @@ export interface MockTransactionI {
   accessList: string | null;
 }
 
-export const transactions: RawTransactionI[] = [
+export const transactions: TransactionI[] = [
   {
     transactionType: TransactionType.ContractCall,
     type: 0,
@@ -69,7 +69,6 @@ export const transactions: RawTransactionI[] = [
     confirmations: 1,
     isFromContract: true,
     isToContract: true,
-    txTypes: ["transfer"],
   },
   {
     transactionType: TransactionType.Transaction,
@@ -101,7 +100,6 @@ export const transactions: RawTransactionI[] = [
     confirmations: 1,
     isFromContract: true,
     isToContract: true,
-    txTypes: ["transfer"],
   },
   {
     transactionType: TransactionType.Transaction,
@@ -132,7 +130,6 @@ export const transactions: RawTransactionI[] = [
     confirmations: 1,
     isFromContract: true,
     isToContract: true,
-    txTypes: ["transfer"],
   },
   {
     transactionType: TransactionType.Transaction,
@@ -163,7 +160,6 @@ export const transactions: RawTransactionI[] = [
     confirmations: 6,
     isFromContract: true,
     isToContract: true,
-    txTypes: ["transfer"],
   },
   {
     transactionType: TransactionType.Transaction,

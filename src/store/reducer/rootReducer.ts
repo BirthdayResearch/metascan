@@ -1,7 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { contractApi } from "@store/contract";
+import { contractApi, contractMethodsApi } from "@store/contract";
 import { searchApi } from "@store/search";
-import { contractMethodsApi } from "@store/smartContract";
 
 export function initializeStore() {
   return configureStore({

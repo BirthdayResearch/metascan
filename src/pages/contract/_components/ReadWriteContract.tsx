@@ -1,16 +1,41 @@
-import { ContractMethodType, SmartContractMethod } from "@api/types";
+import { useRouter } from "next/router";
+import { ContractMethodType } from "@api/types";
+import { useNetwork } from "@contexts/NetworkContext";
+import { useGetContractMethodsQuery } from "@store/contract";
+import { FiLoader } from "react-icons/fi";
 import Button from "../../../components/commons/Button";
 import ContractMethod from "./read-write/ContractMethod";
 
 export default function ReadWriteContract({
   type,
   title,
-  methods,
 }: {
   type: ContractMethodType;
   title: string;
-  methods: SmartContractMethod[];
 }) {
+  const { connection } = useNetwork();
+  const router = useRouter();
+  const cid = router.query.cid?.toString()!;
+  const { data: methods, isLoading } = useGetContractMethodsQuery({
+    network: connection,
+    cid,
+    type,
+  });
+
+  // TODO: Add UI loaders
+  if (isLoading) {
+    return (
+      <FiLoader
+        size={24}
+        className="text-white-50 animate-spin mt-10 mx-auto"
+      />
+    );
+  }
+
+  if (!isLoading && !methods) {
+    return <div className="text-white-50 mt-8">NO METHODS.</div>;
+  }
+
   return (
     <div className="text-white-50">
       <div className="flex flex-row items-center">
@@ -26,7 +51,7 @@ export default function ReadWriteContract({
           }}
         />
       </div>
-      {methods.map((item, index) => (
+      {methods?.map((item, index) => (
         <ContractMethod
           key={item.name}
           type={type}

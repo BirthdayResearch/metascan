@@ -1,6 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { SMART_CONTRACT_URL, getBaseUrl } from "@api/index";
-import { StateMutability } from "@api/types";
+import {
+  ContractMethodType,
+  SmartContractMethod,
+  StateMutability,
+} from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
 
 interface DataFlowProps {
@@ -66,4 +70,27 @@ export const contractApi = createApi({
   }),
 });
 
+export const contractMethodsApi = createApi({
+  reducerPath: "contractMethods",
+  baseQuery: fetchBaseQuery({ baseUrl: "/" }),
+  endpoints: (builder) => ({
+    getContractMethods: builder.query<
+      SmartContractMethod[],
+      {
+        network: NetworkConnection;
+        cid: string;
+        type: ContractMethodType;
+      }
+    >({
+      query: ({ network, cid, type }) => ({
+        url: `${getBaseUrl(
+          network
+        )}/${SMART_CONTRACT_URL}/${cid}/methods-${type}?is_custom_abi=false`,
+        method: "GET",
+      }),
+    }),
+  }),
+});
+
 export const { useGetContractQuery } = contractApi;
+export const { useGetContractMethodsQuery } = contractMethodsApi;

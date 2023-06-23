@@ -1,10 +1,7 @@
 import clsx from "clsx";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useState } from "react";
 import { CodeOptions } from "enum/codeOptions";
-import { useLazyGetContractMethodsQuery } from "@store/smartContract";
-import { useNetwork } from "@contexts/NetworkContext";
-import { ContractMethodType, SmartContractMethod } from "@api/types";
+import { ContractMethodType } from "@api/types";
 import ConnectButton from "./ConnectButton";
 import ContractCodeTab from "./ContractCodeTab";
 import ReadWriteContract from "./ReadWriteContract";
@@ -12,42 +9,6 @@ import ReadWriteContract from "./ReadWriteContract";
 export default function ContractCode() {
   // TODO (lyka): set default tab back to CodeOptions.Code
   const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Read);
-  const [contractMethods, setContractMethods] = useState<{
-    read: SmartContractMethod[];
-    write: SmartContractMethod[];
-  }>({
-    read: [],
-    write: [],
-  });
-
-  const { connection } = useNetwork();
-  const [getContractMethods] = useLazyGetContractMethodsQuery();
-
-  const router = useRouter();
-  const contractId = router.query.cid as string;
-
-  const fetchContractMethods = async () => {
-    const readMethods = await getContractMethods({
-      network: connection,
-      smartContractId: contractId,
-      method: "read",
-    });
-    const writeMethods = await getContractMethods({
-      network: connection,
-      smartContractId: contractId,
-      method: "write",
-    });
-    // TODO: Add proxy
-    setContractMethods({
-      read: readMethods.data ?? [],
-      write: writeMethods.data ?? [],
-    });
-  };
-
-  useEffect(() => {
-    fetchContractMethods();
-  }, []);
-
   return (
     <div>
       <div className="flex flex-row gap-x-2">
@@ -100,16 +61,15 @@ export default function ContractCode() {
         <ReadWriteContract
           title="Read contract"
           type={ContractMethodType.Read}
-          methods={contractMethods.read}
         />
       )}
       {activeTab === CodeOptions.Write && (
         <ReadWriteContract
           title="Write contract"
           type={ContractMethodType.Write}
-          methods={contractMethods.write}
         />
       )}
+      {/* TODO: Add Read Proxy and Write Proxy */}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { createConfig, WagmiConfig } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { Chain } from "viem";
+import { metachain, metachainTestnet } from "shared/Chains";
 
 import { NetworkProvider } from "@contexts/NetworkContext";
 import { StoreProvider } from "@contexts/StoreProvider";
@@ -17,45 +17,6 @@ export const appName = "meta.defiscan.live";
 const description =
   "MetaScan is a block explorer for MetaChain - a decentralized network connecting the worlds of Bitcoin and Ethereum.";
 const website = "https://meta.defiscan.live";
-
-// TODO: Move this config
-export const metachainTestnet = {
-  id: 1133,
-  name: "MetaChain Testnet",
-  network: "metachainTestnet",
-  nativeCurrency: {
-    decimals: 18,
-    name: "MetaChain Testnet",
-    symbol: "DFI",
-  },
-  rpcUrls: {
-    // TODO: Replace RPC URLs
-    public: { http: ["http://35.187.53.161:20551"] },
-    default: { http: ["http://35.187.53.161:20551"] },
-  },
-  blockExplorers: {
-    default: { name: "MetaScan", url: "https://meta.defiscan.live" },
-  },
-} as const satisfies Chain;
-
-export const metachain = {
-  id: 1130,
-  name: "MetaChain",
-  network: "metachain",
-  nativeCurrency: {
-    decimals: 18,
-    name: "MetaChain",
-    symbol: "DFI",
-  },
-  rpcUrls: {
-    // TODO: Replace RPC URLs
-    public: { http: ["http://35.187.53.161:20551"] },
-    default: { http: ["http://35.187.53.161:20551"] },
-  },
-  blockExplorers: {
-    default: { name: "MetaScan", url: "https://meta.defiscan.live" },
-  },
-} as const satisfies Chain;
 
 const metamask = new MetaMaskConnector({
   chains: [metachain, metachainTestnet],

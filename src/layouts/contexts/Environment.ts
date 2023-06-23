@@ -47,7 +47,7 @@ export function getEnvironment(): Environment {
     case "development":
     default:
       return new Environment("Development", true, [
-        NetworkConnection.MainNet,
+        // NetworkConnection.MainNet, // TODO: Enable MainNet
         NetworkConnection.TestNet,
       ]);
   }

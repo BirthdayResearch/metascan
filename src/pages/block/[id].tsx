@@ -42,7 +42,7 @@ export default function Block({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const blockNumber = new BigNumber(block.height);
   const prevBlockNumber = blockNumber.minus(1);
-  const nextBlockNumber = blockNumber.plus(1); // TODO: check if nextBlockNumber exists when api is readys
+  const nextBlockNumber = blockNumber.plus(1);
   const timeago = getTimeAgo(block.timestamp);
   const timeDuration = getDuration(Number(timeago));
   const timeInUTC = formatDateToUTC(block.timestamp);

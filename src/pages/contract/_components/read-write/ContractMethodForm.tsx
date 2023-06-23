@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { readContract, writeContract } from "@wagmi/core";
@@ -24,10 +24,14 @@ export default function ContractMethodForm({
   type,
   method,
   isWriteOrWriteProxy,
+  resetForm,
+  setResetForm,
 }: {
   type: ContractMethodType;
   method: SmartContractMethod;
   isWriteOrWriteProxy: boolean;
+  resetForm: boolean;
+  setResetForm: (reset: boolean) => void;
 }) {
   const router = useRouter();
   const contractId = router.query.cid as string;
@@ -44,6 +48,18 @@ export default function ContractMethodForm({
   const [isLoading, setIsLoading] = useState(false);
 
   const isPayable = method.stateMutability === StateMutability.Payable; // isPayable -> transaction involves transfer of DFI
+
+  useEffect(() => {
+    // Reset all forms
+    if (resetForm) {
+      setUserInput(defaultInputValues);
+      setDfiValue("");
+      setReadResult([]);
+      setWriteResult(undefined);
+      setError("");
+      setResetForm(false);
+    }
+  }, [resetForm]);
 
   const handleSubmit = async () => {
     try {

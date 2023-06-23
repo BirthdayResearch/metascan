@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { ContractMethodType } from "@api/types";
 import { useNetwork } from "@contexts/NetworkContext";
 import { useGetContractMethodsQuery } from "@store/contract";
 import { FiLoader } from "react-icons/fi";
-import Button from "../../../components/commons/Button";
 import ContractMethod from "./read-write/ContractMethod";
 
 export default function ReadWriteContract({
@@ -13,6 +13,8 @@ export default function ReadWriteContract({
   type: ContractMethodType;
   title: string;
 }) {
+  const [expandAll, setExpandAll] = useState<boolean>(false);
+  const [resetForm, setResetForm] = useState<boolean>(false);
   const { connection } = useNetwork();
   const router = useRouter();
   const cid = router.query.cid?.toString()!;
@@ -25,10 +27,7 @@ export default function ReadWriteContract({
   // TODO: Add UI loaders
   if (isLoading) {
     return (
-      <FiLoader
-        size={24}
-        className="text-white-50 animate-spin mt-10 mx-auto"
-      />
+      <FiLoader size={24} className="text-white-50 animate-spin mt-8 mx-auto" />
     );
   }
 
@@ -38,18 +37,17 @@ export default function ReadWriteContract({
 
   return (
     <div className="text-white-50">
-      <div className="flex flex-row items-center">
-        <div className="flex flex-grow text-white-50 font-bold text-xl mt-[42.5px] md:mb-[39.5px] mb-[47.5px]">
+      <div className="flex flex-col md:flex-row md:items-center gap-2">
+        <div className="flex flex-grow text-white-50 font-bold text-xl">
           {title}
         </div>
-        <Button
-          label="Clear data"
-          testId="write-contract-clear-input-button"
-          size="small"
-          onClick={() => {
-            // TODO: Handle form reset
-          }}
-        />
+        <div className="flex gap-6 md:gap-10">
+          <ActionButton
+            text={expandAll ? "Collapse all" : "Expand all"}
+            onClick={() => setExpandAll(!expandAll)}
+          />
+          <ActionButton text="Reset form" onClick={() => setResetForm(true)} />
+        </div>
       </div>
       {methods?.map((item, index) => (
         <ContractMethod
@@ -57,8 +55,29 @@ export default function ReadWriteContract({
           type={type}
           method={item}
           index={index}
+          expandAll={expandAll}
+          resetForm={resetForm}
+          setResetForm={setResetForm}
         />
       ))}
     </div>
+  );
+}
+
+function ActionButton({
+  text,
+  onClick,
+}: {
+  text: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      className="font-medium text-lightBlue hover:opacity-70"
+      onClick={onClick}
+    >
+      {text}
+    </button>
   );
 }

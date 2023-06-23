@@ -1,4 +1,5 @@
-import { useState } from "react";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
 import { IoChevronDownSharp, IoChevronUpSharp } from "react-icons/io5";
 import {
   ContractMethodType,
@@ -12,12 +13,21 @@ export default function ContractMethod({
   method,
   index,
   type,
+  expandAll,
+  resetForm,
+  setResetForm,
 }: {
   method: SmartContractMethod;
   index: number;
   type: ContractMethodType;
+  expandAll: boolean;
+  resetForm: boolean;
+  setResetForm: (reset: boolean) => void;
 }) {
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    setOpen(expandAll);
+  }, [expandAll]);
 
   const isWriteOrWriteProxy = [
     ContractMethodType.Write,
@@ -38,7 +48,11 @@ export default function ContractMethod({
       >
         <div
           data-testid={`${method.name}-contract-method-name`}
-          className="flex items-center font-semibold text-lg text-white-50 -tracking-wide"
+          className={clsx(
+            "flex items-center text-lg text-white-50 -tracking-wide",
+            "hover:font-semibold hover:text-green-800",
+            { "font-semibold": open }
+          )}
         >
           {open ? (
             <IoChevronUpSharp size={24} />
@@ -60,6 +74,8 @@ export default function ContractMethod({
               type={type}
               method={method}
               isWriteOrWriteProxy={isWriteOrWriteProxy}
+              resetForm={resetForm}
+              setResetForm={setResetForm}
             />
           ) : (
             <ContractMethodResult

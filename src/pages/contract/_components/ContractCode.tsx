@@ -49,14 +49,10 @@ export default function ContractCode() {
           {CodeOptions.Write}
         </button>
       </div>
-      <div className="mt-4 md:mt-5 lg:mt-8">
+      <div className="mt-4 md:mt-5 pb-4 lg:mt-8 md:pb-8 lg:pb-11">
         <ConnectButton />
       </div>
-      {activeTab === CodeOptions.Code && (
-        <div className="text-white-50 py-10">
-          {activeTab === CodeOptions.Code && <ContractCodeTab />}
-        </div>
-      )}
+      {activeTab === CodeOptions.Code && <ContractCodeTab />}
       {activeTab === CodeOptions.Read && (
         <ReadWriteContract
           title="Read contract"

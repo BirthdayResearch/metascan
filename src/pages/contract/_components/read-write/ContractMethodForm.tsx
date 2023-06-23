@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useAccount } from "wagmi";
 import { readContract, writeContract } from "@wagmi/core";
 import { parseEther } from "viem";
+import { ConnectKitButton } from "connectkit";
 import {
   ContractMethodType,
   SmartContractInputOutput,
@@ -10,45 +11,40 @@ import {
   SmartContractOutputWithValue,
   StateMutability,
 } from "@api/types";
-import ContractMethodTextInput from "./ContractMethodTextInput";
-import SubmitButton from "./SubmitButton";
 import { DFI_TOKEN_SYMBOL } from "shared/constants";
+import ContractMethodTextInput from "./ContractMethodTextInput";
+import ContractMethodResult from "./ContractMethodResult";
+import SubmitButton from "./SubmitButton";
+
+interface KeyValue {
+  [k: string]: string;
+}
 
 export default function ContractMethodForm({
-  id,
   type,
-  inputs,
   method,
+  isWriteOrWriteProxy,
 }: {
-  id: string;
   type: ContractMethodType;
-  inputs: SmartContractInputOutput[];
   method: SmartContractMethod;
+  isWriteOrWriteProxy: boolean;
 }) {
   const router = useRouter();
   const contractId = router.query.cid as string;
-  const { isConnected, address } = useAccount();
+  const { isConnected } = useAccount();
 
-  // TODO: refactor to be more readable
-  const initValues = Object.fromEntries(
-    inputs.map((_item, index) => [index, ""])
-  );
-  const [userInput, setUserInput] = useState<{ [k: string]: string }>(
-    initValues
-  );
-
+  const defaultInputValues = getDefaultValues(method.inputs);
+  const [userInput, setUserInput] = useState<KeyValue>(defaultInputValues);
   const [dfiValue, setDfiValue] = useState("");
-  const [result, setResult] = useState<SmartContractOutputWithValue[]>([]);
+  const [readResult, setReadResult] = useState<SmartContractOutputWithValue[]>(
+    []
+  );
+  const [writeResult, setWriteResult] = useState<string>();
   const [error, setError] = useState<string>();
   const [isLoading, setIsLoading] = useState(false);
 
-  const isPayable = method.stateMutability === StateMutability.Payable;
-  const isReadMethod = [
-    ContractMethodType.Read,
-    ContractMethodType.ReadProxy,
-  ].includes(type);
+  const isPayable = method.stateMutability === StateMutability.Payable; // isPayable -> transaction involves transfer of DFI
 
-  console.log({ address });
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
@@ -56,16 +52,26 @@ export default function ContractMethodForm({
         address: contractId as `0x${string}`,
         abi: [method],
         functionName: method.name,
-        args: [...Object.values(userInput)],
+        args: method.inputs.length > 0 ? [...Object.values(userInput)] : [],
         ...(dfiValue && { value: parseEther(`${Number(dfiValue)}`) }),
       };
-      if (type === ContractMethodType.Write) {
+      if (isWriteOrWriteProxy) {
+        // Write/WriteProxy
         const { hash } = await writeContract(config);
-        formatResultBasedOnOutput(hash);
+        setWriteResult(hash);
       } else {
-        const data = await readContract(config);
-        formatResultBasedOnOutput(data);
+        // Read/ReadProxy
+        const data = (await readContract(config)) ?? [];
+        const results = method.outputs.map((output, index) => {
+          const value = typeof data === "object" ? data[index] : data;
+          return {
+            type: output.type,
+            value,
+          };
+        });
+        setReadResult(results);
       }
+      setError("");
     } catch (e) {
       setError(e.shortMessage ?? e.message);
     } finally {
@@ -73,23 +79,13 @@ export default function ContractMethodForm({
     }
   };
 
-  const formatResultBasedOnOutput = (output) => {
-    // TOOD: refactor to be more readable
-    const formattedResult: SmartContractOutputWithValue[] = method.outputs.map(
-      (o, i) => {
-        const value = typeof output === "object" ? output[i] : output;
-        return {
-          type: o.type,
-          value,
-        };
-      }
-    );
-    setResult(formattedResult);
-  };
+  const fieldsWithValue = Object.keys(userInput).filter((i) => userInput[i]);
+  const hasCompletedInput = method.inputs.length === fieldsWithValue.length;
 
   return (
-    <div className="flex flex-col gap-6 mt-4">
-      {type === ContractMethodType.Write && isPayable && (
+    <div className="flex flex-col gap-6">
+      {isWriteOrWriteProxy && isPayable && (
+        // `value` is not part of method `inputs`, only display this additional input field when method is payable
         <ContractMethodTextInput
           label="Value"
           value={dfiValue}
@@ -98,7 +94,7 @@ export default function ContractMethodForm({
           type="number"
         />
       )}
-      {inputs.map((input: SmartContractInputOutput, index: number) => (
+      {method.inputs.map((input: SmartContractInputOutput, index: number) => (
         <ContractMethodTextInput
           key={input.name}
           label={`${input.name} (${input.type})`}
@@ -108,55 +104,49 @@ export default function ContractMethodForm({
         />
       ))}
       <div className="flex gap-4">
-        <SubmitButton
-          testId={`${id}-${type}-button`}
-          label={isReadMethod ? "Query" : "Write"}
-          onClick={() => handleSubmit()}
-          disabled={
-            // TODO: refactor to be more readable
-            Object.keys(userInput).filter((i) => userInput[i]).length <
-              inputs.length ||
-            isLoading ||
-            (!isReadMethod && !isConnected) ||
-            (isPayable && !dfiValue)
-          }
-        />
-        {type === ContractMethodType.Write && result?.length > 0 && (
+        <ConnectKitButton.Custom>
+          {({ show }) => (
+            <SubmitButton
+              testId={`${method.name}-${type}-button`}
+              label={isWriteOrWriteProxy ? "Write" : "Query"}
+              onClick={!isConnected ? show : () => handleSubmit()}
+              disabled={
+                !hasCompletedInput || isLoading || (isPayable && !dfiValue)
+              }
+            />
+          )}
+        </ConnectKitButton.Custom>
+        {/* Write result is always hash */}
+        {writeResult && (
           <SubmitButton
-            testId={`${id}-${type}-result-button`}
+            testId={`${method.name}-${type}-result-button`}
             label="View your transaction"
-            onClick={() =>
-              window.open(
-                `/tx/${result[0].value}`,
-                "_blank",
-                "noopener,noreferrer"
-              )
-            }
-            disabled={
-              // TODO: refactor to be more readable
-              Object.keys(userInput).filter((i) => userInput[i]).length <
-              inputs.length
-            }
+            onClick={() => window.open(`/tx/${writeResult}`, "_blank")}
           />
         )}
       </div>
-      {type === ContractMethodType.Read && result?.length > 0 && (
-        // TODO: refactor and reuse ContractMethodResult component
-        <div className="flex flex-col gap-2">
-          {result.map((data) => (
-            <div
-              key={`${data.type}${data.value}`}
-              className="text-white-300 break-all"
-            >
-              <span>{data.value.toString()}</span>
-              <span className="italic text-sm text-white-900 ml-2">
-                {data.type}
-              </span>
-            </div>
-          ))}
-        </div>
+      {/* Read result */}
+      {type === ContractMethodType.Read && readResult?.length > 0 && (
+        <ContractMethodResult outputs={readResult} />
       )}
       {error && <div className="text-red-700 italic -mt-4">{error}</div>}
     </div>
   );
+}
+
+/**
+ * Returns object with key-value pair based on the `inputs` length,
+ * wherein key is the index from array, initialized with empty string
+ *
+ * Eg: [{name:"amout", type:"uint256"}, {name:"to", type:"address"}] -> { '0': "", '1': "" }
+ * @param inputs SmartContractInputOutput[]
+ * @returns
+ */
+function getDefaultValues(inputs: SmartContractInputOutput[]) {
+  const defaultValues = inputs.reduce((acc, _curr, index) => {
+    const keyValue = { [index]: "" };
+    return { ...acc, ...keyValue };
+  }, {} as KeyValue);
+
+  return defaultValues;
 }

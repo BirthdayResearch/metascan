@@ -4,9 +4,9 @@ import {
   ContractMethodType,
   SmartContractMethod,
   SmartContractOutputWithValue,
-  StateMutability,
 } from "@api/types";
 import ContractMethodForm from "./ContractMethodForm";
+import ContractMethodResult from "./ContractMethodResult";
 
 export default function ContractMethod({
   method,
@@ -18,13 +18,16 @@ export default function ContractMethod({
   type: ContractMethodType;
 }) {
   const [open, setOpen] = useState(false);
-  const id = method.name;
-  const displayForm =
-    method.inputs.length > 0 ||
-    method.stateMutability === StateMutability.Payable;
+
+  const isWriteOrWriteProxy = [
+    ContractMethodType.Write,
+    ContractMethodType.WriteProxy,
+  ].includes(type);
+  const shouldDisplayForm = method.inputs.length > 0 || isWriteOrWriteProxy;
+
   return (
     <div
-      data-testid={`${id}-contract-method-row`}
+      data-testid={`${method.name}-contract-method-row`}
       className="py-7 border-b-[0.5px] border-dark-200 last:border-b-0"
     >
       <div
@@ -34,7 +37,7 @@ export default function ContractMethod({
         onClick={() => setOpen(!open)}
       >
         <div
-          data-testid={`${id}-contract-method-name`}
+          data-testid={`${method.name}-contract-method-name`}
           className="flex items-center font-semibold text-lg text-white-50 -tracking-wide"
         >
           {open ? (
@@ -46,54 +49,28 @@ export default function ContractMethod({
         </div>
       </div>
       {open && (
-        <div className="pl-5 md:pl-10">
+        <div className="pl-5 md:pl-10 flex flex-col gap-4 mt-4">
           {method.description && (
-            <div className="text-white-300 -tracking-wide mt-4">
+            <div className="text-white-300 -tracking-wide">
               {method.description}
             </div>
           )}
-          {displayForm ? (
-            // TODO: refactor ContractMethodForm props
+          {shouldDisplayForm ? (
             <ContractMethodForm
-              id={id}
               type={type}
-              inputs={method.inputs}
               method={method}
+              isWriteOrWriteProxy={isWriteOrWriteProxy}
             />
           ) : (
             <ContractMethodResult
               outputs={method.outputs as SmartContractOutputWithValue[]}
-              error={method.error}
             />
+          )}
+          {method.error && (
+            <div className="text-red-700 italic mt-4">{method.error}</div>
           )}
         </div>
       )}
-    </div>
-  );
-}
-
-function ContractMethodResult({
-  outputs,
-  error,
-}: {
-  outputs: SmartContractOutputWithValue[];
-  error?: string;
-}) {
-  return error ? (
-    <div className="text-red-700 italic mt-4">{error}</div>
-  ) : (
-    <div className="flex flex-col gap-6 mt-4">
-      {outputs.map((output) => (
-        <div
-          key={`${output.type}${output.value}`}
-          className="text-white-300 break-all"
-        >
-          <span>{output.value}</span>
-          <span className="italic text-sm text-white-900 ml-2">
-            {output.type}
-          </span>
-        </div>
-      ))}
     </div>
   );
 }

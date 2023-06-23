@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { utils } from "ethers";
+import { formatEther, formatUnits } from "viem";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import {
   GetServerSidePropsContext,
@@ -33,6 +33,8 @@ interface PageProps {
     nextPageParams: TxnNextPageParamsProps;
   };
 }
+
+export const GWEI_DECIMAL = 9; // Source: https://docs.ethers.org/v5/api/utils/display-logic/
 
 export default function Block({
   data: { block, blockTransactions },
@@ -144,16 +146,17 @@ export default function Block({
               <DetailRow
                 testId="base-fee"
                 label="Base fee"
-                value={utils
-                  .formatUnits(block.base_fee_per_gas ?? "0", "gwei")
-                  .toString()}
+                value={formatUnits(
+                  BigInt(block.base_fee_per_gas ?? "0"),
+                  GWEI_DECIMAL
+                ).toString()}
                 decimalScale={9}
                 suffix=" Gwei" // TODO: Confirm if this is Gwei, DFI or ETH
               />
               <DetailRow
                 testId="burnt-fee"
                 label="Burnt fee"
-                value={utils.formatEther(block.burnt_fees ?? "0")}
+                value={formatEther(BigInt(block.burnt_fees ?? "0"))}
                 decimalScale={10}
                 suffix=" DFI" // TODO: Confirm if this is DFI or ETH
               />

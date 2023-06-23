@@ -1,4 +1,4 @@
-import { utils } from "ethers";
+import { formatEther } from "viem";
 import {
   RawTransactionI,
   RawTransactionType,
@@ -23,8 +23,8 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
   );
   let dfiAmount = "0";
   if (amountIndex && amountIndex > -1) {
-    dfiAmount = utils.formatEther(
-      (tx.decoded_input?.parameters[amountIndex].value as string) ?? "0"
+    dfiAmount = formatEther(
+      BigInt((tx.decoded_input?.parameters[amountIndex].value as string) ?? "0")
     );
   }
 

@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { utils } from "ethers";
+import { formatEther } from "viem";
 
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
@@ -235,7 +235,7 @@ export async function getServerSideProps(
 
     return {
       props: {
-        balance: utils.formatEther(walletDetail.coin_balance ?? "0"),
+        balance: formatEther(BigInt(walletDetail.coin_balance ?? "0")),
         addressTransactions: {
           transactions: addressTransactions.items,
           nextPageParams:

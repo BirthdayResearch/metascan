@@ -20,12 +20,14 @@ export function ActionButton({
   label,
   testId,
   customStyle,
+  labelStyle,
 }: {
   label: string;
   testId: string;
   onClick?: () => void;
   disabled?: boolean;
   customStyle?: string;
+  labelStyle?: string;
 }) {
   return (
     <button
@@ -41,7 +43,8 @@ export function ActionButton({
     >
       <span
         className={clsx(
-          "text-black-900 font-semibold -tracking-[0.01em] text-xl"
+          "text-black-900 font-semibold -tracking-[0.01em] text-xl",
+          labelStyle
         )}
       >
         {label}

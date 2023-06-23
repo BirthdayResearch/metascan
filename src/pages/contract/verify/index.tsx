@@ -9,15 +9,20 @@ import { FiLoader, FiSlash } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/router";
 import { getEnvironment } from "@contexts/Environment";
+import DisclosureComponent from "@components/commons/Disclosure";
 import StepOne, { ActionButton } from "./_components/StepOne";
 
 export default function VerifiedContract() {
   // todo add validations
   const defaultDropdownValue = { label: "", value: "" };
   const redirectionDelay = 3000;
+  const defaultOptimizationRuns = 200;
   const [optimization, setOptimization] = useState(false);
   const [sourceCode, setSourceCode] = useState("");
-  const [optimizationRuns, setOptimizationRuns] = useState<number>(200);
+  const [constructorArguments, setConstructorArguments] = useState("");
+  const [optimizationRuns, setOptimizationRuns] = useState<number>(
+    defaultOptimizationRuns
+  );
   const [editStepOne, setEditStepOne] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
@@ -35,6 +40,7 @@ export default function VerifiedContract() {
   const networkQuery = !getEnvironment().isDefaultConnection(connection)
     ? { network: connection }
     : {};
+
   const evmVersions = [
     { label: "Default (compiler defaults)", value: "london" },
     { label: "homestead (oldest version)", value: "homestead" },
@@ -74,8 +80,9 @@ export default function VerifiedContract() {
       contractSourceCode: sourceCode,
       optimization,
       name: "",
-      evmVersion: "london",
+      evmVersion: evmVersion.value,
       optimizationRuns,
+      constructorArguments,
     };
     const res = await SmartContractApi.verifySmartContract(connection, data);
     setIsVerifying(false);
@@ -91,7 +98,16 @@ export default function VerifiedContract() {
       setError(res.message);
       setIsVerified(false);
     }
-    console.log({ res });
+  };
+
+  const reset = () => {
+    setOptimization(false);
+    setSourceCode("");
+    setConstructorArguments("");
+    setOptimizationRuns(defaultOptimizationRuns);
+    setIsVerifying(false);
+    setIsVerified(false);
+    setError("");
   };
 
   return (
@@ -162,47 +178,107 @@ export default function VerifiedContract() {
                         onClick={() => setOptimization(!optimization)}
                       />
                     </div>
-                    <div>
-                      <div className="flex flex-col md:flex-row mt-4 space-y-4 md:space-y-0 md:space-x-5">
-                        <div className="md:w-1/3">
-                          <InputComponent
-                            type="number"
-                            label="Runs"
-                            showClearIcon={false}
-                            disabled={!optimization}
-                            labelClassName="text-white-700 text-sm mb-1 -tracking-[0.01em]"
-                            inputContainerClassName="!py-3"
-                            inputClass="!text-sm"
-                            value={optimizationRuns}
-                            setValue={(value: number) =>
-                              setOptimizationRuns(value)
-                            }
-                            error=""
-                            placeholder="200"
-                          />
-                        </div>
-                        <div className="lg:w-1/3">
-                          <Dropdown
-                            options={evmVersions}
-                            onChange={setEvmVersion}
-                            value={evmVersion}
-                            dropdownContainerClassName="!py-[10px]"
-                            labelClass="!text-sm"
-                            label="EVM Version to target"
-                            labelClassName="text-white-700 text-sm mb-1 -tracking-[0.01em]"
-                            placeholder="Select compiler version"
-                          />
-                        </div>
+                    <div className="flex flex-col md:flex-row mt-4 space-y-4 md:space-y-0 md:space-x-5">
+                      <div className="md:w-1/3">
+                        <InputComponent
+                          type="number"
+                          label="Runs"
+                          showClearIcon={false}
+                          disabled={!optimization}
+                          labelClassName="text-white-700 text-sm mb-1 -tracking-[0.01em]"
+                          inputContainerClassName="!py-3"
+                          inputClass="!text-sm"
+                          value={optimizationRuns}
+                          setValue={(value: number) =>
+                            setOptimizationRuns(value)
+                          }
+                          error=""
+                          placeholder="200"
+                        />
+                      </div>
+                      <div className="lg:w-1/3">
+                        <Dropdown
+                          options={evmVersions}
+                          onChange={setEvmVersion}
+                          value={evmVersion}
+                          dropdownContainerClassName="!py-[10px]"
+                          labelClass="!text-sm"
+                          label="EVM Version to target"
+                          labelClassName="text-white-700 text-sm mb-1 -tracking-[0.01em]"
+                          placeholder="Select compiler version"
+                        />
                       </div>
                     </div>
                   </div>
-                  <div className="mt-8 md:mt-16">
+                  <div className="mt-12 p-4 md:p-6 border-[0.5px] border-white-900 rounded-[10px]">
+                    <div className="mb-4">
+                      <DisclosureComponent
+                        title="Constructor Arguments"
+                        subtitle="(for contracts that were created with constructor parameters)"
+                      >
+                        <div className="mt-6 md:pl-10 md:pr-4">
+                          <textarea
+                            data-testid="constructor-argument"
+                            className={clsx(
+                              "w-full focus:outline-none h-[112px] transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-dark-100 border-[0.5px] border-dark-200 text-white-50 py-[18px] px-4 resize-y placeholder-black-500"
+                            )}
+                            placeholder=""
+                            onChange={(e) =>
+                              setConstructorArguments(e.target.value)
+                            }
+                            value={constructorArguments}
+                          />
+                          <div className="mt-4">
+                            <span className="text-white-700 text-sm mr-1">
+                              For additional information, read our
+                            </span>
+                            {/* TODO add redirection */}
+                            <a
+                              target="_blank"
+                              data-testid="terms-of-service"
+                              href="/contract/verify/terms"
+                              className="text-lightBlue text-sm brand-gradient-1 active:brand-gradient-2 bg-clip-text hover:text-transparent transition-all ease-in duration-300"
+                            >
+                              KB Entry
+                            </a>
+                          </div>
+                        </div>
+                      </DisclosureComponent>
+                    </div>
+                    {/* <div className="pt-4 border-t border-white-50">
+                      <DisclosureComponent
+                        title="Contract Library Address"
+                        subtitle="(for contracts that use libraries, supports up to 10)"
+                      >
+                        <div className="mt-6 md:pl-10 md:pr-4">
+                          Contract Library Address
+                        </div>
+                      </DisclosureComponent>
+                    </div> */}
+                  </div>
+                  <div className="flex flex-col-reverse lg:space-y-0 lg:flex-row lg:space-x-12 mt-8 md:mt-16 w-full">
+                    <div className="flex flex-col md:flex-row md:space-x-4 w-full lg:w-1/2 space-y-4 md:space-y-0 mt-4 md:mt-6 lg:mt-0">
+                      <ActionButton
+                        label="Reset"
+                        testId="submit-verify-contract"
+                        onClick={reset}
+                        customStyle="border-[0.5px] border-white-50 !bg-transparent w-full lg:w-5/12"
+                        labelStyle="text-white-50"
+                      />
+                      <ActionButton
+                        label="Return to main"
+                        testId="submit-verify-contract"
+                        onClick={() => router.reload()}
+                        customStyle="border-[0.5px] border-white-50 !bg-transparent w-full lg:w-7/12"
+                        labelStyle="text-white-50"
+                      />
+                    </div>
                     <ActionButton
                       label="Submit"
                       testId="submit-verify-contract"
                       onClick={submitForm}
                       disabled={isDisabled()}
-                      customStyle="w-full lg:w-5/12"
+                      customStyle="w-full lg:w-1/2"
                     />
                   </div>
                 </>

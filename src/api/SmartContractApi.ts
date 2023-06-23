@@ -40,14 +40,14 @@ export default {
     data
   ): Promise<any> => {
     const baseUrl = getBaseUrl(network);
-    const res = await fetch(
-      `${baseUrl}/verify_smart_contract/contract_verifications`,
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    return wrapResponse<any>(res);
+    const res = await fetch(`${baseUrl}api?module=contract&action=verify`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return wrapResponse(res);
   },
 };
 

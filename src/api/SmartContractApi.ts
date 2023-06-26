@@ -40,7 +40,7 @@ export default {
     data
   ): Promise<any> => {
     const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}api?module=contract&action=verify`, {
+    const res = await fetch(`${baseUrl}/api?module=contract&action=verify`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

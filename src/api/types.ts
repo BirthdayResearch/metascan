@@ -281,3 +281,8 @@ export interface SCVersionsBuilds {
 export interface SCVersionsResponseProps {
   builds: SCVersionsBuilds[];
 }
+
+export enum ContractLanguage {
+  Solidity = "Solidity",
+  Vyper = "Vyper",
+}

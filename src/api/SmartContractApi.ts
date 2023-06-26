@@ -10,6 +10,7 @@ import {
   SmartContractPageParamsProps,
   SmartContractWithPaginationProps,
   SCVersionsResponseProps,
+  ContractLanguage,
 } from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
 
@@ -37,10 +38,13 @@ export default {
   },
   verifySmartContract: async (
     network: NetworkConnection,
-    data
+    data,
+    type: ContractLanguage
   ): Promise<any> => {
     const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}api?module=contract&action=verify`, {
+    const action =
+      type === ContractLanguage.Solidity ? "verify" : "verify_vyper_contract";
+    const res = await fetch(`${baseUrl}api?module=contract&action=${action}`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

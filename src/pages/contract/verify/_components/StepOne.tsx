@@ -6,12 +6,15 @@ import { MdRadioButtonUnchecked } from "react-icons/md";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import clsx from "clsx";
 import SmartContractApi from "@api/SmartContractApi";
-import { SCVersionsBuilds } from "@api/types";
+import { ContractLanguage, SCVersionsBuilds } from "@api/types";
 import InputComponent from "@components/commons/InputComponent";
 
-enum ContractLanguage {
-  Solidity = "Solidity",
-  Vyper = "Vyper",
+export interface StepOneDetailsI {
+  address: string;
+  compiler: string;
+  version: string;
+  license: string;
+  contractLanguage?: ContractLanguage;
 }
 
 export function ActionButton({
@@ -82,6 +85,7 @@ export default function StepOne({
 }) {
   const router = useRouter();
   const queryAddress = router.query.address;
+  // TODO manage state from parent component
   const [address, setAddress] = useState((queryAddress as string) ?? "");
   const [compiler, setCompiler] = useState(defaultDropdownValue);
   const [version, setVersion] = useState(defaultDropdownValue);
@@ -93,6 +97,9 @@ export default function StepOne({
 
   const getSmartContractVersions = async (language) => {
     let builds: SCVersionsBuilds[];
+    if (compiler.type !== language) {
+      setVersion(defaultDropdownValue);
+    }
     if (language === ContractLanguage.Solidity) {
       const versionsRes = await SmartContractApi.getSolidityVersions();
       builds = versionsRes.builds.reverse();
@@ -194,6 +201,7 @@ export default function StepOne({
       compiler: compiler.value,
       version: version.value,
       license: license.value,
+      contractLanguage: compiler.type,
     };
     onSubmit(data);
   };

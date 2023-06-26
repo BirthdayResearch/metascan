@@ -104,6 +104,17 @@ export interface RawTxnWithPaginationProps {
   };
 }
 
+export interface CreatedContractProps {
+  hash: string;
+  implementation_name?: string;
+  is_contract: boolean;
+  is_verified?: boolean;
+  name: string;
+  privateTags: [];
+  public_tags: [];
+  watchlist_names: [];
+}
+
 export interface RawTransactionI {
   tx_types: string[];
   type: number;
@@ -129,6 +140,7 @@ export interface RawTransactionI {
   method: string | null;
   confirmations: number;
   token_transfers?: any;
+  created_contract?: CreatedContractProps;
 }
 
 export interface TokenTransferProps {

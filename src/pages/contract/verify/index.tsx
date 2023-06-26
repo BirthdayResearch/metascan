@@ -37,15 +37,17 @@ export default function VerifiedContract() {
     : {};
 
   const evmVersions = [
-    { label: "Default (compiler defaults)", value: "london" },
-    { label: "homestead (oldest version)", value: "homestead" },
-    { label: "tangerineWhistle", value: "tangerineWhistle" },
-    { label: "spuriousDragon", value: "spuriousDragon" },
-    { label: "byzantium (default for <= v0.5.4)", value: "byzantium" },
-    { label: "constantinople", value: "constantinople" },
-    { label: "petersburg (default for >= v0.5.5)", value: "petersburg" },
-    { label: "istanbul (default for >= v0.5.14)", value: "istanbul" },
+    { label: "default", value: "default" },
+    { label: "paris", value: "paris" },
+    { label: "london", value: "london" },
     { label: "berlin", value: "berlin" },
+    { label: "istanbul", value: "istanbul" },
+    { label: "petersburg", value: "petersburg" },
+    { label: "constantinople", value: "constantinople" },
+    { label: "byzantium", value: "byzantium" },
+    { label: "spuriousDragon", value: "spuriousDragon" },
+    { label: "tangerineWhistle", value: "tangerineWhistle" },
+    { label: "homestead", value: "homestead" },
   ];
 
   const [evmVersion, setEvmVersion] = useState(evmVersions[0]);
@@ -68,6 +70,7 @@ export default function VerifiedContract() {
         evmVersion: evmVersion.value,
         optimizationRuns,
         constructorArguments,
+        autodetectConstructorArguments: constructorArguments === "",
       }),
     };
     const res = await SmartContractApi.verifySmartContract(

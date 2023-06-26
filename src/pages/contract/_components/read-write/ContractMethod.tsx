@@ -33,7 +33,7 @@ export default function ContractMethod({
     ContractMethodType.Write,
     ContractMethodType.WriteProxy,
   ].includes(type);
-  const shouldDisplayForm = method.inputs.length > 0 || isWriteOrWriteProxy;
+  const shouldDisplayForm = method.inputs?.length > 0 || isWriteOrWriteProxy;
 
   return (
     <div
@@ -59,7 +59,9 @@ export default function ContractMethod({
           ) : (
             <IoChevronDownSharp size={24} />
           )}
-          <span className="ml-4">{`${index + 1}. ${method.name}`}</span>
+          <span className="ml-4">{`${index + 1}. ${
+            method.name ?? method.type
+          }`}</span>
         </div>
       </div>
       {open && (

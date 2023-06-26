@@ -51,7 +51,7 @@ export default function ReadWriteContract({
       </div>
       {methods?.map((item, index) => (
         <ContractMethod
-          key={item.name}
+          key={`${item.name}-${item.type}`}
           type={type}
           method={item}
           index={index}

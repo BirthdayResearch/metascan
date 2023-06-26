@@ -37,7 +37,7 @@ export default function ContractMethodForm({
   const contractId = router.query.cid as string;
   const { isConnected } = useAccount();
 
-  const defaultInputValues = getDefaultValues(method.inputs);
+  const defaultInputValues = getDefaultValues(method.inputs ?? []);
   const [userInput, setUserInput] = useState<KeyValue>(defaultInputValues);
   const [dfiValue, setDfiValue] = useState("");
   const [readResult, setReadResult] = useState<SmartContractOutputWithValue[]>(
@@ -68,7 +68,7 @@ export default function ContractMethodForm({
         address: contractId as `0x${string}`,
         abi: [method],
         functionName: method.name,
-        args: method.inputs.length > 0 ? [...Object.values(userInput)] : [],
+        args: method.inputs?.length > 0 ? [...Object.values(userInput)] : [],
         ...(dfiValue && { value: parseEther(`${Number(dfiValue)}`) }),
       };
       if (isWriteOrWriteProxy) {
@@ -78,7 +78,7 @@ export default function ContractMethodForm({
       } else {
         // Read/ReadProxy
         const data = (await readContract(config)) ?? [];
-        const results = method.outputs.map((output, index) => {
+        const results = method.outputs?.map((output, index) => {
           const value = typeof data === "object" ? data[index] : data;
           return {
             type: output.type,
@@ -96,7 +96,7 @@ export default function ContractMethodForm({
   };
 
   const fieldsWithValue = Object.keys(userInput).filter((i) => userInput[i]);
-  const hasCompletedInput = method.inputs.length === fieldsWithValue.length;
+  const hasCompletedInput = method.inputs?.length === fieldsWithValue.length;
 
   return (
     <div className="flex flex-col gap-6">
@@ -110,9 +110,9 @@ export default function ContractMethodForm({
           type="number"
         />
       )}
-      {method.inputs.map((input: SmartContractInputOutput, index: number) => (
+      {method.inputs?.map((input: SmartContractInputOutput, index: number) => (
         <ContractMethodTextInput
-          key={input.name}
+          key={`${input.name}-${input.type}`}
           label={`${input.name} (${input.type})`}
           value={userInput[index]}
           setValue={(value) => setUserInput({ ...userInput, [index]: value })}

@@ -44,7 +44,7 @@ export default {
     const baseUrl = getBaseUrl(network);
     const action =
       type === ContractLanguage.Solidity ? "verify" : "verify_vyper_contract";
-    const res = await fetch(`${baseUrl}api?module=contract&action=${action}`, {
+    const res = await fetch(`${baseUrl}/api?module=contract&action=${action}`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

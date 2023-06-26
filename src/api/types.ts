@@ -270,3 +270,19 @@ export interface SmartContractWithPaginationProps {
   items: SmartContractListItemProps[];
   next_page_params: SmartContractPageParamsProps;
 }
+
+export interface SCVersionsBuilds {
+  build: string;
+  longVersion: string;
+  sha256: string;
+  path: string;
+  version: string;
+}
+export interface SCVersionsResponseProps {
+  builds: SCVersionsBuilds[];
+}
+
+export enum ContractLanguage {
+  Solidity = "Solidity",
+  Vyper = "Vyper",
+}

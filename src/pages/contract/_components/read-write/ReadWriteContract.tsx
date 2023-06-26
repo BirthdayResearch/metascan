@@ -4,7 +4,7 @@ import { ContractMethodType } from "@api/types";
 import { useNetwork } from "@contexts/NetworkContext";
 import { useGetContractMethodsQuery } from "@store/contract";
 import { FiLoader } from "react-icons/fi";
-import ContractMethod from "./read-write/ContractMethod";
+import ContractMethod from "./ContractMethod";
 
 export default function ReadWriteContract({
   type,
@@ -31,7 +31,7 @@ export default function ReadWriteContract({
     );
   }
 
-  if (!isLoading && !methods) {
+  if (!isLoading && (!methods || methods?.length === 0)) {
     return <div className="text-white-50 mt-8">NO METHODS.</div>;
   }
 

@@ -4,11 +4,10 @@ import { CodeOptions } from "enum/codeOptions";
 import { ContractMethodType } from "@api/types";
 import ConnectButton from "./ConnectButton";
 import ContractCodeTab from "./ContractCodeTab";
-import ReadWriteContract from "./ReadWriteContract";
+import ReadWriteContract from "./read-write/ReadWriteContract";
 
 export default function ContractCode() {
-  // TODO (lyka): set default tab back to CodeOptions.Code
-  const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Read);
+  const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Code);
   return (
     <div>
       <div className="flex flex-row gap-x-2">

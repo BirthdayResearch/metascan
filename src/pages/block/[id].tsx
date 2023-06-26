@@ -22,6 +22,7 @@ import { NetworkConnection } from "@contexts/Environment";
 import BlocksApi from "@api/BlocksApi";
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
 import { BlockProps, RawTransactionI } from "@api/types";
+import { GWEI_DECIMAL } from "shared/constants";
 import AddressRow from "./_components/AddressRow";
 import DetailRow from "./_components/DetailRow";
 import GasUsedRow from "./_components/GasUsedRow";
@@ -33,8 +34,6 @@ interface PageProps {
     nextPageParams: TxnNextPageParamsProps;
   };
 }
-
-export const GWEI_DECIMAL = 9; // Source: https://docs.ethers.org/v5/api/utils/display-logic/
 
 export default function Block({
   data: { block, blockTransactions },

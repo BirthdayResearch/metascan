@@ -6,8 +6,22 @@ import { FiLoader, FiSlash } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/router";
 import DisclosureComponent from "@components/commons/Disclosure";
-import { ContractLanguage } from "@api/types";
+import { CompilerType } from "@api/types";
 import { ActionButton } from "./StepOne";
+
+function StatusComponent({ title, subtitle, children }) {
+  return (
+    <>
+      <div className="flex flex-row space-x-2 items-center">
+        <div className="font-semibold text-white-50 text-xl -tracking-[0.01em]">
+          {title}
+        </div>
+        {children}
+      </div>
+      <div className="text-white-50 -tracking-[0.02em] mt-2">{subtitle}</div>
+    </>
+  );
+}
 
 export default function StepTwo({
   stepOneDetails,
@@ -92,8 +106,7 @@ export default function StepTwo({
                   value={sourceCode}
                 />
               </div>
-              {stepOneDetails.contractLanguage ===
-                ContractLanguage.Solidity && (
+              {stepOneDetails.compiler !== CompilerType.Vyper && (
                 <>
                   <div className="mt-12 p-4 md:p-6 border-[0.5px] border-white-900 rounded-[10px]">
                     <div className="flex flex-row items-center mb-4">
@@ -215,19 +228,5 @@ export default function StepTwo({
         </div>
       )}
     </div>
-  );
-}
-
-function StatusComponent({ title, subtitle, children }) {
-  return (
-    <>
-      <div className="flex flex-row space-x-2 items-center">
-        <div className="font-semibold text-white-50 text-xl -tracking-[0.01em]">
-          {title}
-        </div>
-        {children}
-      </div>
-      <div className="text-white-50 -tracking-[0.02em] mt-2">{subtitle}</div>
-    </>
   );
 }

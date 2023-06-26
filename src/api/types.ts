@@ -282,7 +282,9 @@ export interface SCVersionsResponseProps {
   builds: SCVersionsBuilds[];
 }
 
-export enum ContractLanguage {
-  Solidity = "Solidity",
-  Vyper = "Vyper",
+export enum CompilerType {
+  "SoliditySingleFile" = "Solidity (Single file)",
+  "SolidityMultiPartFiles" = "Solidity (Multi-Part files)",
+  "SolidityStandardJsonInput" = "Solidity (Standard-Json-Input)",
+  "Vyper" = "Vyper (Experimental)",
 }

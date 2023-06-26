@@ -3,7 +3,7 @@ import SmartContractApi from "@api/SmartContractApi";
 import { useNetwork } from "@contexts/NetworkContext";
 import { useRouter } from "next/router";
 import { getEnvironment } from "@contexts/Environment";
-import { ContractLanguage } from "@api/types";
+import { CompilerType } from "@api/types";
 import StepOne, { StepOneDetailsI } from "./_components/StepOne";
 import StepTwo from "./_components/StepTwo";
 
@@ -21,6 +21,7 @@ export default function VerifiedContract() {
   const [editStepOne, setEditStepOne] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
+  // const [selectedFiles, setSelectedFiles] = useState([])
   const [error, setError] = useState("");
   const [stepOneDetails, setStepOneDetails] = useState<StepOneDetailsI>({
     address: "",
@@ -57,29 +58,9 @@ export default function VerifiedContract() {
     setEditStepOne(false);
   };
 
-  const submitForm = async () => {
-    setIsVerifying(true);
-    const data = {
-      addressHash: stepOneDetails.address,
-      compilerVersion: stepOneDetails.version,
-      contractSourceCode: sourceCode,
-      optimization,
-      name: "",
-      // for Solidity contract
-      ...(stepOneDetails.contractLanguage === ContractLanguage.Solidity && {
-        evmVersion: evmVersion.value,
-        optimizationRuns,
-        constructorArguments,
-        autodetectConstructorArguments: constructorArguments === "",
-      }),
-    };
-    const res = await SmartContractApi.verifySmartContract(
-      connection,
-      data,
-      stepOneDetails.contractLanguage as ContractLanguage
-    );
+  const handelResponse = (res) => {
     setIsVerifying(false);
-    if (res.result) {
+    if (res.status === "1") {
       setIsVerified(true);
       setTimeout(() => {
         router.push({
@@ -91,6 +72,53 @@ export default function VerifiedContract() {
       setError(res.message);
       setIsVerified(false);
     }
+  };
+
+  const submitForm = async () => {
+    setIsVerifying(true);
+    // for standard input json
+    if (stepOneDetails.compiler === CompilerType.SolidityStandardJsonInput) {
+      const data = new FormData();
+      data.append("codeformat", "solidity-standard-json-input");
+      data.append(
+        "sourceCode",
+        `{"language":"Solidity","sources":{"contracts/2_test.sol":{"content":"// SPDX-License-Identifier: GPL-3.0\n\npragma solidity >=0.7.0 <0.9.0;\n\ncontract CounterJson {\n    uint256 number = 1;\n\n    function store(uint256 num) public {\n        number = num;\n    }\n\n    function retrieve() public view returns (uint256) {\n        return number;\n    }\n}\n"}},"settings":{"optimizer":{"enabled":false,"runs":200},"outputSelection":{"*":{"":["ast"],"*":["abi","metadata","devdoc","userdoc","storageLayout","evm.legacyAssembly","evm.bytecode","evm.deployedBytecode","evm.methodIdentifiers","evm.gasEstimates","evm.assembly"]}}}}`
+      );
+      data.append("contractaddress", stepOneDetails.address);
+      data.append("compilerversion", stepOneDetails.version);
+      data.append("optimizationRuns", `${optimizationRuns}`);
+      data.append("optimization", `${optimization}`);
+      data.append("contractname", "");
+      const res = await SmartContractApi.verifySmartContractUsingJSONInput(
+        connection,
+        data
+      );
+      await SmartContractApi.checkVerifyStatus(connection, res.result);
+      return handelResponse(res);
+    }
+
+    // for solidity single file and vyper contract verification
+    const data = {
+      addressHash: stepOneDetails.address,
+      compilerVersion: stepOneDetails.version,
+      contractSourceCode: sourceCode,
+      optimization,
+      name: "",
+      // for Solidity contract
+      ...(stepOneDetails.compiler !== CompilerType.Vyper && {
+        evmVersion: evmVersion.value,
+        optimizationRuns,
+        constructorArguments,
+        autodetectConstructorArguments: constructorArguments === "",
+      }),
+    };
+    const res = await SmartContractApi.verifySmartContract(
+      connection,
+      data,
+      stepOneDetails.compiler as CompilerType
+    );
+    setIsVerifying(false);
+    return handelResponse(res);
   };
 
   const resetStepTwo = () => {
@@ -112,6 +140,7 @@ export default function VerifiedContract() {
         onSubmit={onSubmitStepOne}
         defaultDropdownValue={defaultDropdownValue}
       />
+      {/* <input type="file" onChange={(event) => setSelectedFiles(event.target.files)} /> */}
       {!editStepOne && (
         <StepTwo
           stepOneDetails={stepOneDetails}

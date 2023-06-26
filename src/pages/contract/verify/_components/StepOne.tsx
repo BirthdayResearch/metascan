@@ -6,7 +6,7 @@ import { MdRadioButtonUnchecked } from "react-icons/md";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import clsx from "clsx";
 import SmartContractApi from "@api/SmartContractApi";
-import { ContractLanguage, SCVersionsBuilds } from "@api/types";
+import { SCVersionsBuilds, CompilerType } from "@api/types";
 import InputComponent from "@components/commons/InputComponent";
 
 export interface StepOneDetailsI {
@@ -14,7 +14,6 @@ export interface StepOneDetailsI {
   compiler: string;
   version: string;
   license: string;
-  contractLanguage?: ContractLanguage;
 }
 
 export function ActionButton({
@@ -100,12 +99,12 @@ export default function StepOne({
     if (compiler.type !== language) {
       setVersion(defaultDropdownValue);
     }
-    if (language === ContractLanguage.Solidity) {
-      const versionsRes = await SmartContractApi.getSolidityVersions();
-      builds = versionsRes.builds.reverse();
-    } else {
+    if (language === CompilerType.Vyper) {
       const versionsRes = await SmartContractApi.getVyperVersions();
       builds = versionsRes.builds;
+    } else {
+      const versionsRes = await SmartContractApi.getSolidityVersions();
+      builds = versionsRes.builds.reverse();
     }
     setCompilerVersions(
       builds.map((each) => ({
@@ -117,24 +116,20 @@ export default function StepOne({
 
   const types = [
     {
-      label: "Solidity (Single file)",
-      value: "Solidity (Single file)",
-      type: ContractLanguage.Solidity,
+      label: CompilerType.SoliditySingleFile,
+      value: CompilerType.SoliditySingleFile,
     },
     {
-      label: "Solidity (Multi-Part files)",
-      value: "Solidity (Multi-Part files)",
-      type: ContractLanguage.Solidity,
+      label: CompilerType.SolidityMultiPartFiles,
+      value: CompilerType.SolidityMultiPartFiles,
     },
     {
-      label: "Solidity (Standard-Json-Input)",
-      value: "Solidity (Standard-Json-Input)",
-      type: ContractLanguage.Solidity,
+      label: CompilerType.SolidityStandardJsonInput,
+      value: CompilerType.SolidityStandardJsonInput,
     },
     {
-      label: "Vyper (Experimental)",
-      value: "Vyper (Experimental)",
-      type: ContractLanguage.Vyper,
+      label: CompilerType.Vyper,
+      value: CompilerType.Vyper,
     },
   ];
 
@@ -201,7 +196,6 @@ export default function StepOne({
       compiler: compiler.value,
       version: version.value,
       license: license.value,
-      contractLanguage: compiler.type,
     };
     onSubmit(data);
   };
@@ -273,9 +267,9 @@ export default function StepOne({
                 label="Compiler"
                 placeholder="Select compiler"
                 options={types}
-                onChange={(value) => {
-                  setCompiler(value);
-                  getSmartContractVersions(value.type);
+                onChange={(item) => {
+                  setCompiler(item);
+                  getSmartContractVersions(item.value);
                 }}
               />
               <Dropdown

@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { contractApi } from "@store/contract";
+import { contractApi, contractMethodsApi } from "@store/contract";
 import { searchApi } from "@store/search";
 
 export function initializeStore() {
@@ -7,11 +7,13 @@ export function initializeStore() {
     reducer: {
       [searchApi.reducerPath]: searchApi.reducer,
       [contractApi.reducerPath]: contractApi.reducer,
+      [contractMethodsApi.reducerPath]: contractMethodsApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
         searchApi.middleware,
-        contractApi.middleware
+        contractApi.middleware,
+        contractMethodsApi.middleware
       ),
   });
 }

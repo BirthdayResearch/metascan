@@ -1,4 +1,4 @@
-import { utils } from "ethers";
+import { formatEther, formatUnits } from "viem";
 import {
   RawTransactionI,
   RawTransactionType,
@@ -8,7 +8,7 @@ import {
   TransactionStatus,
   TransactionType,
 } from "@api/types";
-import { BURN_ADDRESS_HASH, DFI_TOKEN_SYMBOL } from "./constants";
+import { BURN_ADDRESS_HASH, DFI_TOKEN_SYMBOL, GWEI_DECIMAL } from "./constants";
 import { getTimeAgo } from "./durationHelper";
 
 /**
@@ -23,8 +23,8 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
   );
   let dfiAmount = "0";
   if (amountIndex && amountIndex > -1) {
-    dfiAmount = utils.formatEther(
-      (tx.decoded_input?.parameters[amountIndex].value as string) ?? "0"
+    dfiAmount = formatEther(
+      BigInt((tx.decoded_input?.parameters[amountIndex].value as string) ?? "0")
     );
   }
 
@@ -63,11 +63,11 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     timestamp: tx.timestamp,
     nonce: tx.nonce,
     blockNumber: tx.block,
-    value: utils.formatEther(tx.value ?? "0"),
-    fee: utils.formatEther(tx.fee.value ?? "0"),
+    value: formatEther(BigInt(tx.value ?? "0")),
+    fee: formatEther(BigInt(tx.fee.value ?? "0")),
     gasUsed: tx.gas_used,
     gasLimit: tx.gas_limit,
-    gasPrice: utils.formatUnits(tx.gas_price ?? "0", "gwei").toString(),
+    gasPrice: formatUnits(BigInt(tx.gas_price ?? "0"), GWEI_DECIMAL).toString(),
     position: tx.position,
     maxFeePerGas: tx.max_fee_per_gas,
     maxPriorityFeePerGas: tx.max_priority_fee_per_gas,
@@ -98,9 +98,9 @@ export const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
     forToken: {
       from: tokenTransfer.to.hash,
       to: tokenTransfer.from.hash,
-      value: utils.formatUnits(
-        tokenTransfer.total.value,
-        tokenTransfer.total.decimals
+      value: formatUnits(
+        BigInt(tokenTransfer.total.value),
+        Number(tokenTransfer.total.decimals ?? GWEI_DECIMAL)
       ),
       address: tokenTransfer.token.address,
       type: tokenTransfer.token.type,

@@ -15,7 +15,7 @@ export default function InputComponent({
   showClearIcon = true,
   inputContainerClassName,
 }: {
-  label: string;
+  label?: string;
   value: string | number;
   type?: string;
   setValue: (value: string | number) => void;
@@ -31,9 +31,11 @@ export default function InputComponent({
   const [isVisited, setIsVisited] = useState<boolean>(false);
   return (
     <div>
-      <div className={clsx("text-lg mb-2 text-white-700", labelClassName)}>
-        {label}
-      </div>
+      {label && (
+        <div className={clsx("text-lg mb-2 text-white-700", labelClassName)}>
+          {label}
+        </div>
+      )}
       <div
         className={clsx(
           "flex flex-row justify-between px-4 py-[18px] bg-dark-100 rounded-[10px] border-[0.5px] border-dark-200 focus-within:border focus-within:border-white-900",
@@ -55,7 +57,7 @@ export default function InputComponent({
             setIsVisited(true);
           }}
           className={clsx(
-            "w-full focus:outline-none border-none bg-dark-100 text-white-50 text-xl placeholder-black-500",
+            "w-full focus:outline-none border-none bg-dark-100 text-white-50 text-xl placeholder-white-900 focus:placeholder-black-500",
             { "opacity-[0.3]": disabled },
             inputClass
           )}

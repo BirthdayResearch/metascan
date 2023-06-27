@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Dropdown from "@components/commons/Dropdown";
 import Modal from "@components/commons/Modal";
 import InputComponent from "@components/commons/InputComponent";
@@ -13,6 +13,7 @@ export default function AddZeroesModal({
   onCloseModal: () => void;
   onAdd: (selected: string) => void;
 }) {
+  const ref = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState({ label: "", value: "" });
   const [customDecimal, setCustomDecimal] = useState<string | number>("");
   const decimals = [
@@ -24,7 +25,7 @@ export default function AddZeroesModal({
   ];
 
   const resetForm = () => {
-    // Added timeout to prevent text flicker
+    // Added timeout to prevent text flicker (wait for ui transitions)
     setTimeout(() => {
       setSelected({ label: "", value: "" });
       setCustomDecimal("");
@@ -46,6 +47,13 @@ export default function AddZeroesModal({
     onCloseModal();
   };
 
+  useEffect(() => {
+    if (selected.value === "custom") {
+      // Needed timeout to wait for ui transitions
+      setTimeout(() => ref.current?.focus(), 100);
+    }
+  }, [selected.value]);
+
   return (
     <Modal title="Add Zeroes" isOpen={isOpen} onCloseModal={handleModalClose}>
       <Dropdown
@@ -58,8 +66,8 @@ export default function AddZeroesModal({
       />
       {selected.value === "custom" && (
         <>
-          {/* TODO: autofocus to this input on select of 'Custom' */}
           <InputComponent
+            ref={ref}
             type="number"
             value={customDecimal}
             setValue={setCustomDecimal}

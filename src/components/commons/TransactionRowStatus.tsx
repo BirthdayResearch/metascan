@@ -30,7 +30,7 @@ export default function TransactionRowStatus({
       >
         {status}
       </div>
-      <Icon size={20} className=" ml-1" />
+      <Icon size={20} className="ml-1" />
     </div>
   );
 }

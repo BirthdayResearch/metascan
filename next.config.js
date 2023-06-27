@@ -15,9 +15,10 @@ const securityHeaders = [
       };` +
       `style-src 'self' fonts.googleapis.com 'unsafe-inline';` +
       `font-src fonts.gstatic.com;` +
-      `connect-src 'self' blockscout-index.changi.dfi.team 35.187.53.161:20551 ${
+      `connect-src 'self' blockscout-index.changi.dfi.team solc-bin.ethereum.org/linux-amd64/list.json raw.githubusercontent.com/blockscout/solc-bin/main/vyper.list.json
+      blockscout.com 35.187.53.161:20551 ${
         process.env.NODE_ENV === "development"
-          ? `ws://localhost:3000/_next/webpack-hmr base-goerli.blockscout.com eth-goerli.blockscout.com 34.87.158.111:4000`
+          ? `ws://localhost:3000/_next/webpack-hmr base-goerli.blockscout.com eth-goerli.blockscout.com`
           : ""
       };`,
   },

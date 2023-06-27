@@ -1,5 +1,6 @@
 import { utils } from "ethers";
 import {
+  CreatedContractProps,
   RawTransactionI,
   RawTransactionType,
   RawTxTokenTransfersProps,
@@ -29,10 +30,11 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
   }
 
   const fromHash = tx.from.hash ?? BURN_ADDRESS_HASH;
-  const toHash = tx.to?.hash ?? BURN_ADDRESS_HASH;
+  const toHash = tx.to?.hash ?? tx.created_contract?.hash ?? BURN_ADDRESS_HASH;
   const isFromContract = tx.from.is_contract;
-  const isToContract = tx.to?.is_contract ?? false;
-
+  const isToContract = !!(
+    tx.to?.is_contract || tx.created_contract?.hash !== undefined
+  );
   const tokenTransfers =
     tx.token_transfers?.length > 0 ? getTokenTransfers(tx.token_transfers) : [];
   const transactionType = getTransactionType({
@@ -41,6 +43,7 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     isFromContract,
     isToContract,
     txTypes: tx.tx_types,
+    createdContract: tx.created_contract,
   });
   const transactionStatus = getTransactionStatus({
     status: tx.status,
@@ -137,12 +140,14 @@ export const getTransactionType = ({
   isFromContract,
   isToContract,
   txTypes,
+  createdContract,
 }: {
   toHash: string | null;
   tokenTransfers: TokenTransferProps[];
   isFromContract: boolean;
   isToContract: boolean;
   txTypes: string[];
+  createdContract?: CreatedContractProps;
 }) => {
   let transactionType = TransactionType.Transaction;
   // Note: tokenTransfers is always null in transactions list api
@@ -154,7 +159,8 @@ export const getTransactionType = ({
   // const involvesCoinTransfer =
   //   txTypes.includes(RawTransactionType.CoinTransfer) &&
   //   !txTypes.includes(RawTransactionType.ContractCreation);
-  const involvesContract = isFromContract || isToContract;
+  const involvesContract =
+    isFromContract || isToContract || createdContract !== undefined;
 
   if (involvesTokenTransfers) {
     transactionType = getTransactionTypeFromTokenTransfers(tokenTransfers);

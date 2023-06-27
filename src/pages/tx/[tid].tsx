@@ -190,7 +190,11 @@ export default function Transaction({
                 customStyle="tracking-[0.01em]"
                 testId="transaction-details-from"
                 label={truncateTextFromMiddle(txDetails.from, 4)}
-                href={`/address/${txDetails.from}`}
+                href={
+                  txDetails.isFromContract
+                    ? `/contract/${txDetails.from}`
+                    : `/address/${txDetails.from}`
+                }
               />
             </WithCopy>
           </DetailRow>
@@ -211,7 +215,11 @@ export default function Transaction({
                   customStyle="tracking-[0.01em]"
                   testId="transaction-details-to"
                   label={truncateTextFromMiddle(txDetails.to, 4)}
-                  href={`/address/${txDetails.to}`}
+                  href={
+                    txDetails.isToContract
+                      ? `/contract/${txDetails.to}`
+                      : `/address/${txDetails.to}`
+                  }
                 />
               </WithCopy>
             </DetailRow>

@@ -1,7 +1,5 @@
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
-import { FiX } from "react-icons/fi";
-import { IoMdCheckmarkCircle } from "react-icons/io";
 
 import { formatDateToUTC, getDuration } from "shared/durationHelper";
 import { transformTransactionData } from "shared/transactionDataHelper";
@@ -18,13 +16,19 @@ import { iconMapping } from "@components/commons/TransactionRow";
 import { NetworkConnection } from "@contexts/Environment";
 
 import DetailRow from "@components/commons/DetailRow";
+import TransactionRowStatus from "@components/commons/TransactionRowStatus";
 import BoldedTitle from "./_components/BoldedTitle";
 import RawInput from "./_components/RawInput";
 import WithCopy from "./_components/WithCopy";
 import GasDetails from "./_components/GasDetails";
 import TokenTransferDetails from "./_components/TokenTransferDetails";
+import DecodedInput from "./_components/DecodedInput";
 
-function Transaction({ txDetails }: { txDetails: TransactionI }) {
+export default function Transaction({
+  txDetails,
+}: {
+  txDetails: TransactionI;
+}) {
   const gasPrice = { value: txDetails.gasPrice, symbol: GWEI_SYMBOL };
   const gasUsedPercentage = new BigNumber(txDetails.gasUsed)
     .dividedBy(txDetails.gasLimit)
@@ -136,29 +140,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
               >
                 Status
               </div>
-              <div
-                className={clsx(
-                  "flex items-center",
-                  txDetails.status.toLowerCase() === "confirmed"
-                    ? "text-green-800"
-                    : "text-red-800"
-                )}
-              >
-                <div
-                  data-testid="transaction-status"
-                  className={clsx(
-                    "text-sm  -tracking-[0.01em] ",
-                    "md:text-base md:font-semibold md:-tracking-[0.02em]"
-                  )}
-                >
-                  {txDetails.status}
-                </div>
-                {txDetails.status.toLowerCase() === "confirmed" ? (
-                  <IoMdCheckmarkCircle size={20} className=" ml-1" />
-                ) : (
-                  <FiX size={20} className=" ml-1" />
-                )}
-              </div>
+              <TransactionRowStatus status={txDetails.status} />{" "}
             </div>
             {/* Amount */}
             <div className={rowCss}>
@@ -196,15 +178,7 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
               </div>
             </div>
           </div>
-          <div
-            className={clsx(
-              "border-b border-black-600",
-              "mt-9 mb-6",
-              "md:mt-[58px] md:mb-9",
-              "lg:mt-[38px] lg:mb-11"
-            )}
-          />
-
+          <SectionDivider />
           {/* From */}
           <DetailRow label="From" className="mb-7">
             <WithCopy
@@ -256,18 +230,30 @@ function Transaction({ txDetails }: { txDetails: TransactionI }) {
             transactionType={txDetails.transactionType}
             position={txDetails.position}
           />
-          <div
-            className={clsx(
-              "border-b border-black-600",
-              "mt-9 mb-6",
-              "md:mt-14 md:mb-9",
-              "lg:mt-10 lg:mb-11"
-            )}
-          />
+          <SectionDivider />
           <RawInput hex={txDetails.rawInput} />
+          {txDetails.decodedInput && (
+            <>
+              <SectionDivider />
+              <DecodedInput input={txDetails.decodedInput} />
+            </>
+          )}
         </div>
       </GradientCardContainer>
     </div>
+  );
+}
+
+function SectionDivider() {
+  return (
+    <div
+      className={clsx(
+        "border-b border-black-600",
+        "mt-9 mb-6",
+        "md:mt-14 md:mb-9",
+        "lg:mt-10 lg:mb-11"
+      )}
+    />
   );
 }
 
@@ -288,5 +274,3 @@ export async function getServerSideProps(context) {
     return { notFound: true };
   }
 }
-
-export default Transaction;

@@ -52,8 +52,9 @@ export interface WalletAddressCounterI {
 }
 
 export enum TransactionStatus {
-  Confirmed = "Confirmed",
-  Reverted = "Reverted",
+  Success = "Success",
+  Failed = "Failed",
+  Pending = "Pending",
 }
 
 export enum RawTransactionType {
@@ -89,7 +90,7 @@ interface TxParameters {
   value: string;
 }
 
-interface DecodedTxInput {
+export interface DecodedTxInput {
   method_id: string;
   method_call: string;
   parameters: TxParameters[];
@@ -111,6 +112,7 @@ export interface RawTransactionI {
   from: { hash: string; is_contract: boolean };
   to: { hash: string; is_contract: boolean } | null;
   status: string;
+  result: string;
   timestamp: string;
   nonce: number;
   block: string;
@@ -157,10 +159,11 @@ export interface TransactionI {
   amount: string;
   symbol: string;
   from: string;
-  to: string | null;
+  to: string;
   isFromContract: boolean;
   isToContract: boolean;
   status: TransactionStatus;
+  result: string;
   timeInSec: number;
   timestamp: string;
   nonce: number;
@@ -188,6 +191,7 @@ export interface BlockProps {
   gas_used: string;
   gas_used_percentage: number;
   height: number;
+  hash: string;
   miner: {
     hash: string;
   };
@@ -227,4 +231,11 @@ export interface RawTxTokenTransfersProps {
     decimals?: string | number;
     value: string;
   };
+}
+
+// V1 API response
+export interface RawTransactionV1 {
+  message: string;
+  result: RawTransactionI | null;
+  status: string;
 }

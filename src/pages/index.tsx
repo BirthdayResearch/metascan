@@ -1,6 +1,6 @@
 // import GroupStatisticCard from "@components/GroupStatisticCard";
 // import TokenStatsDisplay from "@components/TokenStatsDisplay";
-import { HomeTitle } from "@components/HomeTitle";
+import HomeTitle from "@components/HomeTitle";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { GetServerSidePropsResult, InferGetServerSidePropsType } from "next";
 import { RowData } from "@components/types";

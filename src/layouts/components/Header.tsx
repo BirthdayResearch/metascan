@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import Container from "@components/commons/Container";
 import { FiXCircle, FiMenu } from "react-icons/fi";
 import Image from "next/image";
+import { getTopLevelRoute } from "shared/urlHelper";
 import {
   HeaderNetworkMenu,
   HeaderNetworkMenuMobile,
@@ -31,9 +32,10 @@ const MenuItems = [
   // },
 ];
 
-export function Header(): JSX.Element {
+export default function Header(): JSX.Element {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
+  const currentPath = getTopLevelRoute(router.asPath);
 
   useEffect(() => {
     function routeChangeStart(): void {
@@ -60,7 +62,7 @@ export function Header(): JSX.Element {
             </div>
           </Link>
           <div className="hidden xl:flex">
-            <DesktopNavbar />
+            <DesktopNavbar currentPath={currentPath} />
           </div>
           <div className="flex">
             <div className="hidden xl:flex">
@@ -83,13 +85,14 @@ export function Header(): JSX.Element {
   );
 }
 
-function DesktopNavbar(): JSX.Element {
+function DesktopNavbar({ currentPath }: { currentPath: string }): JSX.Element {
   return (
     <div className="bg-white-50 rounded-3xl">
       {MenuItems.map((item) => (
         <HeaderLink
           label={item.label}
           pathname={item.pathname}
+          currentPath={currentPath}
           testId={item.testId}
           key={item.testId}
         />
@@ -162,37 +165,34 @@ function HeaderLink({
   label,
   pathname,
   testId,
+  currentPath,
 }: {
   label: string;
   pathname: string;
+  currentPath: string;
   testId?: string;
 }): JSX.Element {
+  const isActive = currentPath === pathname;
   return (
     <Link href={{ pathname }}>
       <div
-        className="
-          inline-block
-          px-8
-          font-medium
-          text-base
-          py-4
-          group
-          cursor-pointer
-          relative
-          before:cta-border
-          before:bg-white-50
-          before:opacity-100
-          hover:before:opacity-0
-          after:cta-border
-          after:brand-gradient-1
-          after:opacity-0
-          hover:after:opacity-100
-        "
+        className={clsx(
+          "inline-block px-8 font-medium text-base py-4 group cursor-pointer relative",
+          "before:cta-border before:bg-white-50 before:opacity-100",
+          "after:cta-border after:brand-gradient-1 after:opacity-0",
+          "hover:before:opacity-0 hover:after:opacity-100",
+          { "before:opacity-0 after:opacity-100": isActive }
+        )}
         data-testid={testId}
       >
         <span
           data-label={label}
-          className="font-medium brand-gradient-1 group-hover:text-transparent bg-clip-text transition-all ease-in duration-100"
+          className={clsx(
+            "font-medium brand-gradient-1 group-hover:text-transparent bg-clip-text transition-all ease-in duration-100",
+            {
+              "text-transparent": isActive,
+            }
+          )}
         >
           {label}
         </span>

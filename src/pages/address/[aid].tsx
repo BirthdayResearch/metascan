@@ -209,6 +209,17 @@ export async function getServerSideProps(
       network as NetworkConnection,
       aid
     );
+
+    // Redirect contract address to contract page
+    if (walletDetail?.is_contract) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/contract/${aid}`,
+        },
+      };
+    }
+
     const counters = await WalletAddressApi.getCounters(
       network as NetworkConnection,
       aid

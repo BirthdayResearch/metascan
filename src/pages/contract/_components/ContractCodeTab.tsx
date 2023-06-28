@@ -8,7 +8,6 @@ export default function ContractCodeTab({
 }: {
   contractDetail: ContractProps;
 }): JSX.Element {
-  console.log({ contractDetail });
   return (
     <>
       <div className="text-white-50 font-bold text-xl mb-[30.5px]">

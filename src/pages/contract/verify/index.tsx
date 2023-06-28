@@ -7,6 +7,11 @@ import { CompilerType } from "@api/types";
 import StepOne, { StepOneDetailsI } from "./_components/StepOne";
 import StepTwo from "./_components/StepTwo";
 
+const sleep = (ms: number) =>
+  new Promise((r) => {
+    setTimeout(r, ms);
+  });
+
 export default function VerifiedContract() {
   // todo add validations
   const defaultDropdownValue = { label: "", value: "" };
@@ -58,20 +63,12 @@ export default function VerifiedContract() {
     setEditStepOne(false);
   };
 
-  const handelResponse = (res) => {
-    setIsVerifying(false);
-    if (res.status === "1") {
-      setIsVerified(true);
-      setTimeout(() => {
-        router.push({
-          pathname: `/contract/${stepOneDetails.address}`,
-          query: networkQuery,
-        });
-      }, redirectionDelay);
-    } else {
-      setError(res.message);
-      setIsVerified(false);
-    }
+  const redirect = async () => {
+    await sleep(redirectionDelay);
+    router.push({
+      pathname: `/contract/${stepOneDetails.address}`,
+      query: networkQuery,
+    });
   };
 
   const submitForm = async () => {
@@ -90,11 +87,23 @@ export default function VerifiedContract() {
         connection,
         data
       );
+      await sleep(2000);
       const verificationStatus = await SmartContractApi.checkVerifyStatus(
         connection,
         res.result
       );
-      return handelResponse(verificationStatus);
+      setIsVerifying(false);
+      if (
+        verificationStatus.status === "1" &&
+        verificationStatus.result === "Pass - Verified"
+      ) {
+        setIsVerified(true);
+        await redirect();
+      } else {
+        setError(verificationStatus.result);
+        setIsVerified(false);
+      }
+      return;
     }
 
     // for solidity single file and vyper contract verification
@@ -118,7 +127,13 @@ export default function VerifiedContract() {
       stepOneDetails.compiler as CompilerType
     );
     setIsVerifying(false);
-    return handelResponse(res);
+    if (res.status === "1" && res.result === "Pass - Verified") {
+      setIsVerified(true);
+      await redirect();
+    } else {
+      setError(res.message);
+      setIsVerified(false);
+    }
   };
 
   const resetStepTwo = () => {

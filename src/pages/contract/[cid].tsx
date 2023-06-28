@@ -7,6 +7,7 @@ import {
 import { useRouter } from "next/router";
 import { FiCopy } from "react-icons/fi";
 import { MdOutlineQrCode } from "react-icons/md";
+import { formatEther } from "viem";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
@@ -22,7 +23,6 @@ import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import { sleep } from "shared/sleep";
 import { ContractTabsTitle } from "enum/contractTabsTitle";
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
-import { utils } from "ethers";
 import WalletAddressApi from "@api/WalletAddressApi";
 import { NetworkConnection } from "@contexts/Environment";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
@@ -71,15 +71,11 @@ export default function VerifiedContract({
           />
         </div>
       </GradientCardContainer>
-      <GradientCardContainer className="relative mt-6">
-        <div className="md:p-10 px-5 py-10">
-          <ContractSegmentTwo
-            addressHash={cid}
-            isLoading={isLoading}
-            transactions={addressTransactions}
-          />
-        </div>
-      </GradientCardContainer>
+      <ContractSegmentTwo
+        addressHash={cid}
+        isLoading={isLoading}
+        transactions={addressTransactions}
+      />
       {isQrCodeClicked && (
         <QrCode
           data-testid="contract-qr-code"
@@ -187,20 +183,27 @@ function ContractSegmentTwo({
 
   return (
     <div>
-      <ContractTabs selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-      {selectedTab === ContractTabsTitle.Transactions && (
-        <div className="mt-8">
-          <TransactionDetails
-            data={transactions}
-            pathname={`/contract/${addressHash}`}
-            type="address"
-            isLoading={isLoading}
-            isHeaderDisplayed={false}
-          />
-        </div>
-      )}
-      {selectedTab === ContractTabsTitle.Contract && <ContractCode />}
-      {/* {selectedTab === ContractTabsTitle.Tokens && (
+      <div className="relative mt-10 lg:mt-8">
+        <ContractTabs
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+        />
+      </div>
+      <GradientCardContainer className="relative mt-6">
+        <div className="p-5 md:p-10">
+          {selectedTab === ContractTabsTitle.Transactions && (
+            <div className="mt-8">
+              <TransactionDetails
+                data={transactions}
+                pathname={`/contract/${addressHash}`}
+                type="address"
+                isLoading={isLoading}
+                isHeaderDisplayed={false}
+              />
+            </div>
+          )}
+          {selectedTab === ContractTabsTitle.Contract && <ContractCode />}
+          {/* {selectedTab === ContractTabsTitle.Tokens && (
         <ContractTokensList
           contractTokenList={data.tokens}
           contractTokenListPage={data.tokenPages}
@@ -210,6 +213,8 @@ function ContractSegmentTwo({
         />
       )} 
       */}
+        </div>
+      </GradientCardContainer>
     </div>
   );
 }
@@ -271,7 +276,7 @@ export async function getServerSideProps(
 
     return {
       props: {
-        balance: utils.formatEther(addressDetail.coin_balance ?? "0"),
+        balance: formatEther(BigInt(addressDetail.coin_balance ?? "0")),
         addressDetail,
         addressTransactions: {
           transactions: addressTransactions.items,

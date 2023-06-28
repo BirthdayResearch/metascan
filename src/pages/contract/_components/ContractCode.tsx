@@ -1,13 +1,15 @@
 import clsx from "clsx";
-import { CodeOptions } from "enum/codeOptions";
 import { useState } from "react";
+import { CodeOptions } from "enum/codeOptions";
+import { ContractMethodType } from "@api/types";
+import ConnectButton from "./ConnectButton";
 import ContractCodeTab from "./ContractCodeTab";
+import ReadWriteContract from "./read-write/ReadWriteContract";
 
 export default function ContractCode() {
   const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Code);
-
   return (
-    <div className="mt-10">
+    <div>
       <div className="flex flex-row gap-x-2">
         <button
           type="button"
@@ -46,15 +48,23 @@ export default function ContractCode() {
           {CodeOptions.Write}
         </button>
       </div>
+      <div className="mt-4 md:mt-5 pb-4 lg:mt-8 md:pb-8 lg:pb-11">
+        <ConnectButton />
+      </div>
       {activeTab === CodeOptions.Code && <ContractCodeTab />}
-      {/* {activeTab === CodeOptions.Read && (
-        <div className="text-white-50 py-10">
-          / ** TODO: ADD READ METHODS. ** /
-        </div>
-      )} */}
-      {/* {activeTab === CodeOptions.Write && (
-        <WriteContract writeContractData={writeContractData} />
-      )} */}
+      {activeTab === CodeOptions.Read && (
+        <ReadWriteContract
+          title="Read contract"
+          type={ContractMethodType.Read}
+        />
+      )}
+      {activeTab === CodeOptions.Write && (
+        <ReadWriteContract
+          title="Write contract"
+          type={ContractMethodType.Write}
+        />
+      )}
+      {/* TODO: Add Read Proxy and Write Proxy */}
     </div>
   );
 }

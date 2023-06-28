@@ -1,3 +1,4 @@
+import { StateMutability } from "@api/types";
 import { RawContractProps } from "@store/contract";
 import { formatDateToUTC } from "./durationHelper";
 
@@ -12,7 +13,7 @@ interface ContractAbiProps {
   outputs?: DataFlowProps[];
   name?: string;
   type: string;
-  stateMutability?: string;
+  stateMutability?: StateMutability;
   anonymous?: boolean;
 }
 

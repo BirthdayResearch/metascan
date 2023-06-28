@@ -5,7 +5,7 @@ import {
   InferGetServerSidePropsType,
 } from "next";
 import { useRouter } from "next/router";
-import { FiCopy } from "react-icons/fi";
+import { FiCopy, FiInfo } from "react-icons/fi";
 import { MdOutlineQrCode } from "react-icons/md";
 import { formatEther } from "viem";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
@@ -62,12 +62,13 @@ export default function VerifiedContract({
             <span className="font-bold text-xl text-white-50">
               {fixedTitle.contract}
             </span>
-            <VerifiedGreenTickIcon size={18} />
+            {addressDetail.is_verified && <VerifiedGreenTickIcon size={18} />}
           </div>
           <ContractSegmentOne
             creator={addressDetail.creator_address_hash ?? ""}
             balance={{ value: balance, symbol: DMX_TOKEN_SYMBOL }}
             setIsQrCodeClicked={setIsQrCodeClicked}
+            isVerified={addressDetail.is_verified}
           />
         </div>
       </GradientCardContainer>
@@ -92,10 +93,12 @@ function ContractSegmentOne({
   creator,
   balance,
   setIsQrCodeClicked,
+  isVerified,
 }: {
   creator: string;
   balance: { value: string; symbol: string };
   setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
+  isVerified: boolean;
 }): JSX.Element {
   const [isContractAddressCopied, setIsContractAddressCopied] = useState(false);
   const router = useRouter();
@@ -164,6 +167,12 @@ function ContractSegmentOne({
           />
         </div>
       </div>
+      {!isVerified && (
+        <div className="flex items-center">
+          <FiInfo className="text-orange-700" />
+          <span className="text-orange-700 ml-1">Unverified Contract</span>
+        </div>
+      )}
     </div>
   );
 }

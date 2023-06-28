@@ -46,7 +46,7 @@ export interface RawContractProps {
   file_path?: string;
 
   // Contract with multiple files stored here
-  additional_sources: {
+  additional_sources?: {
     file_path?: string;
     source_code: string;
   }[];

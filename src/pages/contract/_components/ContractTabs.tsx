@@ -12,7 +12,7 @@ export default function ContractTabs({
   setSelectedTab,
 }: ContractOptionsProps) {
   return (
-    <div className="flex flex-row gap-x-4 md:pt-[3.67px] pt-[19.67px]">
+    <div className="flex flex-row gap-x-4">
       <ButtonTab
         testId={
           selectedTab === ContractTabsTitle.Transactions

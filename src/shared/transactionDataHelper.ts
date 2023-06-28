@@ -1,5 +1,6 @@
-import { utils } from "ethers";
+import { formatEther, formatUnits } from "viem";
 import {
+  CreatedContractProps,
   RawTransactionI,
   RawTransactionType,
   RawTxTokenTransfersProps,
@@ -8,7 +9,7 @@ import {
   TransactionStatus,
   TransactionType,
 } from "@api/types";
-import { BURN_ADDRESS_HASH, DFI_TOKEN_SYMBOL } from "./constants";
+import { BURN_ADDRESS_HASH, DFI_TOKEN_SYMBOL, GWEI_DECIMAL } from "./constants";
 import { getTimeAgo } from "./durationHelper";
 
 /**
@@ -23,16 +24,17 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
   );
   let dfiAmount = "0";
   if (amountIndex && amountIndex > -1) {
-    dfiAmount = utils.formatEther(
-      (tx.decoded_input?.parameters[amountIndex].value as string) ?? "0"
+    dfiAmount = formatEther(
+      BigInt((tx.decoded_input?.parameters[amountIndex].value as string) ?? "0")
     );
   }
 
   const fromHash = tx.from.hash ?? BURN_ADDRESS_HASH;
-  const toHash = tx.to?.hash ?? BURN_ADDRESS_HASH;
+  const toHash = tx.to?.hash ?? tx.created_contract?.hash ?? BURN_ADDRESS_HASH;
   const isFromContract = tx.from.is_contract;
-  const isToContract = tx.to?.is_contract ?? false;
-
+  const isToContract = !!(
+    tx.to?.is_contract || tx.created_contract?.hash !== undefined
+  );
   const tokenTransfers =
     tx.token_transfers?.length > 0 ? getTokenTransfers(tx.token_transfers) : [];
   const transactionType = getTransactionType({
@@ -41,6 +43,7 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     isFromContract,
     isToContract,
     txTypes: tx.tx_types,
+    createdContract: tx.created_contract,
   });
   const transactionStatus = getTransactionStatus({
     status: tx.status,
@@ -63,11 +66,11 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     timestamp: tx.timestamp,
     nonce: tx.nonce,
     blockNumber: tx.block,
-    value: utils.formatEther(tx.value ?? "0"),
-    fee: utils.formatEther(tx.fee.value ?? "0"),
+    value: formatEther(BigInt(tx.value ?? "0")),
+    fee: formatEther(BigInt(tx.fee.value ?? "0")),
     gasUsed: tx.gas_used,
     gasLimit: tx.gas_limit,
-    gasPrice: utils.formatUnits(tx.gas_price ?? "0", "gwei").toString(),
+    gasPrice: formatUnits(BigInt(tx.gas_price ?? "0"), GWEI_DECIMAL).toString(),
     position: tx.position,
     maxFeePerGas: tx.max_fee_per_gas,
     maxPriorityFeePerGas: tx.max_priority_fee_per_gas,
@@ -98,9 +101,9 @@ export const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
     forToken: {
       from: tokenTransfer.to.hash,
       to: tokenTransfer.from.hash,
-      value: utils.formatUnits(
-        tokenTransfer.total.value,
-        tokenTransfer.total.decimals
+      value: formatUnits(
+        BigInt(tokenTransfer.total.value),
+        Number(tokenTransfer.total.decimals ?? GWEI_DECIMAL)
       ),
       address: tokenTransfer.token.address,
       type: tokenTransfer.token.type,
@@ -137,12 +140,14 @@ export const getTransactionType = ({
   isFromContract,
   isToContract,
   txTypes,
+  createdContract,
 }: {
   toHash: string | null;
   tokenTransfers: TokenTransferProps[];
   isFromContract: boolean;
   isToContract: boolean;
   txTypes: string[];
+  createdContract?: CreatedContractProps;
 }) => {
   let transactionType = TransactionType.Transaction;
   // Note: tokenTransfers is always null in transactions list api
@@ -154,7 +159,8 @@ export const getTransactionType = ({
   // const involvesCoinTransfer =
   //   txTypes.includes(RawTransactionType.CoinTransfer) &&
   //   !txTypes.includes(RawTransactionType.ContractCreation);
-  const involvesContract = isFromContract || isToContract;
+  const involvesContract =
+    isFromContract || isToContract || createdContract !== undefined;
 
   if (involvesTokenTransfers) {
     transactionType = getTransactionTypeFromTokenTransfers(tokenTransfers);

@@ -104,6 +104,17 @@ export interface RawTxnWithPaginationProps {
   };
 }
 
+export interface CreatedContractProps {
+  hash: string;
+  implementation_name?: string;
+  is_contract: boolean;
+  is_verified?: boolean;
+  name: string;
+  privateTags: [];
+  public_tags: [];
+  watchlist_names: [];
+}
+
 export interface RawTransactionI {
   tx_types: string[];
   type: number;
@@ -129,6 +140,7 @@ export interface RawTransactionI {
   method: string | null;
   confirmations: number;
   token_transfers?: any;
+  created_contract?: CreatedContractProps;
 }
 
 export interface TokenTransferProps {
@@ -269,6 +281,46 @@ export interface SmartContractPageParamsProps {
 export interface SmartContractWithPaginationProps {
   items: SmartContractListItemProps[];
   next_page_params: SmartContractPageParamsProps;
+}
+
+// TODO (Lyka): Check if we can add typings
+// type InputOutputType = "address" | "_owner" | "uint256" | "bool";
+// type MethodType = "function";
+export enum StateMutability {
+  "Payable" = "payable",
+  "Nonpayable" = "nonpayable",
+  "View" = "view",
+  "Pure" = "pure",
+}
+
+export interface SmartContractInputOutput {
+  internalType: string;
+  name: string;
+  type: string;
+}
+
+export interface SmartContractOutputWithValue {
+  type: string;
+  value: string;
+}
+
+export interface SmartContractMethod {
+  inputs: SmartContractInputOutput[] | [];
+  outputs: SmartContractInputOutput[] | SmartContractOutputWithValue[];
+  method_id?: string;
+  name: string;
+  names?: string[];
+  stateMutability: StateMutability;
+  type: string;
+  description?: string; // TODO: Check if possible to get
+  error?: string;
+}
+
+export enum ContractMethodType {
+  Read = "read",
+  Write = "write",
+  ReadProxy = "readProxy",
+  WriteProxy = "writeProxy",
 }
 
 export interface SCVersionsBuilds {

@@ -25,7 +25,7 @@ export default function ContractCodeTab(): JSX.Element {
 
   return (
     <>
-      <div className="text-white-50 font-bold text-xl mt-[42.5px] mb-[30.5px]">
+      <div className="text-white-50 font-bold text-xl mb-[30.5px]">
         {fixedTitle.codeDetails}
       </div>
       {/* desktop */}

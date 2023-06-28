@@ -80,10 +80,7 @@ export default function VerifiedContract() {
     if (stepOneDetails.compiler === CompilerType.SolidityStandardJsonInput) {
       const data = new FormData();
       data.append("codeformat", "solidity-standard-json-input");
-      data.append(
-        "sourceCode",
-        `{"language":"Solidity","sources":{"contracts/2_test.sol":{"content":"// SPDX-License-Identifier: GPL-3.0\n\npragma solidity >=0.7.0 <0.9.0;\n\ncontract CounterJson {\n    uint256 number = 1;\n\n    function store(uint256 num) public {\n        number = num;\n    }\n\n    function retrieve() public view returns (uint256) {\n        return number;\n    }\n}\n"}},"settings":{"optimizer":{"enabled":false,"runs":200},"outputSelection":{"*":{"":["ast"],"*":["abi","metadata","devdoc","userdoc","storageLayout","evm.legacyAssembly","evm.bytecode","evm.deployedBytecode","evm.methodIdentifiers","evm.gasEstimates","evm.assembly"]}}}}`
-      );
+      data.append("sourceCode", sourceCode);
       data.append("contractaddress", stepOneDetails.address);
       data.append("compilerversion", stepOneDetails.version);
       data.append("optimizationRuns", `${optimizationRuns}`);
@@ -93,8 +90,11 @@ export default function VerifiedContract() {
         connection,
         data
       );
-      await SmartContractApi.checkVerifyStatus(connection, res.result);
-      return handelResponse(res);
+      const verificationStatus = await SmartContractApi.checkVerifyStatus(
+        connection,
+        res.result
+      );
+      return handelResponse(verificationStatus);
     }
 
     // for solidity single file and vyper contract verification

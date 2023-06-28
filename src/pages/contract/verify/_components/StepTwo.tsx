@@ -106,7 +106,8 @@ export default function StepTwo({
                   value={sourceCode}
                 />
               </div>
-              {stepOneDetails.compiler !== CompilerType.Vyper && (
+              {stepOneDetails.compiler ===
+                CompilerType.SolidityMultiPartFiles && (
                 <>
                   <div className="mt-12 p-4 md:p-6 border-[0.5px] border-white-900 rounded-[10px]">
                     <div className="flex flex-row items-center mb-4">

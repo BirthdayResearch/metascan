@@ -15,6 +15,7 @@ export default function AddZeroesModal({
 }) {
   const ref = useRef<HTMLInputElement | null>(null);
   const [selected, setSelected] = useState({ label: "", value: "" });
+  const [error, setError] = useState("");
   const [customDecimal, setCustomDecimal] = useState<string | number>("");
   const decimals = [
     { label: "6", value: "6" },
@@ -54,6 +55,15 @@ export default function AddZeroesModal({
     }
   }, [selected.value]);
 
+  useEffect(() => {
+    const MAX_ALLOWED = 20;
+    if (Number(customDecimal) > MAX_ALLOWED) {
+      setError(`Exceeded maximum value allowed of ${MAX_ALLOWED}`);
+    } else {
+      setError("");
+    }
+  }, [customDecimal]);
+
   return (
     <Modal title="Add Zeroes" isOpen={isOpen} onCloseModal={handleModalClose}>
       <Dropdown
@@ -74,11 +84,16 @@ export default function AddZeroesModal({
             placeholder=""
             inputClass="!text-base"
             inputContainerClassName="!py-2 mt-4"
+            error={error}
           />
-          <div className="text-xxs text-white-700 mt-2">
-            Enter the number of zeroes to add. Example: 3 to add three (000)
-            zeroes.
-          </div>
+          {error ? (
+            <div className="text-xxs text-red-800 mt-2">{error}</div>
+          ) : (
+            <div className="text-xxs text-white-700 mt-2">
+              Enter the number of zeroes to add. Example: 3 to add three (000)
+              zeroes.
+            </div>
+          )}
         </>
       )}
 
@@ -87,6 +102,7 @@ export default function AddZeroesModal({
           label="Add"
           testId="add-zeroes-button"
           onClick={() => handleAddButton()}
+          disabled={!!error}
         />
       </div>
     </Modal>

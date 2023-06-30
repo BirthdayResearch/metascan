@@ -22,6 +22,7 @@ export default function Dropdown<T extends { label: string; value: string }>({
   labelClassName?: string;
   dropdownContainerClassName?: string;
 }) {
+  const isDisabled = options.length === 0;
   return (
     <div>
       {label && (
@@ -29,11 +30,7 @@ export default function Dropdown<T extends { label: string; value: string }>({
           {label}
         </div>
       )}
-      <Listbox
-        value={value}
-        onChange={onChange}
-        disabled={options.length === 0}
-      >
+      <Listbox value={value} onChange={onChange} disabled={isDisabled}>
         <div className="relative bg-dark-100 rounded-[10px] border-[0.5px] border-dark-200 focus-within:border focus-within:border-white-900">
           <Listbox.Button
             className={clsx(
@@ -50,7 +47,14 @@ export default function Dropdown<T extends { label: string; value: string }>({
                 {value?.label}
               </span>
             )}
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+            <span
+              className={clsx(
+                "pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4",
+                {
+                  "opacity-30": isDisabled,
+                }
+              )}
+            >
               <CgChevronDown
                 size={16}
                 className={clsx(

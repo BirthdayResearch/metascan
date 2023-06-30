@@ -68,7 +68,7 @@ export const transformContractData = (
   isFullyVerified: contract.is_fully_verified,
   isPartiallyVerified: contract.is_partially_verified,
   isSelfDestructed: contract.is_self_destructed,
-  isVerified: contract.is_verified,
+  isVerified: contract.is_verified === true,
   isVerifiedViaEthBytecodeDb: contract.is_verified_via_eth_bytecode_db,
   isVerifiedViaSourcify: contract.is_verified_via_sourcify,
   isVyperContract: contract.is_vyper_contract,
@@ -81,12 +81,15 @@ export const transformContractData = (
   fileName: contract.file_path
     ? contract.file_path.substring(contract.file_path.lastIndexOf("/") + 1)
     : contract.name,
-  additionalSourceCodes: contract.additional_sources.map((source) => ({
-    fileName: source.file_path
-      ? source.file_path.substring(source.file_path.lastIndexOf("/") + 1)
-      : "",
-    filePath: source.file_path,
-    sourceCode: source.source_code,
-  })),
+  additionalSourceCodes:
+    contract.additional_sources !== undefined
+      ? contract.additional_sources.map((source) => ({
+          fileName: source.file_path
+            ? source.file_path.substring(source.file_path.lastIndexOf("/") + 1)
+            : "",
+          filePath: source.file_path,
+          sourceCode: source.source_code,
+        }))
+      : [],
   numberOfFiles: (contract.additional_sources?.length ?? 0) + 1,
 });

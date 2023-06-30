@@ -24,7 +24,7 @@ export default function Dropdown({
   dropdownContainerClassName,
 }: {
   value: DropdownOptions;
-  label: string;
+  label?: string;
   options: DropdownOptions[];
   onChange: (val: DropdownOptions) => void;
   placeholder: string;
@@ -34,9 +34,11 @@ export default function Dropdown({
 }) {
   return (
     <div>
-      <div className={clsx("text-lg mb-2 text-white-700", labelClassName)}>
-        {label}
-      </div>
+      {label && (
+        <div className={clsx("text-lg mb-2 text-white-700", labelClassName)}>
+          {label}
+        </div>
+      )}
       <Listbox
         value={value}
         onChange={onChange}

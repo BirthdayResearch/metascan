@@ -1,49 +1,58 @@
-import clsx from "clsx";
 import { useState } from "react";
-import { IoCloseCircleSharp } from "react-icons/io5";
+import { FiPlus } from "react-icons/fi";
+import InputComponent from "@components/commons/InputComponent";
+import AddZeroesModal from "./AddZeroesModal";
 
-// TODO: Add `plus` button for number fields
 export default function ContractMethodTextInput({
   label,
   value,
   setValue,
   placeholder,
+  valueType,
   type = "text",
 }: {
   label: string;
   value: string;
   setValue: (value: string) => void;
   placeholder: string;
+  valueType?: string;
   type?: "text" | "number";
 }) {
-  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
-      <div className="mb-2">{label}</div>
-      <div
-        className={clsx(
-          "flex flex-row justify-between px-4 py-3 bg-dark-100 rounded-[10px] border-[0.5px] border-dark-200",
-          "focus-within:border focus-within:border-white-900"
-        )}
-      >
-        <input
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          className="w-full focus:outline-none border-none bg-dark-100 text-white-50 text-sm placeholder-white-900 focus:placeholder-black-500"
-          onChange={(v) => setValue(v.target.value)}
-          placeholder={placeholder}
-          value={value}
-          type={type}
-        />
-        {(value !== "" || isFocused) && (
-          <IoCloseCircleSharp
-            onClick={() => setValue("")}
-            role="button"
-            className="text-white-50 ml-1"
-            size={24}
-          />
+      <div className="flex items-center gap-2 mb-2">
+        {label}
+        {valueType === "uint256" && (
+          <>
+            <button
+              type="button"
+              className="bg-gray-800 rounded p-1 hover:opacity-70 border-[0.5px] border-transparent focus:border-white-900"
+              onClick={() => setIsOpen(true)}
+              id="add-zero"
+            >
+              <FiPlus size={18} />
+            </button>
+            <AddZeroesModal
+              isOpen={isOpen}
+              onCloseModal={() => setIsOpen(false)}
+              onAdd={(zeroes) => {
+                setValue(value === "" ? `1${zeroes}` : `${value}${zeroes}`);
+                setIsOpen(false);
+              }}
+            />
+          </>
         )}
       </div>
+
+      <InputComponent
+        type={type}
+        value={value}
+        setValue={setValue}
+        placeholder={placeholder}
+        inputClass="!text-sm"
+        inputContainerClassName="!py-3"
+      />
     </div>
   );
 }

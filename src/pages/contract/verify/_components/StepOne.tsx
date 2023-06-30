@@ -76,21 +76,37 @@ function ContractDetailRow({
   );
 }
 
+interface CompilerProps {
+  label: string;
+  value: string;
+  type: ContractLanguage;
+}
+
 export default function StepOne({
   isEditing,
   setIsEditing,
   onSubmit,
   defaultDropdownValue,
   getCompilerVersions,
+}: {
+  isEditing: boolean;
+  setIsEditing: (isEditing: boolean) => void;
+  onSubmit: (data: any) => void; // TODO: add type on data
+  defaultDropdownValue: { label: string; value: string };
+  getCompilerVersions: any; // TODO: add type on getCompilerVersions
 }) {
   const router = useRouter();
   const queryAddress = router.query.address;
   // TODO manage state from parent component
   const [address, setAddress] = useState((queryAddress as string) ?? "");
-  const [compiler, setCompiler] = useState(defaultDropdownValue);
+  const [compiler, setCompiler] = useState<CompilerProps>({
+    label: "",
+    value: "",
+    type: ContractLanguage.Solidity,
+  });
   const [version, setVersion] = useState(defaultDropdownValue);
   const [license, setLicense] = useState(defaultDropdownValue);
-  const [terms, setTerms] = useState(false);
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [compilerVersions, setCompilerVersions] = useState<
     { label: string; value: string }[]
   >([]);
@@ -167,7 +183,7 @@ export default function StepOne({
     },
   ];
 
-  const handlCompilerSelect = (value) => {
+  const handleCompilerSelect = (value: CompilerProps): void => {
     setCompiler(value);
     if (compiler.type !== value.type) {
       setVersion(defaultDropdownValue);
@@ -176,15 +192,15 @@ export default function StepOne({
     setCompilerVersions(versions);
   };
 
-  const reset = () => {
-    setCompiler(defaultDropdownValue);
+  const reset = (): void => {
+    setCompiler({ label: "", value: "", type: ContractLanguage.Solidity });
     setVersion(defaultDropdownValue);
     setLicense(defaultDropdownValue);
-    setTerms(false);
+    setIsTermsChecked(false);
     setAddress("");
   };
 
-  const onFormSubmit = () => {
+  const onFormSubmit = (): void => {
     const data = {
       address,
       compiler: compiler.value,
@@ -209,7 +225,7 @@ export default function StepOne({
       compiler.value === "" ||
       version.value === "" ||
       license.value === "" ||
-      !terms
+      !isTermsChecked
     ) {
       return true;
     }
@@ -257,12 +273,12 @@ export default function StepOne({
                 error={checkAddress(address)}
                 placeholder="0x…"
               />
-              <Dropdown
+              <Dropdown<CompilerProps>
                 value={compiler}
                 label="Compiler"
                 placeholder="Select compiler"
                 options={types}
-                onChange={handlCompilerSelect}
+                onChange={handleCompilerSelect}
               />
               <Dropdown
                 value={version}
@@ -284,9 +300,9 @@ export default function StepOne({
                   <button
                     type="button"
                     className="flex flex-row items-center"
-                    onClick={() => setTerms(!terms)}
+                    onClick={() => setIsTermsChecked(!isTermsChecked)}
                   >
-                    {terms ? (
+                    {isTermsChecked ? (
                       <IoMdCheckmarkCircle
                         size={18}
                         className="text-green-800"

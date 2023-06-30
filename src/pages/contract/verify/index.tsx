@@ -41,7 +41,12 @@ export default function VerifiedContract() {
     network: connection,
   });
 
-  const getCompilerVersions = (language) => {
+  const getCompilerVersions = (
+    language
+  ): {
+    label: string;
+    value: string;
+  }[] => {
     let builds: string[];
     if (language === ContractLanguage.Solidity) {
       builds = verificationConfig?.solidity_compiler_versions ?? [];
@@ -54,7 +59,10 @@ export default function VerifiedContract() {
     }));
   };
 
-  const getEvmVersions = () => {
+  const getEvmVersions = (): {
+    label: string;
+    value: string;
+  }[] => {
     const versions = verificationConfig?.solidity_evm_versions ?? [];
     return [...versions].reverse().map((version) => ({
       label: version,
@@ -118,7 +126,7 @@ export default function VerifiedContract() {
     <div>
       <StepOne
         isEditing={editStepOne}
-        setIsEditing={setEditStepOne}
+        setIsEditing={(isEditing: boolean) => setEditStepOne(isEditing)}
         onSubmit={onSubmitStepOne}
         defaultDropdownValue={defaultDropdownValue}
         getCompilerVersions={getCompilerVersions}

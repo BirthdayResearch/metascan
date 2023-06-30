@@ -3,17 +3,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { MdCheckCircle } from "react-icons/md";
 import { CgChevronDown } from "react-icons/cg";
 
-interface OptionsI {
-  label: string;
-  value: string;
-  [key: string]: string;
-}
-
-export type DropdownOptions<T = any> = OptionsI & {
-  [key: string]: T;
-};
-
-export default function Dropdown({
+export default function Dropdown<T extends { label: string; value: string }>({
   value,
   label,
   options,
@@ -23,10 +13,10 @@ export default function Dropdown({
   labelClassName,
   dropdownContainerClassName,
 }: {
-  value: DropdownOptions;
+  value: T;
   label: string;
-  options: DropdownOptions[];
-  onChange: (val: DropdownOptions) => void;
+  options: T[];
+  onChange: (val: T) => void;
   placeholder: string;
   labelClass?: string;
   labelClassName?: string;

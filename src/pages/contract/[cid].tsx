@@ -76,6 +76,7 @@ export default function VerifiedContract({
         addressHash={cid}
         isLoading={isLoading}
         transactions={addressTransactions}
+        implementationAddress={addressDetail.implementation_address ?? null}
       />
       {isQrCodeClicked && (
         <QrCode
@@ -181,10 +182,12 @@ function ContractSegmentTwo({
   addressHash,
   isLoading,
   transactions,
+  implementationAddress,
 }: {
   addressHash: string;
   isLoading?: boolean;
   transactions: AddressTransactionsProps;
+  implementationAddress: string | null;
 }) {
   const [selectedTab, setSelectedTab] = useState(
     ContractTabsTitle.Transactions
@@ -211,7 +214,9 @@ function ContractSegmentTwo({
               />
             </div>
           )}
-          {selectedTab === ContractTabsTitle.Contract && <ContractCode />}
+          {selectedTab === ContractTabsTitle.Contract && (
+            <ContractCode implementationAddress={implementationAddress} />
+          )}
           {/* {selectedTab === ContractTabsTitle.Tokens && (
         <ContractTokensList
           contractTokenList={data.tokens}

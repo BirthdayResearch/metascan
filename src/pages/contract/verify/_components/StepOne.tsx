@@ -91,9 +91,12 @@ export default function StepOne({
 }: {
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
-  onSubmit: (data: any) => void; // TODO: add type on data
+  onSubmit: (data: StepOneDetailsI) => void;
   defaultDropdownValue: { label: string; value: string };
-  getCompilerVersions: any; // TODO: add type on getCompilerVersions
+  getCompilerVersions: (language: ContractLanguage) => {
+    label: string;
+    value: string;
+  }[];
 }) {
   const router = useRouter();
   const queryAddress = router.query.address;

@@ -42,7 +42,7 @@ export default function VerifiedContract() {
   });
 
   const getCompilerVersions = (
-    language
+    language: ContractLanguage
   ): {
     label: string;
     value: string;
@@ -70,7 +70,7 @@ export default function VerifiedContract() {
     }));
   };
 
-  const onSubmitStepOne = (data) => {
+  const onSubmitStepOne = (data: StepOneDetailsI): void => {
     setStepOneDetails(data);
     setEditStepOne(false);
   };

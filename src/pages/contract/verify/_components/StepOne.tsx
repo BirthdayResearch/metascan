@@ -167,7 +167,11 @@ export default function StepOne({
     },
   ];
 
-  const handlCompilerSelect = (value) => {
+  const handleCompilerSelect = (value: {
+    label: string;
+    value: string;
+    type: ContractLanguage;
+  }): void => {
     setCompiler(value);
     if (compiler.type !== value.type) {
       setVersion(defaultDropdownValue);
@@ -262,7 +266,7 @@ export default function StepOne({
                 label="Compiler"
                 placeholder="Select compiler"
                 options={types}
-                onChange={handlCompilerSelect}
+                onChange={handleCompilerSelect}
               />
               <Dropdown
                 value={version}

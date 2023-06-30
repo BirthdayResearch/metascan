@@ -8,6 +8,17 @@ import { useGetVerificationConfigQuery } from "@store/contract";
 import StepOne, { StepOneDetailsI } from "./_components/StepOne";
 import StepTwo from "./_components/StepTwo";
 
+interface CompilerVersions {
+  [ContractLanguage.Solidity]: {
+    label: string;
+    value: string;
+  }[];
+  [ContractLanguage.Vyper]: {
+    label: string;
+    value: string;
+  }[];
+}
+
 export default function VerifiedContract() {
   // todo add validations
   const defaultDropdownValue = { label: "", value: "" };
@@ -41,18 +52,16 @@ export default function VerifiedContract() {
     network: connection,
   });
 
-  const getCompilerVersions = (language) => {
-    let builds: string[];
-    if (language === ContractLanguage.Solidity) {
-      builds = verificationConfig?.solidity_compiler_versions ?? [];
-    } else {
-      builds = verificationConfig?.vyper_compiler_versions ?? [];
-    }
-    return builds.map((build) => ({
-      label: build,
-      value: build,
-    }));
+  const compilerVersions: CompilerVersions = {
+    [ContractLanguage.Solidity]: (
+      verificationConfig?.vyper_compiler_versions ?? []
+    ).map((version) => ({ label: version, value: version })),
+    [ContractLanguage.Vyper]: (
+      verificationConfig?.solidity_compiler_versions ?? []
+    ).map((version) => ({ label: version, value: version })),
   };
+  const getCompilerVersions = (language: ContractLanguage) =>
+    compilerVersions[language];
 
   const getEvmVersions = () => {
     const versions = verificationConfig?.solidity_evm_versions ?? [];

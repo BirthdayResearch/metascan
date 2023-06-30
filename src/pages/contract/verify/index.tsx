@@ -54,10 +54,10 @@ export default function VerifiedContract() {
 
   const compilerVersions: CompilerVersions = {
     [ContractLanguage.Solidity]: (
-      verificationConfig?.vyper_compiler_versions ?? []
+      verificationConfig?.solidity_compiler_versions ?? []
     ).map((version) => ({ label: version, value: version })),
     [ContractLanguage.Vyper]: (
-      verificationConfig?.solidity_compiler_versions ?? []
+      verificationConfig?.vyper_compiler_versions ?? []
     ).map((version) => ({ label: version, value: version })),
   };
   const getCompilerVersions = (language: ContractLanguage) =>

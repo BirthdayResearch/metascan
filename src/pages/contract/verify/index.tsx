@@ -8,6 +8,17 @@ import { useGetVerificationConfigQuery } from "@store/contract";
 import StepOne, { StepOneDetailsI } from "./_components/StepOne";
 import StepTwo from "./_components/StepTwo";
 
+interface CompilerVersions {
+  [ContractLanguage.Solidity]: {
+    label: string;
+    value: string;
+  }[];
+  [ContractLanguage.Vyper]: {
+    label: string;
+    value: string;
+  }[];
+}
+
 export default function VerifiedContract() {
   // todo add validations
   const defaultDropdownValue = { label: "", value: "" };
@@ -41,28 +52,18 @@ export default function VerifiedContract() {
     network: connection,
   });
 
-  const getCompilerVersions = (
-    language: ContractLanguage
-  ): {
-    label: string;
-    value: string;
-  }[] => {
-    let builds: string[];
-    if (language === ContractLanguage.Solidity) {
-      builds = verificationConfig?.solidity_compiler_versions ?? [];
-    } else {
-      builds = verificationConfig?.vyper_compiler_versions ?? [];
-    }
-    return builds.map((build) => ({
-      label: build,
-      value: build,
-    }));
+  const compilerVersions: CompilerVersions = {
+    [ContractLanguage.Solidity]: (
+      verificationConfig?.solidity_compiler_versions ?? []
+    ).map((version) => ({ label: version, value: version })),
+    [ContractLanguage.Vyper]: (
+      verificationConfig?.vyper_compiler_versions ?? []
+    ).map((version) => ({ label: version, value: version })),
   };
+  const getCompilerVersions = (language: ContractLanguage) =>
+    compilerVersions[language];
 
-  const getEvmVersions = (): {
-    label: string;
-    value: string;
-  }[] => {
+  const getEvmVersions = () => {
     const versions = verificationConfig?.solidity_evm_versions ?? [];
     return [...versions].reverse().map((version) => ({
       label: version,

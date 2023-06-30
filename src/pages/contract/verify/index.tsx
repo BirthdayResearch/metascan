@@ -4,6 +4,7 @@ import { useNetwork } from "@contexts/NetworkContext";
 import { useRouter } from "next/router";
 import { getEnvironment } from "@contexts/Environment";
 import { ContractLanguage } from "@api/types";
+import { useGetVerificationConfigQuery } from "@store/contract";
 import StepOne, { StepOneDetailsI } from "./_components/StepOne";
 import StepTwo from "./_components/StepTwo";
 
@@ -28,6 +29,7 @@ export default function VerifiedContract() {
     version: "",
     license: "",
   });
+  const [evmVersion, setEvmVersion] = useState(defaultDropdownValue);
 
   const { connection } = useNetwork();
   const router = useRouter();
@@ -35,22 +37,30 @@ export default function VerifiedContract() {
   const networkQuery = !getEnvironment().isDefaultConnection(connection)
     ? { network: connection }
     : {};
+  const { data: verificationConfig } = useGetVerificationConfigQuery({
+    network: connection,
+  });
 
-  const evmVersions = [
-    { label: "default", value: "default" },
-    { label: "paris", value: "paris" },
-    { label: "london", value: "london" },
-    { label: "berlin", value: "berlin" },
-    { label: "istanbul", value: "istanbul" },
-    { label: "petersburg", value: "petersburg" },
-    { label: "constantinople", value: "constantinople" },
-    { label: "byzantium", value: "byzantium" },
-    { label: "spuriousDragon", value: "spuriousDragon" },
-    { label: "tangerineWhistle", value: "tangerineWhistle" },
-    { label: "homestead", value: "homestead" },
-  ];
+  const getCompilerVersions = (language) => {
+    let builds: string[];
+    if (language === ContractLanguage.Solidity) {
+      builds = verificationConfig?.solidity_compiler_versions ?? [];
+    } else {
+      builds = verificationConfig?.vyper_compiler_versions ?? [];
+    }
+    return builds.map((build) => ({
+      label: build,
+      value: build,
+    }));
+  };
 
-  const [evmVersion, setEvmVersion] = useState(evmVersions[0]);
+  const getEvmVersions = () => {
+    const versions = verificationConfig?.solidity_evm_versions ?? [];
+    return [...versions].reverse().map((version) => ({
+      label: version,
+      value: version,
+    }));
+  };
 
   const onSubmitStepOne = (data) => {
     setStepOneDetails(data);
@@ -101,7 +111,7 @@ export default function VerifiedContract() {
     setIsVerifying(false);
     setIsVerified(false);
     setError("");
-    setEvmVersion(evmVersions[0]);
+    setEvmVersion(defaultDropdownValue);
   };
 
   return (
@@ -111,6 +121,7 @@ export default function VerifiedContract() {
         setIsEditing={setEditStepOne}
         onSubmit={onSubmitStepOne}
         defaultDropdownValue={defaultDropdownValue}
+        getCompilerVersions={getCompilerVersions}
       />
       {!editStepOne && (
         <StepTwo
@@ -119,7 +130,7 @@ export default function VerifiedContract() {
           submitForm={submitForm}
           isVerifying={isVerifying}
           isVerified={isVerified}
-          evmVersions={evmVersions}
+          evmVersions={getEvmVersions()}
           error={error}
           optimization={optimization}
           setOptimization={setOptimization}

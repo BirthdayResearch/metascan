@@ -5,8 +5,7 @@ import Dropdown from "@components/commons/Dropdown";
 import { MdRadioButtonUnchecked } from "react-icons/md";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import clsx from "clsx";
-import SmartContractApi from "@api/SmartContractApi";
-import { ContractLanguage, SCVersionsBuilds } from "@api/types";
+import { ContractLanguage } from "@api/types";
 import InputComponent from "@components/commons/InputComponent";
 
 export interface StepOneDetailsI {
@@ -82,6 +81,7 @@ export default function StepOne({
   setIsEditing,
   onSubmit,
   defaultDropdownValue,
+  getCompilerVersions,
 }) {
   const router = useRouter();
   const queryAddress = router.query.address;
@@ -94,26 +94,6 @@ export default function StepOne({
   const [compilerVersions, setCompilerVersions] = useState<
     { label: string; value: string }[]
   >([]);
-
-  const getSmartContractVersions = async (language) => {
-    let builds: SCVersionsBuilds[];
-    if (compiler.type !== language) {
-      setVersion(defaultDropdownValue);
-    }
-    if (language === ContractLanguage.Solidity) {
-      const versionsRes = await SmartContractApi.getSolidityVersions();
-      builds = versionsRes.builds.reverse();
-    } else {
-      const versionsRes = await SmartContractApi.getVyperVersions();
-      builds = versionsRes.builds;
-    }
-    setCompilerVersions(
-      builds.map((each) => ({
-        label: each.longVersion,
-        value: each.longVersion,
-      }))
-    );
-  };
 
   const types = [
     {
@@ -186,6 +166,15 @@ export default function StepOne({
       value: "Business Source License (BSL 1.1)",
     },
   ];
+
+  const handlCompilerSelect = (value) => {
+    setCompiler(value);
+    if (compiler.type !== value.type) {
+      setVersion(defaultDropdownValue);
+    }
+    const versions = getCompilerVersions(value.type);
+    setCompilerVersions(versions);
+  };
 
   const reset = () => {
     setCompiler(defaultDropdownValue);
@@ -273,10 +262,7 @@ export default function StepOne({
                 label="Compiler"
                 placeholder="Select compiler"
                 options={types}
-                onChange={(value) => {
-                  setCompiler(value);
-                  getSmartContractVersions(value.type);
-                }}
+                onChange={handlCompilerSelect}
               />
               <Dropdown
                 value={version}

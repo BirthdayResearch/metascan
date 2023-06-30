@@ -117,6 +117,7 @@ export default function ContractMethodForm({
           value={userInput[index]}
           setValue={(value) => setUserInput({ ...userInput, [index]: value })}
           placeholder={`${input.name} (${input.type})`}
+          valueType={input.type}
         />
       ))}
       <div className="flex gap-4">

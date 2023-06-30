@@ -24,13 +24,13 @@ export default function VerifiedContract() {
   const defaultDropdownValue = { label: "", value: "" };
   const redirectionDelay = 3000;
   const defaultOptimizationRuns = 200;
-  const [optimization, setOptimization] = useState(false);
+  const [hasOptimization, setHasOptimization] = useState(false);
   const [sourceCode, setSourceCode] = useState("");
   const [constructorArguments, setConstructorArguments] = useState("");
   const [optimizationRuns, setOptimizationRuns] = useState<number>(
     defaultOptimizationRuns
   );
-  const [editStepOne, setEditStepOne] = useState(true);
+  const [isEditStepOne, setIsEditStepOne] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [error, setError] = useState("");
@@ -71,9 +71,9 @@ export default function VerifiedContract() {
     }));
   };
 
-  const onSubmitStepOne = (data) => {
+  const onSubmitStepOne = (data: StepOneDetailsI): void => {
     setStepOneDetails(data);
-    setEditStepOne(false);
+    setIsEditStepOne(false);
   };
 
   const submitForm = async () => {
@@ -82,7 +82,7 @@ export default function VerifiedContract() {
       addressHash: stepOneDetails.address,
       compilerVersion: stepOneDetails.version,
       contractSourceCode: sourceCode,
-      optimization,
+      hasOptimization,
       name: "",
       // for Solidity contract
       ...(stepOneDetails.contractLanguage === ContractLanguage.Solidity && {
@@ -113,7 +113,7 @@ export default function VerifiedContract() {
   };
 
   const resetStepTwo = () => {
-    setOptimization(false);
+    setHasOptimization(false);
     setSourceCode("");
     setConstructorArguments("");
     setOptimizationRuns(defaultOptimizationRuns);
@@ -126,13 +126,13 @@ export default function VerifiedContract() {
   return (
     <div>
       <StepOne
-        isEditing={editStepOne}
-        setIsEditing={setEditStepOne}
+        isEditing={isEditStepOne}
+        setIsEditing={(isEditing: boolean) => setIsEditStepOne(isEditing)}
         onSubmit={onSubmitStepOne}
         defaultDropdownValue={defaultDropdownValue}
         getCompilerVersions={getCompilerVersions}
       />
-      {!editStepOne && (
+      {!isEditStepOne && (
         <StepTwo
           stepOneDetails={stepOneDetails}
           reset={resetStepTwo}
@@ -141,16 +141,24 @@ export default function VerifiedContract() {
           isVerified={isVerified}
           evmVersions={getEvmVersions()}
           error={error}
-          optimization={optimization}
-          setOptimization={setOptimization}
+          hasOptimization={hasOptimization}
+          setHasOptimization={(hasOpt: boolean) => setHasOptimization(hasOpt)}
           sourceCode={sourceCode}
-          setSourceCode={setSourceCode}
-          constructorArguments={constructorArguments}
-          setConstructorArguments={setConstructorArguments}
+          setSourceCode={(sourceCodeData: string) =>
+            setSourceCode(sourceCodeData)
+          }
+          constructorArgs={constructorArguments}
+          setConstructorArgs={(constructorArgs: string) =>
+            setConstructorArguments(constructorArgs)
+          }
           evmVersion={evmVersion}
-          setEvmVersion={setEvmVersion}
+          setEvmVersion={({ label, value }: { label: string; value: string }) =>
+            setEvmVersion({ label, value })
+          }
           optimizationRuns={optimizationRuns}
-          setOptimizationRuns={setOptimizationRuns}
+          setOptimizationRuns={(optRuns: number) =>
+            setOptimizationRuns(optRuns)
+          }
         />
       )}
     </div>

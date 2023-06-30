@@ -24,9 +24,11 @@ export default function Dropdown<T extends { label: string; value: string }>({
 }) {
   return (
     <div>
-      <div className={clsx("text-lg mb-2 text-white-700", labelClassName)}>
-        {label}
-      </div>
+      {label && (
+        <div className={clsx("text-lg mb-2 text-white-700", labelClassName)}>
+          {label}
+        </div>
+      )}
       <Listbox
         value={value}
         onChange={onChange}

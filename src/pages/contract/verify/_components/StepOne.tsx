@@ -82,13 +82,7 @@ interface CompilerProps {
   type: ContractLanguage;
 }
 
-export default function StepOne({
-  isEditing,
-  setIsEditing,
-  onSubmit,
-  defaultDropdownValue,
-  getCompilerVersions,
-}: {
+interface StepOneProps {
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
   onSubmit: (data: StepOneDetailsI) => void;
@@ -97,7 +91,15 @@ export default function StepOne({
     label: string;
     value: string;
   }[];
-}) {
+}
+
+export default function StepOne({
+  isEditing,
+  setIsEditing,
+  onSubmit,
+  defaultDropdownValue,
+  getCompilerVersions,
+}: StepOneProps) {
   const router = useRouter();
   const queryAddress = router.query.address;
   // TODO manage state from parent component

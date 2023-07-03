@@ -156,9 +156,10 @@ export default function VerifyContract() {
   const resetStepOne = () => {
     setCompiler(defaultDropdownValue);
     setVersion(defaultDropdownValue);
-    setLicense(defaultDropdownValue);
     setIsTermsChecked(false);
     setAddress("");
+    // Do not remove, will be implemented in next phase
+    // setLicense(defaultDropdownValue);
   };
 
   const resetStepTwo = () => {

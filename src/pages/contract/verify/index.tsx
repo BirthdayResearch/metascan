@@ -155,7 +155,6 @@ export default function VerifiedContract() {
         onSubmit={onSubmitStepOne}
         defaultDropdownValue={defaultDropdownValue}
       />
-      {/* <input type="file" onChange={(event) => setSelectedFiles(event.target.files)} /> */}
       {!editStepOne && (
         <StepTwo
           stepOneDetails={stepOneDetails}

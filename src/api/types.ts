@@ -311,17 +311,6 @@ export enum ContractMethodType {
   WriteProxy = "write-proxy",
 }
 
-export interface SCVersionsBuilds {
-  build: string;
-  longVersion: string;
-  sha256: string;
-  path: string;
-  version: string;
-}
-export interface SCVersionsResponseProps {
-  builds: SCVersionsBuilds[];
-}
-
 export enum ContractLanguage {
   Solidity = "Solidity",
   Vyper = "Vyper",

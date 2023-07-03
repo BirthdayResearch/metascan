@@ -52,6 +52,15 @@ export interface RawContractProps {
   }[];
 }
 
+interface ContractVerificationConfig {
+  verification_options: string[];
+  solidity_compiler_versions: string[];
+  solidity_evm_versions: string[];
+  vyper_compiler_versions: string[];
+  vyper_evm_versions: string[];
+  is_rust_verifier_microservice_enabled: boolean;
+}
+
 export const contractApi = createApi({
   reducerPath: "contract",
   baseQuery: fetchBaseQuery({
@@ -92,5 +101,22 @@ export const contractMethodsApi = createApi({
   }),
 });
 
+export const contractVerificationApi = createApi({
+  reducerPath: "contractVerification",
+  baseQuery: fetchBaseQuery({ baseUrl: "/" }),
+  endpoints: (builder) => ({
+    getVerificationConfig: builder.query<
+      ContractVerificationConfig,
+      { network: NetworkConnection }
+    >({
+      query: ({ network }) => ({
+        url: `${getBaseUrl(network)}/${SMART_CONTRACT_URL}/verification/config`,
+        method: "GET",
+      }),
+    }),
+  }),
+});
+
 export const { useGetContractQuery } = contractApi;
 export const { useGetContractMethodsQuery } = contractMethodsApi;
+export const { useGetVerificationConfigQuery } = contractVerificationApi;

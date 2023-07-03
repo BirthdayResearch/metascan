@@ -14,10 +14,6 @@ export const MAIN_BLOCKS_URL = "api/v2/blocks";
 export const TRANSACTIONS_URL = "api/v2/transactions";
 export const WALLET_ADDRESS_URL = "api/v2/addresses";
 export const SMART_CONTRACT_URL = "api/v2/smart-contracts";
-export const SOLIDITY_VERSIONS_URL =
-  "https://solc-bin.ethereum.org/linux-amd64/list.json";
-export const VYPER_VERSIONS_URL =
-  "https://raw.githubusercontent.com/blockscout/solc-bin/main/vyper.list.json";
 export const V1_TRANSACTION_URL =
   "api?module=transaction&action=gettxinfo&txhash=";
 

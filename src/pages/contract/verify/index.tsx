@@ -4,21 +4,33 @@ import { useNetwork } from "@contexts/NetworkContext";
 import { useRouter } from "next/router";
 import { getEnvironment } from "@contexts/Environment";
 import { ContractLanguage } from "@api/types";
+import { useGetVerificationConfigQuery } from "@store/contract";
 import StepOne, { StepOneDetailsI } from "./_components/StepOne";
 import StepTwo from "./_components/StepTwo";
+
+interface CompilerVersions {
+  [ContractLanguage.Solidity]: {
+    label: string;
+    value: string;
+  }[];
+  [ContractLanguage.Vyper]: {
+    label: string;
+    value: string;
+  }[];
+}
 
 export default function VerifiedContract() {
   // todo add validations
   const defaultDropdownValue = { label: "", value: "" };
   const redirectionDelay = 3000;
   const defaultOptimizationRuns = 200;
-  const [optimization, setOptimization] = useState(false);
+  const [hasOptimization, setHasOptimization] = useState(false);
   const [sourceCode, setSourceCode] = useState("");
   const [constructorArguments, setConstructorArguments] = useState("");
   const [optimizationRuns, setOptimizationRuns] = useState<number>(
     defaultOptimizationRuns
   );
-  const [editStepOne, setEditStepOne] = useState(true);
+  const [isEditStepOne, setIsEditStepOne] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [error, setError] = useState("");
@@ -28,6 +40,7 @@ export default function VerifiedContract() {
     version: "",
     license: "",
   });
+  const [evmVersion, setEvmVersion] = useState(defaultDropdownValue);
 
   const { connection } = useNetwork();
   const router = useRouter();
@@ -35,26 +48,32 @@ export default function VerifiedContract() {
   const networkQuery = !getEnvironment().isDefaultConnection(connection)
     ? { network: connection }
     : {};
+  const { data: verificationConfig } = useGetVerificationConfigQuery({
+    network: connection,
+  });
 
-  const evmVersions = [
-    { label: "default", value: "default" },
-    { label: "paris", value: "paris" },
-    { label: "london", value: "london" },
-    { label: "berlin", value: "berlin" },
-    { label: "istanbul", value: "istanbul" },
-    { label: "petersburg", value: "petersburg" },
-    { label: "constantinople", value: "constantinople" },
-    { label: "byzantium", value: "byzantium" },
-    { label: "spuriousDragon", value: "spuriousDragon" },
-    { label: "tangerineWhistle", value: "tangerineWhistle" },
-    { label: "homestead", value: "homestead" },
-  ];
+  const compilerVersions: CompilerVersions = {
+    [ContractLanguage.Solidity]: (
+      verificationConfig?.solidity_compiler_versions ?? []
+    ).map((version) => ({ label: version, value: version })),
+    [ContractLanguage.Vyper]: (
+      verificationConfig?.vyper_compiler_versions ?? []
+    ).map((version) => ({ label: version, value: version })),
+  };
+  const getCompilerVersions = (language: ContractLanguage) =>
+    compilerVersions[language];
 
-  const [evmVersion, setEvmVersion] = useState(evmVersions[0]);
+  const getEvmVersions = () => {
+    const versions = verificationConfig?.solidity_evm_versions ?? [];
+    return [...versions].reverse().map((version) => ({
+      label: version,
+      value: version,
+    }));
+  };
 
-  const onSubmitStepOne = (data) => {
+  const onSubmitStepOne = (data: StepOneDetailsI): void => {
     setStepOneDetails(data);
-    setEditStepOne(false);
+    setIsEditStepOne(false);
   };
 
   const submitForm = async () => {
@@ -63,7 +82,7 @@ export default function VerifiedContract() {
       addressHash: stepOneDetails.address,
       compilerVersion: stepOneDetails.version,
       contractSourceCode: sourceCode,
-      optimization,
+      hasOptimization,
       name: "",
       // for Solidity contract
       ...(stepOneDetails.contractLanguage === ContractLanguage.Solidity && {
@@ -94,43 +113,52 @@ export default function VerifiedContract() {
   };
 
   const resetStepTwo = () => {
-    setOptimization(false);
+    setHasOptimization(false);
     setSourceCode("");
     setConstructorArguments("");
     setOptimizationRuns(defaultOptimizationRuns);
     setIsVerifying(false);
     setIsVerified(false);
     setError("");
-    setEvmVersion(evmVersions[0]);
+    setEvmVersion(defaultDropdownValue);
   };
 
   return (
     <div>
       <StepOne
-        isEditing={editStepOne}
-        setIsEditing={setEditStepOne}
+        isEditing={isEditStepOne}
+        setIsEditing={(isEditing: boolean) => setIsEditStepOne(isEditing)}
         onSubmit={onSubmitStepOne}
         defaultDropdownValue={defaultDropdownValue}
+        getCompilerVersions={getCompilerVersions}
       />
-      {!editStepOne && (
+      {!isEditStepOne && (
         <StepTwo
           stepOneDetails={stepOneDetails}
           reset={resetStepTwo}
           submitForm={submitForm}
           isVerifying={isVerifying}
           isVerified={isVerified}
-          evmVersions={evmVersions}
+          evmVersions={getEvmVersions()}
           error={error}
-          optimization={optimization}
-          setOptimization={setOptimization}
+          hasOptimization={hasOptimization}
+          setHasOptimization={(hasOpt: boolean) => setHasOptimization(hasOpt)}
           sourceCode={sourceCode}
-          setSourceCode={setSourceCode}
-          constructorArguments={constructorArguments}
-          setConstructorArguments={setConstructorArguments}
+          setSourceCode={(sourceCodeData: string) =>
+            setSourceCode(sourceCodeData)
+          }
+          constructorArgs={constructorArguments}
+          setConstructorArgs={(constructorArgs: string) =>
+            setConstructorArguments(constructorArgs)
+          }
           evmVersion={evmVersion}
-          setEvmVersion={setEvmVersion}
+          setEvmVersion={({ label, value }: { label: string; value: string }) =>
+            setEvmVersion({ label, value })
+          }
           optimizationRuns={optimizationRuns}
-          setOptimizationRuns={setOptimizationRuns}
+          setOptimizationRuns={(optRuns: number) =>
+            setOptimizationRuns(optRuns)
+          }
         />
       )}
     </div>

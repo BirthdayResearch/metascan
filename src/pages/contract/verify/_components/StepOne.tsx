@@ -1,19 +1,11 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
 import { FiArrowLeft } from "react-icons/fi";
-import Dropdown from "@components/commons/Dropdown";
+import Dropdown, { DropdownOptionsI } from "@components/commons/Dropdown";
 import { MdRadioButtonUnchecked } from "react-icons/md";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import clsx from "clsx";
-import { CompilerType, ContractLanguage } from "@api/types";
+import { useRouter } from "next/router";
+import { CompilerType } from "@api/types";
 import InputComponent from "@components/commons/InputComponent";
-
-export interface StepOneDetailsI {
-  address: string;
-  compiler: string;
-  version: string;
-  license: string;
-}
 
 export function ActionButton({
   onClick,
@@ -75,66 +67,59 @@ function ContractDetailRow({
   );
 }
 
-interface CompilerProps {
-  label: string;
-  value: string;
-  type: ContractLanguage;
-}
-
 interface StepOneProps {
+  compiler: DropdownOptionsI;
+  setCompiler: (value: DropdownOptionsI) => void;
+  version: DropdownOptionsI;
+  setVersion: (value: DropdownOptionsI) => void;
+  license: DropdownOptionsI;
+  setLicense: (value: DropdownOptionsI) => void;
+  address: string;
+  setAddress: (value: string) => void;
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
-  onSubmit: (data: StepOneDetailsI) => void;
-  defaultDropdownValue: { label: string; value: string };
-  getCompilerVersions: (language: ContractLanguage) => {
-    label: string;
-    value: string;
-  }[];
+  onSubmit: () => void;
+  compilerVersions: DropdownOptionsI[];
+  isTermsChecked: boolean;
+  setIsTermsChecked: (value: boolean) => void;
+  reset: () => void;
 }
 
 export default function StepOne({
+  compiler,
+  setCompiler,
+  version,
+  setVersion,
+  setLicense,
+  compilerVersions,
+  license,
+  address,
+  setAddress,
   isEditing,
   setIsEditing,
   onSubmit,
-  defaultDropdownValue,
-  getCompilerVersions,
+  isTermsChecked,
+  setIsTermsChecked,
+  reset,
 }: StepOneProps) {
   const router = useRouter();
-  const queryAddress = router.query.address;
-  // TODO manage state from parent component
-  const [address, setAddress] = useState((queryAddress as string) ?? "");
-  const [compiler, setCompiler] = useState<CompilerProps>({
-    label: "",
-    value: "",
-    type: ContractLanguage.Solidity,
-  });
-  const [version, setVersion] = useState(defaultDropdownValue);
-  const [license, setLicense] = useState(defaultDropdownValue);
-  const [isTermsChecked, setIsTermsChecked] = useState(false);
-  const [compilerVersions, setCompilerVersions] = useState<
-    { label: string; value: string }[]
-  >([]);
 
   const types = [
     {
       label: CompilerType.SoliditySingleFile,
       value: CompilerType.SoliditySingleFile,
-      type: ContractLanguage.Solidity,
     },
     {
       label: CompilerType.SolidityMultiPartFiles,
       value: CompilerType.SolidityMultiPartFiles,
-      type: ContractLanguage.Solidity,
     },
     {
       label: CompilerType.SolidityStandardJsonInput,
       value: CompilerType.SolidityStandardJsonInput,
-      type: ContractLanguage.Solidity,
     },
     {
       label: CompilerType.Vyper,
       value: CompilerType.Vyper,
-      type: ContractLanguage.Vyper,
     },
   ];
 
@@ -186,33 +171,6 @@ export default function StepOne({
       value: "Business Source License (BSL 1.1)",
     },
   ];
-
-  const handleCompilerSelect = (value: CompilerProps): void => {
-    setCompiler(value);
-    if (compiler.type !== value.type) {
-      setVersion(defaultDropdownValue);
-    }
-    const versions = getCompilerVersions(value.type);
-    setCompilerVersions(versions);
-  };
-
-  const reset = (): void => {
-    setCompiler({ label: "", value: "", type: ContractLanguage.Solidity });
-    setVersion(defaultDropdownValue);
-    setLicense(defaultDropdownValue);
-    setIsTermsChecked(false);
-    setAddress("");
-  };
-
-  const onFormSubmit = (): void => {
-    const data = {
-      address,
-      compiler: compiler.value,
-      version: version.value,
-      license: license.value,
-    };
-    onSubmit(data);
-  };
 
   const checkAddress = (addressValue: string): string => {
     // TODO add address check
@@ -276,12 +234,12 @@ export default function StepOne({
                 error={checkAddress(address)}
                 placeholder="0x…"
               />
-              <Dropdown<CompilerProps>
+              <Dropdown
                 value={compiler}
                 label="Compiler"
                 placeholder="Select compiler"
                 options={types}
-                onChange={handleCompilerSelect}
+                onChange={setCompiler}
               />
               <Dropdown
                 value={version}
@@ -332,7 +290,7 @@ export default function StepOne({
                 <ActionButton
                   label="Continue"
                   testId="continue"
-                  onClick={onFormSubmit}
+                  onClick={onSubmit}
                   disabled={isDisabled()}
                   customStyle="w-full md:w-3/6 lg:w-2/6"
                 />

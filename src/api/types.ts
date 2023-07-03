@@ -340,8 +340,3 @@ export enum CompilerType {
   "SolidityStandardJsonInput" = "Solidity (Standard-Json-Input)",
   "Vyper" = "Vyper (Experimental)",
 }
-
-export enum ContractLanguage {
-  Solidity = "Solidity",
-  Vyper = "Vyper",
-}

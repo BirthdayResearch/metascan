@@ -3,30 +3,31 @@ import SmartContractApi from "@api/SmartContractApi";
 import { useNetwork } from "@contexts/NetworkContext";
 import { useRouter } from "next/router";
 import { getEnvironment } from "@contexts/Environment";
-import { CompilerType, ContractLanguage } from "@api/types";
+import { CompilerType } from "@api/types";
 import { useGetVerificationConfigQuery } from "@store/contract";
-import StepOne, { StepOneDetailsI } from "./_components/StepOne";
+import { DropdownOptionsI } from "@components/commons/Dropdown";
+import StepOne from "./_components/StepOne";
 import StepTwo from "./_components/StepTwo";
-
-interface CompilerVersions {
-  [ContractLanguage.Solidity]: {
-    label: string;
-    value: string;
-  }[];
-  [ContractLanguage.Vyper]: {
-    label: string;
-    value: string;
-  }[];
-}
 
 const sleep = (ms: number) =>
   new Promise((r) => {
     setTimeout(r, ms);
   });
 
-export default function VerifiedContract() {
-  // todo add validations
-  const defaultDropdownValue = { label: "", value: "" };
+export default function VerifyContract() {
+  const router = useRouter();
+  const queryAddress = router.query.address;
+  const [address, setAddress] = useState((queryAddress as string) ?? "");
+
+  const defaultDropdownValue: DropdownOptionsI = { label: "", value: "" };
+  const [compiler, setCompiler] =
+    useState<DropdownOptionsI>(defaultDropdownValue);
+  const [version, setVersion] =
+    useState<DropdownOptionsI>(defaultDropdownValue);
+  const [license, setLicense] =
+    useState<DropdownOptionsI>(defaultDropdownValue);
+  const [isTermsChecked, setIsTermsChecked] = useState(false);
+
   const redirectionDelay = 3000;
   const defaultOptimizationRuns = 200;
   const [hasOptimization, setHasOptimization] = useState(false);
@@ -35,22 +36,16 @@ export default function VerifiedContract() {
   const [optimizationRuns, setOptimizationRuns] = useState<number>(
     defaultOptimizationRuns
   );
+  const [compilerVersions, setCompilerVersions] = useState<DropdownOptionsI[]>(
+    []
+  );
   const [isEditStepOne, setIsEditStepOne] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
-  // const [selectedFiles, setSelectedFiles] = useState([])
   const [error, setError] = useState("");
-  const [stepOneDetails, setStepOneDetails] = useState<StepOneDetailsI>({
-    address: "",
-    compiler: "",
-    version: "",
-    license: "",
-  });
   const [evmVersion, setEvmVersion] = useState(defaultDropdownValue);
 
   const { connection } = useNetwork();
-  const router = useRouter();
-
   const networkQuery = !getEnvironment().isDefaultConnection(connection)
     ? { network: connection }
     : {};
@@ -58,34 +53,36 @@ export default function VerifiedContract() {
     network: connection,
   });
 
-  const compilerVersions: CompilerVersions = {
-    [ContractLanguage.Solidity]: (
-      verificationConfig?.solidity_compiler_versions ?? []
-    ).map((version) => ({ label: version, value: version })),
-    [ContractLanguage.Vyper]: (
-      verificationConfig?.vyper_compiler_versions ?? []
-    ).map((version) => ({ label: version, value: version })),
-  };
-  const getCompilerVersions = (language: ContractLanguage) =>
-    compilerVersions[language];
-
-  const getEvmVersions = () => {
-    const versions = verificationConfig?.solidity_evm_versions ?? [];
-    return [...versions].reverse().map((version) => ({
-      label: version,
-      value: version,
+  const getCompilerVersions = (language) => {
+    if (language === CompilerType.Vyper) {
+      return (verificationConfig?.vyper_compiler_versions ?? []).map((v) => ({
+        label: v,
+        value: v,
+      }));
+    }
+    return (verificationConfig?.solidity_compiler_versions ?? []).map((v) => ({
+      label: v,
+      value: v,
     }));
   };
 
-  const onSubmitStepOne = (data: StepOneDetailsI): void => {
-    setStepOneDetails(data);
-    setIsEditStepOne(false);
+  const getEvmVersions = () => {
+    const versions = (verificationConfig?.solidity_evm_versions ?? [])
+      .map((v) => ({
+        label: v,
+        value: v,
+      }))
+      .reverse();
+    if (evmVersion.value === "" && versions.length) {
+      setEvmVersion(versions[0]);
+    }
+    return versions;
   };
 
   const redirect = async () => {
     await sleep(redirectionDelay);
     router.push({
-      pathname: `/contract/${stepOneDetails.address}`,
+      pathname: `/contract/${address}`,
       query: networkQuery,
     });
   };
@@ -93,12 +90,12 @@ export default function VerifiedContract() {
   const submitForm = async () => {
     setIsVerifying(true);
     // for standard input json
-    if (stepOneDetails.compiler === CompilerType.SolidityStandardJsonInput) {
+    if (compiler.value === CompilerType.SolidityStandardJsonInput) {
       const data = new FormData();
       data.append("codeformat", "solidity-standard-json-input");
       data.append("sourceCode", sourceCode);
-      data.append("contractaddress", stepOneDetails.address);
-      data.append("compilerversion", stepOneDetails.version);
+      data.append("contractaddress", address);
+      data.append("compilerversion", version.value);
       data.append("optimizationRuns", `${optimizationRuns}`);
       data.append("optimization", `${hasOptimization}`);
       data.append("contractname", "");
@@ -127,13 +124,13 @@ export default function VerifiedContract() {
 
     // for solidity single file and vyper contract verification
     const data = {
-      addressHash: stepOneDetails.address,
-      compilerVersion: stepOneDetails.version,
+      addressHash: address,
+      compilerVersion: version.value,
       contractSourceCode: sourceCode,
-      hasOptimization,
+      optimization: hasOptimization,
       name: "",
-      // for Solidity contract
-      ...(stepOneDetails.compiler !== CompilerType.Vyper && {
+      // for Solidity single file verification
+      ...(compiler.value === CompilerType.SoliditySingleFile && {
         evmVersion: evmVersion.value,
         optimizationRuns,
         constructorArguments,
@@ -143,16 +140,24 @@ export default function VerifiedContract() {
     const res = await SmartContractApi.verifySmartContract(
       connection,
       data,
-      stepOneDetails.compiler as CompilerType
+      compiler.value as CompilerType
     );
     setIsVerifying(false);
-    if (res.status === "1" && res.result === "Pass - Verified") {
+    if (res.status === "1") {
       setIsVerified(true);
       await redirect();
     } else {
       setError(res.message);
       setIsVerified(false);
     }
+  };
+
+  const resetStepOne = () => {
+    setCompiler(defaultDropdownValue);
+    setVersion(defaultDropdownValue);
+    setLicense(defaultDropdownValue);
+    setIsTermsChecked(false);
+    setAddress("");
   };
 
   const resetStepTwo = () => {
@@ -166,19 +171,45 @@ export default function VerifiedContract() {
     setEvmVersion(defaultDropdownValue);
   };
 
+  const handleCompilerSelect = (value): void => {
+    setCompiler(value);
+    if (compiler.value !== value.value) {
+      setVersion(defaultDropdownValue);
+    }
+    const versions = getCompilerVersions(value.value);
+    setCompilerVersions(versions);
+  };
+
   return (
     <div>
       <StepOne
+        compiler={compiler}
+        version={version}
+        address={address}
+        license={license}
+        isTermsChecked={isTermsChecked}
+        setIsTermsChecked={setIsTermsChecked}
+        reset={resetStepOne}
+        setAddress={setAddress}
+        setCompiler={handleCompilerSelect}
+        compilerVersions={compilerVersions}
+        setVersion={setVersion}
+        setLicense={setLicense}
         isEditing={isEditStepOne}
         setIsEditing={(isEditing: boolean) => setIsEditStepOne(isEditing)}
-        onSubmit={onSubmitStepOne}
-        defaultDropdownValue={defaultDropdownValue}
-        getCompilerVersions={getCompilerVersions}
+        onSubmit={() => setIsEditStepOne(false)}
       />
       {!isEditStepOne && (
         <StepTwo
-          stepOneDetails={stepOneDetails}
+          address={address}
+          version={version}
+          compiler={compiler}
           reset={resetStepTwo}
+          resetAll={() => {
+            resetStepOne();
+            resetStepTwo();
+            setIsEditStepOne(true);
+          }}
           submitForm={submitForm}
           isVerifying={isVerifying}
           isVerified={isVerified}
@@ -195,9 +226,7 @@ export default function VerifiedContract() {
             setConstructorArguments(constructorArgs)
           }
           evmVersion={evmVersion}
-          setEvmVersion={({ label, value }: { label: string; value: string }) =>
-            setEvmVersion({ label, value })
-          }
+          setEvmVersion={setEvmVersion}
           optimizationRuns={optimizationRuns}
           setOptimizationRuns={(optRuns: number) =>
             setOptimizationRuns(optRuns)

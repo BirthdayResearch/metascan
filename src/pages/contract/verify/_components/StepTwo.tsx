@@ -7,7 +7,33 @@ import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/router";
 import DisclosureComponent from "@components/commons/Disclosure";
 import { CompilerType } from "@api/types";
-import { ActionButton } from "./StepOne";
+import { ActionButton, StepOneDetailsI } from "./StepOne";
+
+interface StepTwoProps {
+  stepOneDetails: StepOneDetailsI;
+  reset: () => void;
+  submitForm: () => Promise<void>;
+  isVerifying: boolean;
+  isVerified: boolean;
+  evmVersions: {
+    label: string;
+    value: string;
+  }[];
+  error: string;
+  hasOptimization: boolean;
+  setHasOptimization: (hasOptimization: boolean) => void;
+  sourceCode: string;
+  setSourceCode: (sourceCode: string) => void;
+  constructorArgs: string;
+  setConstructorArgs: (constructorArgs: string) => void;
+  evmVersion: {
+    label: string;
+    value: string;
+  };
+  setEvmVersion: ({ label, value }: { label: string; value: string }) => void;
+  optimizationRuns: number;
+  setOptimizationRuns: (optimizationRuns: number) => void;
+}
 
 function StatusComponent({ title, subtitle, children }) {
   return (
@@ -31,17 +57,17 @@ export default function StepTwo({
   isVerified,
   evmVersions,
   error,
-  optimization,
-  setOptimization,
+  hasOptimization,
+  setHasOptimization,
   sourceCode,
   setSourceCode,
-  constructorArguments,
-  setConstructorArguments,
+  constructorArgs,
+  setConstructorArgs,
   evmVersion,
   setEvmVersion,
   optimizationRuns,
   setOptimizationRuns,
-}) {
+}: StepTwoProps) {
   const router = useRouter();
 
   const isDisabled = () => {
@@ -115,8 +141,8 @@ export default function StepTwo({
                         Optimization enabled
                       </div>
                       <Switch
-                        enabled={optimization}
-                        onClick={() => setOptimization(!optimization)}
+                        enabled={hasOptimization}
+                        onClick={() => setHasOptimization(!hasOptimization)}
                       />
                     </div>
                     <div className="flex flex-col md:flex-row mt-4 space-y-4 md:space-y-0 md:space-x-5">
@@ -125,7 +151,7 @@ export default function StepTwo({
                           type="number"
                           label="Runs"
                           showClearIcon={false}
-                          disabled={!optimization}
+                          disabled={!hasOptimization}
                           labelClassName="text-white-700 text-sm mb-1 -tracking-[0.01em]"
                           inputContainerClassName="!py-3"
                           inputClass="!text-sm"
@@ -164,10 +190,8 @@ export default function StepTwo({
                               "w-full focus:outline-none h-[112px] transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-dark-100 border-[0.5px] border-dark-200 text-white-50 py-[18px] px-4 resize-y placeholder-black-500"
                             )}
                             placeholder=""
-                            onChange={(e) =>
-                              setConstructorArguments(e.target.value)
-                            }
-                            value={constructorArguments}
+                            onChange={(e) => setConstructorArgs(e.target.value)}
+                            value={constructorArgs}
                           />
                           <div className="mt-4">
                             <span className="text-white-700 text-sm mr-1">

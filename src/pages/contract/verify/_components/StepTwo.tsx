@@ -189,20 +189,6 @@ export default function StepTwo({
                             onChange={(e) => setConstructorArgs(e.target.value)}
                             value={constructorArgs}
                           />
-                          <div className="mt-4">
-                            <span className="text-white-700 text-sm mr-1">
-                              For additional information, read our
-                            </span>
-                            {/* TODO add redirection */}
-                            <a
-                              target="_blank"
-                              data-testid="terms-of-service"
-                              href="/contract/verify/terms"
-                              className="text-lightBlue text-sm brand-gradient-1 active:brand-gradient-2 bg-clip-text hover:text-transparent transition-all ease-in duration-300"
-                            >
-                              KB Entry
-                            </a>
-                          </div>
                         </div>
                       </DisclosureComponent>
                     </div>

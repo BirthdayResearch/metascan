@@ -72,8 +72,6 @@ interface StepOneProps {
   setCompiler: (value: DropdownOptionsI) => void;
   version: DropdownOptionsI;
   setVersion: (value: DropdownOptionsI) => void;
-  license: DropdownOptionsI;
-  setLicense: (value: DropdownOptionsI) => void;
   address: string;
   setAddress: (value: string) => void;
   isEditing: boolean;
@@ -83,6 +81,9 @@ interface StepOneProps {
   isTermsChecked: boolean;
   setIsTermsChecked: (value: boolean) => void;
   reset: () => void;
+  // Do not remove, will be implemented in next phase
+  // license: DropdownOptionsI;
+  // setLicense: (value: DropdownOptionsI) => void;
 }
 
 export default function StepOne({
@@ -90,9 +91,7 @@ export default function StepOne({
   setCompiler,
   version,
   setVersion,
-  setLicense,
   compilerVersions,
-  license,
   address,
   setAddress,
   isEditing,
@@ -123,54 +122,55 @@ export default function StepOne({
     },
   ];
 
-  const licenseTypes = [
-    { label: "No License (None)", value: "No License (None)" },
-    { label: "The Unlicense (Unlicense)", value: "The Unlicense (Unlicense)" },
-    { label: "MIT License (MIT)", value: "MIT License (MIT)" },
-    {
-      label: "GNU General Public License v2.0 (GNU GPLv2)",
-      value: "GNU General Public License v2.0 (GNU GPLv2)",
-    },
-    {
-      label: "GNU General Public License v3.0 (GNU GPLv3)",
-      value: "GNU General Public License v3.0 (GNU GPLv3)",
-    },
-    {
-      label: "GNU Lesser General Public License v2.1 (GNU LGPLv2.1)",
-      value: "GNU Lesser General Public License v2.1 (GNU LGPLv2.1)",
-    },
-    {
-      label: "GNU Lesser General Public License v3.0 (GNU LGPLv3)",
-      value: "GNU Lesser General Public License v3.0 (GNU LGPLv3)",
-    },
-    {
-      label: "BSD 2-clause &quot;Simplified&quot; license (BSD-2-Clause)",
-      value: "BSD 2-clause &quot;Simplified&quot; license (BSD-2-Clause)",
-    },
-    {
-      label:
-        "BSD 3-clause &quot;New&quot; Or &quot;Revised&quot; license (BSD-3-Clause)",
-      value:
-        "BSD 3-clause &quot;New&quot; Or &quot;Revised&quot; license (BSD-3-Clause)",
-    },
-    {
-      label: "Mozilla Public License 2.0 (MPL-2.0)",
-      value: "Mozilla Public License 2.0 (MPL-2.0)",
-    },
-    {
-      label: "Open Software License 3.0 (OSL-3.0)",
-      value: "Open Software License 3.0 (OSL-3.0)",
-    },
-    { label: "Apache 2.0 (Apache-2.0)", value: "Apache 2.0 (Apache-2.0)" },
-    {
-      label: "GNU Affero General Public License (GNU AGPLv3)",
-      value: "GNU Affero General Public License (GNU AGPLv3)",
-    },
-    {
-      label: "Business Source License (BSL 1.1)",
-      value: "Business Source License (BSL 1.1)",
-    },
-  ];
+  // Do not remove, will be implemented in next phase
+  // const licenseTypes = [
+  //   { label: "No License (None)", value: "No License (None)" },
+  //   { label: "The Unlicense (Unlicense)", value: "The Unlicense (Unlicense)" },
+  //   { label: "MIT License (MIT)", value: "MIT License (MIT)" },
+  //   {
+  //     label: "GNU General Public License v2.0 (GNU GPLv2)",
+  //     value: "GNU General Public License v2.0 (GNU GPLv2)",
+  //   },
+  //   {
+  //     label: "GNU General Public License v3.0 (GNU GPLv3)",
+  //     value: "GNU General Public License v3.0 (GNU GPLv3)",
+  //   },
+  //   {
+  //     label: "GNU Lesser General Public License v2.1 (GNU LGPLv2.1)",
+  //     value: "GNU Lesser General Public License v2.1 (GNU LGPLv2.1)",
+  //   },
+  //   {
+  //     label: "GNU Lesser General Public License v3.0 (GNU LGPLv3)",
+  //     value: "GNU Lesser General Public License v3.0 (GNU LGPLv3)",
+  //   },
+  //   {
+  //     label: "BSD 2-clause &quot;Simplified&quot; license (BSD-2-Clause)",
+  //     value: "BSD 2-clause &quot;Simplified&quot; license (BSD-2-Clause)",
+  //   },
+  //   {
+  //     label:
+  //       "BSD 3-clause &quot;New&quot; Or &quot;Revised&quot; license (BSD-3-Clause)",
+  //     value:
+  //       "BSD 3-clause &quot;New&quot; Or &quot;Revised&quot; license (BSD-3-Clause)",
+  //   },
+  //   {
+  //     label: "Mozilla Public License 2.0 (MPL-2.0)",
+  //     value: "Mozilla Public License 2.0 (MPL-2.0)",
+  //   },
+  //   {
+  //     label: "Open Software License 3.0 (OSL-3.0)",
+  //     value: "Open Software License 3.0 (OSL-3.0)",
+  //   },
+  //   { label: "Apache 2.0 (Apache-2.0)", value: "Apache 2.0 (Apache-2.0)" },
+  //   {
+  //     label: "GNU Affero General Public License (GNU AGPLv3)",
+  //     value: "GNU Affero General Public License (GNU AGPLv3)",
+  //   },
+  //   {
+  //     label: "Business Source License (BSL 1.1)",
+  //     value: "Business Source License (BSL 1.1)",
+  //   },
+  // ];
 
   const checkAddress = (addressValue: string): string => {
     // TODO add address check
@@ -185,7 +185,8 @@ export default function StepOne({
       checkAddress(address) !== "" ||
       compiler.value === "" ||
       version.value === "" ||
-      license.value === "" ||
+      // Do not remove, will be implemented in next phase
+      // license.value === "" ||
       !isTermsChecked
     ) {
       return true;
@@ -248,13 +249,13 @@ export default function StepOne({
                 options={compilerVersions}
                 onChange={setVersion}
               />
-              <Dropdown
+              {/* <Dropdown
                 value={license}
                 label="Open Source License type"
                 placeholder="Select license type"
                 options={licenseTypes}
                 onChange={setLicense}
-              />
+              /> */}
 
               <div className="flex flex-col lg:flex-row items-center justify-between pt-8">
                 <div className="flex flex-row items-center mb-8 lg:mb-0">
@@ -315,11 +316,12 @@ export default function StepOne({
               label="Compiler version"
               value={version.label}
             />
-            <ContractDetailRow
+            {/* Do not remove, will be implemented in next phase */}
+            {/* <ContractDetailRow
               containerClass="md:w-1/3"
               label="Open source license type"
               value={license.label}
-            />
+            /> */}
           </div>
           <div className="mt-6 md:mt-4 py-1.5">
             <button

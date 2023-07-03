@@ -24,8 +24,9 @@ export default function VerifyContract() {
     useState<DropdownOptionsI>(defaultDropdownValue);
   const [version, setVersion] =
     useState<DropdownOptionsI>(defaultDropdownValue);
-  const [license, setLicense] =
-    useState<DropdownOptionsI>(defaultDropdownValue);
+  // Do not remove, will be implemented in next phase
+  // const [license, setLicense] =
+  //   useState<DropdownOptionsI>(defaultDropdownValue);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
 
   const redirectionDelay = 3000;
@@ -186,7 +187,6 @@ export default function VerifyContract() {
         compiler={compiler}
         version={version}
         address={address}
-        license={license}
         isTermsChecked={isTermsChecked}
         setIsTermsChecked={setIsTermsChecked}
         reset={resetStepOne}
@@ -194,10 +194,12 @@ export default function VerifyContract() {
         setCompiler={handleCompilerSelect}
         compilerVersions={compilerVersions}
         setVersion={setVersion}
-        setLicense={setLicense}
         isEditing={isEditStepOne}
         setIsEditing={(isEditing: boolean) => setIsEditStepOne(isEditing)}
         onSubmit={() => setIsEditStepOne(false)}
+        // Do not remove, will be implemented in next phase
+        // license={license}
+        // setLicense={setLicense}
       />
       {!isEditStepOne && (
         <StepTwo

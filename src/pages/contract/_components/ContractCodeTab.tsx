@@ -1,28 +1,13 @@
-import { useRouter } from "next/router";
-// import ReadContractCodeFile from "./ReadContractCodeFile";
-import { useGetContractQuery } from "@store/contract";
-import { useNetwork } from "@contexts/NetworkContext";
-import { transformContractData } from "shared/contractDataHelper";
+import { ContractProps } from "shared/contractDataHelper";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
 import ContractCodeBlock from "./ContractCodeBlock";
 
-export default function ContractCodeTab(): JSX.Element {
-  const router = useRouter();
-  const cid = router.query.cid?.toString()!;
-  const { connection } = useNetwork();
-  const { data: rawContractDetail } = useGetContractQuery({
-    network: connection,
-    cid,
-  });
-
-  // TODO: Add UI loaders
-  if (!rawContractDetail) {
-    return <div />;
-  }
-
-  const contractDetail = transformContractData(rawContractDetail);
-
+export default function ContractCodeTab({
+  contractDetail,
+}: {
+  contractDetail: ContractProps;
+}): JSX.Element {
   return (
     <>
       <div className="text-white-50 font-bold text-xl mb-[30.5px]">

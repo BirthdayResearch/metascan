@@ -11,8 +11,8 @@ export const metachainTestnet = {
   },
   rpcUrls: {
     // TODO: Replace RPC URLs
-    public: { http: ["http://35.187.53.161:20551"] },
-    default: { http: ["http://35.187.53.161:20551"] },
+    public: { http: ["https://changi.dfi.team"] },
+    default: { http: ["https://changi.dfi.team"] },
   },
   blockExplorers: {
     default: { name: "MetaScan", url: "https://meta.defiscan.live" },
@@ -30,8 +30,8 @@ export const metachain = {
   },
   rpcUrls: {
     // TODO: Replace RPC URLs
-    public: { http: ["http://35.187.53.161:20551"] },
-    default: { http: ["http://35.187.53.161:20551"] },
+    public: { http: ["https://changi.dfi.team"] },
+    default: { http: ["https://changi.dfi.team"] },
   },
   blockExplorers: {
     default: { name: "MetaScan", url: "https://meta.defiscan.live" },

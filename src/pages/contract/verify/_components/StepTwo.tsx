@@ -1,24 +1,23 @@
 import clsx from "clsx";
 import Switch from "@components/commons/Switch";
 import InputComponent from "@components/commons/InputComponent";
-import Dropdown from "@components/commons/Dropdown";
+import Dropdown, { DropdownOptionsI } from "@components/commons/Dropdown";
 import { FiLoader, FiSlash } from "react-icons/fi";
 import { MdCheckCircle } from "react-icons/md";
-import { useRouter } from "next/router";
 import DisclosureComponent from "@components/commons/Disclosure";
-import { ContractLanguage } from "@api/types";
-import { ActionButton, StepOneDetailsI } from "./StepOne";
+import { CompilerType } from "@api/types";
+import { ActionButton } from "./StepOne";
 
 interface StepTwoProps {
-  stepOneDetails: StepOneDetailsI;
+  address: string;
+  version: DropdownOptionsI;
+  compiler: DropdownOptionsI;
   reset: () => void;
+  resetAll: () => void;
   submitForm: () => Promise<void>;
   isVerifying: boolean;
   isVerified: boolean;
-  evmVersions: {
-    label: string;
-    value: string;
-  }[];
+  evmVersions: DropdownOptionsI[];
   error: string;
   hasOptimization: boolean;
   setHasOptimization: (hasOptimization: boolean) => void;
@@ -26,21 +25,35 @@ interface StepTwoProps {
   setSourceCode: (sourceCode: string) => void;
   constructorArgs: string;
   setConstructorArgs: (constructorArgs: string) => void;
-  evmVersion: {
-    label: string;
-    value: string;
-  };
-  setEvmVersion: ({ label, value }: { label: string; value: string }) => void;
+  evmVersion: DropdownOptionsI;
+  setEvmVersion: (value: DropdownOptionsI) => void;
   optimizationRuns: number;
   setOptimizationRuns: (optimizationRuns: number) => void;
 }
 
+function StatusComponent({ title, subtitle, children }) {
+  return (
+    <>
+      <div className="flex flex-row space-x-2 items-center">
+        <div className="font-semibold text-white-50 text-xl -tracking-[0.01em]">
+          {title}
+        </div>
+        {children}
+      </div>
+      <div className="text-white-50 -tracking-[0.02em] mt-2">{subtitle}</div>
+    </>
+  );
+}
+
 export default function StepTwo({
-  stepOneDetails,
   reset,
+  resetAll,
   submitForm,
   isVerifying,
   isVerified,
+  address,
+  version,
+  compiler,
   evmVersions,
   error,
   hasOptimization,
@@ -54,12 +67,10 @@ export default function StepTwo({
   optimizationRuns,
   setOptimizationRuns,
 }: StepTwoProps) {
-  const router = useRouter();
-
   const isDisabled = () => {
     if (
-      stepOneDetails.address === "" ||
-      stepOneDetails.version === "" ||
+      address === "" ||
+      version.value === "" ||
       sourceCode === "" ||
       isVerifying
     ) {
@@ -118,8 +129,7 @@ export default function StepTwo({
                   value={sourceCode}
                 />
               </div>
-              {stepOneDetails.contractLanguage ===
-                ContractLanguage.Solidity && (
+              {compiler.value === CompilerType.SoliditySingleFile && (
                 <>
                   <div className="mt-12 p-4 md:p-6 border-[0.5px] border-white-900 rounded-[10px]">
                     <div className="flex flex-row items-center mb-4">
@@ -179,20 +189,6 @@ export default function StepTwo({
                             onChange={(e) => setConstructorArgs(e.target.value)}
                             value={constructorArgs}
                           />
-                          <div className="mt-4">
-                            <span className="text-white-700 text-sm mr-1">
-                              For additional information, read our
-                            </span>
-                            {/* TODO add redirection */}
-                            <a
-                              target="_blank"
-                              data-testid="terms-of-service"
-                              href="/contract/verify/terms"
-                              className="text-lightBlue text-sm brand-gradient-1 active:brand-gradient-2 bg-clip-text hover:text-transparent transition-all ease-in duration-300"
-                            >
-                              KB Entry
-                            </a>
-                          </div>
                         </div>
                       </DisclosureComponent>
                     </div>
@@ -213,6 +209,7 @@ export default function StepTwo({
                 <div className="flex flex-col md:flex-row md:space-x-4 w-full lg:w-1/2 space-y-4 md:space-y-0 mt-4 md:mt-6 lg:mt-0">
                   <ActionButton
                     label="Reset"
+                    disabled={isVerifying}
                     testId="submit-verify-contract"
                     onClick={reset}
                     customStyle="border-[0.5px] border-white-50 !bg-transparent w-full lg:w-5/12"
@@ -220,8 +217,9 @@ export default function StepTwo({
                   />
                   <ActionButton
                     label="Return to main"
+                    disabled={isVerifying}
                     testId="submit-verify-contract"
-                    onClick={() => router.reload()}
+                    onClick={resetAll}
                     customStyle="border-[0.5px] border-white-50 !bg-transparent w-full lg:w-7/12"
                     labelStyle="text-white-50"
                   />
@@ -239,19 +237,5 @@ export default function StepTwo({
         </div>
       )}
     </div>
-  );
-}
-
-function StatusComponent({ title, subtitle, children }) {
-  return (
-    <>
-      <div className="flex flex-row space-x-2 items-center">
-        <div className="font-semibold text-white-50 text-xl -tracking-[0.01em]">
-          {title}
-        </div>
-        {children}
-      </div>
-      <div className="text-white-50 -tracking-[0.02em] mt-2">{subtitle}</div>
-    </>
   );
 }

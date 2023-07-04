@@ -14,10 +14,36 @@ const sleep = (ms: number) =>
     setTimeout(r, ms);
   });
 
+const initialLibraryValues: { [key: string]: string } = {
+  library1Name: "",
+  library1Address: "",
+  library2Name: "",
+  library2Address: "",
+  library3Name: "",
+  library3Address: "",
+  library4Name: "",
+  library4Address: "",
+  library5Name: "",
+  library5Address: "",
+  library6Name: "",
+  library6Address: "",
+  library7Name: "",
+  library7Address: "",
+  library8Name: "",
+  library8Address: "",
+  library9Name: "",
+  library9Address: "",
+  library10Name: "",
+  library10Address: "",
+};
+
 export default function VerifyContract() {
   const router = useRouter();
   const queryAddress = router.query.address;
   const [address, setAddress] = useState((queryAddress as string) ?? "");
+  const [libraryValues, setLibraryValues] = useState<{ [key: string]: string }>(
+    initialLibraryValues
+  );
 
   const defaultDropdownValue: DropdownOptionsI = { label: "", value: "" };
   const [compiler, setCompiler] =
@@ -136,6 +162,7 @@ export default function VerifyContract() {
         optimizationRuns,
         constructorArguments,
         autodetectConstructorArguments: constructorArguments === "",
+        ...libraryValues,
       }),
     };
     const res = await SmartContractApi.verifySmartContract(
@@ -219,21 +246,17 @@ export default function VerifyContract() {
           evmVersions={getEvmVersions()}
           error={error}
           hasOptimization={hasOptimization}
-          setHasOptimization={(hasOpt: boolean) => setHasOptimization(hasOpt)}
+          setHasOptimization={setHasOptimization}
           sourceCode={sourceCode}
-          setSourceCode={(sourceCodeData: string) =>
-            setSourceCode(sourceCodeData)
-          }
+          setSourceCode={setSourceCode}
           constructorArgs={constructorArguments}
-          setConstructorArgs={(constructorArgs: string) =>
-            setConstructorArguments(constructorArgs)
-          }
+          setConstructorArgs={setConstructorArguments}
           evmVersion={evmVersion}
           setEvmVersion={setEvmVersion}
           optimizationRuns={optimizationRuns}
-          setOptimizationRuns={(optRuns: number) =>
-            setOptimizationRuns(optRuns)
-          }
+          setOptimizationRuns={setOptimizationRuns}
+          libraryValues={libraryValues}
+          setLibraryValues={setLibraryValues}
         />
       )}
     </div>

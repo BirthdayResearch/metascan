@@ -1,20 +1,11 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
 import { FiArrowLeft } from "react-icons/fi";
-import Dropdown from "@components/commons/Dropdown";
+import Dropdown, { DropdownOptionsI } from "@components/commons/Dropdown";
 import { MdRadioButtonUnchecked } from "react-icons/md";
 import { IoMdCheckmarkCircle } from "react-icons/io";
 import clsx from "clsx";
-import { ContractLanguage } from "@api/types";
+import { useRouter } from "next/router";
+import { CompilerType } from "@api/types";
 import InputComponent from "@components/commons/InputComponent";
-
-export interface StepOneDetailsI {
-  address: string;
-  compiler: string;
-  version: string;
-  license: string;
-  contractLanguage?: ContractLanguage;
-}
 
 export function ActionButton({
   onClick,
@@ -76,145 +67,110 @@ function ContractDetailRow({
   );
 }
 
-interface CompilerProps {
-  label: string;
-  value: string;
-  type: ContractLanguage;
-}
-
 interface StepOneProps {
+  compiler: DropdownOptionsI;
+  setCompiler: (value: DropdownOptionsI) => void;
+  version: DropdownOptionsI;
+  setVersion: (value: DropdownOptionsI) => void;
+  address: string;
+  setAddress: (value: string) => void;
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
-  onSubmit: (data: StepOneDetailsI) => void;
-  defaultDropdownValue: { label: string; value: string };
-  getCompilerVersions: (language: ContractLanguage) => {
-    label: string;
-    value: string;
-  }[];
+  onSubmit: () => void;
+  compilerVersions: DropdownOptionsI[];
+  isTermsChecked: boolean;
+  setIsTermsChecked: (value: boolean) => void;
+  reset: () => void;
+  // Do not remove, will be implemented in next phase
+  // license: DropdownOptionsI;
+  // setLicense: (value: DropdownOptionsI) => void;
 }
 
 export default function StepOne({
+  compiler,
+  setCompiler,
+  version,
+  setVersion,
+  compilerVersions,
+  address,
+  setAddress,
   isEditing,
   setIsEditing,
   onSubmit,
-  defaultDropdownValue,
-  getCompilerVersions,
+  isTermsChecked,
+  setIsTermsChecked,
+  reset,
 }: StepOneProps) {
   const router = useRouter();
-  const queryAddress = router.query.address;
-  // TODO manage state from parent component
-  const [address, setAddress] = useState((queryAddress as string) ?? "");
-  const [compiler, setCompiler] = useState<CompilerProps>({
-    label: "",
-    value: "",
-    type: ContractLanguage.Solidity,
-  });
-  const [version, setVersion] = useState(defaultDropdownValue);
-  const [license, setLicense] = useState(defaultDropdownValue);
-  const [isTermsChecked, setIsTermsChecked] = useState(false);
-  const [compilerVersions, setCompilerVersions] = useState<
-    { label: string; value: string }[]
-  >([]);
 
   const types = [
     {
-      label: "Solidity (Single file)",
-      value: "Solidity (Single file)",
-      type: ContractLanguage.Solidity,
+      label: CompilerType.SoliditySingleFile,
+      value: CompilerType.SoliditySingleFile,
     },
     {
-      label: "Solidity (Multi-Part files)",
-      value: "Solidity (Multi-Part files)",
-      type: ContractLanguage.Solidity,
+      label: CompilerType.SolidityMultiPartFiles,
+      value: CompilerType.SolidityMultiPartFiles,
     },
     {
-      label: "Solidity (Standard-Json-Input)",
-      value: "Solidity (Standard-Json-Input)",
-      type: ContractLanguage.Solidity,
+      label: CompilerType.SolidityStandardJsonInput,
+      value: CompilerType.SolidityStandardJsonInput,
     },
     {
-      label: "Vyper (Experimental)",
-      value: "Vyper (Experimental)",
-      type: ContractLanguage.Vyper,
+      label: CompilerType.Vyper,
+      value: CompilerType.Vyper,
     },
   ];
 
-  const licenseTypes = [
-    { label: "No License (None)", value: "No License (None)" },
-    { label: "The Unlicense (Unlicense)", value: "The Unlicense (Unlicense)" },
-    { label: "MIT License (MIT)", value: "MIT License (MIT)" },
-    {
-      label: "GNU General Public License v2.0 (GNU GPLv2)",
-      value: "GNU General Public License v2.0 (GNU GPLv2)",
-    },
-    {
-      label: "GNU General Public License v3.0 (GNU GPLv3)",
-      value: "GNU General Public License v3.0 (GNU GPLv3)",
-    },
-    {
-      label: "GNU Lesser General Public License v2.1 (GNU LGPLv2.1)",
-      value: "GNU Lesser General Public License v2.1 (GNU LGPLv2.1)",
-    },
-    {
-      label: "GNU Lesser General Public License v3.0 (GNU LGPLv3)",
-      value: "GNU Lesser General Public License v3.0 (GNU LGPLv3)",
-    },
-    {
-      label: "BSD 2-clause &quot;Simplified&quot; license (BSD-2-Clause)",
-      value: "BSD 2-clause &quot;Simplified&quot; license (BSD-2-Clause)",
-    },
-    {
-      label:
-        "BSD 3-clause &quot;New&quot; Or &quot;Revised&quot; license (BSD-3-Clause)",
-      value:
-        "BSD 3-clause &quot;New&quot; Or &quot;Revised&quot; license (BSD-3-Clause)",
-    },
-    {
-      label: "Mozilla Public License 2.0 (MPL-2.0)",
-      value: "Mozilla Public License 2.0 (MPL-2.0)",
-    },
-    {
-      label: "Open Software License 3.0 (OSL-3.0)",
-      value: "Open Software License 3.0 (OSL-3.0)",
-    },
-    { label: "Apache 2.0 (Apache-2.0)", value: "Apache 2.0 (Apache-2.0)" },
-    {
-      label: "GNU Affero General Public License (GNU AGPLv3)",
-      value: "GNU Affero General Public License (GNU AGPLv3)",
-    },
-    {
-      label: "Business Source License (BSL 1.1)",
-      value: "Business Source License (BSL 1.1)",
-    },
-  ];
-
-  const handleCompilerSelect = (value: CompilerProps): void => {
-    setCompiler(value);
-    if (compiler.type !== value.type) {
-      setVersion(defaultDropdownValue);
-    }
-    const versions = getCompilerVersions(value.type);
-    setCompilerVersions(versions);
-  };
-
-  const reset = (): void => {
-    setCompiler({ label: "", value: "", type: ContractLanguage.Solidity });
-    setVersion(defaultDropdownValue);
-    setLicense(defaultDropdownValue);
-    setIsTermsChecked(false);
-    setAddress("");
-  };
-
-  const onFormSubmit = (): void => {
-    const data = {
-      address,
-      compiler: compiler.value,
-      version: version.value,
-      license: license.value,
-      contractLanguage: compiler.type,
-    };
-    onSubmit(data);
-  };
+  // Do not remove, will be implemented in next phase
+  // const licenseTypes = [
+  //   { label: "No License (None)", value: "No License (None)" },
+  //   { label: "The Unlicense (Unlicense)", value: "The Unlicense (Unlicense)" },
+  //   { label: "MIT License (MIT)", value: "MIT License (MIT)" },
+  //   {
+  //     label: "GNU General Public License v2.0 (GNU GPLv2)",
+  //     value: "GNU General Public License v2.0 (GNU GPLv2)",
+  //   },
+  //   {
+  //     label: "GNU General Public License v3.0 (GNU GPLv3)",
+  //     value: "GNU General Public License v3.0 (GNU GPLv3)",
+  //   },
+  //   {
+  //     label: "GNU Lesser General Public License v2.1 (GNU LGPLv2.1)",
+  //     value: "GNU Lesser General Public License v2.1 (GNU LGPLv2.1)",
+  //   },
+  //   {
+  //     label: "GNU Lesser General Public License v3.0 (GNU LGPLv3)",
+  //     value: "GNU Lesser General Public License v3.0 (GNU LGPLv3)",
+  //   },
+  //   {
+  //     label: "BSD 2-clause &quot;Simplified&quot; license (BSD-2-Clause)",
+  //     value: "BSD 2-clause &quot;Simplified&quot; license (BSD-2-Clause)",
+  //   },
+  //   {
+  //     label:
+  //       "BSD 3-clause &quot;New&quot; Or &quot;Revised&quot; license (BSD-3-Clause)",
+  //     value:
+  //       "BSD 3-clause &quot;New&quot; Or &quot;Revised&quot; license (BSD-3-Clause)",
+  //   },
+  //   {
+  //     label: "Mozilla Public License 2.0 (MPL-2.0)",
+  //     value: "Mozilla Public License 2.0 (MPL-2.0)",
+  //   },
+  //   {
+  //     label: "Open Software License 3.0 (OSL-3.0)",
+  //     value: "Open Software License 3.0 (OSL-3.0)",
+  //   },
+  //   { label: "Apache 2.0 (Apache-2.0)", value: "Apache 2.0 (Apache-2.0)" },
+  //   {
+  //     label: "GNU Affero General Public License (GNU AGPLv3)",
+  //     value: "GNU Affero General Public License (GNU AGPLv3)",
+  //   },
+  //   {
+  //     label: "Business Source License (BSL 1.1)",
+  //     value: "Business Source License (BSL 1.1)",
+  //   },
+  // ];
 
   const checkAddress = (addressValue: string): string => {
     // TODO add address check
@@ -229,7 +185,8 @@ export default function StepOne({
       checkAddress(address) !== "" ||
       compiler.value === "" ||
       version.value === "" ||
-      license.value === "" ||
+      // Do not remove, will be implemented in next phase
+      // license.value === "" ||
       !isTermsChecked
     ) {
       return true;
@@ -278,12 +235,12 @@ export default function StepOne({
                 error={checkAddress(address)}
                 placeholder="0x…"
               />
-              <Dropdown<CompilerProps>
+              <Dropdown
                 value={compiler}
                 label="Compiler"
                 placeholder="Select compiler"
                 options={types}
-                onChange={handleCompilerSelect}
+                onChange={setCompiler}
               />
               <Dropdown
                 value={version}
@@ -292,13 +249,13 @@ export default function StepOne({
                 options={compilerVersions}
                 onChange={setVersion}
               />
-              <Dropdown
+              {/* <Dropdown
                 value={license}
                 label="Open Source License type"
                 placeholder="Select license type"
                 options={licenseTypes}
                 onChange={setLicense}
-              />
+              /> */}
 
               <div className="flex flex-col lg:flex-row items-center justify-between pt-8">
                 <div className="flex flex-row items-center mb-8 lg:mb-0">
@@ -334,7 +291,7 @@ export default function StepOne({
                 <ActionButton
                   label="Continue"
                   testId="continue"
-                  onClick={onFormSubmit}
+                  onClick={onSubmit}
                   disabled={isDisabled()}
                   customStyle="w-full md:w-3/6 lg:w-2/6"
                 />
@@ -359,11 +316,12 @@ export default function StepOne({
               label="Compiler version"
               value={version.label}
             />
-            <ContractDetailRow
+            {/* Do not remove, will be implemented in next phase */}
+            {/* <ContractDetailRow
               containerClass="md:w-1/3"
               label="Open source license type"
               value={license.label}
-            />
+            /> */}
           </div>
           <div className="mt-6 md:mt-4 py-1.5">
             <button

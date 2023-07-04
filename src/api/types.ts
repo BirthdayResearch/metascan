@@ -104,6 +104,17 @@ export interface RawTxnWithPaginationProps {
   };
 }
 
+export interface CreatedContractProps {
+  hash: string;
+  implementation_name?: string;
+  is_contract: boolean;
+  is_verified?: boolean;
+  name: string;
+  privateTags: [];
+  public_tags: [];
+  watchlist_names: [];
+}
+
 export interface RawTransactionI {
   tx_types: string[];
   type: number;
@@ -129,6 +140,7 @@ export interface RawTransactionI {
   method: string | null;
   confirmations: number;
   token_transfers?: any;
+  created_contract?: CreatedContractProps;
 }
 
 export interface TokenTransferProps {
@@ -311,7 +323,20 @@ export enum ContractMethodType {
   WriteProxy = "write-proxy",
 }
 
-export enum ContractLanguage {
-  Solidity = "Solidity",
-  Vyper = "Vyper",
+export interface SCVersionsBuilds {
+  build: string;
+  longVersion: string;
+  sha256: string;
+  path: string;
+  version: string;
+}
+export interface SCVersionsResponseProps {
+  builds: SCVersionsBuilds[];
+}
+
+export enum CompilerType {
+  "SoliditySingleFile" = "Solidity (Single file)",
+  "SolidityMultiPartFiles" = "Solidity (Multi-Part files)",
+  "SolidityStandardJsonInput" = "Solidity (Standard-Json-Input)",
+  "Vyper" = "Vyper (Experimental)",
 }

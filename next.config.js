@@ -15,7 +15,7 @@ const securityHeaders = [
       };` +
       `style-src 'self' fonts.googleapis.com 'unsafe-inline';` +
       `font-src fonts.gstatic.com;` +
-      `connect-src 'self' blockscout-index.changi.dfi.team changi.dfi.team solc-bin.ethereum.org/linux-amd64/list.json raw.githubusercontent.com/blockscout/solc-bin/main/vyper.list.json blockscout.com ${
+      `connect-src 'self' blockscout-index.changi.dfi.team changi.dfi.team blockscout.com ${
         process.env.NODE_ENV === "development"
           ? `ws://localhost:3000/_next/webpack-hmr base-goerli.blockscout.com eth-goerli.blockscout.com`
           : ""

@@ -238,7 +238,7 @@ export default function StepTwo({
                                     })
                                   }
                                   error=""
-                                  placeholder=""
+                                  placeholder="0x…"
                                 />
                               </div>
                             );

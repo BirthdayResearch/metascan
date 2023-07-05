@@ -29,6 +29,8 @@ interface StepTwoProps {
   setEvmVersion: (value: DropdownOptionsI) => void;
   optimizationRuns: number;
   setOptimizationRuns: (optimizationRuns: number) => void;
+  libraryValues: { [key: string]: string };
+  setLibraryValues: (value: { [key: string]: string }) => void;
 }
 
 function StatusComponent({ title, subtitle, children }) {
@@ -66,6 +68,8 @@ export default function StepTwo({
   setEvmVersion,
   optimizationRuns,
   setOptimizationRuns,
+  libraryValues,
+  setLibraryValues,
 }: StepTwoProps) {
   const isDisabled = () => {
     if (
@@ -192,16 +196,56 @@ export default function StepTwo({
                         </div>
                       </DisclosureComponent>
                     </div>
-                    {/* <div className="pt-4 border-t border-white-50">
+                    <div className="pt-4 border-t border-white-50">
                       <DisclosureComponent
                         title="Contract Library Address"
                         subtitle="(for contracts that use libraries, supports up to 10)"
                       >
                         <div className="mt-6 md:pl-10 md:pr-4">
-                          Contract Library Address
+                          {[...Array(10)].map((_, i) => {
+                            const count = i + 1;
+                            const nameKey = `library${count}Name`;
+                            const addressKey = `library${count}Address`;
+                            return (
+                              <div className="mt-3 space-y-2">
+                                <InputComponent
+                                  label={`Library_${count} Name`}
+                                  showClearIcon={false}
+                                  labelClassName="text-white-700 text-sm mb-1 -tracking-[0.01em]"
+                                  inputContainerClassName="!py-3"
+                                  inputClass="!text-sm"
+                                  value={libraryValues[nameKey]}
+                                  setValue={(value: string) =>
+                                    setLibraryValues({
+                                      ...libraryValues,
+                                      [nameKey]: value,
+                                    })
+                                  }
+                                  error=""
+                                  placeholder=""
+                                />
+                                <InputComponent
+                                  label={`Library_${count} Contract Address`}
+                                  showClearIcon={false}
+                                  labelClassName="text-white-700 text-sm mb-1 -tracking-[0.01em]"
+                                  inputContainerClassName="!py-3"
+                                  inputClass="!text-sm"
+                                  value={libraryValues[addressKey]}
+                                  setValue={(value: string) =>
+                                    setLibraryValues({
+                                      ...libraryValues,
+                                      [addressKey]: value,
+                                    })
+                                  }
+                                  error=""
+                                  placeholder="0x…"
+                                />
+                              </div>
+                            );
+                          })}
                         </div>
                       </DisclosureComponent>
-                    </div> */}
+                    </div>
                   </div>
                 </>
               )}

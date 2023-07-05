@@ -11,9 +11,12 @@ import Link from "@components/commons/Link";
 import ContractCodeBlock from "./ContractCodeBlock";
 import ReadWriteContract from "./read-write/ReadWriteContract";
 import ContractCodeTab from "./ContractCodeTab";
-import ConnectButton from "./ConnectButton";
 
-export default function ContractCode() {
+export default function ContractCode({
+  implementationAddress,
+}: {
+  implementationAddress: string | null;
+}) {
   const router = useRouter();
   const cid = router.query.cid?.toString()!;
   const { connection } = useNetwork();
@@ -66,9 +69,36 @@ export default function ContractCode() {
     );
   }
 
+  const contractMethodTabs = [
+    {
+      id: CodeOptions.Read,
+      type: ContractMethodType.Read,
+      implementationAddress: null,
+    },
+    {
+      id: CodeOptions.Write,
+      type: ContractMethodType.Write,
+      implementationAddress: null,
+    },
+    ...(implementationAddress !== null
+      ? [
+          {
+            id: CodeOptions.ReadProxy,
+            type: ContractMethodType.ReadProxy,
+            implementationAddress,
+          },
+          {
+            id: CodeOptions.WriteProxy,
+            type: ContractMethodType.WriteProxy,
+            implementationAddress,
+          },
+        ]
+      : []),
+  ];
+
   return (
     <div>
-      <div className="flex flex-row gap-x-2">
+      <div className="flex flex-row gap-x-2 mb-4 md:mb-5 pb-4 lg:mb-8">
         <button
           type="button"
           onClick={() => setActiveTab(CodeOptions.Code)}
@@ -81,50 +111,37 @@ export default function ContractCode() {
         >
           {CodeOptions.Code}
         </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab(CodeOptions.Read)}
-          className={clsx(
-            "whitespace-nowrap py-2 px-4 rounded-[24px] text-sm font-medium",
-            activeTab === CodeOptions.Read
-              ? "bg-white-50 text-black-900"
-              : "text-white-50 bg-black-600"
-          )}
-        >
-          {CodeOptions.Read}
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab(CodeOptions.Write)}
-          className={clsx(
-            "whitespace-nowrap py-2 px-4 rounded-[24px] text-sm font-medium",
-            activeTab === CodeOptions.Write
-              ? "bg-white-50 text-black-900"
-              : "text-white-50 bg-black-600"
-          )}
-        >
-          {CodeOptions.Write}
-        </button>
-      </div>
-      <div className="mt-4 md:mt-5 pb-4 lg:mt-8 md:pb-8 lg:pb-11">
-        {activeTab !== CodeOptions.Code && <ConnectButton />}
+        {contractMethodTabs.map(({ id }) => (
+          <button
+            key={id}
+            type="button"
+            onClick={() => setActiveTab(id)}
+            className={clsx(
+              "whitespace-nowrap py-2 px-4 rounded-[24px] text-sm font-medium",
+              activeTab === id
+                ? "bg-white-50 text-black-900"
+                : "text-white-50 bg-black-600"
+            )}
+          >
+            {id}
+          </button>
+        ))}
       </div>
       {activeTab === CodeOptions.Code && (
         <ContractCodeTab contractDetail={contractDetail} />
       )}
-      {activeTab === CodeOptions.Read && (
-        <ReadWriteContract
-          title="Read contract"
-          type={ContractMethodType.Read}
-        />
+
+      {contractMethodTabs.map(
+        (tab) =>
+          activeTab === tab.id && (
+            <ReadWriteContract
+              key={tab.id}
+              title={tab.id}
+              type={tab.type}
+              implementationAddress={tab.implementationAddress}
+            />
+          )
       )}
-      {activeTab === CodeOptions.Write && (
-        <ReadWriteContract
-          title="Write contract"
-          type={ContractMethodType.Write}
-        />
-      )}
-      {/* TODO: Add Read Proxy and Write Proxy */}
     </div>
   );
 }

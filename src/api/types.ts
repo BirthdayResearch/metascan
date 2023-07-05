@@ -319,8 +319,8 @@ export interface SmartContractMethod {
 export enum ContractMethodType {
   Read = "read",
   Write = "write",
-  ReadProxy = "readProxy",
-  WriteProxy = "writeProxy",
+  ReadProxy = "read-proxy",
+  WriteProxy = "write-proxy",
 }
 
 export interface SCVersionsBuilds {

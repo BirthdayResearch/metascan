@@ -4,14 +4,18 @@ import { ContractMethodType } from "@api/types";
 import { useNetwork } from "@contexts/NetworkContext";
 import { useGetContractMethodsQuery } from "@store/contract";
 import { FiLoader } from "react-icons/fi";
+import LinkText from "@components/commons/LinkText";
 import ContractMethod from "./ContractMethod";
+import ConnectButton from "../ConnectButton";
 
 export default function ReadWriteContract({
   type,
   title,
+  implementationAddress,
 }: {
   type: ContractMethodType;
   title: string;
+  implementationAddress: string | null;
 }) {
   const [expandAll, setExpandAll] = useState<boolean>(false);
   const [resetForm, setResetForm] = useState<boolean>(false);
@@ -32,11 +36,30 @@ export default function ReadWriteContract({
   }
 
   if (!isLoading && (!methods || methods?.length === 0)) {
-    return <div className="text-white-50 mt-8">NO METHODS.</div>;
+    return (
+      <div className="text-white-50 mt-8">
+        There are no available Contract ABI methods to read.
+      </div>
+    );
   }
 
   return (
-    <div className="text-white-50">
+    <div className="text-white-50 text-lg">
+      {implementationAddress !== null && (
+        <div className=" pb-7">
+          Implementation address:
+          <LinkText
+            testId="wallet-id-copied"
+            label={` ${implementationAddress}`}
+            href={`/contract/${implementationAddress}`}
+            customStyle="font-semibold"
+            // TODO (lyka): Redirect to new tab
+          />
+        </div>
+      )}
+      <div className="md:pb-8 lg:pb-11">
+        <ConnectButton />
+      </div>
       <div className="flex flex-col md:flex-row md:items-center gap-2">
         <div className="flex flex-grow text-white-50 font-bold text-xl">
           {title}

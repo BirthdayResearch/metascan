@@ -340,3 +340,16 @@ export enum CompilerType {
   "SolidityStandardJsonInput" = "Solidity (Standard-Json-Input)",
   "Vyper" = "Vyper (Experimental)",
 }
+
+export interface RawTokenI {
+  address: string;
+  circulating_market_cap?: string;
+  decimals: string;
+  exchange_rate?: string;
+  holders: string;
+  icon_url?: string;
+  name: string;
+  symbol: string;
+  total_supply: string;
+  type: string;
+}

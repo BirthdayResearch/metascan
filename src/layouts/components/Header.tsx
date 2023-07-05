@@ -30,6 +30,12 @@ const MenuItems = [
     testId: "Desktop.HeaderLink.Contracts",
     imagePath: "/menu/VerifiedContracts.svg",
   },
+  {
+    label: "Tokens",
+    pathname: "/tokens",
+    testId: "Desktop.HeaderLink.Tokens",
+    imagePath: "/menu/VerifiedContracts.svg",
+  },
 ];
 
 export default function Header(): JSX.Element {

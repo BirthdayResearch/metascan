@@ -104,24 +104,13 @@ export interface RawTxnWithPaginationProps {
   };
 }
 
-export interface CreatedContractProps {
-  hash: string;
-  implementation_name?: string;
-  is_contract: boolean;
-  is_verified?: boolean;
-  name: string;
-  privateTags: [];
-  public_tags: [];
-  watchlist_names: [];
-}
-
 export interface RawTransactionI {
   tx_types: string[];
   type: number;
   hash: string;
   value: string;
-  from: { hash: string; is_contract: boolean };
-  to: { hash: string; is_contract: boolean } | null;
+  from: AddressProps;
+  to: AddressProps | null;
   status: string;
   result: string;
   timestamp: string;
@@ -140,19 +129,19 @@ export interface RawTransactionI {
   method: string | null;
   confirmations: number;
   token_transfers?: any;
-  created_contract?: CreatedContractProps;
+  created_contract?: AddressProps;
 }
 
-export interface TokenTransferProps {
+export interface TxTokenTransferProps {
   from: {
     hash: string;
     isContract: boolean;
-    isVerified: boolean;
+    isVerified: boolean | null;
   };
   to: {
     hash: string;
     isContract: boolean;
-    isVerified: boolean;
+    isVerified: boolean | null;
   };
   type: string;
   forToken: {
@@ -193,7 +182,7 @@ export interface TransactionI {
   revertReason: string | null;
   method: string | null;
   confirmations: number;
-  tokenTransfers?: TokenTransferProps[];
+  tokenTransfers?: TxTokenTransferProps[];
 }
 
 export interface BlockProps {
@@ -214,20 +203,10 @@ export interface BlockProps {
   size: number;
 }
 
-interface RawTokenTransferDirectionProps {
-  hash: string;
-  implementation_name?: string;
-  is_contract: boolean;
-  is_verified: boolean;
-  name?: string;
-  private_tags: [];
-  public_tags: [];
-  watchlist_names: [];
-}
 export interface RawTxTokenTransfersProps {
   block_hash;
-  from: RawTokenTransferDirectionProps;
-  to: RawTokenTransferDirectionProps;
+  from: AddressProps;
+  to: AddressProps;
   token: {
     address: string;
     decimals?: string | number;
@@ -252,17 +231,19 @@ export interface RawTransactionV1 {
   status: string;
 }
 
+export interface AddressProps {
+  hash: string;
+  implementation_name: string | null;
+  is_contract: boolean;
+  is_verified: boolean | null;
+  name: string;
+  private_tags: string[];
+  public_tags: string[];
+  watchlist_names: string[];
+}
+
 export interface SmartContractListItemProps {
-  address: {
-    hash: string;
-    implementation_name: string | null;
-    is_contract: boolean;
-    is_verified: boolean | null;
-    name: string;
-    private_tags: string[];
-    public_tags: string[];
-    watchlist_names: string[];
-  };
+  address: AddressProps;
   coin_balance: number;
   compiler_version: string;
   has_constructor_args: boolean;

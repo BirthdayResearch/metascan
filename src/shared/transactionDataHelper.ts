@@ -1,10 +1,10 @@
 import { formatEther, formatUnits } from "viem";
 import {
-  CreatedContractProps,
+  AddressProps,
   RawTransactionI,
   RawTransactionType,
   RawTxTokenTransfersProps,
-  TokenTransferProps,
+  TxTokenTransferProps,
   TransactionI,
   TransactionStatus,
   TransactionType,
@@ -143,11 +143,11 @@ export const getTransactionType = ({
   createdContract,
 }: {
   toHash: string | null;
-  tokenTransfers: TokenTransferProps[];
+  tokenTransfers: TxTokenTransferProps[];
   isFromContract: boolean;
   isToContract: boolean;
   txTypes: string[];
-  createdContract?: CreatedContractProps;
+  createdContract?: AddressProps;
 }) => {
   let transactionType = TransactionType.Transaction;
   // Note: tokenTransfers is always null in transactions list api
@@ -184,7 +184,7 @@ export const getTransactionType = ({
   Equivalent logic of get_transaction_type_from_token_transfers from blockscout
 */
 const getTransactionTypeFromTokenTransfers = (
-  tokenTransfers: TokenTransferProps[]
+  tokenTransfers: TxTokenTransferProps[]
 ) => {
   if (tokenTransfers.length > 0) {
     if (

@@ -19,7 +19,7 @@ export default function Dropdown<T extends DropdownOptionsI>({
   dropdownContainerClassName,
 }: {
   value: T;
-  label: string;
+  label?: string;
   options: T[];
   onChange: (val: T) => void;
   placeholder: string;

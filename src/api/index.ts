@@ -1,7 +1,7 @@
 import { NetworkConnection } from "@contexts/Environment";
 
 export function wrapResponse<T>(res: Response): Promise<T> {
-  if (!res.ok) {
+  if (!res?.ok) {
     throw new Error(`Failed to fetch data: ${res.status}`);
   }
 

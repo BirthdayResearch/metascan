@@ -6,6 +6,7 @@ import { getEnvironment } from "@contexts/Environment";
 import { CompilerType } from "@api/types";
 import { useGetVerificationConfigQuery } from "@store/contract";
 import { DropdownOptionsI } from "@components/commons/Dropdown";
+import WalletAddressApi from "@api/WalletAddressApi";
 import StepOne from "./_components/StepOne";
 import StepTwo from "./_components/StepTwo";
 
@@ -114,6 +115,48 @@ export default function VerifyContract() {
     });
   };
 
+  const [files, setFiles] = useState<File[]>([]);
+  const submitUsingMultiPartFile = async () => {
+    // Create an object of formData
+    const formData = new FormData();
+    formData.append("verification_type", "multi-part-files");
+    formData.append("smart_contract[address_hash]", address);
+    formData.append("smart_contract[nightly_builds]", "false");
+    formData.append("smart_contract[compiler_version]", version.value);
+    formData.append("smart_contract[evm_version]", evmVersion.value);
+    formData.append("smart_contract[optimization]", `${hasOptimization}`);
+    formData.append("smart_contract[optimization_runs]", `${optimizationRuns}`);
+    // Append 10 libraries
+    for (let i = 1; i <= 10; i += 1) {
+      formData.append(
+        `external_libraries[library${i}_name]`,
+        libraryValues[`library${i}Name`]
+      );
+      formData.append(
+        `external_libraries[library${i}_address]`,
+        libraryValues[`library${i}Address`]
+      );
+    }
+
+    for (let i = 0; i < files?.length; i += 1) {
+      formData.append(`file[${i}]`, files[i]);
+    }
+    await SmartContractApi.verifySmartContractUsingMultiPartFile(
+      connection,
+      formData
+    );
+    await sleep(2000);
+    const details = await WalletAddressApi.getDetail(connection, address);
+    setIsVerifying(false);
+    if (details.is_verified) {
+      setIsVerified(true);
+      await redirect();
+    } else {
+      setError("Error occurred while verifying smart contract");
+      setIsVerified(false);
+    }
+  };
+
   const submitForm = async () => {
     setIsVerifying(true);
     // for standard input json
@@ -146,6 +189,12 @@ export default function VerifyContract() {
         setError(verificationStatus.result);
         setIsVerified(false);
       }
+      return;
+    }
+
+    // for multi part file
+    if (compiler.value === CompilerType.SolidityMultiPartFiles) {
+      await submitUsingMultiPartFile();
       return;
     }
 
@@ -202,10 +251,13 @@ export default function VerifyContract() {
 
   const handleCompilerSelect = (value): void => {
     setCompiler(value);
-    if (compiler.value !== value.value) {
+    const versions = getCompilerVersions(value.value);
+    const isVersionAvailable = versions.find(
+      (item) => version.value === item.value
+    );
+    if (!isVersionAvailable) {
       setVersion(defaultDropdownValue);
     }
-    const versions = getCompilerVersions(value.value);
     setCompilerVersions(versions);
   };
 
@@ -240,6 +292,8 @@ export default function VerifyContract() {
             resetStepTwo();
             setIsEditStepOne(true);
           }}
+          files={files}
+          setFiles={setFiles}
           submitForm={submitForm}
           isVerifying={isVerifying}
           isVerified={isVerified}

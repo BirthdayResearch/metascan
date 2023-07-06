@@ -127,7 +127,7 @@ export default function StepTwo({
               {compiler.value === CompilerType.SolidityMultiPartFiles ? (
                 <div>
                   <div className="text-lg text-white-700 -tracking-[0.02em] mb-2">
-                    Please select the Solidity (*.sol) files for upload
+                    Select the Solidity (*.sol) files for upload
                   </div>
                   <Dropzone setFiles={setFiles} files={files} />
                 </div>

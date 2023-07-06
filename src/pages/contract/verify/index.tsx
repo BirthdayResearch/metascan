@@ -6,6 +6,7 @@ import { getEnvironment } from "@contexts/Environment";
 import { CompilerType } from "@api/types";
 import { useGetVerificationConfigQuery } from "@store/contract";
 import { DropdownOptionsI } from "@components/commons/Dropdown";
+import WalletAddressApi from "@api/WalletAddressApi";
 import StepOne from "./_components/StepOne";
 import StepTwo from "./_components/StepTwo";
 
@@ -114,6 +115,116 @@ export default function VerifyContract() {
     });
   };
 
+  const [files, setFiles] = useState<File[]>([]);
+  const submitUsingMultiPartFile = async () => {
+    // Create an object of formData
+    const formData = new FormData();
+    formData.append("verification_type", "multi-part-files");
+    formData.append("smart_contract[address_hash]", address);
+    formData.append("smart_contract[nightly_builds]", "false");
+    formData.append("smart_contract[compiler_version]", version.value);
+    formData.append("smart_contract[evm_version]", evmVersion.value);
+    formData.append("smart_contract[optimization]", `${hasOptimization}`);
+    formData.append("smart_contract[optimization_runs]", `${optimizationRuns}`);
+    formData.append(
+      "external_libraries[library1_name]",
+      libraryValues.library1Name
+    );
+    formData.append(
+      "external_libraries[library1_address]",
+      libraryValues.library1Address
+    );
+    formData.append(
+      "external_libraries[library2_name]",
+      libraryValues.library2Name
+    );
+    formData.append(
+      "external_libraries[library2_address]",
+      libraryValues.library2Address
+    );
+    formData.append(
+      "external_libraries[library3_name]",
+      libraryValues.library3Name
+    );
+    formData.append(
+      "external_libraries[library3_address]",
+      libraryValues.library3Address
+    );
+    formData.append(
+      "external_libraries[library4_name]",
+      libraryValues.library4Name
+    );
+    formData.append(
+      "external_libraries[library4_address]",
+      libraryValues.library4Address
+    );
+    formData.append(
+      "external_libraries[library5_name]",
+      libraryValues.library5Name
+    );
+    formData.append(
+      "external_libraries[library5_address]",
+      libraryValues.library5Address
+    );
+    formData.append(
+      "external_libraries[library6_name]",
+      libraryValues.library6Name
+    );
+    formData.append(
+      "external_libraries[library6_address]",
+      libraryValues.library6Address
+    );
+    formData.append(
+      "external_libraries[library7_name]",
+      libraryValues.library7Name
+    );
+    formData.append(
+      "external_libraries[library7_address]",
+      libraryValues.library7Address
+    );
+    formData.append(
+      "external_libraries[library8_name]",
+      libraryValues.library8Name
+    );
+    formData.append(
+      "external_libraries[library8_address]",
+      libraryValues.library8Address
+    );
+    formData.append(
+      "external_libraries[library9_name]",
+      libraryValues.library9Name
+    );
+    formData.append(
+      "external_libraries[library9_address]",
+      libraryValues.library9Address
+    );
+    formData.append(
+      "external_libraries[library10_name]",
+      libraryValues.library10Name
+    );
+    formData.append(
+      "external_libraries[library10_address]",
+      libraryValues.library10Address
+    );
+    for (let i = 0; i < files?.length; i += 1) {
+      formData.append(`file[${i}]`, files[i]);
+    }
+    await SmartContractApi.verifySmartContractUsingMultiPartFile(
+      connection,
+      formData
+    );
+    await sleep(2000);
+    const details = await WalletAddressApi.getDetail(connection, address);
+    setIsVerifying(false);
+    if (details.is_verified) {
+      setIsVerified(true);
+      await redirect();
+    } else {
+      setError("Error occurred while verifying smart contract");
+      setIsVerified(false);
+    }
+  };
+
   const submitForm = async () => {
     setIsVerifying(true);
     // for standard input json
@@ -146,6 +257,12 @@ export default function VerifyContract() {
         setError(verificationStatus.result);
         setIsVerified(false);
       }
+      return;
+    }
+
+    // for multi part file
+    if (compiler.value === CompilerType.SolidityMultiPartFiles) {
+      await submitUsingMultiPartFile();
       return;
     }
 
@@ -202,10 +319,13 @@ export default function VerifyContract() {
 
   const handleCompilerSelect = (value): void => {
     setCompiler(value);
-    if (compiler.value !== value.value) {
+    const versions = getCompilerVersions(value.value);
+    const isVersionAvailable = versions.find(
+      (item) => version.value === item.value
+    );
+    if (!isVersionAvailable) {
       setVersion(defaultDropdownValue);
     }
-    const versions = getCompilerVersions(value.value);
     setCompilerVersions(versions);
   };
 
@@ -240,6 +360,8 @@ export default function VerifyContract() {
             resetStepTwo();
             setIsEditStepOne(true);
           }}
+          files={files}
+          setFiles={setFiles}
           submitForm={submitForm}
           isVerifying={isVerifying}
           isVerified={isVerified}

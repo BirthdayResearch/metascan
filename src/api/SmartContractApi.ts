@@ -56,6 +56,20 @@ export default {
     );
     return wrapResponse(res);
   },
+  verifySmartContractUsingMultiPartFile: async (
+    network: NetworkConnection,
+    data
+  ): Promise<any> => {
+    const baseUrl = getBaseUrl(network);
+    const res = await fetch(
+      `${baseUrl}/verify_smart_contract/contract_verifications`,
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    return res;
+  },
   checkVerifyStatus: async (network: NetworkConnection, guid): Promise<any> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(

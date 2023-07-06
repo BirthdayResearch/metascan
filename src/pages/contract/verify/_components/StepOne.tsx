@@ -108,11 +108,10 @@ export default function StepOne({
       label: CompilerType.SoliditySingleFile,
       value: CompilerType.SoliditySingleFile,
     },
-    // Do not remove, will be implemented in next phase
-    // {
-    //   label: CompilerType.SolidityMultiPartFiles,
-    //   value: CompilerType.SolidityMultiPartFiles,
-    // },
+    {
+      label: CompilerType.SolidityMultiPartFiles,
+      value: CompilerType.SolidityMultiPartFiles,
+    },
     {
       label: CompilerType.SolidityStandardJsonInput,
       value: CompilerType.SolidityStandardJsonInput,

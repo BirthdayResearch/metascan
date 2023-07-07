@@ -124,34 +124,28 @@ export default function StepTwo({
                   </div>
                 </div>
               )}
+              <div className="font-semibold text-white-50 text-xl -tracking-[0.01em] mb-6 md:mb-4 lg:mb-6">
+                Contract code and details
+              </div>
               {compiler.value === CompilerType.SolidityMultiPartFiles ? (
+                <Dropzone setFiles={setFiles} files={files} />
+              ) : (
                 <div>
                   <div className="text-lg text-white-700 -tracking-[0.02em] mb-2">
-                    Select the Solidity (*.sol) files for upload
+                    Enter code to verify
                   </div>
-                  <Dropzone setFiles={setFiles} files={files} />
+                  <textarea
+                    data-testid="code"
+                    className={clsx(
+                      "w-full focus:outline-none h-[168px] transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-dark-100 border-[0.5px] border-dark-200 text-white-50 py-[18px] px-4 resize-y placeholder-black-500"
+                    )}
+                    placeholder=""
+                    onChange={(e) => setSourceCode(e.target.value)}
+                    value={sourceCode}
+                  />
                 </div>
-              ) : (
-                <>
-                  <div className="font-semibold text-white-50 text-xl -tracking-[0.01em] mb-6 md:mb-4 lg:mb-6">
-                    Contract code and details
-                  </div>
-                  <div>
-                    <div className="text-lg text-white-700 -tracking-[0.02em] mb-2">
-                      Enter code to verify
-                    </div>
-                    <textarea
-                      data-testid="code"
-                      className={clsx(
-                        "w-full focus:outline-none h-[168px] transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-dark-100 border-[0.5px] border-dark-200 text-white-50 py-[18px] px-4 resize-y placeholder-black-500"
-                      )}
-                      placeholder=""
-                      onChange={(e) => setSourceCode(e.target.value)}
-                      value={sourceCode}
-                    />
-                  </div>
-                </>
               )}
+
               {(compiler.value === CompilerType.SoliditySingleFile ||
                 compiler.value === CompilerType.SolidityMultiPartFiles) && (
                 <>

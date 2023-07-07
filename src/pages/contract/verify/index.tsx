@@ -15,29 +15,14 @@ const sleep = (ms: number) =>
     setTimeout(r, ms);
   });
 
-const initialLibraryValues: { [key: string]: string } = {
-  library1Name: "",
-  library1Address: "",
-  library2Name: "",
-  library2Address: "",
-  library3Name: "",
-  library3Address: "",
-  library4Name: "",
-  library4Address: "",
-  library5Name: "",
-  library5Address: "",
-  library6Name: "",
-  library6Address: "",
-  library7Name: "",
-  library7Address: "",
-  library8Name: "",
-  library8Address: "",
-  library9Name: "",
-  library9Address: "",
-  library10Name: "",
-  library10Address: "",
-};
-
+const initialLibraryValues: { [key: string]: string } = [...Array(10)].reduce(
+  (obj, _current, currentIndex) => ({
+    ...obj,
+    [`library${currentIndex + 1}Name`]: "",
+    [`library${currentIndex + 1}Address`]: "",
+  }),
+  {}
+);
 export default function VerifyContract() {
   const router = useRouter();
   const queryAddress = router.query.address;

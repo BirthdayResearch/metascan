@@ -59,7 +59,7 @@ export default function Tokens({
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
         <div className="p-5 md:p-10">
-          <div className="flex flex-col md:flex-row py-6 md:py-4 mb-6 justify-between md:items-center relative">
+          <div className="flex flex-col md:flex-row py-6 md:py-4 lg:mb-6 justify-between md:items-center relative">
             <span className="font-bold text-2xl text-white-50">Tokens</span>
             {isLoading && (
               <PaginationLoader customStyle="right-0 top-[72px] md:top-8" />

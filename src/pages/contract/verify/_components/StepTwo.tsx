@@ -128,7 +128,7 @@ export default function StepTwo({
                 Contract code and details
               </div>
               {compiler.value === CompilerType.SolidityMultiPartFiles ? (
-                <Dropzone setFiles={setFiles} files={files} />
+                <Dropzone setFiles={setFiles} files={files ?? []} />
               ) : (
                 <div>
                   <div className="text-lg text-white-700 -tracking-[0.02em] mb-2">

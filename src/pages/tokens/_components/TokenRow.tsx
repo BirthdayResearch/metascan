@@ -6,7 +6,7 @@ import { formatUnits } from "viem";
 
 const transformTokenData = (rawToken: RawTokenI) => ({
   address: rawToken.address,
-  circulatingMarketCap: rawToken.circulating_market_cap ?? "n/a",
+  circulatingMarketCap: rawToken.circulating_market_cap ?? "N/A",
   decimals: rawToken.decimals,
   exchangeRate: rawToken.exchange_rate,
   holders: rawToken.holders,
@@ -42,7 +42,7 @@ export default function TokenRow({
           <div className="col-start-2 col-end-3 xl:col-start-2 xl:col-end-5">
             <div className="flex flex-row">
               <div className="flex flex-col ml-2 xl:ml-4 text-base">
-                <span className="text-white-50">{`${token.name ?? "n/a"} ${
+                <span className="text-white-50">{`${token.name ?? "N/A"} ${
                   token.symbol ? `(${token.symbol})` : ""
                 }`}</span>
               </div>
@@ -75,7 +75,7 @@ export default function TokenRow({
                     decimalScale={0}
                   />
                 ) : (
-                  "n/a"
+                  "N/A"
                 )}
               </span>
               <span className="text-white-50">{rawData.symbol}</span>
@@ -119,7 +119,7 @@ export default function TokenRow({
                     decimalScale={0}
                   />
                 ) : (
-                  "n/a"
+                  "N/A"
                 )}
               </span>
               <span className="text-white-50">{rawData.symbol}</span>

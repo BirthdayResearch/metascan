@@ -95,7 +95,23 @@ export const tokenApi = createApi({
         };
       },
     }),
+    getTokenCounters: builder.query<
+      { token_holders_count: string; transfers_count: string },
+      {
+        network: NetworkConnection;
+        tokenId: string;
+      }
+    >({
+      query: ({ network, tokenId }) => ({
+        url: `${getBaseUrl(network)}/${TOKENS_URL}/${tokenId}/counters`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetTokenHoldersQuery, useGetTokenTransfersQuery } = tokenApi;
+export const {
+  useGetTokenHoldersQuery,
+  useGetTokenTransfersQuery,
+  useGetTokenCountersQuery,
+} = tokenApi;

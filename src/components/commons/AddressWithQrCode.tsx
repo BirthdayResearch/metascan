@@ -44,7 +44,7 @@ export default function AddressWithQrCode({
           />
         </div>
       ) : (
-        <div className="flex flex-row gap-x-2.5 items-center">
+        <div className="flex flex-row gap-x-2.5 items-center flex-wrap">
           <LinkText
             testId="wallet-address"
             label={truncateTextFromMiddle(address, truncateTextLength)}

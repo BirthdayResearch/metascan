@@ -67,7 +67,7 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     nonce: tx.nonce,
     blockNumber: tx.block,
     value: formatEther(BigInt(tx.value ?? "0")),
-    fee: formatEther(BigInt(tx.fee.value ?? "0")),
+    fee: formatEther(BigInt(tx.fee?.value ?? "0")),
     gasUsed: tx.gas_used,
     gasLimit: tx.gas_limit,
     gasPrice: formatUnits(BigInt(tx.gas_price ?? "0"), GWEI_DECIMAL).toString(),

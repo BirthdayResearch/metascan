@@ -6,7 +6,7 @@ import Link from "./Link";
 
 interface PaginationProps<T> {
   nextPageParams?: T & {
-    items_count: string;
+    items_count?: string;
     page_number?: string;
   };
   pathname?: string;

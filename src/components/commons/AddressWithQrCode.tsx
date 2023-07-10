@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { useRouter } from "next/router";
 import LinkText from "@components/commons/LinkText";
 import { GreenTickIcon } from "@components/icons/GreenTickIcon";
 import { MdOutlineQrCode } from "react-icons/md";
@@ -8,24 +7,23 @@ import { sleep } from "shared/sleep";
 import { FiCopy } from "react-icons/fi";
 
 interface QrClickProps {
+  address: string;
   setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
+  truncateTextLength?: number;
 }
 
-export default function WalletAddressDetails({
+export default function AddressWithQrCode({
+  address,
   setIsQrCodeClicked,
+  truncateTextLength = 11,
 }: QrClickProps) {
   const [isWalletAddressCopied, setIsWalletAddressCopied] = useState(false);
-  const router = useRouter();
-  const aid = router.query.aid?.toString()!;
 
-  const onCopyAddressIconClick = async (
-    onTextClick: Dispatch<SetStateAction<boolean>>,
-    address: string
-  ) => {
-    onTextClick(true);
+  const onCopyAddressIconClick = async () => {
+    setIsWalletAddressCopied(true);
     navigator.clipboard.writeText(address);
     await sleep(2000);
-    onTextClick(false);
+    setIsWalletAddressCopied(false);
   };
 
   return (
@@ -35,7 +33,7 @@ export default function WalletAddressDetails({
           <LinkText
             testId="wallet-address-copied"
             label="Copied"
-            href={`/address/${aid}`}
+            href={`/address/${address}`}
             customStyle="tracking-[0.01em]"
           />
           <GreenTickIcon data-testid="wallet-address-copied-green-tick-icon" />
@@ -49,16 +47,14 @@ export default function WalletAddressDetails({
         <div className="flex flex-row gap-x-2.5 items-center">
           <LinkText
             testId="wallet-address"
-            label={truncateTextFromMiddle(aid, 11)}
-            href={`/address/${aid}`}
+            label={truncateTextFromMiddle(address, truncateTextLength)}
+            href={`/address/${address}`}
             customStyle="tracking-[0.01em]"
           />
           <FiCopy
             role="button"
             data-testid="wallet-address-copy-icon"
-            onClick={() =>
-              onCopyAddressIconClick(setIsWalletAddressCopied, aid)
-            }
+            onClick={() => onCopyAddressIconClick()}
             className="text-white-50"
           />
           <MdOutlineQrCode

@@ -13,7 +13,7 @@ export default function Tooltip({
   active = true,
 }: TooltipProps) {
   return (
-    <div className="group relative">
+    <div className="group relative cursor-pointer">
       <div
         className={clsx(
           "font-semibold pointer-events-none absolute -top-10 left-5 -translate-x-1/2 whitespace-nowrap rounded bg-dark-200 text-xs text-white-50 px-4 py-2 text-white opacity-0 transition before:absolute before:left-1/2 before:top-full before:-translate-x-1/2 before:border-4 before:border-transparent before:border-t-black before:content-[''] group-hover:opacity-100",

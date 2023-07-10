@@ -16,9 +16,9 @@ import { NetworkConnection } from "@contexts/Environment";
 
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
 import TransactionDetails from "@components/TransactionDetails";
+import AddressWithQrCode from "@components/commons/AddressWithQrCode";
 import QrCode from "../../components/commons/QrCode";
 import WalletAddressApi from "../../api/WalletAddressApi";
-import WalletAddressDetails from "./_components/WalletAddressDetails";
 import WalletDetails, {
   AddressTransactionsProps,
   WalletDetailProps,
@@ -33,6 +33,7 @@ enum TabTitle {
 }
 
 interface SegmentOneProps {
+  aid: string;
   setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
   detail: WalletDetailProps;
 }
@@ -62,6 +63,7 @@ function Address({
             </span>
           </div>
           <WalletSegmentOne
+            aid={aid}
             setIsQrCodeClicked={setIsQrCodeClicked}
             detail={{ balance, transactionCount, tokens, addressTransactions }}
           />
@@ -94,10 +96,17 @@ function TabSelectionIndicator() {
   return <div className="brand-gradient-1 h-1 mt-[19.33px]" />;
 }
 
-function WalletSegmentOne({ setIsQrCodeClicked, detail }: SegmentOneProps) {
+function WalletSegmentOne({
+  aid,
+  setIsQrCodeClicked,
+  detail,
+}: SegmentOneProps) {
   return (
     <div className="flex flex-col gap-y-[33px]">
-      <WalletAddressDetails setIsQrCodeClicked={setIsQrCodeClicked} />
+      <AddressWithQrCode
+        address={aid}
+        setIsQrCodeClicked={setIsQrCodeClicked}
+      />
       <WalletDetails detail={detail} />
     </div>
   );

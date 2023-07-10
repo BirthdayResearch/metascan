@@ -60,7 +60,7 @@ export default function VerifiedContract({
             data-testid="contract-details-title"
           >
             <span className="font-bold text-xl text-white-50">
-              {fixedTitle.contract}
+              {addressDetail.name ?? fixedTitle.contract}
             </span>
             {addressDetail.is_verified && <VerifiedGreenTickIcon size={18} />}
           </div>

@@ -15,6 +15,7 @@ export const TRANSACTIONS_URL = "api/v2/transactions";
 export const WALLET_ADDRESS_URL = "api/v2/addresses";
 export const SMART_CONTRACT_URL = "api/v2/smart-contracts";
 export const TOKENS_URL = "api/v2/tokens";
+export const HEALTH_URL = "api/v1/health";
 export const V1_TRANSACTION_URL =
   "api?module=transaction&action=gettxinfo&txhash=";
 

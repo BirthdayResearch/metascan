@@ -1,11 +1,13 @@
 import BigNumber from "bignumber.js";
+import { useEffect, useState } from "react";
 import { formatEther } from "viem";
 import { useRouter } from "next/router";
 import { useNetwork } from "@contexts/NetworkContext";
 import {
   TokenHolderPageParamsProps,
   TokenHolderProps,
-  useGetTokenHoldersQuery,
+  TokenHolderWithPaginationProps,
+  useGetTokenHoldersMutation,
 } from "@store/token";
 import {
   SkeletonLoader,
@@ -21,13 +23,31 @@ export default function TokenHolders() {
   const { connection } = useNetwork();
   const router = useRouter();
   const { tokenId, ...params } = router.query;
-  const { data, isLoading } = useGetTokenHoldersQuery({
-    network: connection,
-    tokenId: tokenId as string,
-    itemsCount: params.items_count as string,
-    value: params.value as string,
-  });
+
+  const [data, setData] = useState<TokenHolderWithPaginationProps>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [trigger] = useGetTokenHoldersMutation();
+
+  const fetchTokenHolders = async () => {
+    setIsLoading(true);
+    const holdersData = await trigger({
+      network: connection,
+      tokenId: tokenId as string,
+      itemsCount: params.items_count as string,
+      value: params.value as string,
+    }).unwrap();
+    setData(holdersData);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchTokenHolders();
+  }, [router.query.page_number]);
+
   const tokenHolders = data?.items ?? [];
+  if (!isLoading && tokenHolders.length === 0) {
+    return <div className="text-white-50 mt-6">No token holders</div>;
+  }
 
   return (
     <div>

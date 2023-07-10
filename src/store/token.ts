@@ -15,7 +15,7 @@ export interface TokenHolderPageParamsProps {
   items_count: string;
   value: string;
 }
-interface TokenHolderWithPaginationProps {
+export interface TokenHolderWithPaginationProps {
   items: TokenHolderProps[];
   next_page_params: TokenHolderPageParamsProps;
 }
@@ -36,7 +36,7 @@ interface TokenTransferProps {
   method: string;
   timestamp: string;
 }
-interface TokenTransferWithPaginationProps {
+export interface TokenTransferWithPaginationProps {
   items: TokenTransferProps[];
   next_page_params: TokenTransferPageParamsProps;
 }
@@ -45,13 +45,18 @@ export interface TokenTransferPageParamsProps {
   index: string;
 }
 
+export interface TokenCountersProps {
+  token_holders_count: string;
+  transfers_count: string;
+}
+
 export const tokenApi = createApi({
   reducerPath: "token",
   baseQuery: fetchBaseQuery({
     baseUrl: "/",
   }),
   endpoints: (builder) => ({
-    getTokenHolders: builder.query<
+    getTokenHolders: builder.mutation<
       TokenHolderWithPaginationProps,
       {
         network: NetworkConnection;
@@ -73,7 +78,7 @@ export const tokenApi = createApi({
         };
       },
     }),
-    getTokenTransfers: builder.query<
+    getTokenTransfers: builder.mutation<
       TokenTransferWithPaginationProps,
       {
         network: NetworkConnection;
@@ -95,8 +100,8 @@ export const tokenApi = createApi({
         };
       },
     }),
-    getTokenCounters: builder.query<
-      { token_holders_count: string; transfers_count: string },
+    getTokenCounters: builder.mutation<
+      TokenCountersProps,
       {
         network: NetworkConnection;
         tokenId: string;
@@ -111,7 +116,7 @@ export const tokenApi = createApi({
 });
 
 export const {
-  useGetTokenHoldersQuery,
-  useGetTokenTransfersQuery,
-  useGetTokenCountersQuery,
+  useGetTokenHoldersMutation,
+  useGetTokenTransfersMutation,
+  useGetTokenCountersMutation,
 } = tokenApi;

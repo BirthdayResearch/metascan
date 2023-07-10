@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiInfo } from "react-icons/fi";
 import { formatEther } from "viem";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
@@ -9,7 +9,7 @@ import WalletAddressApi from "@api/WalletAddressApi";
 import { NetworkConnection } from "@contexts/Environment";
 import { useNetwork } from "@contexts/NetworkContext";
 import useWindowDimensions from "@hooks/useWindowDimensions";
-import { useGetTokenCountersQuery } from "@store/token";
+import { TokenCountersProps, useGetTokenCountersMutation } from "@store/token";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import Tooltip from "@components/commons/Tooltip";
@@ -17,13 +17,7 @@ import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import AddressWithQrCode from "@components/commons/AddressWithQrCode";
 import QrCode from "../../components/commons/QrCode";
-import TokenTransfers from "./_components/TokenTransfers";
-import TokenHolders from "./_components/TokenHolders";
-
-enum TabTitle {
-  transfers = "Token transfers",
-  holders = "Token holders",
-}
+import TokenDetailTabs from "./_components/TokenDetailTabs";
 
 interface TokenDetailProps {
   token: TokenProps;
@@ -33,10 +27,20 @@ interface TokenDetailProps {
 export default function Token({ token, creatorAddress }: TokenDetailProps) {
   const tokenId = token.address;
   const { connection } = useNetwork();
-  const { data: tokenCounters } = useGetTokenCountersQuery({
-    network: connection,
-    tokenId,
-  });
+  const [trigger] = useGetTokenCountersMutation();
+  const [tokenCounters, setTokenCounters] = useState<TokenCountersProps>();
+
+  const fetchTokenCounters = async () => {
+    const result = await trigger({
+      network: connection,
+      tokenId,
+    }).unwrap();
+    setTokenCounters(result);
+  };
+
+  useEffect(() => {
+    fetchTokenCounters();
+  }, []);
 
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
   const windowDimension = useWindowDimensions().width;
@@ -128,7 +132,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
       <div className="mt-6" />
       <GradientCardContainer className="relative">
         <div className="md:p-10 p-5">
-          <TokenTransfersAndHolders />
+          <TokenDetailTabs />
         </div>
       </GradientCardContainer>
       {isQrCodeClicked && (
@@ -150,51 +154,6 @@ function DetailTitle({ title, tooltip }: { title: string; tooltip: string }) {
       <Tooltip text={tooltip}>
         <FiInfo size={16} className="ml-1 md:ml-2" />
       </Tooltip>
-    </div>
-  );
-}
-
-function TokenTransfersAndHolders() {
-  const [activeTab, setActiveTab] = useState(TabTitle.holders);
-
-  const tabs = [
-    {
-      title: TabTitle.transfers,
-    },
-    {
-      title: TabTitle.holders,
-    },
-  ];
-
-  return (
-    <div className="flex flex-col md:pt-[3.67px] pt-[23.67px]">
-      {tabs.length > 0 && (
-        <div className="flex flex-row gap-x-6">
-          {tabs.map(({ title }) => (
-            <div className="flex flex-col" key={title}>
-              <button
-                type="button"
-                className={clsx(
-                  "font-medium",
-                  activeTab === title ? "text-white-50" : "text-white-700"
-                )}
-                data-testid={`wallet-${title}-options-title`}
-                onClick={() => setActiveTab(title)}
-              >
-                {title}
-              </button>
-              {activeTab === title && (
-                <div className="brand-gradient-1 h-1 mt-3" />
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div>
-        {activeTab === TabTitle.transfers && <TokenTransfers />}
-        {activeTab === TabTitle.holders && <TokenHolders />}
-      </div>
     </div>
   );
 }

@@ -1,8 +1,10 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useNetwork } from "@contexts/NetworkContext";
 import {
   TokenTransferPageParamsProps,
-  useGetTokenTransfersQuery,
+  TokenTransferWithPaginationProps,
+  useGetTokenTransfersMutation,
 } from "@store/token";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import Pagination from "@components/commons/Pagination";
@@ -16,13 +18,32 @@ export default function TokenTransfers() {
   const { connection } = useNetwork();
   const router = useRouter();
   const { tokenId, ...params } = router.query;
-  const { data, isLoading } = useGetTokenTransfersQuery({
-    network: connection,
-    tokenId: tokenId as string,
-    blockNumber: params.block_number as string,
-    index: params.index as string,
-  });
+
+  const [data, setData] = useState<TokenTransferWithPaginationProps>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [trigger] = useGetTokenTransfersMutation();
+
+  const fetchTokenTransfers = async () => {
+    setIsLoading(true);
+    const transfersData = await trigger({
+      network: connection,
+      tokenId: tokenId as string,
+      blockNumber: params.block_number as string,
+      index: params.index as string,
+    }).unwrap();
+    setData(transfersData);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchTokenTransfers();
+  }, [router.query.page_number]);
+
   const tokenTransfers = data?.items ?? [];
+
+  if (!isLoading && tokenTransfers.length === 0) {
+    return <div className="text-white-50 mt-6">No token transfers</div>;
+  }
 
   return (
     <div>

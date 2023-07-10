@@ -62,7 +62,12 @@ export default function TokenTransfers() {
           <TransactionRow
             key={item.tx_hash}
             rawData={
-              { ...item, hash: item.tx_hash, tx_types: [item.type] } as any
+              {
+                ...item,
+                hash: item.tx_hash,
+                tx_types: [item.type],
+                token_transfers: [item],
+              } as any
             }
           />
         ))

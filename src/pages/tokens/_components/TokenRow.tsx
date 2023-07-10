@@ -85,7 +85,12 @@ export default function TokenRow({
           </div>
           <div className="flex flex-col col-start-12 col-end-12 items-end">
             <span className="text-white-700 mr-1">Holders</span>
-            <span className="text-white-50">{token.holders}</span>
+            <NumericFormat
+              thousandSeparator
+              value={token.holders}
+              className="text-white-50"
+              decimalScale={0}
+            />
           </div>
         </div>
       </div>

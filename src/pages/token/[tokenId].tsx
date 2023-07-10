@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { FiInfo } from "react-icons/fi";
-import { formatEther } from "viem";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { isAlphanumeric, truncateTextFromMiddle } from "shared/textHelper";
 import TokenApi, { TokenProps } from "@api/TokenApi";
@@ -75,7 +74,10 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mt-5 md:mt-0">
             <div className={clsx(detailContainerCss, "hidden md:flex")}>
-              <DetailTitle title="Contract" tooltip="Contract" />
+              <DetailTitle
+                title="Contract"
+                tooltip="The unique address identifying the smart contract on the blockchain"
+              />
               <AddressWithQrCode
                 address={tokenId}
                 setIsQrCodeClicked={setIsQrCodeClicked}
@@ -83,7 +85,10 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
               />
             </div>
             <div className={detailContainerCss}>
-              <DetailTitle title="Creator" tooltip="Creator" />
+              <DetailTitle
+                title="Creator"
+                tooltip="The entity that deployed the smart contract on the blockchain"
+              />
               <LinkText
                 href={`/address/${creatorAddress}`}
                 label={truncateTextFromMiddle(
@@ -93,21 +98,35 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
               />
             </div>
             <div className={detailContainerCss}>
-              <DetailTitle title="Token type" tooltip="Token type" />
+              <DetailTitle
+                title="Token type"
+                tooltip="The standard protocol the token follows, such as ERC-20 or ERC-721"
+              />
               <div className="text-white-50">{token.type}</div>
             </div>
             <div className={detailContainerCss}>
-              <DetailTitle title="Total supply" tooltip="Total supply" />
-              <NumericFormat
-                thousandSeparator
-                value={formatEther(BigInt(token.total_supply ?? "0"))}
-                className="text-white-50"
-                suffix={` ${token.symbol}`}
-                decimalScale={2}
+              <DetailTitle
+                title="Total supply"
+                tooltip="The total number of tokens that currently exist for this contract"
               />
+              {token.total_supply ? (
+                <NumericFormat
+                  data-testid="total-supply"
+                  thousandSeparator
+                  value={token.total_supply}
+                  decimalScale={0}
+                  suffix={token.symbol ? ` ${token.symbol}` : ""}
+                  className="text-white-50"
+                />
+              ) : (
+                <span className="text-white-50">N/A</span>
+              )}
             </div>
             <div className={detailContainerCss}>
-              <DetailTitle title="Total transfers" tooltip="Total transfers" />
+              <DetailTitle
+                title="Total transfers"
+                tooltip="The cumulative count of all token transfers associated with this contract"
+              />
               <NumericFormat
                 thousandSeparator
                 value={tokenCounters?.transfers_count ?? 0}
@@ -117,7 +136,10 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
               />
             </div>
             <div className={detailContainerCss}>
-              <DetailTitle title="Total holders" tooltip="Total holders" />
+              <DetailTitle
+                title="Total holders"
+                tooltip="The total number of unique addresses holding the token"
+              />
               <NumericFormat
                 thousandSeparator
                 value={token.holders}

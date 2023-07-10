@@ -102,7 +102,7 @@ export const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
       from: tokenTransfer.to.hash,
       to: tokenTransfer.from.hash,
       value: formatUnits(
-        BigInt(tokenTransfer.total.value),
+        BigInt(tokenTransfer.total.value ?? "0"),
         Number(tokenTransfer.total.decimals ?? GWEI_DECIMAL)
       ),
       address: tokenTransfer.token.address,

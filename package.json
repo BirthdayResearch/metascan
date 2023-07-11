@@ -41,6 +41,7 @@
     "@testing-library/cypress": "^9.0.0",
     "@types/node": "18.16.3",
     "@types/recharts": "^1.8.24",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@waveshq/standard-web-linter": "^1.0.4",
     "autoprefixer": "^10.4.14",
     "babel-plugin-istanbul": "^6.1.1",

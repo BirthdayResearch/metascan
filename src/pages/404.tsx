@@ -4,7 +4,7 @@ import { getTopLevelRoute } from "shared/urlHelper";
 import Button from "@components/commons/Button";
 import DetailPageNotFound from "@components/DetailPageNotFound";
 
-const DETAIL_PAGES = ["/tx", "/block", "/address", "/contract"];
+const DETAIL_PAGES = ["/tx", "/block", "/address", "/contract", "/token"];
 
 export default function Page404() {
   const router = useRouter();

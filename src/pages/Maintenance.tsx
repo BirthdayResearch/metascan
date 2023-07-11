@@ -54,7 +54,7 @@ export default function Maintenance() {
                 aria-label={`${each.testId} Icon`}
               >
                 <Icon size={24} className="text-white-50" />
-                <span className="text-white-50 text-lg ml-3">{each.label}</span>
+                <span className="text-white-100 text-lg ml-3">{each.label}</span>
               </a>
             </div>
           );

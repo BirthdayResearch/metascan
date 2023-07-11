@@ -49,7 +49,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
-      <GradientCardContainer className="relative z-[1]">
+      <GradientCardContainer className="relative z-[1]" fullBorder>
         <div className="lg:p-10 md:p-10 px-5 py-6">
           <div
             className="flex flex-col gap-y-1 flex-wrap pb-5 md:pb-8 text-white-50 border-b border-black-600 md:border-b-0"

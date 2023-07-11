@@ -52,7 +52,7 @@ function Address({
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
-      <GradientCardContainer className="relative z-[1]">
+      <GradientCardContainer className="relative z-[1]" fullBorder>
         <div className="lg:p-10 md:p-10 px-5 py-6">
           <div
             className="flex flex-row pb-[9px]"

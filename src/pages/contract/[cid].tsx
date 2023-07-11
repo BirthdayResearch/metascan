@@ -53,7 +53,7 @@ export default function VerifiedContract({
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
-      <GradientCardContainer className="relative">
+      <GradientCardContainer className="relative" fullBorder>
         <div className="lg:p-10 md:p-10 px-5 py-8">
           <div
             className="flex flex-row lg:pb-[5px] pb-[9px] items-center gap-x-[11px]"

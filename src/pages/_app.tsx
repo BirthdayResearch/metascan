@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import { getTopLevelRoute } from "shared/urlHelper";
 import { Default } from "../layouts/Default";
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps,
+}: AppProps & { Component: any }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 

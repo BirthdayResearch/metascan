@@ -146,7 +146,7 @@ function StatusComponent({
   status: TransactionStatus;
 }): JSX.Element {
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row justify-end">
       <span className="text-white-700 text-base hidden xl:block xl:mr-1">
         Status:
       </span>

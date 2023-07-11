@@ -16,14 +16,14 @@ const MenuItems = [
     label: "Blocks",
     pathname: "/blocks",
     testId: "Desktop.HeaderLink.Blocks",
-    childPaths: [],
+    childPaths: ["/block"],
     imagePath: "/menu/Blocks.svg",
   },
   {
     label: "Transactions",
     pathname: "/txs",
     testId: "Desktop.HeaderLink.Transactions",
-    childPaths: [],
+    childPaths: ["/tx"],
     imagePath: "/menu/Transactions.svg",
   },
   {
@@ -37,7 +37,7 @@ const MenuItems = [
     label: "Tokens",
     pathname: "/tokens",
     testId: "Desktop.HeaderLink.Tokens",
-    childPaths: [],
+    childPaths: ["/token"],
     imagePath: "/menu/VerifiedContracts.svg",
   },
 ];

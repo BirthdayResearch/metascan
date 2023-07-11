@@ -49,6 +49,11 @@ export default function TokenHolders() {
     return <div className="text-white-50 mt-6">No token holders</div>;
   }
 
+  const numberOfItems = 50;
+  const pageNumber = Number(router.query.page_number) ?? 0;
+  const currentItemsCount =
+    pageNumber > 1 ? (pageNumber - 1) * numberOfItems : 0;
+
   return (
     <div>
       <div className="relative">
@@ -63,7 +68,11 @@ export default function TokenHolders() {
         <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.TokenHolders} />
       ) : (
         tokenHolders.map((item, index) => (
-          <TokenHolderRow key={item.address.hash} num={index + 1} data={item} />
+          <TokenHolderRow
+            key={item.address.hash}
+            num={currentItemsCount + index + 1}
+            data={item}
+          />
         ))
       )}
 

@@ -34,7 +34,7 @@ export default function TokenRow({
     <div>
       {/* for desktop and tablet */}
       <div className="hidden lg:block">
-        <div className="grid grid-cols-12 gap-5 py-4">
+        <div className="grid grid-cols-12 gap-5 py-4 items-center">
           <div className="col-start-1 col-end-2">
             <span className="text-white-50">{index + 1}</span>
           </div>

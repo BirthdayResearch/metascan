@@ -46,7 +46,6 @@ export default function Header(): JSX.Element {
   const [menu, setMenu] = useState(false);
   const router = useRouter();
   const currentPath = getTopLevelRoute(router.asPath);
-  console.log({ currentPath });
 
   useEffect(() => {
     function routeChangeStart(): void {

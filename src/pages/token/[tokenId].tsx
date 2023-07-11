@@ -44,7 +44,9 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
   const windowDimension = useWindowDimensions().width;
   const truncateTextLength = windowDimension <= 1024 ? 8 : 11;
-  const detailContainerCss = "flex justify-between md:flex-col gap-1";
+  const detailContainerCss =
+    "flex justify-between md:justify-start md:flex-col gap-1";
+  const detailValueCss = "text-white-50 break-all text-right md:text-start";
 
   return (
     <div className="px-1 md:px-0 mt-12">
@@ -63,17 +65,10 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
                 {token.symbol ? `(${token.symbol})` : ""}
               </span>
             </div>
-            <div className="md:hidden">
-              <AddressWithQrCode
-                address={tokenId}
-                setIsQrCodeClicked={setIsQrCodeClicked}
-                truncateTextLength={truncateTextLength}
-              />
-            </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mt-5 md:mt-0">
-            <div className={clsx(detailContainerCss, "hidden md:flex")}>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mt-7 md:mt-0">
+            <div className={clsx(detailContainerCss, "flex")}>
               <DetailTitle
                 title="Contract"
                 tooltip="The unique address identifying the smart contract on the blockchain"
@@ -82,6 +77,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
                 address={tokenId}
                 setIsQrCodeClicked={setIsQrCodeClicked}
                 truncateTextLength={truncateTextLength}
+                customStyle="justify-end md:justify-start"
               />
             </div>
             <div className={detailContainerCss}>
@@ -95,6 +91,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
                   creatorAddress,
                   truncateTextLength
                 )}
+                customStyle="break-all text-end md:text-start"
               />
             </div>
             <div className={detailContainerCss}>
@@ -102,7 +99,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
                 title="Token type"
                 tooltip="The standard protocol the token follows, such as ERC-20 or ERC-721"
               />
-              <div className="text-white-50">{token.type}</div>
+              <div className={detailValueCss}>{token.type}</div>
             </div>
             <div className={detailContainerCss}>
               <DetailTitle
@@ -116,7 +113,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
                   value={token.total_supply}
                   decimalScale={0}
                   suffix={token.symbol ? ` ${token.symbol}` : ""}
-                  className="text-white-50"
+                  className={detailValueCss}
                 />
               ) : (
                 <span className="text-white-50">N/A</span>
@@ -130,7 +127,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
               <NumericFormat
                 thousandSeparator
                 value={tokenCounters?.transfers_count ?? 0}
-                className="text-white-50"
+                className={detailValueCss}
                 suffix=" transfers"
                 decimalScale={0}
               />
@@ -143,7 +140,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
               <NumericFormat
                 thousandSeparator
                 value={token.holders}
-                className="text-white-50"
+                className={detailValueCss}
                 suffix=" addresses"
                 decimalScale={0}
               />

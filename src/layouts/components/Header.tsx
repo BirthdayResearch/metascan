@@ -16,17 +16,20 @@ const MenuItems = [
     label: "Blocks",
     pathname: "/blocks",
     testId: "Desktop.HeaderLink.Blocks",
+    childPaths: [],
     imagePath: "/menu/Blocks.svg",
   },
   {
     label: "Transactions",
     pathname: "/txs",
     testId: "Desktop.HeaderLink.Transactions",
+    childPaths: [],
     imagePath: "/menu/Transactions.svg",
   },
   {
     label: "Contracts",
     pathname: "/contracts",
+    childPaths: ["/contract"],
     testId: "Desktop.HeaderLink.Contracts",
     imagePath: "/menu/VerifiedContracts.svg",
   },
@@ -34,6 +37,7 @@ const MenuItems = [
     label: "Tokens",
     pathname: "/tokens",
     testId: "Desktop.HeaderLink.Tokens",
+    childPaths: [],
     imagePath: "/menu/VerifiedContracts.svg",
   },
 ];
@@ -99,6 +103,7 @@ function DesktopNavbar({ currentPath }: { currentPath: string }): JSX.Element {
           label={item.label}
           pathname={item.pathname}
           currentPath={currentPath}
+          childPaths={item.childPaths}
           testId={item.testId}
           key={item.testId}
         />
@@ -171,14 +176,17 @@ function HeaderLink({
   label,
   pathname,
   testId,
+  childPaths,
   currentPath,
 }: {
   label: string;
   pathname: string;
   currentPath: string;
+  childPaths?: string[];
   testId?: string;
 }): JSX.Element {
-  const isActive = currentPath === pathname;
+  const isActive =
+    currentPath === pathname || childPaths?.includes(currentPath);
   return (
     <Link href={{ pathname }}>
       <div

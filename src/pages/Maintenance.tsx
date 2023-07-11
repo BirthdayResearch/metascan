@@ -53,7 +53,7 @@ export default function Maintenance() {
                 data-testid={`${each.testId}`}
                 aria-label={`${each.testId} Icon`}
               >
-                <Icon size={24} className="text-white-50" />
+                <Icon size={24} className="text-white-100" />
                 <span className="text-white-100 text-lg ml-3">{each.label}</span>
               </a>
             </div>

@@ -16,12 +16,14 @@ export default function Tooltip({
     <div className="group relative cursor-pointer">
       <div
         className={clsx(
-          "font-semibold pointer-events-none absolute -top-10 left-5 -translate-x-1/2 whitespace-nowrap rounded bg-dark-200 text-xs text-white-50 px-4 py-2 text-white opacity-0 transition before:absolute before:left-1/2 before:top-full before:-translate-x-1/2 before:border-4 before:border-transparent before:border-t-black before:content-[''] group-hover:opacity-100",
+          "rounded bg-white-50 text-xs text-black-900 -tracking-[0.12px] pointer-events-none",
+          "absolute left-5 -translate-x-1/2 -translate-y-[112%] opacity-0 group-hover:opacity-100 transition",
+          "before:absolute before:left-1/2 before:top-full before:-translate-x-1/2 before:border-4 before:border-transparent before:border-t-black before:content-['']",
           { hidden: !active }
         )}
       >
-        <div className="h-2 w-2 absolute rotate-45 -bottom-1 left-[46%] bg-dark-200" />
-        {text}
+        <div className="bg-white-50 h-2 w-2 absolute rotate-45 -bottom-1 left-[46%]" />
+        <div className="max-w-[235px] w-max px-3 py-2">{text}</div>
       </div>
       {children}
     </div>

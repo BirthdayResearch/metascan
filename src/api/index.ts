@@ -13,8 +13,11 @@ export const MAIN_LATEST_BLOCK_URL = "api/v2/main-page/blocks";
 export const MAIN_BLOCKS_URL = "api/v2/blocks";
 export const TRANSACTIONS_URL = "api/v2/transactions";
 export const WALLET_ADDRESS_URL = "api/v2/addresses";
-export const TOKENS_URL = "api/v2/tokens";
 export const SMART_CONTRACT_URL = "api/v2/smart-contracts";
+export const VERIFY_SMART_CONTRACT_URL =
+  "verify_smart_contract/contract_verifications";
+export const TOKENS_URL = "api/v2/tokens";
+export const HEALTH_URL = "api/v1/health";
 export const V1_TRANSACTION_URL =
   "api?module=transaction&action=gettxinfo&txhash=";
 

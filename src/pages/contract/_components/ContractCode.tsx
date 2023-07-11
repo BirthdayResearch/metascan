@@ -25,8 +25,8 @@ export default function ContractCode({
     cid,
   });
   const networkQuery = !getEnvironment().isDefaultConnection(connection)
-    ? { network: connection }
-    : {};
+    ? { network: connection, cid }
+    : { cid };
 
   const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Code);
 
@@ -44,7 +44,7 @@ export default function ContractCode({
           <span>Are you the contract creator?</span>
           <Link
             className="mx-1 text-lightBlue"
-            href={{ pathname: "/contract/verify", query: networkQuery }}
+            href={{ pathname: `/contract/verify`, query: networkQuery }}
           >
             Verify and Publish
           </Link>

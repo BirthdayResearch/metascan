@@ -1,5 +1,6 @@
 import {
   SMART_CONTRACT_URL,
+  VERIFY_SMART_CONTRACT_URL,
   filterParams,
   getBaseUrl,
   wrapResponse,
@@ -61,13 +62,10 @@ export default {
     data
   ): Promise<any> => {
     const baseUrl = getBaseUrl(network);
-    const res = await fetch(
-      `${baseUrl}/verify_smart_contract/contract_verifications`,
-      {
-        method: "POST",
-        body: data,
-      }
-    );
+    const res = await fetch(`${baseUrl}/${VERIFY_SMART_CONTRACT_URL}`, {
+      method: "POST",
+      body: data,
+    });
     return res;
   },
   checkVerifyStatus: async (network: NetworkConnection, guid): Promise<any> => {

@@ -8,9 +8,9 @@ import { metachain, metachainTestnet } from "shared/Chains";
 import { NetworkProvider } from "@contexts/NetworkContext";
 import { StoreProvider } from "@contexts/StoreProvider";
 import { IconGradient } from "@components/icons/IconGradient";
-import Container from "@components/commons/Container";
 import Footer from "@components/Footer";
 import Header from "./components/Header";
+import MainContainer from "./components/MainContainer";
 
 const title = "MetaScan";
 export const appName = "meta.defiscan.live";
@@ -94,9 +94,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
               <NetworkProvider>
                 <Header />
                 <IconGradient />
-                <Container className="px-4 md:px-10 lg:px-[120px] flex-grow">
-                  <main>{children}</main>
-                </Container>
+                <MainContainer>{children}</MainContainer>
                 <div
                   data-testid="bg-purple-gradient"
                   className="w-full h-screen absolute z-[-1] bg-no-repeat top-0 left-0 lg:bg-[url('/background/gradient-purple.png')] md:bg-[url('/background/gradient-purple-tablet.png')] bg-[url('/background/gradient-purple-mobile.png')]"

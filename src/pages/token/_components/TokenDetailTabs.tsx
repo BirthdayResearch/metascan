@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useState } from "react";
+import GradientCardContainer from "@components/commons/GradientCardContainer";
 import TokenTransfers from "./TokenTransfers";
 import TokenHolders from "./TokenHolders";
 
@@ -13,9 +14,9 @@ export default function TokenDetailTabs() {
   const [activeTab, setActiveTab] = useState(TabTitle.transfers);
 
   return (
-    <div className="flex flex-col md:pt-[3.67px] pt-[23.67px]">
+    <div className="flex flex-col mt-10 lg:mt-8">
       {tabs.length > 0 && (
-        <div className="flex flex-row gap-x-6">
+        <div className="flex flex-row gap-x-4 md:gap-x-8 ml-2 md:ml-10">
           {tabs.map(({ title }) => (
             <div className="flex flex-col" key={title}>
               <button
@@ -37,10 +38,12 @@ export default function TokenDetailTabs() {
         </div>
       )}
 
-      <div>
-        {activeTab === TabTitle.transfers && <TokenTransfers />}
-        {activeTab === TabTitle.holders && <TokenHolders />}
-      </div>
+      <GradientCardContainer className="mt-6 lg:mt-4">
+        <div className="p-5 pt-1 md:p-10 md:pt-6">
+          {activeTab === TabTitle.transfers && <TokenTransfers />}
+          {activeTab === TabTitle.holders && <TokenHolders />}
+        </div>
+      </GradientCardContainer>
     </div>
   );
 }

@@ -99,7 +99,7 @@ export default function Pagination<T>({
   return (
     <div
       className={clsx(
-        "flex space-x-1 flex-row justify-end mt-4",
+        "flex space-x-1 flex-row justify-end pt-4",
         containerClass
       )}
     >

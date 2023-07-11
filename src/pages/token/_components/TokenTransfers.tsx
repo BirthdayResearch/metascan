@@ -47,7 +47,7 @@ export default function TokenTransfers() {
 
   return (
     <div>
-      <div className="relative">
+      <div className="relative pb-4">
         {isLoading && <PaginationLoader customStyle="right-1 top-0 md:top-0" />}
         <TransfersPagination
           pathname={`/token/${tokenId}`}

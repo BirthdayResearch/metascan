@@ -151,12 +151,8 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
           </div>
         </div>
       </GradientCardContainer>
-      <div className="mt-6" />
-      <GradientCardContainer className="relative">
-        <div className="md:p-10 p-5">
-          <TokenDetailTabs />
-        </div>
-      </GradientCardContainer>
+      {/* List tabs */}
+      <TokenDetailTabs />
       {isQrCodeClicked && (
         <QrCode
           data-testid="qr-code"

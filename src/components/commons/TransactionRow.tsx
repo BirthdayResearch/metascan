@@ -52,43 +52,53 @@ export default function TransactionRow({
     <div>
       {/* for desktop and tablet */}
       <div className="hidden md:block">
-        <div className="grid grid-cols-8 xl:grid-cols-12 gap-5 py-4">
+        <div className="grid grid-cols-8 xl:grid-cols-12 gap-x-5 gap-y-3 py-4">
           <div className="col-start-1 col-end-3">
-            <div className="flex flex-row">
-              <Icon size={24} className="text-white-50 stroke-white-50" />
-              <div className="flex flex-col overflow-hidden ml-2 xl:ml-4 text-base">
-                <span className="text-white-50">{data.transactionType}</span>
+            <div className="flex gap-2 md:gap-4 items-center">
+              <div>
+                <Icon size={24} className="text-white-50 stroke-white-50" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <div className="flex flex-col overflow-hidden text-base">
+                  <span className="text-white-50">{data.transactionType}</span>
+                </div>
+                <TransactionLinkRow
+                  label="Hash"
+                  pathname={`/tx/${data.hash}`}
+                  value={data.hash}
+                  containerClass="flex gap-1"
+                />
               </div>
             </div>
-            <TransactionLinkRow
-              label="Hash"
-              pathname={`/tx/${data.hash}`}
-              value={data.hash}
-              containerClass="flex flex-col xl:flex-row ml-8 xl:ml-10 mt-2 xl:mt-3"
-            />
           </div>
-          <div className="col-start-3 col-end-7 xl:col-start-4 xl:col-end-10">
+          <div
+            className={clsx(
+              "col-start-1 col-end-7 ml-10 lg:ml-0",
+              "lg:col-start-4 lg:col-end-8",
+              "xl:col-start-5 xl:col-end-10"
+            )}
+          >
             <AmountComponent amount={data.amount} symbol={data.symbol} />
-            <div className="grid grid-cols-4 xl:grid-cols-6 gap-5 mt-2 xl:mt-3">
+            <div className="grid grid-cols-12 gap-1 mt-1">
               <TransactionLinkRow
                 label="From"
                 pathname={fromPathname}
                 value={data.from}
-                containerClass="flex flex-col xl:flex-row col-start-1 col-end-3"
+                containerClass="flex gap-1 col-start-1 col-end-6"
               />
               {data.to && (
                 <TransactionLinkRow
                   label="To"
                   pathname={toPathName}
                   value={data.to}
-                  containerClass="flex flex-col xl:flex-row col-start-3 col-end-5"
+                  containerClass="flex gap-1 col-start-6 lg:col-start-7 xl:col-start-6 col-end-12"
                 />
               )}
             </div>
           </div>
-          <div className="col-start-7 col-end-9 xl:col-start-11 xl:col-end-13 justify-self-end">
+          <div className="row-start-1 col-start-7 md:col-start-4 lg:col-start-8 col-end-9 xl:col-start-11 xl:col-end-13 justify-self-end">
             <StatusComponent status={data.status} />
-            <div className="text-right mt-2 xl:mt-3">
+            <div className="text-right mt-1">
               <TimeComponent time={data.timeInSec} />
             </div>
           </div>
@@ -96,7 +106,7 @@ export default function TransactionRow({
       </div>
 
       {/* For mobile */}
-      <div className="md:hidden py-6">
+      <div className="md:hidden pt-4 pb-4">
         <div className="flex flex-row justify-between">
           <div className="flex flex-row">
             <Icon size={24} className="text-white-50 stroke-white-50" />
@@ -112,9 +122,9 @@ export default function TransactionRow({
           <AmountComponent
             amount={data.amount}
             symbol={data.symbol}
-            containerClass="mt-4"
+            containerClass="mt-2"
           />
-          <TimeComponent time={data.timeInSec} containerClass="mt-4" />
+          <TimeComponent time={data.timeInSec} containerClass="mt-1" />
           <TransactionLinkRow
             label="Hash"
             pathname={`/tx/${data.hash}`}
@@ -125,17 +135,17 @@ export default function TransactionRow({
             label="From"
             pathname={fromPathname}
             value={data.from}
-            containerClass="flex flex-row mt-4 w-5/6"
+            containerClass="flex flex-row mt-2 w-5/6"
           />
           <TransactionLinkRow
             label="To"
             pathname={toPathName}
             value={data.to}
-            containerClass="flex flex-row mt-4 w-5/6"
+            containerClass="flex flex-row mt-2 w-5/6"
           />
         </div>
       </div>
-      <div className="border-b border-black-600 ml-8 xl:ml-10" />
+      <div className="border-b border-black-600" />
     </div>
   );
 }
@@ -147,8 +157,8 @@ function StatusComponent({
 }): JSX.Element {
   return (
     <div className="flex flex-row justify-end">
-      <span className="text-white-700 text-base hidden xl:block xl:mr-1">
-        Status:
+      <span className="text-white-700 text-base hidden md:block md:mr-1">
+        Status
       </span>
       <TransactionRowStatus status={status} />
     </div>
@@ -170,7 +180,7 @@ function AmountComponent({
         Amount
       </span>
       <NumericFormat
-        className="text-white-50 text-base font-bold break-all"
+        className="text-white-50 text-base font-semibold md:font-bold break-all"
         thousandSeparator
         value={new BigNumber(amount).toFixed(8)}
         decimalScale={8}

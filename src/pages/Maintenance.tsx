@@ -24,7 +24,7 @@ const BirthdayResearchSocialItems = [
 
 export default function Maintenance() {
   return (
-    <div className={clsx("px-1 pt-16", "lg:w-3/5")} data-testid="maintenance">
+    <div className={clsx("px-1 pt-16", "lg:pr-[212px]")} data-testid="maintenance">
       <div className="text-red-800 font-bold">System maintenance</div>
       <div
         className={clsx(

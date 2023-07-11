@@ -57,10 +57,10 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
           >
             <div className="flex items-center gap-x-2">
               <span className="font-bold text-xl leading-8 -tracking-[0.2px] shrink-0">
-                {token.name}
+                {token.name ?? "N/A"}
               </span>
               <span className="-tracking-[0.32px] shrink-0">
-                ({token.symbol})
+                {token.symbol ? `(${token.symbol})` : ""}
               </span>
             </div>
             <div className="md:hidden">

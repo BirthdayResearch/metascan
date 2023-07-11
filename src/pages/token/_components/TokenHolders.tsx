@@ -1,6 +1,5 @@
 import BigNumber from "bignumber.js";
 import { useEffect, useState } from "react";
-import { formatEther } from "viem";
 import { useRouter } from "next/router";
 import { useNetwork } from "@contexts/NetworkContext";
 import {
@@ -130,13 +129,15 @@ function TokenHolderRow({
           label={truncateTextFromMiddle(data.address.hash, 8)}
         />
         <div>
-          <NumericFormat
-            thousandSeparator
-            value={formatEther(BigInt(data.value ?? "0"))}
-            className="text-white-50"
-            suffix={` ${data.token.symbol}`}
-            decimalScale={3}
-          />
+          {data.value && (
+            <NumericFormat
+              thousandSeparator
+              value={data.value}
+              className="text-white-50"
+              suffix={data.token.symbol ? ` ${data.token.symbol}` : ""}
+              decimalScale={3}
+            />
+          )}
           <NumericFormat
             thousandSeparator
             value={percentage}

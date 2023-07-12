@@ -5,6 +5,7 @@ import {
   wrapResponse,
 } from "@api/index";
 import {
+  RawTokensWithPaginationProps,
   RawTxnWithPaginationProps,
   WalletAddressCounterI,
   WalletAddressInfoI,
@@ -27,6 +28,14 @@ export default {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/counters`);
     return wrapResponse<WalletAddressCounterI>(res);
+  },
+  getTokens: async (
+    network: NetworkConnection,
+    aid: string
+  ): Promise<RawTokensWithPaginationProps> => {
+    const baseUrl = getBaseUrl(network);
+    const res = await fetch(`${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/tokens`);
+    return wrapResponse<RawTokensWithPaginationProps>(res);
   },
   getAddressTransactions: async (
     network: NetworkConnection,

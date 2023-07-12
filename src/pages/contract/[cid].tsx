@@ -32,6 +32,7 @@ import { WalletAddressInfoI } from "@api/types";
 import VerifiedContractSubtitle from "./_components/VerifiedContractSubtitle";
 import ContractTabs from "./_components/ContractTabs";
 import ContractCode from "./_components/ContractCode";
+import ContractTokensList from "./_components/ContractTokensList";
 
 interface ContractDetailProps {
   addressTransactions: AddressTransactionsProps;
@@ -195,7 +196,7 @@ function ContractSegmentTwo({
 
   return (
     <div>
-      <div className="relative mt-10 lg:mt-8">
+      <div className="relative mt-10 lg:mt-8 md:px-10">
         <ContractTabs
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
@@ -217,16 +218,9 @@ function ContractSegmentTwo({
           {selectedTab === ContractTabsTitle.Contract && (
             <ContractCode implementationAddress={implementationAddress} />
           )}
-          {/* {selectedTab === ContractTabsTitle.Tokens && (
-        <ContractTokensList
-          contractTokenList={data.tokens}
-          contractTokenListPage={data.tokenPages}
-          balance={data.verifiedContractData.dmctxBalance}
-          otherTokens={data.verifiedContractData.otherTokens}
-          networth={data.verifiedContractData.networth}
-        />
-      )} 
-      */}
+          {selectedTab === ContractTabsTitle.Tokens && (
+            <ContractTokensList address={addressHash} />
+          )}
         </div>
       </GradientCardContainer>
     </div>

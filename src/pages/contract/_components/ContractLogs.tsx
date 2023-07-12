@@ -55,10 +55,10 @@ export default function ContractLogs() {
           nextPageParams={data?.next_page_params}
           isLoading={isLoading}
           containerClass="relative"
+          loaderClass="right-1 top-0 md:top-0"
         />
       )}
-
-      <div className="flex flex-col gap-12 md:gap-6 lg:gap-7 pt-7">
+      <div className="flex flex-col gap-12 md:gap-6 lg:gap-7 mt-7">
         {logs.map((log) => (
           <>
             <div className="flex flex-col gap-3">
@@ -101,6 +101,7 @@ export default function ContractLogs() {
           nextPageParams={data?.next_page_params}
           isLoading={isLoading}
           containerClass="relative h-10 md:h-6 lg:pt-1.5"
+          loaderClass="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]"
         />
       )}
     </div>
@@ -120,17 +121,17 @@ function LogsPagination({
   nextPageParams,
   isLoading,
   containerClass = "",
+  loaderClass = "",
 }: {
   contractId: string;
   isLoading: boolean;
   nextPageParams?: LogsPageParamsProps;
   containerClass?: string;
+  loaderClass?: string;
 }) {
   return (
     <div className={containerClass}>
-      {isLoading && (
-        <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
-      )}
+      {isLoading && <PaginationLoader customStyle={loaderClass} />}
       <Pagination<LogsPageParamsProps & { page_number?: string }>
         pathname={`/contract/${contractId}`}
         nextPageParams={
@@ -142,6 +143,7 @@ function LogsPagination({
               }
             : undefined
         }
+        shallow
       />
     </div>
   );

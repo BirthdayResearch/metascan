@@ -28,6 +28,7 @@ export default function ContractTabs({
     <div className="flex flex-row gap-x-4">
       {tabs.map(({ title }) => (
         <ButtonTab
+          key={title}
           testId={
             selectedTab === ContractTabsTitle.Transactions
               ? `contract-${title}-clicked-title`

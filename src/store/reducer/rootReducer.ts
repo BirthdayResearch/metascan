@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { addressApi } from "@store/address";
 import {
   contractApi,
   contractMethodsApi,
@@ -15,6 +16,7 @@ export function initializeStore() {
       [contractMethodsApi.reducerPath]: contractMethodsApi.reducer,
       [contractVerificationApi.reducerPath]: contractVerificationApi.reducer,
       [tokenApi.reducerPath]: tokenApi.reducer,
+      [addressApi.reducerPath]: addressApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
@@ -22,7 +24,8 @@ export function initializeStore() {
         contractApi.middleware,
         contractMethodsApi.middleware,
         contractVerificationApi.middleware,
-        tokenApi.middleware
+        tokenApi.middleware,
+        addressApi.middleware
       ),
   });
 }

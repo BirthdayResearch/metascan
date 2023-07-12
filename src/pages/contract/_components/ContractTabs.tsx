@@ -5,44 +5,39 @@ import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
 interface ContractOptionsProps {
   selectedTab: ContractTabsTitle;
   setSelectedTab: Dispatch<SetStateAction<ContractTabsTitle>>;
+  isTokenContract: boolean;
 }
 
 export default function ContractTabs({
   selectedTab,
   setSelectedTab,
+  isTokenContract,
 }: ContractOptionsProps) {
+  const contractTabs = [
+    { title: ContractTabsTitle.Transactions },
+    { title: ContractTabsTitle.Contract },
+    { title: ContractTabsTitle.Tokens },
+  ];
+  const tokenContractTabs = [
+    { title: ContractTabsTitle.Transactions },
+    { title: ContractTabsTitle.Logs },
+    { title: ContractTabsTitle.Contract },
+  ];
+  const tabs = isTokenContract ? tokenContractTabs : contractTabs;
   return (
     <div className="flex flex-row gap-x-4">
-      <ButtonTab
-        testId={
-          selectedTab === ContractTabsTitle.Transactions
-            ? "contract-transaction-options-clicked-title"
-            : "contract-transaction-options-title"
-        }
-        active={selectedTab === ContractTabsTitle.Transactions}
-        tab={ContractTabsTitle.Transactions}
-        setSelectedTab={setSelectedTab}
-      />
-      <ButtonTab
-        testId={
-          selectedTab === ContractTabsTitle.Contract
-            ? "contract-code-options-clicked-title"
-            : "contract-code-options-title"
-        }
-        active={selectedTab === ContractTabsTitle.Contract}
-        tab={ContractTabsTitle.Contract}
-        setSelectedTab={setSelectedTab}
-      />
-      <ButtonTab
-        testId={
-          selectedTab === ContractTabsTitle.Tokens
-            ? "contract-tokens-options-clicked-title"
-            : "contract-tokens-options-title"
-        }
-        active={selectedTab === ContractTabsTitle.Tokens}
-        tab={ContractTabsTitle.Tokens}
-        setSelectedTab={setSelectedTab}
-      />
+      {tabs.map(({ title }) => (
+        <ButtonTab
+          testId={
+            selectedTab === ContractTabsTitle.Transactions
+              ? `contract-${title}-clicked-title`
+              : `contract-${title}-title`
+          }
+          active={selectedTab === title}
+          tab={title}
+          setSelectedTab={setSelectedTab}
+        />
+      ))}
     </div>
   );
 }

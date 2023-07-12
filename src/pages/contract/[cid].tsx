@@ -204,7 +204,7 @@ function ContractSegmentTwo({
       <GradientCardContainer className="relative mt-6">
         <div className="p-5 md:p-10">
           {selectedTab === ContractTabsTitle.Transactions && (
-            <div className="mt-8">
+            <div>
               <TransactionDetails
                 data={transactions}
                 pathname={`/contract/${addressHash}`}

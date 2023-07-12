@@ -29,18 +29,25 @@ interface PageProps {
 function TokenPagination({
   nextPageParams,
 }: {
-  nextPageParams: TokenNextPageParamsProps;
+  nextPageParams?: TokenNextPageParamsProps;
 }) {
-  const test: TokenQueryParamsProps = {
-    items_count: nextPageParams.items_count,
-    contract_address_hash: nextPageParams.contract_address_hash,
-    holder_count: nextPageParams.holder_count,
-    is_name_null: nextPageParams.is_name_null,
-    market_cap: nextPageParams.market_cap,
-    name: nextPageParams.name,
-  };
-
-  return <Pagination<TokenQueryParamsProps> nextPageParams={test} />;
+  return (
+    <Pagination<TokenQueryParamsProps>
+      pathname="/tokens"
+      nextPageParams={
+        nextPageParams
+          ? {
+              items_count: nextPageParams.items_count,
+              contract_address_hash: nextPageParams.contract_address_hash,
+              holder_count: nextPageParams.holder_count,
+              is_name_null: nextPageParams.is_name_null,
+              market_cap: nextPageParams.market_cap ?? "null",
+              name: nextPageParams.name,
+            }
+          : undefined
+      }
+    />
+  );
 }
 
 export default function Tokens({
@@ -100,7 +107,7 @@ export async function getServerSideProps(
     !isNumeric(params?.holder_count as string) ||
     !isAlphanumeric(params?.is_name_null as string) ||
     !isNumeric(params?.items_count as string) ||
-    !isNumeric(params?.market_cap as string) ||
+    !isAlphanumeric(params?.market_cap as string) ||
     !isAlphanumeric(params?.name as string);
 
   try {
@@ -113,8 +120,7 @@ export async function getServerSideProps(
           params?.holder_count as string,
           params?.is_name_null as string,
           params?.items_count as string,
-          params?.market_cap as string,
-          params?.name as string
+          params?.market_cap as string
         );
     const data = {
       tokens: txs.items,

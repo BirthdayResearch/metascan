@@ -106,6 +106,7 @@ function HoldersPagination({
             }
           : undefined
       }
+      shallow
     />
   );
 }
@@ -118,7 +119,7 @@ function TokenHolderRow({
   data: TokenHolderProps;
 }) {
   const percentage = BigNumber(data.value ?? "0")
-    .dividedBy(data.token.total_supply ?? "0")
+    .dividedBy(BigNumber(data.token.total_supply ?? "1"))
     .multipliedBy(100);
   return (
     <div className="flex gap-1 md:gap-3 lg:gap-6 md:items-center py-[18px] border-b-[0.5px] border-dark-200">
@@ -133,15 +134,15 @@ function TokenHolderRow({
             <NumericFormat
               thousandSeparator
               value={data.value}
-              className="text-white-50"
+              className="text-white-50 break-all"
               suffix={data.token.symbol ? ` ${data.token.symbol}` : ""}
               decimalScale={3}
             />
           )}
           <NumericFormat
             thousandSeparator
-            value={percentage}
-            className="text-white-700 ml-2"
+            value={data.token.total_supply ? percentage : 0}
+            className="text-white-700 break-all ml-2"
             suffix="%"
             decimalScale={4}
           />

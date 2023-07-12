@@ -104,6 +104,7 @@ function TransfersPagination({
             }
           : undefined
       }
+      shallow
     />
   );
 }

@@ -18,7 +18,7 @@ export default function MainContainer({ children }: PropsWithChildren) {
         setIsHealthy(true);
       })
       .catch((err) => {
-        if (err?.message?.includes("Failed to fetch")) {
+        if (err?.message?.includes("Failed to fetch data: 400")) {
           setIsHealthy(false);
         } else {
           setIsHealthy(true);

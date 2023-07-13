@@ -9,6 +9,10 @@ import LinkText from "@components/commons/LinkText";
 import { useNetwork } from "@contexts/NetworkContext";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import Pagination from "@components/commons/Pagination";
+import {
+  SkeletonLoader,
+  SkeletonLoaderScreen,
+} from "@components/skeletonLoaders/SkeletonLoader";
 
 export default function AddressLogs({
   addressHash,
@@ -64,43 +68,47 @@ export default function AddressLogs({
         />
       )}
       <div className="flex flex-col gap-12 md:gap-6 lg:gap-7 mt-7">
-        {logs.map((log) => (
-          <Fragment key={log.tx_hash}>
-            <div className="flex flex-col gap-3">
-              <div className={rowCss}>
-                <LogDetailTitle title="Transaction" />
-                <LinkText
-                  href={`/tx/${log.tx_hash}`}
-                  label={log.tx_hash}
-                  customStyle="break-all text-right sm:text-left"
-                />
-              </div>
-              <div className={rowCss}>
-                <LogDetailTitle title="Topics" />
-                <div className="flex flex-col gap-3 md:gap-2">
-                  {log.topics
-                    .filter((t) => t)
-                    .map((topic, i) => (
-                      <div
-                        key={i}
-                        className="flex flex-col lg:flex-row lg:gap-1 text-white-50 break-all text-right sm:text-left"
-                      >
-                        <span>[{i}]</span>
-                        <span>{topic}</span>
-                      </div>
-                    ))}
+        {isLoading ? (
+          <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.AddressLogs} />
+        ) : (
+          logs.map((log) => (
+            <Fragment key={log.tx_hash}>
+              <div className="flex flex-col gap-3">
+                <div className={rowCss}>
+                  <LogDetailTitle title="Transaction" />
+                  <LinkText
+                    href={`/tx/${log.tx_hash}`}
+                    label={log.tx_hash}
+                    customStyle="break-all text-right sm:text-left"
+                  />
+                </div>
+                <div className={rowCss}>
+                  <LogDetailTitle title="Topics" />
+                  <div className="flex flex-col gap-3 md:gap-2">
+                    {log.topics
+                      .filter((t) => t)
+                      .map((topic, i) => (
+                        <div
+                          key={i}
+                          className="flex flex-col lg:flex-row lg:gap-1 text-white-50 break-all text-right sm:text-left"
+                        >
+                          <span>[{i}]</span>
+                          <span>{topic}</span>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+                <div className={rowCss}>
+                  <LogDetailTitle title="Data" />
+                  <div className="text-white-50 break-all text-right sm:text-left">
+                    {log.data}
+                  </div>
                 </div>
               </div>
-              <div className={rowCss}>
-                <LogDetailTitle title="Data" />
-                <div className="text-white-50 break-all text-right sm:text-left">
-                  {log.data}
-                </div>
-              </div>
-            </div>
-            <div className="h-[0.5px] bg-dark-200" />
-          </Fragment>
-        ))}
+              <div className="h-[0.5px] bg-dark-200" />
+            </Fragment>
+          ))
+        )}
       </div>
 
       {showPagination && (

@@ -1,5 +1,3 @@
-import { CursorPagination } from "@components/commons/CursorPagination";
-import { useRouter } from "next/router";
 import TokenRow, {
   TokenTableFixedTitle,
 } from "pages/address/_components/TokenRow";
@@ -7,7 +5,10 @@ import { useEffect, useState } from "react";
 import WalletAddressApi from "@api/WalletAddressApi";
 import { NetworkConnection } from "@contexts/Environment";
 import { useNetwork } from "@contexts/NetworkContext";
-import { TokenItemI } from "@api/types";
+import { TokenItemI, TokensListPageParamsProps } from "@api/types";
+import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
+import Pagination from "@components/commons/Pagination";
+import { useRouter } from "next/router";
 import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
 import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
 
@@ -16,20 +17,23 @@ interface TokenDetailsProps {
 }
 
 export default function ContractTokensList({ address }: TokenDetailsProps) {
-  const router = useRouter();
   const { connection } = useNetwork();
-
-  const id = router.query.cid;
   const [tokens, setTokens] = useState<TokenItemI[]>([]);
-  // const [nextPage, setNextPage] = useState({})
+  const [isLoading, setIsLoading] = useState(false);
+  const [nextPage, setNextPage] = useState<TokensListPageParamsProps>();
+  const router = useRouter();
 
+  const params = router.query;
   const getTokens = async () => {
+    setIsLoading(true);
     const tokenList = await WalletAddressApi.getTokens(
       connection as NetworkConnection,
-      address
+      address,
+      params
     );
     setTokens(tokenList.items);
-    // setNextPage(tokenList.next_page_params)
+    setNextPage(tokenList.next_page_params as TokensListPageParamsProps);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -45,11 +49,13 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
         >
           {ContractTabsTitle.Tokens}
         </h2>
-        {/* <CursorPagination
-          pages={contractTokenListPage}
-          path={`/contract/${id}`}
-          className="justify-end mt-5 md:mt-0"
-        /> */}
+        <TokensListPagination
+          pathname={`/contract/${address}`}
+          nextPageParams={nextPage}
+          isLoading={isLoading}
+          containerClass="justify-end mt-5 md:mt-0"
+          loaderClass="right-1 top-0 md:top-0"
+        />
       </div>
       <div className="hidden lg:block">
         <div className="grid grid-cols-7 mb-5">
@@ -80,10 +86,37 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
       {tokens.map((item) => (
         <TokenRow key={item.token.address} data={item} />
       ))}
-      <CursorPagination
-        pages={contractTokenListPage}
-        path={`/contract/${id}`}
-        className="flex w-full md:justify-end mt-12 md:mt-10"
+      <TokensListPagination
+        pathname={`/contract/${address}`}
+        nextPageParams={nextPage}
+        isLoading={isLoading}
+        containerClass="flex w-full md:justify-end mt-12 md:mt-10"
+        loaderClass="right-1 top-0 md:top-0"
+      />
+    </div>
+  );
+}
+
+function TokensListPagination({
+  pathname,
+  nextPageParams,
+  isLoading,
+  containerClass = "",
+  loaderClass = "",
+}: {
+  pathname: string;
+  isLoading: boolean;
+  nextPageParams?: TokensListPageParamsProps;
+  containerClass?: string;
+  loaderClass?: string;
+}) {
+  return (
+    <div className={containerClass}>
+      {isLoading && <PaginationLoader customStyle={loaderClass} />}
+      <Pagination<TokensListPageParamsProps>
+        pathname={pathname}
+        nextPageParams={nextPageParams}
+        shallow
       />
     </div>
   );

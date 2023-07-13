@@ -369,3 +369,9 @@ export interface RawTokensWithPaginationProps {
     index?: string;
   };
 }
+export interface TokensListPageParamsProps {
+  fiat_value?: string | null;
+  id?: string;
+  items_count?: string;
+  value?: string;
+}

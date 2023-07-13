@@ -7,6 +7,7 @@ import {
 import {
   RawTokensWithPaginationProps,
   RawTxnWithPaginationProps,
+  TokensListPageParamsProps,
   WalletAddressCounterI,
   WalletAddressInfoI,
 } from "@api/types";
@@ -31,10 +32,21 @@ export default {
   },
   getTokens: async (
     network: NetworkConnection,
-    aid: string
+    aid: string,
+    queryParams: TokensListPageParamsProps
   ): Promise<RawTokensWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/tokens`);
+    const params = queryParams
+      ? filterParams([
+          { key: "fiat_value", value: "null1" },
+          { key: "items_count", value: queryParams?.items_count },
+          { key: "value", value: queryParams?.value },
+          { key: "id", value: queryParams?.id },
+        ])
+      : "";
+    const res = await fetch(
+      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/tokens${params}`
+    );
     return wrapResponse<RawTokensWithPaginationProps>(res);
   },
   getAddressTransactions: async (

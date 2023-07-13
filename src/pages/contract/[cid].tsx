@@ -188,7 +188,7 @@ function ContractSegmentOne({
       >
         {isTokenContract && (
           <div className="flex flex-col gap-y-1">
-            <DetailRowTitle title="Token" />
+            <DetailRowTitle title="Token" tooltip="Token name and symbol" />
             <div>
               <LinkText
                 href={`/token/${token.address}`}
@@ -201,14 +201,20 @@ function ContractSegmentOne({
           </div>
         )}
         <div className="flex flex-col gap-y-1">
-          <DetailRowTitle title="Creator" />
+          <DetailRowTitle
+            title="Creator"
+            tooltip="The original issuer of the tokens"
+          />
           <LinkText
             href={`/address/${creator}`}
             label={truncateTextFromMiddle(creator, 11)}
           />
         </div>
         <div className="flex flex-col gap-y-1">
-          <DetailRowTitle title="Balance" />
+          <DetailRowTitle
+            title="Balance"
+            tooltip="The specific digital assets associated with this contract"
+          />
           <NumericFormat
             className="text-white-50 tracking-[0.01em]"
             thousandSeparator
@@ -220,7 +226,10 @@ function ContractSegmentOne({
         </div>
         {(isTokenContract || hasTokens) && (
           <div className="flex flex-col gap-y-1">
-            <DetailRowTitle title="Tokens" />
+            <DetailRowTitle
+              title="Tokens"
+              tooltip="The current number of tokens held in a specific address"
+            />
             <NumericFormat
               className="text-white-50 tracking-[0.01em]"
               thousandSeparator
@@ -234,29 +243,46 @@ function ContractSegmentOne({
         {isTokenContract && (
           <>
             <div className="flex flex-col gap-y-1">
-              <DetailRowTitle title="Transactions" />
+              <DetailRowTitle
+                title="Transactions"
+                tooltip="The history of all transactions to and from this address"
+              />
               <NumericFormat
                 className="text-white-50 tracking-[0.01em]"
                 thousandSeparator
                 value={counters.transactions_count ?? 0}
                 decimalScale={0}
-                suffix={` transactions`}
+                suffix={
+                  Number(counters.transactions_count ?? 0) > 1
+                    ? " transactions"
+                    : " transaction"
+                }
                 data-testid="token-contract-txs-count"
               />
             </div>
             <div className="flex flex-col gap-y-1">
-              <DetailRowTitle title="Transfers" />
+              <DetailRowTitle
+                title="Transfers"
+                tooltip="The total number of token transfers involving this address"
+              />
               <NumericFormat
                 className="text-white-50 tracking-[0.01em]"
                 thousandSeparator
                 value={counters.token_transfers_count ?? 0}
                 decimalScale={0}
-                suffix={` transfers`}
+                suffix={
+                  Number(counters.token_transfers_count ?? 0) > 1
+                    ? " transfers"
+                    : " transfer"
+                }
                 data-testid="token-contract-transfers-count"
               />
             </div>
             <div className="flex flex-col gap-y-1">
-              <DetailRowTitle title="Gas used" />
+              <DetailRowTitle
+                title="Gas used"
+                tooltip="The total amount of computational effort expended to execute transactions"
+              />
               <NumericFormat
                 className="text-white-50 tracking-[0.01em]"
                 thousandSeparator
@@ -266,7 +292,10 @@ function ContractSegmentOne({
               />
             </div>
             <div className="flex flex-col gap-y-1">
-              <DetailRowTitle title="Last updated" />
+              <DetailRowTitle
+                title="Last updated"
+                tooltip="Block number in which this address was updated"
+              />
               <LinkText
                 href={`/block/${lastupdatedAtBlock}`}
                 label={`Block #${lastupdatedAtBlock}`}

@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
-import { FiInfo } from "react-icons/fi";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { isAlphanumeric, truncateTextFromMiddle } from "shared/textHelper";
 import TokenApi, { TokenProps } from "@api/TokenApi";
@@ -11,10 +10,10 @@ import useWindowDimensions from "@hooks/useWindowDimensions";
 import { TokenCountersProps, useGetTokenCountersMutation } from "@store/token";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
-import Tooltip from "@components/commons/Tooltip";
 import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import AddressWithQrCode from "@components/commons/AddressWithQrCode";
+import DetailRowTitle from "pages/address/_components/shared/DetailRowTitle";
 import QrCode from "../../components/commons/QrCode";
 import TokenDetailTabs from "./_components/TokenDetailTabs";
 
@@ -69,7 +68,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mt-7 md:mt-0">
             <div className={clsx(detailContainerCss, "flex")}>
-              <DetailTitle
+              <DetailRowTitle
                 title="Contract"
                 tooltip="The unique address identifying the smart contract on the blockchain"
               />
@@ -81,7 +80,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
               />
             </div>
             <div className={detailContainerCss}>
-              <DetailTitle
+              <DetailRowTitle
                 title="Creator"
                 tooltip="The entity that deployed the smart contract on the blockchain"
               />
@@ -95,14 +94,14 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
               />
             </div>
             <div className={detailContainerCss}>
-              <DetailTitle
+              <DetailRowTitle
                 title="Token type"
                 tooltip="The standard protocol the token follows, such as ERC-20 or ERC-721"
               />
               <div className={detailValueCss}>{token.type}</div>
             </div>
             <div className={detailContainerCss}>
-              <DetailTitle
+              <DetailRowTitle
                 title="Total supply"
                 tooltip="The total number of tokens that currently exist for this contract"
               />
@@ -120,7 +119,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
               )}
             </div>
             <div className={detailContainerCss}>
-              <DetailTitle
+              <DetailRowTitle
                 title="Total transfers"
                 tooltip="The cumulative count of all token transfers associated with this contract"
               />
@@ -133,7 +132,7 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
               />
             </div>
             <div className={detailContainerCss}>
-              <DetailTitle
+              <DetailRowTitle
                 title="Total holders"
                 tooltip="The total number of unique addresses holding the token"
               />
@@ -158,17 +157,6 @@ export default function Token({ token, creatorAddress }: TokenDetailProps) {
           onCloseClick={setIsQrCodeClicked}
         />
       )}
-    </div>
-  );
-}
-
-function DetailTitle({ title, tooltip }: { title: string; tooltip: string }) {
-  return (
-    <div className="flex items-center text-white-700">
-      <div className="text-white-700">{title}</div>
-      <Tooltip text={tooltip}>
-        <FiInfo size={16} className="ml-1 md:ml-2" />
-      </Tooltip>
     </div>
   );
 }

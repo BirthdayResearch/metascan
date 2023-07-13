@@ -73,7 +73,7 @@ export default function WalletDetails({
     >
       {isTokenAddress && (
         <div className="flex flex-col gap-y-1">
-          <DetailRowTitle title="Token" />
+          <DetailRowTitle title="Token" tooltip="Token name and symbol" />
           <div className="">
             <LinkText
               href={`/token/${walletDetail.token.address}`}
@@ -174,7 +174,10 @@ export default function WalletDetails({
 
       {(hasTokens || isTokenAddress) && (
         <div className="flex flex-col gap-y-1">
-          <DetailRowTitle title="Tokens" />
+          <DetailRowTitle
+            title="Tokens"
+            tooltip="The current number of tokens held in a specific address"
+          />
           <NumericFormat
             className="text-white-50 tracking-[0.01em]"
             thousandSeparator
@@ -186,31 +189,48 @@ export default function WalletDetails({
         </div>
       )}
       <div className="flex flex-col gap-y-1">
-        <DetailRowTitle title="Transactions" />
+        <DetailRowTitle
+          title="Transactions"
+          tooltip="The history of all transactions to and from this address"
+        />
         <NumericFormat
           className="text-white-50 tracking-[0.01em]"
           thousandSeparator
           value={counters.transactions_count ?? 0}
           decimalScale={0}
-          suffix={` transactions`}
+          suffix={
+            Number(counters.transactions_count ?? 0) > 1
+              ? " transactions"
+              : " transaction"
+          }
           data-testid="token-contract-txs-count"
         />
       </div>
       {isTokenAddress && (
         <>
           <div className="flex flex-col gap-y-1">
-            <DetailRowTitle title="Transfers" />
+            <DetailRowTitle
+              title="Transfers"
+              tooltip="The total number of token transfers involving this address"
+            />
             <NumericFormat
               className="text-white-50 tracking-[0.01em]"
               thousandSeparator
               value={counters.token_transfers_count ?? 0}
               decimalScale={0}
-              suffix={` transfers`}
+              suffix={
+                Number(counters.token_transfers_count ?? 0) > 1
+                  ? " transfers"
+                  : " transfer"
+              }
               data-testid="token-contract-transfers-count"
             />
           </div>
           <div className="flex flex-col gap-y-1">
-            <DetailRowTitle title="Gas used" />
+            <DetailRowTitle
+              title="Gas used"
+              tooltip="The total amount of computational effort expended to execute transactions"
+            />
             <NumericFormat
               className="text-white-50 tracking-[0.01em]"
               thousandSeparator
@@ -220,7 +240,10 @@ export default function WalletDetails({
             />
           </div>
           <div className="flex flex-col gap-y-1">
-            <DetailRowTitle title="Last updated" />
+            <DetailRowTitle
+              title="Last updated"
+              tooltip="Block number in which this address was updated"
+            />
             <LinkText
               href={`/block/${detail.walletDetail.block_number_balance_updated_at}`}
               label={`Block #${detail.walletDetail.block_number_balance_updated_at}`}

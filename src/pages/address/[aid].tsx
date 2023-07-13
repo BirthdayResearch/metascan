@@ -5,43 +5,33 @@ import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
 import { useRouter } from "next/router";
 import { isAlphanumeric, isNumeric } from "shared/textHelper";
-import { tokenPages, tokens as tokenDetailList } from "mockdata/TokenData";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
   InferGetServerSidePropsType,
 } from "next";
-import clsx from "clsx";
 import { NetworkConnection } from "@contexts/Environment";
 
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
-import TransactionDetails from "@components/TransactionDetails";
+import AddressWithQrCode from "@components/commons/AddressWithQrCode";
 import QrCode from "../../components/commons/QrCode";
 import WalletAddressApi from "../../api/WalletAddressApi";
-import WalletAddressDetails from "./_components/WalletAddressDetails";
-import WalletDetails, {
-  AddressTransactionsProps,
-  WalletDetailProps,
-  // WalletDetailTokenI,
-} from "./_components/WalletDetails";
-import BalanceDetails from "./_components/BalanceDetails";
-import TokenDetails from "./_components/TokenDetails";
-
-enum TabTitle {
-  tokens = "Tokens",
-  transactions = "Transactions",
-}
+import WalletDetails, { WalletDetailProps } from "./_components/WalletDetails";
+import AddressContractTabs from "./_components/shared/AddressContractTabs";
 
 interface SegmentOneProps {
+  aid: string;
   setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
   detail: WalletDetailProps;
 }
 
 function Address({
   balance,
-  transactionCount,
   addressTransactions,
   tokens,
+  tokensCount,
+  walletDetail,
+  counters,
   isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
@@ -51,7 +41,7 @@ function Address({
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
-      <GradientCardContainer className="relative z-[1]">
+      <GradientCardContainer className="relative z-[1]" fullBorder>
         <div className="lg:p-10 md:p-10 px-5 py-6">
           <div
             className="flex flex-row pb-[9px]"
@@ -62,22 +52,28 @@ function Address({
             </span>
           </div>
           <WalletSegmentOne
-            setIsQrCodeClicked={setIsQrCodeClicked}
-            detail={{ balance, transactionCount, tokens, addressTransactions }}
-          />
-        </div>
-      </GradientCardContainer>
-      <div className="mt-6" />
-      <GradientCardContainer className="relative">
-        <div className="md:p-10 p-5">
-          <WalletSegmentTwo
             aid={aid}
-            // tokens={tokens}
-            addressTransactions={addressTransactions}
-            isLoading={isLoading}
+            setIsQrCodeClicked={setIsQrCodeClicked}
+            detail={{
+              balance,
+              tokens,
+              addressTransactions,
+              walletDetail,
+              counters,
+              tokensCount,
+            }}
           />
         </div>
       </GradientCardContainer>
+      <AddressContractTabs
+        addressHash={aid}
+        isLoading={isLoading}
+        transactions={addressTransactions}
+        implementationAddress={walletDetail.implementation_address ?? null}
+        isContract={walletDetail.is_contract}
+        isTokenContract={walletDetail.token !== null}
+        basePath="/address"
+      />
       {isQrCodeClicked && (
         <QrCode
           data-testid="qr-code"
@@ -90,110 +86,22 @@ function Address({
   );
 }
 
-function TabSelectionIndicator() {
-  return <div className="brand-gradient-1 h-1 mt-[19.33px]" />;
-}
-
-function WalletSegmentOne({ setIsQrCodeClicked, detail }: SegmentOneProps) {
+function WalletSegmentOne({
+  aid,
+  setIsQrCodeClicked,
+  detail,
+}: SegmentOneProps) {
   return (
     <div className="flex flex-col gap-y-[33px]">
-      <WalletAddressDetails setIsQrCodeClicked={setIsQrCodeClicked} />
+      <AddressWithQrCode
+        address={aid}
+        setIsQrCodeClicked={setIsQrCodeClicked}
+      />
       <WalletDetails detail={detail} />
     </div>
   );
 }
 
-function WalletSegmentTwo({
-  aid,
-  // tokens,
-  addressTransactions,
-  isLoading,
-}: {
-  aid: string;
-  // tokens: WalletDetailTokenI | null;
-  addressTransactions: AddressTransactionsProps;
-  isLoading?: boolean;
-}) {
-  const [isTransactionClicked, setIsTransactionClicked] = useState(true);
-  const selectedFontStyle = "text-white-50";
-  const unselectedFontStyle = "text-white-700";
-  /* Hide tabs (since only one tab is available)
-  const tabs = [
-    {
-      title: TabTitle.transactions,
-      isSelected: isTransactionClicked,
-    },
-    ...(tokens !== null
-      ? [
-          {
-            title: TabTitle.tokens,
-            isSelected: !isTransactionClicked,
-          },
-        ]
-      : []),
-  ];
-  */
-  const tabs = [];
-
-  const onOptionsClick = (
-    setIsTransactionOptionClicked: Dispatch<SetStateAction<boolean>>,
-    itemClicked: string
-  ) => {
-    if (itemClicked === TabTitle.tokens) {
-      setIsTransactionOptionClicked(false);
-    } else {
-      setIsTransactionOptionClicked(true);
-    }
-  };
-
-  return (
-    <div className="flex flex-col md:pt-[3.67px] pt-[23.67px]">
-      {tabs.length > 0 && (
-        <div className="flex flex-row gap-x-6">
-          {tabs.map(({ title, isSelected }) => (
-            <div className="flex flex-col" key={title}>
-              <button
-                type="button"
-                className={clsx(
-                  "font-medium",
-                  isSelected ? selectedFontStyle : unselectedFontStyle
-                )}
-                data-testid={`wallet-${title}-options-title`}
-                onClick={() => onOptionsClick(setIsTransactionClicked, title)}
-              >
-                {title}
-              </button>
-              {isSelected && <TabSelectionIndicator />}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Enable if tabs are displayed 
-      {isTransactionClicked && (
-        <div className="lg:mt-5 lg:mb-[22.5px] md:mt-5 md:mb-5 mt-5 mb-7" />
-      )} */}
-
-      {!isTransactionClicked && <BalanceDetails />}
-
-      {isTransactionClicked ? (
-        <TransactionDetails
-          data={addressTransactions}
-          pathname={`/address/${aid}`}
-          type="address"
-          isLoading={isLoading}
-        />
-      ) : (
-        <div>
-          <TokenDetails
-            tokenList={tokenDetailList}
-            tokenListPage={tokenPages}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<WalletDetailProps>> {
@@ -244,15 +152,23 @@ export async function getServerSideProps(
           params?.index as string
         );
 
+    const allTokens = await WalletAddressApi.getAllAddressTokens(
+      network as NetworkConnection,
+      aid
+    );
+    const tokensCount = allTokens?.length ?? 0;
+
     return {
       props: {
         balance: formatEther(BigInt(walletDetail.coin_balance ?? "0")),
+        walletDetail,
+        counters,
         addressTransactions: {
           transactions: addressTransactions.items,
           nextPageParams:
             addressTransactions.next_page_params as TxnNextPageParamsProps,
         },
-        transactionCount: counters?.transactions_count,
+        tokensCount,
         tokens: null, // passing null to temporary hide all tokens related UI
       },
     };

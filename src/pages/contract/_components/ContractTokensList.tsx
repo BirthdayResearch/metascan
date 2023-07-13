@@ -9,13 +9,13 @@ import { TokenItemI, TokensListPageParamsProps } from "@api/types";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import Pagination from "@components/commons/Pagination";
 import { useRouter } from "next/router";
+import clsx from "clsx";
 import {
   SkeletonLoader,
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
-import clsx from "clsx";
-import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
-import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
+import DetailRowTitle from "pages/address/_components/shared/DetailRowTitle";
+import { AddressContractTabsTitle } from "../../../enum/tabsTitle";
 
 interface TokenDetailsProps {
   address: string;
@@ -77,7 +77,7 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
           data-testid="contract-address-token-list-title"
           className="font-bold text-xl text-white-50"
         >
-          {ContractTabsTitle.Tokens}
+          {AddressContractTabsTitle.Tokens}
         </h2>
         <TokensListPagination
           pathname={`/contract/${address}`}
@@ -90,25 +90,25 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
       <div className="hidden lg:block">
         <div className="grid grid-cols-7 mb-5">
           <div data-testid="contract-tokens-asset-title">
-            <VerifiedContractSubtitle title={TokenTableFixedTitle.asset} />
+            <DetailRowTitle title={TokenTableFixedTitle.asset} />
           </div>
           <div data-testid="contract-tokens-type-title">
-            <VerifiedContractSubtitle title={TokenTableFixedTitle.type} />
+            <DetailRowTitle title={TokenTableFixedTitle.type} />
           </div>
           <div data-testid="contract-tokens-symbol-title">
-            <VerifiedContractSubtitle title={TokenTableFixedTitle.symbol} />
+            <DetailRowTitle title={TokenTableFixedTitle.symbol} />
           </div>
           <div
             className="col-span-2 text-right"
             data-testid="contract-tokens-amount-title items-end"
           >
-            <VerifiedContractSubtitle title={TokenTableFixedTitle.quantity} />
+            <DetailRowTitle title={TokenTableFixedTitle.quantity} />
           </div>
           <div
             className="col-span-2 text-right"
             data-testid="contract-tokens-contract-address-title"
           >
-            <VerifiedContractSubtitle title="Contract Address" />
+            <DetailRowTitle title="Contract Address" />
           </div>
         </div>
         <div className="brand-gradient-1 h-[1px]" />

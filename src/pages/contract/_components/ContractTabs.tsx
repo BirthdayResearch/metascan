@@ -1,11 +1,11 @@
 import clsx from "clsx";
+import { AddressContractTabsTitle } from "enum/tabsTitle";
 import { Dispatch, SetStateAction } from "react";
-import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
 
 interface ContractOptionsProps {
-  selectedTab: ContractTabsTitle;
+  selectedTab: AddressContractTabsTitle;
   tokenCount: number;
-  setSelectedTab: Dispatch<SetStateAction<ContractTabsTitle>>;
+  setSelectedTab: Dispatch<SetStateAction<AddressContractTabsTitle>>;
 }
 
 function ButtonTab({
@@ -16,8 +16,8 @@ function ButtonTab({
   children,
 }: PropsWithChildren<{
   active: boolean;
-  tab: ContractTabsTitle;
-  setSelectedTab: Dispatch<SetStateAction<ContractTabsTitle>>;
+  tab: AddressContractTabsTitle;
+  setSelectedTab: Dispatch<SetStateAction<AddressContractTabsTitle>>;
   testId?: string;
 }>): JSX.Element {
   return (
@@ -50,35 +50,35 @@ export default function ContractTabs({
     <div className="flex flex-row gap-x-8">
       <ButtonTab
         testId={
-          selectedTab === ContractTabsTitle.Transactions
+          selectedTab === AddressContractTabsTitle.Transactions
             ? "contract-transaction-options-clicked-title"
             : "contract-transaction-options-title"
         }
-        active={selectedTab === ContractTabsTitle.Transactions}
-        tab={ContractTabsTitle.Transactions}
+        active={selectedTab === AddressContractTabsTitle.Transactions}
+        tab={AddressContractTabsTitle.Transactions}
         setSelectedTab={setSelectedTab}
       />
       <ButtonTab
         testId={
-          selectedTab === ContractTabsTitle.Contract
+          selectedTab === AddressContractTabsTitle.Contract
             ? "contract-code-options-clicked-title"
             : "contract-code-options-title"
         }
-        active={selectedTab === ContractTabsTitle.Contract}
-        tab={ContractTabsTitle.Contract}
+        active={selectedTab === AddressContractTabsTitle.Contract}
+        tab={AddressContractTabsTitle.Contract}
         setSelectedTab={setSelectedTab}
       />
       <ButtonTab
         testId={
-          selectedTab === ContractTabsTitle.Tokens
+          selectedTab === AddressContractTabsTitle.Tokens
             ? "contract-tokens-options-clicked-title"
             : "contract-tokens-options-title"
         }
-        active={selectedTab === ContractTabsTitle.Tokens}
-        tab={ContractTabsTitle.Tokens}
+        active={selectedTab === AddressContractTabsTitle.Tokens}
+        tab={AddressContractTabsTitle.Tokens}
         setSelectedTab={setSelectedTab}
       >
-        {selectedTab === ContractTabsTitle.Tokens && (
+        {selectedTab === AddressContractTabsTitle.Tokens && (
           <div className="ml-2 bg-lightBlue text-xs font-semibold rounded-full min-h-[24px] min-w-[24px] flex justify-center px-1.5 items-center">
             {tokenCount}
           </div>

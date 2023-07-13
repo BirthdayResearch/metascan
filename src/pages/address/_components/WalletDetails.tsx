@@ -1,12 +1,18 @@
+import clsx from "clsx";
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import { useUnitSuffix } from "hooks/useUnitSuffix";
-import { RawTransactionI } from "@api/types";
+import {
+  RawTransactionI,
+  WalletAddressCounterI,
+  WalletAddressInfoI,
+} from "@api/types";
 import { useOutsideAlerter } from "@hooks/useOutsideAlerter";
+import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
 import { DFI_TOKEN_SYMBOL } from "shared/constants";
+import DetailRowTitle from "./shared/DetailRowTitle";
 
 export interface WalletDetailTokenI {
   value: number;
@@ -23,7 +29,9 @@ export interface AddressTransactionsProps {
 
 export interface WalletDetailProps {
   balance: string;
-  transactionCount: string;
+  walletDetail: WalletAddressInfoI;
+  counters: WalletAddressCounterI;
+  tokensCount: number;
   tokens: WalletDetailTokenI | null;
   addressTransactions: AddressTransactionsProps;
   isLoading?: boolean;
@@ -34,6 +42,7 @@ export default function WalletDetails({
 }: {
   detail: WalletDetailProps;
 }) {
+  const { walletDetail, counters, tokensCount } = detail;
   const [isTokenDropDownIconClicked, setIsTokenDropDownIconClicked] =
     useState(false);
   const wrapperRef = useRef(null);
@@ -50,8 +59,34 @@ export default function WalletDetails({
     }
   };
 
+  // Token Contract (TODO: combine this part with contract)
+  const isTokenAddress = walletDetail.token !== null;
+  const hasTokens = walletDetail.has_tokens;
+
   return (
-    <div className="flex lg:flex-row md:flex-col flex-col gap-y-4 lg:gap-x-5">
+    <div
+      className={clsx(
+        "grid gap-x-5 gap-y-5",
+        "md:grid md:grid-cols-2",
+        "lg:grid-cols-3"
+      )}
+    >
+      {isTokenAddress && (
+        <div className="flex flex-col gap-y-1">
+          <DetailRowTitle title="Token" tooltip="Token name and symbol" />
+          <div className="">
+            <LinkText
+              href={`/token/${walletDetail.token.address}`}
+              label={walletDetail.token.name}
+            />
+            <span className="text-sm text-white-700 ml-1">
+              {walletDetail.token.symbol
+                ? `(${walletDetail.token.symbol})`
+                : ""}
+            </span>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col lg:flex-row md:flex-row gap-y-4 lg:gap-x-5">
         <div className="flex flex-col gap-y-1 lg:min-w-[265px] md:min-w-[294px]">
           <div
@@ -136,20 +171,86 @@ export default function WalletDetails({
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-y-1 lg:w-[265px] md:w-[294px]">
-        <div
-          data-testid="wallet-transactions-title"
-          className="text-white-700 tracking-[0.01em]"
-        >
-          Transactions
+
+      {(hasTokens || isTokenAddress) && (
+        <div className="flex flex-col gap-y-1">
+          <DetailRowTitle
+            title="Tokens"
+            tooltip="The current number of tokens held in a specific address"
+          />
+          <NumericFormat
+            className="text-white-50 tracking-[0.01em]"
+            thousandSeparator
+            value={tokensCount}
+            decimalScale={0}
+            suffix={tokensCount > 1 ? " tokens" : " token"}
+            data-testid="token-contract-tokens-count"
+          />
         </div>
-        <div
-          data-testid="wallet-transactions-value"
+      )}
+      <div className="flex flex-col gap-y-1">
+        <DetailRowTitle
+          title="Transactions"
+          tooltip="The history of all transactions to and from this address"
+        />
+        <NumericFormat
           className="text-white-50 tracking-[0.01em]"
-        >
-          {useUnitSuffix(detail.transactionCount)}
-        </div>
+          thousandSeparator
+          value={counters.transactions_count ?? 0}
+          decimalScale={0}
+          suffix={
+            Number(counters.transactions_count ?? 0) > 1
+              ? " transactions"
+              : " transaction"
+          }
+          data-testid="token-contract-txs-count"
+        />
       </div>
+      {isTokenAddress && (
+        <>
+          <div className="flex flex-col gap-y-1">
+            <DetailRowTitle
+              title="Transfers"
+              tooltip="The total number of token transfers involving this address"
+            />
+            <NumericFormat
+              className="text-white-50 tracking-[0.01em]"
+              thousandSeparator
+              value={counters.token_transfers_count ?? 0}
+              decimalScale={0}
+              suffix={
+                Number(counters.token_transfers_count ?? 0) > 1
+                  ? " transfers"
+                  : " transfer"
+              }
+              data-testid="token-contract-transfers-count"
+            />
+          </div>
+          <div className="flex flex-col gap-y-1">
+            <DetailRowTitle
+              title="Gas used"
+              tooltip="The total amount of computational effort expended to execute transactions"
+            />
+            <NumericFormat
+              className="text-white-50 tracking-[0.01em]"
+              thousandSeparator
+              value={counters.gas_usage_count ?? 0}
+              decimalScale={0}
+              data-testid="token-contract-gas-used"
+            />
+          </div>
+          <div className="flex flex-col gap-y-1">
+            <DetailRowTitle
+              title="Last updated"
+              tooltip="Block number in which this address was updated"
+            />
+            <LinkText
+              href={`/block/${detail.walletDetail.block_number_balance_updated_at}`}
+              label={`Block #${detail.walletDetail.block_number_balance_updated_at}`}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

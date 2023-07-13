@@ -5,7 +5,7 @@ import {
 import { useRouter } from "next/router";
 import TransactionRow from "@components/commons/TransactionRow";
 import { RawTransactionI } from "@api/types";
-import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
+import { AddressContractTabsTitle } from "../../../enum/tabsTitle";
 
 interface ContractTransactionsListProps {
   contractTransactions: RawTransactionI[];
@@ -26,7 +26,7 @@ export default function ContractTransactionsList({
           data-testid="contract-address-txn-list-title"
           className="font-bold text-xl text-white-50"
         >
-          {ContractTabsTitle.Transactions}
+          {AddressContractTabsTitle.Transactions}
         </h2>
         <CursorPagination
           pages={contractTransactionPages}

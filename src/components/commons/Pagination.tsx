@@ -11,12 +11,14 @@ interface PaginationProps<T> {
   };
   pathname?: string;
   containerClass?: string;
+  shallow?: boolean;
 }
 
 export default function Pagination<T>({
   nextPageParams: nextPageParamsFromApi,
   pathname,
   containerClass,
+  shallow,
 }: PaginationProps<T>): JSX.Element {
   const router = useRouter();
   const pathName = pathname ?? router.pathname;
@@ -108,6 +110,7 @@ export default function Pagination<T>({
           type="Prev"
           query={previousPageQuery}
           pathName={pathName}
+          shallow={shallow}
         >
           <FiArrowLeft className="text-white-700" size={24} />
         </NavigateButton>
@@ -122,11 +125,17 @@ export default function Pagination<T>({
             active={currentPageNumber === page.page_number}
             query={page}
             pathName={pathName}
+            shallow={shallow}
           />
         ))}
 
       {nextPageParamsFromApi && (
-        <NavigateButton type="Next" query={nextPageParams} pathName={pathName}>
+        <NavigateButton
+          type="Next"
+          query={nextPageParams}
+          pathName={pathName}
+          shallow={shallow}
+        >
           <FiArrowRight className="text-white-700" size={24} />
         </NavigateButton>
       )}
@@ -139,6 +148,7 @@ interface NumberButtonProps {
   active: boolean;
   pathName: string;
   query: any;
+  shallow?: boolean;
 }
 
 function NumberButton({
@@ -146,6 +156,7 @@ function NumberButton({
   active,
   query,
   pathName,
+  shallow,
 }: NumberButtonProps): JSX.Element {
   if (active) {
     return (
@@ -159,7 +170,7 @@ function NumberButton({
   }
 
   return (
-    <Link href={{ pathname: pathName, query }}>
+    <Link href={{ pathname: pathName, query }} shallow={shallow}>
       <button
         type="button"
         className="rounded cursor-pointer h-6 w-6 flex items-center justify-center"
@@ -175,13 +186,15 @@ function NavigateButton({
   type,
   query,
   pathName,
+  shallow,
 }: PropsWithChildren<{
   type: "Next" | "Prev";
   pathName: string;
   query: any;
+  shallow?: boolean;
 }>): JSX.Element {
   return (
-    <Link href={{ pathname: pathName, query }}>
+    <Link href={{ pathname: pathName, query }} shallow={shallow}>
       <button
         type="button"
         data-testid={`Pagination.${type}`}

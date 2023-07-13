@@ -59,7 +59,7 @@ export default function Transaction({
               title="Transaction details"
             />
           </div>
-          <div className="">
+          <div>
             <span className="text-white-50 text-lg md:text-2xl font-semibold md:leading-9 break-all -tracking-[0.02em] md:tracking-normal">
               {txDetails.hash}
             </span>

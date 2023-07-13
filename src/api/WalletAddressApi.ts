@@ -11,6 +11,7 @@ import {
   TokensListPageParamsProps,
   WalletAddressCounterI,
   WalletAddressInfoI,
+  WalletAddressTokenBalanceI,
 } from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
 
@@ -83,5 +84,15 @@ export default {
       `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/transactions${params}`
     );
     return wrapResponse<RawTxnWithPaginationProps>(res);
+  },
+  getAllAddressTokens: async (
+    network: NetworkConnection,
+    aid: string
+  ): Promise<WalletAddressTokenBalanceI[]> => {
+    const baseUrl = getBaseUrl(network);
+    const res = await fetch(
+      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`
+    );
+    return wrapResponse<WalletAddressTokenBalanceI[]>(res);
   },
 };

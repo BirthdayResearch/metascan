@@ -9,7 +9,9 @@ export function TimeComponent({
 }): JSX.Element {
   return (
     <div className={containerClass}>
-      <span className="text-white-700 text-base">{getDuration(time)} ago</span>
+      <span className="text-white-700 text-sm md:text-base">
+        {getDuration(time)} ago
+      </span>
     </div>
   );
 }

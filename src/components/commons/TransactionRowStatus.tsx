@@ -25,12 +25,12 @@ export default function TransactionRowStatus({
         data-testid="transaction-status"
         className={clsx(
           "-tracking-[0.01em] ",
-          "md:text-base md:font-semibold md:-tracking-[0.02em]"
+          "text-xs md:text-base font-semibold md:-tracking-[0.02em]"
         )}
       >
         {status}
       </div>
-      <Icon size={20} className="ml-1" />
+      <Icon className="ml-1 h-4 w-4 md:h-5 md:w-5" />
     </div>
   );
 }

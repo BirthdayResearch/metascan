@@ -3,6 +3,8 @@ import TransactionRowLoader from "./TransactionRowLoader";
 import RowItemLoader from "./RowItemLoader";
 import SmartContractLoader from "./SmartContractLoader";
 import AddressTokenLoader from "./AddressTokenLoader";
+import TokenHoldersLoader from "./TokenHoldersLoader";
+import AddressLogsLoader from "./AddressLogsLoader";
 
 interface SkeletonLoaderProp {
   rows: number;
@@ -18,6 +20,8 @@ export enum SkeletonLoaderScreen {
   "Block" = "Block",
   "Contract" = "Contract",
   "AddressTokens" = "AddressTokens",
+  "TokenHolders" = "TokenHolders",
+  "AddressLogs" = "AddressLogs",
 }
 
 export function SkeletonLoader(props: SkeletonLoaderProp): JSX.Element {
@@ -63,6 +67,22 @@ export function SkeletonLoader(props: SkeletonLoaderProp): JSX.Element {
         <>
           {skeletonRow.map((row) => (
             <AddressTokenLoader key={row} />
+          ))}
+        </>
+      );
+    case SkeletonLoaderScreen.TokenHolders:
+      return (
+        <>
+          {skeletonRow.map((row) => (
+            <TokenHoldersLoader key={row} />
+          ))}
+        </>
+      );
+    case SkeletonLoaderScreen.AddressLogs:
+      return (
+        <>
+          {skeletonRow.map((row) => (
+            <AddressLogsLoader key={row} />
           ))}
         </>
       );

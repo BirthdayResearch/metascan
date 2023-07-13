@@ -21,24 +21,32 @@ import {
 import QrCode from "@components/commons/QrCode";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import { sleep } from "shared/sleep";
-import { ContractTabsTitle } from "enum/contractTabsTitle";
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
 import WalletAddressApi from "@api/WalletAddressApi";
 import { NetworkConnection } from "@contexts/Environment";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { AddressTransactionsProps } from "pages/address/_components/WalletDetails";
 import TransactionDetails from "@components/TransactionDetails";
-import { WalletAddressInfoI } from "@api/types";
 import { useNetwork } from "@contexts/NetworkContext";
-import VerifiedContractSubtitle from "./_components/VerifiedContractSubtitle";
+import {
+  WalletAddressCounterI,
+  WalletAddressInfoI,
+  WalletAddressToken,
+} from "@api/types";
+import clsx from "clsx";
+// import AddressContractTabs from "pages/address/_components/shared/AddressContractTabs";
+import DetailRowTitle from "pages/address/_components/shared/DetailRowTitle";
+import { AddressContractTabsTitle } from "enum/tabsTitle";
 import ContractTabs from "./_components/ContractTabs";
-import ContractCode from "./_components/ContractCode";
 import ContractTokensList from "./_components/ContractTokensList";
+import ContractCode from "./_components/ContractCode";
 
 interface ContractDetailProps {
   addressTransactions: AddressTransactionsProps;
   balance: string;
   addressDetail: WalletAddressInfoI;
+  counters: WalletAddressCounterI;
+  tokensCount: number;
   isLoading?: boolean;
 }
 
@@ -46,6 +54,7 @@ export default function VerifiedContract({
   addressTransactions,
   addressDetail,
   balance,
+  counters,
   isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { connection } = useNetwork();
@@ -65,6 +74,9 @@ export default function VerifiedContract({
   useEffect(() => {
     getAllTokens();
   }, []);
+  // Token Contract
+  const isTokenContract = addressDetail.token !== null;
+  const hasTokens = addressDetail.has_tokens;
 
   return (
     <div className="px-1 md:px-0 mt-12">
@@ -76,7 +88,7 @@ export default function VerifiedContract({
             data-testid="contract-details-title"
           >
             <span className="font-bold text-xl text-white-50">
-              {addressDetail.name ?? fixedTitle.contract}
+              {addressDetail.name ?? "Contract"}
             </span>
             {addressDetail.is_verified && <VerifiedGreenTickIcon size={18} />}
           </div>
@@ -85,6 +97,12 @@ export default function VerifiedContract({
             balance={{ value: balance, symbol: DMX_TOKEN_SYMBOL }}
             setIsQrCodeClicked={setIsQrCodeClicked}
             isVerified={addressDetail.is_verified}
+            isTokenContract={isTokenContract}
+            hasTokens={hasTokens}
+            token={addressDetail.token}
+            counters={counters}
+            tokensCount={tokensCount}
+            lastupdatedAtBlock={addressDetail.block_number_balance_updated_at}
           />
         </div>
       </GradientCardContainer>
@@ -94,6 +112,9 @@ export default function VerifiedContract({
         isLoading={isLoading}
         transactions={addressTransactions}
         implementationAddress={addressDetail.implementation_address ?? null}
+        isContract={addressDetail.is_contract}
+        isTokenContract={isTokenContract}
+        basePath="/contract"
       />
       {isQrCodeClicked && (
         <QrCode
@@ -112,11 +133,23 @@ function ContractSegmentOne({
   balance,
   setIsQrCodeClicked,
   isVerified,
+  isTokenContract,
+  hasTokens,
+  token,
+  lastupdatedAtBlock,
+  counters,
+  tokensCount,
 }: {
   creator: string;
   balance: { value: string; symbol: string };
   setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
   isVerified: boolean;
+  isTokenContract: boolean;
+  hasTokens: boolean;
+  token: WalletAddressToken;
+  lastupdatedAtBlock: number;
+  counters: WalletAddressCounterI;
+  tokensCount: number;
 }): JSX.Element {
   const [isContractAddressCopied, setIsContractAddressCopied] = useState(false);
   const router = useRouter();
@@ -129,7 +162,7 @@ function ContractSegmentOne({
           <div className="flex flex-row gap-x-2.5 items-center">
             <LinkText
               testId="contract-address-copied"
-              label={fixedTitle.copied}
+              label="Copied!"
               href={`/contract/${cid}`}
               customStyle="tracking-[0.01em]"
             />
@@ -165,16 +198,42 @@ function ContractSegmentOne({
           </div>
         )}
       </div>
-      <div className="flex lg:flex-row md:flex-row flex-col gap-x-5 gap-y-5">
-        <div className="flex flex-col gap-y-1 w-[288px]">
-          <VerifiedContractSubtitle title={fixedTitle.creator} />
+      <div
+        className={clsx(
+          "grid gap-x-5 gap-y-5",
+          "md:grid md:grid-cols-2",
+          "lg:grid-cols-3"
+        )}
+      >
+        {isTokenContract && (
+          <div className="flex flex-col gap-y-1">
+            <DetailRowTitle title="Token" tooltip="Token name and symbol" />
+            <div>
+              <LinkText
+                href={`/token/${token.address}`}
+                label={token.name ?? "N/A"}
+              />
+              <span className="text-sm text-white-700 ml-1">
+                {token.symbol ? `(${token.symbol})` : ""}
+              </span>
+            </div>
+          </div>
+        )}
+        <div className="flex flex-col gap-y-1">
+          <DetailRowTitle
+            title="Creator"
+            tooltip="The original issuer of the tokens"
+          />
           <LinkText
             href={`/address/${creator}`}
             label={truncateTextFromMiddle(creator, 11)}
           />
         </div>
         <div className="flex flex-col gap-y-1">
-          <VerifiedContractSubtitle title={fixedTitle.balance} />
+          <DetailRowTitle
+            title="Balance"
+            tooltip="The specific digital assets associated with this contract"
+          />
           <NumericFormat
             className="text-white-50 tracking-[0.01em]"
             thousandSeparator
@@ -184,6 +243,85 @@ function ContractSegmentOne({
             data-testid="contract-address-balance-value"
           />
         </div>
+        {(isTokenContract || hasTokens) && (
+          <div className="flex flex-col gap-y-1">
+            <DetailRowTitle
+              title="Tokens"
+              tooltip="The current number of tokens held in a specific address"
+            />
+            <NumericFormat
+              className="text-white-50 tracking-[0.01em]"
+              thousandSeparator
+              value={tokensCount}
+              decimalScale={0}
+              suffix={tokensCount > 1 ? " tokens" : " token"}
+              data-testid="token-contract-tokens-count"
+            />
+          </div>
+        )}
+        {isTokenContract && (
+          <>
+            <div className="flex flex-col gap-y-1">
+              <DetailRowTitle
+                title="Transactions"
+                tooltip="The history of all transactions to and from this address"
+              />
+              <NumericFormat
+                className="text-white-50 tracking-[0.01em]"
+                thousandSeparator
+                value={counters.transactions_count ?? 0}
+                decimalScale={0}
+                suffix={
+                  Number(counters.transactions_count ?? 0) > 1
+                    ? " transactions"
+                    : " transaction"
+                }
+                data-testid="token-contract-txs-count"
+              />
+            </div>
+            <div className="flex flex-col gap-y-1">
+              <DetailRowTitle
+                title="Transfers"
+                tooltip="The total number of token transfers involving this address"
+              />
+              <NumericFormat
+                className="text-white-50 tracking-[0.01em]"
+                thousandSeparator
+                value={counters.token_transfers_count ?? 0}
+                decimalScale={0}
+                suffix={
+                  Number(counters.token_transfers_count ?? 0) > 1
+                    ? " transfers"
+                    : " transfer"
+                }
+                data-testid="token-contract-transfers-count"
+              />
+            </div>
+            <div className="flex flex-col gap-y-1">
+              <DetailRowTitle
+                title="Gas used"
+                tooltip="The total amount of computational effort expended to execute transactions"
+              />
+              <NumericFormat
+                className="text-white-50 tracking-[0.01em]"
+                thousandSeparator
+                value={counters.gas_usage_count ?? 0}
+                decimalScale={0}
+                data-testid="token-contract-gas-used"
+              />
+            </div>
+            <div className="flex flex-col gap-y-1">
+              <DetailRowTitle
+                title="Last updated"
+                tooltip="Block number in which this address was updated"
+              />
+              <LinkText
+                href={`/block/${lastupdatedAtBlock}`}
+                label={`Block #${lastupdatedAtBlock}`}
+              />
+            </div>
+          </>
+        )}
       </div>
       {!isVerified && (
         <div className="flex items-center">
@@ -209,7 +347,7 @@ function ContractSegmentTwo({
   implementationAddress: string | null;
 }) {
   const [selectedTab, setSelectedTab] = useState(
-    ContractTabsTitle.Transactions
+    AddressContractTabsTitle.Transactions
   );
 
   return (
@@ -223,7 +361,7 @@ function ContractSegmentTwo({
       </div>
       <GradientCardContainer className="relative mt-6" fullBorder>
         <div className="p-5 md:p-10">
-          {selectedTab === ContractTabsTitle.Transactions && (
+          {selectedTab === AddressContractTabsTitle.Transactions && (
             <div className="mt-8">
               <TransactionDetails
                 data={transactions}
@@ -234,10 +372,10 @@ function ContractSegmentTwo({
               />
             </div>
           )}
-          {selectedTab === ContractTabsTitle.Contract && (
+          {selectedTab === AddressContractTabsTitle.Contract && (
             <ContractCode implementationAddress={implementationAddress} />
           )}
-          {selectedTab === ContractTabsTitle.Tokens && (
+          {selectedTab === AddressContractTabsTitle.Tokens && (
             <ContractTokensList address={addressHash} />
           )}
         </div>
@@ -245,26 +383,6 @@ function ContractSegmentTwo({
     </div>
   );
 }
-
-const fixedTitle = {
-  contract: "Contract",
-  creator: "Creator",
-  balance: "Balance",
-  code: "Code",
-  transaction: "Transactions",
-  token: "Tokens",
-  networth: "Net worth",
-  dmctxBalance: "DMCTx Balance",
-  otherToken: "Other tokens",
-  asset: "Asset",
-  type: "Type",
-  symbol: "Symbol",
-  amount: "Amount",
-  price: "Price",
-  value: "Value",
-  contractAddress: "Contract Address",
-  copied: "Copied!",
-};
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext
@@ -301,6 +419,16 @@ export async function getServerSideProps(
           params?.index as string
         );
 
+    const counters = await WalletAddressApi.getCounters(
+      network as NetworkConnection,
+      cid
+    );
+    const allTokens = await WalletAddressApi.getAllAddressTokens(
+      network as NetworkConnection,
+      cid
+    );
+    const tokensCount = allTokens?.length ?? 0;
+
     return {
       props: {
         balance: formatEther(BigInt(addressDetail.coin_balance ?? "0")),
@@ -310,6 +438,8 @@ export async function getServerSideProps(
           nextPageParams:
             addressTransactions.next_page_params as TxnNextPageParamsProps,
         },
+        counters,
+        tokensCount,
       },
     };
   } catch (e) {

@@ -38,7 +38,7 @@ export default {
     const baseUrl = getBaseUrl(network);
     const params = queryParams
       ? filterParams([
-          { key: "fiat_value", value: "null1" },
+          { key: "fiat_value", value: queryParams.fiat_value },
           { key: "items_count", value: queryParams?.items_count },
           { key: "value", value: queryParams?.value },
           { key: "id", value: queryParams?.id },

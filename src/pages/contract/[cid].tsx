@@ -180,8 +180,11 @@ function ContractSegmentOne({
         {isTokenContract && (
           <div className="flex flex-col gap-y-1">
             <DetailRowTitle title="Token" />
-            <div className="">
-              <LinkText href={`/token/${token.address}`} label={token.name} />
+            <div>
+              <LinkText
+                href={`/token/${token.address}`}
+                label={token.name ?? "N/A"}
+              />
               <span className="text-sm text-white-700 ml-1">
                 {token.symbol ? `(${token.symbol})` : ""}
               </span>

@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
@@ -29,6 +29,7 @@ import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { AddressTransactionsProps } from "pages/address/_components/WalletDetails";
 import TransactionDetails from "@components/TransactionDetails";
 import { WalletAddressInfoI } from "@api/types";
+import { useNetwork } from "@contexts/NetworkContext";
 import VerifiedContractSubtitle from "./_components/VerifiedContractSubtitle";
 import ContractTabs from "./_components/ContractTabs";
 import ContractCode from "./_components/ContractCode";
@@ -47,9 +48,23 @@ export default function VerifiedContract({
   balance,
   isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { connection } = useNetwork();
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
+  const [tokensCount, setTokensCount] = useState(0);
   const router = useRouter();
   const cid = router.query.cid?.toString()!;
+
+  const getAllTokens = async () => {
+    const t = await WalletAddressApi.getAllTokens(
+      connection as NetworkConnection,
+      cid
+    );
+    setTokensCount(t?.length);
+  };
+
+  useEffect(() => {
+    getAllTokens();
+  }, []);
 
   return (
     <div className="px-1 md:px-0 mt-12">
@@ -74,6 +89,7 @@ export default function VerifiedContract({
         </div>
       </GradientCardContainer>
       <ContractSegmentTwo
+        tokensCount={tokensCount}
         addressHash={cid}
         isLoading={isLoading}
         transactions={addressTransactions}
@@ -182,11 +198,13 @@ function ContractSegmentOne({
 function ContractSegmentTwo({
   addressHash,
   isLoading,
+  tokensCount,
   transactions,
   implementationAddress,
 }: {
   addressHash: string;
   isLoading?: boolean;
+  tokensCount: number;
   transactions: AddressTransactionsProps;
   implementationAddress: string | null;
 }) {
@@ -198,6 +216,7 @@ function ContractSegmentTwo({
     <div>
       <div className="relative mt-10 lg:mt-8 md:px-10">
         <ContractTabs
+          tokenCount={tokensCount}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
         />

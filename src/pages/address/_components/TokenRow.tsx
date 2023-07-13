@@ -36,7 +36,7 @@ export default function TokenRow({ data }: { data: TokenItemI }) {
           />
           <div className={valueClass}>{token?.type}</div>
           <div className={valueClass}>{token?.symbol?.toUpperCase()}</div>
-          <div className="col-span-2 text-right pr-10">
+          <div className="col-span-2 text-right">
             <NumericFormat
               value={value}
               thousandSeparator

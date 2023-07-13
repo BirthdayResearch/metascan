@@ -9,11 +9,41 @@ import { TokenItemI, TokensListPageParamsProps } from "@api/types";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import Pagination from "@components/commons/Pagination";
 import { useRouter } from "next/router";
+import {
+  SkeletonLoader,
+  SkeletonLoaderScreen,
+} from "@components/skeletonLoaders/SkeletonLoader";
+import clsx from "clsx";
 import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
 import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
 
 interface TokenDetailsProps {
   address: string;
+}
+
+function TokensListPagination({
+  pathname,
+  nextPageParams,
+  isLoading,
+  containerClass = "",
+  loaderClass = "",
+}: {
+  pathname: string;
+  isLoading: boolean;
+  nextPageParams?: TokensListPageParamsProps;
+  containerClass?: string;
+  loaderClass?: string;
+}) {
+  return (
+    <div className={clsx("relative", containerClass)}>
+      {isLoading && <PaginationLoader customStyle={loaderClass} />}
+      <Pagination<TokensListPageParamsProps>
+        pathname={pathname}
+        nextPageParams={nextPageParams}
+        shallow
+      />
+    </div>
+  );
 }
 
 export default function ContractTokensList({ address }: TokenDetailsProps) {
@@ -38,7 +68,7 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
 
   useEffect(() => {
     getTokens();
-  }, []);
+  }, [params.page_number]);
 
   return (
     <div>
@@ -54,7 +84,7 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
           nextPageParams={nextPage}
           isLoading={isLoading}
           containerClass="justify-end mt-5 md:mt-0"
-          loaderClass="right-1 top-0 md:top-0"
+          loaderClass="right-1 md: top-4"
         />
       </div>
       <div className="hidden lg:block">
@@ -69,7 +99,7 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
             <VerifiedContractSubtitle title={TokenTableFixedTitle.symbol} />
           </div>
           <div
-            className="col-span-2 text-right pr-10"
+            className="col-span-2 text-right"
             data-testid="contract-tokens-amount-title items-end"
           >
             <VerifiedContractSubtitle title={TokenTableFixedTitle.quantity} />
@@ -83,40 +113,21 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
         </div>
         <div className="brand-gradient-1 h-[1px]" />
       </div>
-      {tokens.map((item) => (
-        <TokenRow key={item.token.address} data={item} />
-      ))}
+      {isLoading ? (
+        <SkeletonLoader rows={22} screen={SkeletonLoaderScreen.AddressTokens} />
+      ) : (
+        <>
+          {tokens.map((item) => (
+            <TokenRow key={item.token.address} data={item} />
+          ))}
+        </>
+      )}
       <TokensListPagination
         pathname={`/contract/${address}`}
         nextPageParams={nextPage}
         isLoading={isLoading}
         containerClass="flex w-full md:justify-end mt-12 md:mt-10"
-        loaderClass="right-1 top-0 md:top-0"
-      />
-    </div>
-  );
-}
-
-function TokensListPagination({
-  pathname,
-  nextPageParams,
-  isLoading,
-  containerClass = "",
-  loaderClass = "",
-}: {
-  pathname: string;
-  isLoading: boolean;
-  nextPageParams?: TokensListPageParamsProps;
-  containerClass?: string;
-  loaderClass?: string;
-}) {
-  return (
-    <div className={containerClass}>
-      {isLoading && <PaginationLoader customStyle={loaderClass} />}
-      <Pagination<TokensListPageParamsProps>
-        pathname={pathname}
-        nextPageParams={nextPageParams}
-        shallow
+        loaderClass="left-1 md:left-auto md:right-1 top-4"
       />
     </div>
   );

@@ -4,11 +4,46 @@ import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
 
 interface ContractOptionsProps {
   selectedTab: ContractTabsTitle;
+  tokenCount: number;
   setSelectedTab: Dispatch<SetStateAction<ContractTabsTitle>>;
+}
+
+function ButtonTab({
+  active,
+  tab,
+  setSelectedTab,
+  testId,
+  children,
+}: PropsWithChildren<{
+  active: boolean;
+  tab: ContractTabsTitle;
+  setSelectedTab: Dispatch<SetStateAction<ContractTabsTitle>>;
+  testId?: string;
+}>): JSX.Element {
+  return (
+    <div>
+      <button
+        type="button"
+        className={clsx(
+          "font-medium",
+          active ? "text-white-50" : "text-white-700"
+        )}
+        data-testid={testId}
+        onClick={() => setSelectedTab(tab)}
+      >
+        <div className="flex flex-row">
+          {tab}
+          {children}
+        </div>
+      </button>
+      {active && <div className="brand-gradient-1 h-1 mt-3" />}
+    </div>
+  );
 }
 
 export default function ContractTabs({
   selectedTab,
+  tokenCount,
   setSelectedTab,
 }: ContractOptionsProps) {
   return (
@@ -42,36 +77,13 @@ export default function ContractTabs({
         active={selectedTab === ContractTabsTitle.Tokens}
         tab={ContractTabsTitle.Tokens}
         setSelectedTab={setSelectedTab}
-      />
-    </div>
-  );
-}
-
-function ButtonTab({
-  active,
-  tab,
-  setSelectedTab,
-  testId,
-}: {
-  active: boolean;
-  tab: ContractTabsTitle;
-  setSelectedTab: Dispatch<SetStateAction<ContractTabsTitle>>;
-  testId?: string;
-}) {
-  return (
-    <div>
-      <button
-        type="button"
-        className={clsx(
-          "font-medium",
-          active ? "text-white-50" : "text-white-700"
-        )}
-        data-testid={testId}
-        onClick={() => setSelectedTab(tab)}
       >
-        {tab}
-      </button>
-      {active && <div className="brand-gradient-1 h-1 mt-3" />}
+        {selectedTab === ContractTabsTitle.Tokens && (
+          <div className="ml-2 bg-lightBlue text-xs font-semibold rounded-full min-h-[24px] min-w-[24px] flex justify-center px-1.5 items-center">
+            {tokenCount}
+          </div>
+        )}
+      </ButtonTab>
     </div>
   );
 }

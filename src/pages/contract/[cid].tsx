@@ -21,23 +21,19 @@ import {
 import QrCode from "@components/commons/QrCode";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
 import { sleep } from "shared/sleep";
-import { ContractTabsTitle } from "enum/contractTabsTitle";
 import { TxnNextPageParamsProps } from "@api/TransactionsApi";
 import WalletAddressApi from "@api/WalletAddressApi";
 import { NetworkConnection } from "@contexts/Environment";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { AddressTransactionsProps } from "pages/address/_components/WalletDetails";
-import TransactionDetails from "@components/TransactionDetails";
 import {
   WalletAddressCounterI,
   WalletAddressInfoI,
   WalletAddressToken,
 } from "@api/types";
 import clsx from "clsx";
-import VerifiedContractSubtitle from "./_components/VerifiedContractSubtitle";
-import ContractTabs from "./_components/ContractTabs";
-import ContractCode from "./_components/ContractCode";
-import ContractLogs from "./_components/ContractLogs";
+import AddressContractTabs from "pages/address/_components/shared/AddressContractTabs";
+import DetailRowTitle from "pages/address/_components/shared/DetailRowTitle";
 
 interface ContractDetailProps {
   addressTransactions: AddressTransactionsProps;
@@ -87,12 +83,14 @@ export default function VerifiedContract({
           />
         </div>
       </GradientCardContainer>
-      <ContractSegmentTwo
+      <AddressContractTabs
         addressHash={cid}
         isLoading={isLoading}
         transactions={addressTransactions}
         implementationAddress={addressDetail.implementation_address ?? null}
+        isContract={addressDetail.is_contract}
         isTokenContract={isTokenContract}
+        basePath="/contract"
       />
       {isQrCodeClicked && (
         <QrCode
@@ -181,7 +179,7 @@ function ContractSegmentOne({
       >
         {isTokenContract && (
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title="Token" />
+            <DetailRowTitle title="Token" />
             <div className="">
               <LinkText href={`/token/${token.address}`} label={token.name} />
               <span className="text-sm text-white-700 ml-1">
@@ -191,14 +189,14 @@ function ContractSegmentOne({
           </div>
         )}
         <div className="flex flex-col gap-y-1">
-          <VerifiedContractSubtitle title="Creator" />
+          <DetailRowTitle title="Creator" />
           <LinkText
             href={`/address/${creator}`}
             label={truncateTextFromMiddle(creator, 11)}
           />
         </div>
         <div className="flex flex-col gap-y-1">
-          <VerifiedContractSubtitle title="Balance" />
+          <DetailRowTitle title="Balance" />
           <NumericFormat
             className="text-white-50 tracking-[0.01em]"
             thousandSeparator
@@ -211,7 +209,7 @@ function ContractSegmentOne({
         {isTokenContract && (
           <>
             <div className="flex flex-col gap-y-1">
-              <VerifiedContractSubtitle title="Tokens" />
+              <DetailRowTitle title="Tokens" />
               <NumericFormat
                 className="text-white-50 tracking-[0.01em]"
                 thousandSeparator
@@ -222,7 +220,7 @@ function ContractSegmentOne({
               />
             </div>
             <div className="flex flex-col gap-y-1">
-              <VerifiedContractSubtitle title="Transactions" />
+              <DetailRowTitle title="Transactions" />
               <NumericFormat
                 className="text-white-50 tracking-[0.01em]"
                 thousandSeparator
@@ -233,7 +231,7 @@ function ContractSegmentOne({
               />
             </div>
             <div className="flex flex-col gap-y-1">
-              <VerifiedContractSubtitle title="Transfers" />
+              <DetailRowTitle title="Transfers" />
               <NumericFormat
                 className="text-white-50 tracking-[0.01em]"
                 thousandSeparator
@@ -244,7 +242,7 @@ function ContractSegmentOne({
               />
             </div>
             <div className="flex flex-col gap-y-1">
-              <VerifiedContractSubtitle title="Gas used" />
+              <DetailRowTitle title="Gas used" />
               <NumericFormat
                 className="text-white-50 tracking-[0.01em]"
                 thousandSeparator
@@ -254,7 +252,7 @@ function ContractSegmentOne({
               />
             </div>
             <div className="flex flex-col gap-y-1">
-              <VerifiedContractSubtitle title="Last updated" />
+              <DetailRowTitle title="Last updated" />
               <LinkText
                 href={`/block/${lastupdatedAtBlock}`}
                 label={`Block #${lastupdatedAtBlock}`}
@@ -269,65 +267,6 @@ function ContractSegmentOne({
           <span className="text-orange-700 ml-1">Unverified Contract</span>
         </div>
       )}
-    </div>
-  );
-}
-
-function ContractSegmentTwo({
-  addressHash,
-  isLoading,
-  transactions,
-  implementationAddress,
-  isTokenContract,
-}: {
-  addressHash: string;
-  isLoading?: boolean;
-  transactions: AddressTransactionsProps;
-  implementationAddress: string | null;
-  isTokenContract: boolean;
-}) {
-  const [selectedTab, setSelectedTab] = useState(
-    ContractTabsTitle.Transactions
-  );
-
-  return (
-    <div>
-      <div className="relative mt-10 lg:mt-8">
-        <ContractTabs
-          selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
-          isTokenContract={isTokenContract}
-        />
-      </div>
-      <GradientCardContainer className="relative mt-6">
-        <div className="p-5 md:p-10">
-          {selectedTab === ContractTabsTitle.Transactions && (
-            <div>
-              <TransactionDetails
-                data={transactions}
-                pathname={`/contract/${addressHash}`}
-                type="address"
-                isLoading={isLoading}
-                isHeaderDisplayed={false}
-              />
-            </div>
-          )}
-          {selectedTab === ContractTabsTitle.Logs && <ContractLogs />}
-          {selectedTab === ContractTabsTitle.Contract && (
-            <ContractCode implementationAddress={implementationAddress} />
-          )}
-          {/* {selectedTab === ContractTabsTitle.Tokens && (
-        <ContractTokensList
-          contractTokenList={data.tokens}
-          contractTokenListPage={data.tokenPages}
-          balance={data.verifiedContractData.dmctxBalance}
-          otherTokens={data.verifiedContractData.otherTokens}
-          networth={data.verifiedContractData.networth}
-        />
-      )} 
-      */}
-        </div>
-      </GradientCardContainer>
     </div>
   );
 }

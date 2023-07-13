@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   useGetAddressLogsMutation,
@@ -10,11 +10,16 @@ import { useNetwork } from "@contexts/NetworkContext";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import Pagination from "@components/commons/Pagination";
 
-export default function ContractLogs() {
+export default function AddressLogs({
+  addressHash,
+  basePath,
+}: {
+  addressHash: string;
+  basePath: string;
+}) {
   const { connection } = useNetwork();
   const router = useRouter();
-  const { cid, ...params } = router.query;
-  const contractId = cid as string;
+  const params = router.query;
 
   const [data, setData] = useState<LogsWithPaginationProps>();
   const [isLoading, setIsLoading] = useState(false);
@@ -24,10 +29,10 @@ export default function ContractLogs() {
     setIsLoading(true);
     const logsData = await trigger({
       network: connection,
-      addressHash: contractId,
       itemsCount: params.items_count as string,
       blockNumber: params.block_number as string,
       index: params.index as string,
+      addressHash,
     }).unwrap();
     setData(logsData);
     setIsLoading(false);
@@ -35,7 +40,7 @@ export default function ContractLogs() {
 
   useEffect(() => {
     fetchLogs();
-  }, [router.query.page_number]);
+  }, [params.page_number]);
 
   const logs = data?.items ?? [];
   if (!isLoading && logs.length === 0) {
@@ -51,7 +56,7 @@ export default function ContractLogs() {
     <div>
       {showPagination && (
         <LogsPagination
-          contractId={contractId}
+          pathname={`${basePath}/${addressHash}`}
           nextPageParams={data?.next_page_params}
           isLoading={isLoading}
           containerClass="relative"
@@ -60,7 +65,7 @@ export default function ContractLogs() {
       )}
       <div className="flex flex-col gap-12 md:gap-6 lg:gap-7 mt-7">
         {logs.map((log) => (
-          <>
+          <Fragment key={log.tx_hash}>
             <div className="flex flex-col gap-3">
               <div className={rowCss}>
                 <LogDetailTitle title="Transaction" />
@@ -76,7 +81,10 @@ export default function ContractLogs() {
                   {log.topics
                     .filter((t) => t)
                     .map((topic, i) => (
-                      <div className="flex flex-col lg:flex-row lg:gap-1 text-white-50 break-all text-right sm:text-left">
+                      <div
+                        key={i}
+                        className="flex flex-col lg:flex-row lg:gap-1 text-white-50 break-all text-right sm:text-left"
+                      >
                         <span>[{i}]</span>
                         <span>{topic}</span>
                       </div>
@@ -91,13 +99,13 @@ export default function ContractLogs() {
               </div>
             </div>
             <div className="h-[0.5px] bg-dark-200" />
-          </>
+          </Fragment>
         ))}
       </div>
 
       {showPagination && (
         <LogsPagination
-          contractId={contractId}
+          pathname={`${basePath}/${addressHash}`}
           nextPageParams={data?.next_page_params}
           isLoading={isLoading}
           containerClass="relative h-10 md:h-6 lg:pt-1.5"
@@ -117,13 +125,13 @@ function LogDetailTitle({ title }: { title: string }) {
 }
 
 function LogsPagination({
-  contractId,
+  pathname,
   nextPageParams,
   isLoading,
   containerClass = "",
   loaderClass = "",
 }: {
-  contractId: string;
+  pathname: string;
   isLoading: boolean;
   nextPageParams?: LogsPageParamsProps;
   containerClass?: string;
@@ -133,7 +141,7 @@ function LogsPagination({
     <div className={containerClass}>
       {isLoading && <PaginationLoader customStyle={loaderClass} />}
       <Pagination<LogsPageParamsProps & { page_number?: string }>
-        pathname={`/contract/${contractId}`}
+        pathname={pathname}
         nextPageParams={
           nextPageParams
             ? {

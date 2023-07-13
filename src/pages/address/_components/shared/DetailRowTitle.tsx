@@ -1,15 +1,15 @@
 import clsx from "clsx";
 import React from "react";
 
-interface VerifiedContractSubtitleProps {
+interface DetailRowTitleProps {
   title: string;
   className?: string;
 }
 
-export default function VerifiedContractSubtitle({
+export default function DetailRowTitle({
   title,
   className,
-}: VerifiedContractSubtitleProps) {
+}: DetailRowTitleProps) {
   return (
     <div
       className={clsx(

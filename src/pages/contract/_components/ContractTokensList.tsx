@@ -16,8 +16,8 @@ import {
   useState,
 } from "react";
 import { FiChevronDown, FiChevronUp } from "react-icons/fi";
-import { ContractTabsTitle } from "../../../enum/contractTabsTitle";
-import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
+import DetailRowTitle from "pages/address/_components/shared/DetailRowTitle";
+import { AddressContractTabsTitle } from "../../../enum/tabsTitle";
 
 interface TokenDetailsProps {
   contractTokenList: Token[];
@@ -59,7 +59,7 @@ export default function TokenDetails({
             data-testid="contract-networth-title"
             className="text-white-700 tracking-[0.005em] text-sm"
           >
-            {fixedTitle.networth}
+            Net worth
           </div>
           <NumericFormat
             data-testid="contract-networth"
@@ -75,7 +75,7 @@ export default function TokenDetails({
             data-testid="contract-dmctx-balance-title"
             className="text-white-700 tracking-[0.005em] text-sm"
           >
-            {fixedTitle.dmctxBalance}
+            DMCTx Balance
           </div>
           <NumericFormat
             data-testid="contract-dmctx-balance-dollar-value"
@@ -98,7 +98,7 @@ export default function TokenDetails({
             data-testid="contract-other-tokens-title"
             className="text-white-700 text-sm tracking-[0.005em]"
           >
-            {fixedTitle.otherTokens}
+            Other tokens
           </div>
           <NumericFormat
             data-testid="contract-other-tokens-dollar-value"
@@ -161,7 +161,7 @@ export default function TokenDetails({
           data-testid="contract-address-token-list-title"
           className="font-bold text-xl text-white-50"
         >
-          {ContractTabsTitle.Tokens}
+          {AddressContractTabsTitle.Tokens}
         </h2>
         <CursorPagination
           pages={contractTokenListPage}
@@ -172,34 +172,34 @@ export default function TokenDetails({
       <div className="hidden lg:block">
         <div className="grid grid-cols-9 mb-5">
           <div data-testid="contract-tokens-asset-title">
-            <VerifiedContractSubtitle title={fixedTitle.asset} />
+            <DetailRowTitle title="Asset" />
           </div>
           <div data-testid="contract-tokens-type-title">
-            <VerifiedContractSubtitle title={fixedTitle.type} />
+            <DetailRowTitle title="Type" />
           </div>
           <div data-testid="contract-tokens-symbol-title">
-            <VerifiedContractSubtitle title={fixedTitle.symbol} />
+            <DetailRowTitle title="Symbol" />
           </div>
           <div
             className="col-span-2 text-right pr-10"
             data-testid="contract-tokens-amount-title"
           >
-            <VerifiedContractSubtitle title={fixedTitle.amount} />
+            <DetailRowTitle title="Amount" />
           </div>
           <div
             className="text-right pr-5"
             data-testid="contract-tokens-price-title"
           >
-            <VerifiedContractSubtitle title={fixedTitle.price} />
+            <DetailRowTitle title="Price" />
           </div>
           <div className="text-right" data-testid="contract-tokens-value-title">
-            <VerifiedContractSubtitle title={fixedTitle.value} />
+            <DetailRowTitle title="Value" />
           </div>
           <div
             className="col-span-2 text-right"
             data-testid="contract-tokens-contract-address-title"
           >
-            <VerifiedContractSubtitle title={fixedTitle.contractAddress} />
+            <DetailRowTitle title="Contract Address" />
           </div>
         </div>
         <div className="brand-gradient-1 h-[1px]" />
@@ -215,27 +215,6 @@ export default function TokenDetails({
     </div>
   );
 }
-
-const fixedTitle = {
-  contract: "Contract",
-  creator: "Creator",
-  balance: "Balance",
-  code: "Code",
-  transaction: "Transactions",
-  token: "Tokens",
-  networth: "Net worth",
-  dmctxBalance: "DMCTx Balance",
-  otherToken: "Other tokens",
-  asset: "Asset",
-  type: "Type",
-  symbol: "Symbol",
-  amount: "Amount",
-  price: "Price",
-  value: "Value",
-  contractAddress: "Contract Address",
-  copied: "Copied!",
-  otherTokens: "Other tokens",
-};
 
 function useOutsideAlerter(
   ref: MutableRefObject<HTMLDivElement | null>,

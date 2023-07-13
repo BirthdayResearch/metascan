@@ -161,10 +161,16 @@ function TokenName({
   symbol: string;
 }) {
   return (
-    <LinkText href={`/token/${address}`}>
-      <span className="font-semibold">{name ?? "N/A"}</span>
-      <span className="text-sm ml-1">{symbol ? `(${symbol})` : ""}</span>
-    </LinkText>
+    <div>
+      <LinkText
+        href={`/token/${address}`}
+        customStyle="font-semibold"
+        label={name ?? "N/A"}
+      />
+      <span className="text-sm text-white-700 ml-1">
+        {symbol ? `(${symbol})` : ""}
+      </span>
+    </div>
   );
 }
 

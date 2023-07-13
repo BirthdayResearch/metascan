@@ -29,6 +29,7 @@ function Address({
   balance,
   addressTransactions,
   tokens,
+  tokensCount,
   walletDetail,
   counters,
   isLoading,
@@ -59,6 +60,7 @@ function Address({
               addressTransactions,
               walletDetail,
               counters,
+              tokensCount,
             }}
           />
         </div>
@@ -150,6 +152,12 @@ export async function getServerSideProps(
           params?.index as string
         );
 
+    const allTokens = await WalletAddressApi.getAllAddressTokens(
+      network as NetworkConnection,
+      aid
+    );
+    const tokensCount = allTokens?.length ?? 0;
+
     return {
       props: {
         balance: formatEther(BigInt(walletDetail.coin_balance ?? "0")),
@@ -160,6 +168,7 @@ export async function getServerSideProps(
           nextPageParams:
             addressTransactions.next_page_params as TxnNextPageParamsProps,
         },
+        tokensCount,
         tokens: null, // passing null to temporary hide all tokens related UI
       },
     };

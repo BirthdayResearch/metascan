@@ -1,3 +1,5 @@
+import { TokenProps } from "./TokenApi";
+
 export interface WalletAddressToken {
   address: string;
   type: string;
@@ -42,6 +44,7 @@ export interface WalletAddressInfoI {
   watchlist_names: WatchlistName[];
   public_tags: PublicTag[];
   is_verified: boolean;
+  has_tokens: boolean;
 }
 
 export interface WalletAddressCounterI {
@@ -49,6 +52,13 @@ export interface WalletAddressCounterI {
   token_transfers_count: string;
   gas_usage_count: string;
   validations_count: string;
+}
+
+export interface WalletAddressTokenBalanceI {
+  token: TokenProps;
+  token_id: string | null;
+  token_instance: string | null;
+  value: string;
 }
 
 export enum TransactionStatus {

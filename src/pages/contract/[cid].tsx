@@ -40,6 +40,7 @@ interface ContractDetailProps {
   balance: string;
   addressDetail: WalletAddressInfoI;
   counters: WalletAddressCounterI;
+  tokensCount: number;
   isLoading?: boolean;
 }
 
@@ -48,6 +49,7 @@ export default function VerifiedContract({
   addressDetail,
   balance,
   counters,
+  tokensCount,
   isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
@@ -56,6 +58,7 @@ export default function VerifiedContract({
 
   // Token Contract
   const isTokenContract = addressDetail.token !== null;
+  const hasTokens = addressDetail.has_tokens;
 
   return (
     <div className="px-1 md:px-0 mt-12">
@@ -77,8 +80,10 @@ export default function VerifiedContract({
             setIsQrCodeClicked={setIsQrCodeClicked}
             isVerified={addressDetail.is_verified}
             isTokenContract={isTokenContract}
+            hasTokens={hasTokens}
             token={addressDetail.token}
             counters={counters}
+            tokensCount={tokensCount}
             lastupdatedAtBlock={addressDetail.block_number_balance_updated_at}
           />
         </div>
@@ -110,18 +115,22 @@ function ContractSegmentOne({
   setIsQrCodeClicked,
   isVerified,
   isTokenContract,
+  hasTokens,
   token,
   lastupdatedAtBlock,
   counters,
+  tokensCount,
 }: {
   creator: string;
   balance: { value: string; symbol: string };
   setIsQrCodeClicked: Dispatch<SetStateAction<boolean>>;
   isVerified: boolean;
   isTokenContract: boolean;
+  hasTokens: boolean;
   token: WalletAddressToken;
   lastupdatedAtBlock: number;
   counters: WalletAddressCounterI;
+  tokensCount: number;
 }): JSX.Element {
   const [isContractAddressCopied, setIsContractAddressCopied] = useState(false);
   const router = useRouter();
@@ -209,19 +218,21 @@ function ContractSegmentOne({
             data-testid="contract-address-balance-value"
           />
         </div>
+        {(isTokenContract || hasTokens) && (
+          <div className="flex flex-col gap-y-1">
+            <DetailRowTitle title="Tokens" />
+            <NumericFormat
+              className="text-white-50 tracking-[0.01em]"
+              thousandSeparator
+              value={tokensCount}
+              decimalScale={0}
+              suffix={tokensCount > 1 ? " tokens" : " token"}
+              data-testid="token-contract-tokens-count"
+            />
+          </div>
+        )}
         {isTokenContract && (
           <>
-            <div className="flex flex-col gap-y-1">
-              <DetailRowTitle title="Tokens" />
-              <NumericFormat
-                className="text-white-50 tracking-[0.01em]"
-                thousandSeparator
-                value={1} // TODO (lyka): add total num of tokens
-                decimalScale={0}
-                suffix={` tokens`}
-                data-testid="token-contract-tokens-count"
-              />
-            </div>
             <div className="flex flex-col gap-y-1">
               <DetailRowTitle title="Transactions" />
               <NumericFormat
@@ -313,6 +324,11 @@ export async function getServerSideProps(
       network as NetworkConnection,
       cid
     );
+    const allTokens = await WalletAddressApi.getAllAddressTokens(
+      network as NetworkConnection,
+      cid
+    );
+    const tokensCount = allTokens?.length ?? 0;
 
     return {
       props: {
@@ -324,6 +340,7 @@ export async function getServerSideProps(
             addressTransactions.next_page_params as TxnNextPageParamsProps,
         },
         counters,
+        tokensCount,
       },
     };
   } catch (e) {

@@ -31,6 +31,7 @@ export interface WalletDetailProps {
   balance: string;
   walletDetail: WalletAddressInfoI;
   counters: WalletAddressCounterI;
+  tokensCount: number;
   tokens: WalletDetailTokenI | null;
   addressTransactions: AddressTransactionsProps;
   isLoading?: boolean;
@@ -41,7 +42,7 @@ export default function WalletDetails({
 }: {
   detail: WalletDetailProps;
 }) {
-  const { walletDetail, counters } = detail;
+  const { walletDetail, counters, tokensCount } = detail;
   const [isTokenDropDownIconClicked, setIsTokenDropDownIconClicked] =
     useState(false);
   const wrapperRef = useRef(null);
@@ -60,6 +61,7 @@ export default function WalletDetails({
 
   // Token Contract (TODO: combine this part with contract)
   const isTokenAddress = walletDetail.token !== null;
+  const hasTokens = walletDetail.has_tokens;
 
   return (
     <div
@@ -170,15 +172,15 @@ export default function WalletDetails({
         )}
       </div>
 
-      {isTokenAddress && (
+      {(hasTokens || isTokenAddress) && (
         <div className="flex flex-col gap-y-1">
           <DetailRowTitle title="Tokens" />
           <NumericFormat
             className="text-white-50 tracking-[0.01em]"
             thousandSeparator
-            value={1} // TODO (lyka): add total num of tokens
+            value={tokensCount}
             decimalScale={0}
-            suffix={` tokens`}
+            suffix={tokensCount > 1 ? " tokens" : " token"}
             data-testid="token-contract-tokens-count"
           />
         </div>

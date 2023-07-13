@@ -5,7 +5,7 @@ export default {
   getToken: async (
     network: NetworkConnection,
     tokenId: string
-  ): Promise<any> => {
+  ): Promise<TokenProps> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${TOKENS_URL}/${tokenId}`);
     return wrapResponse<TokenProps>(res);

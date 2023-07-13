@@ -14,11 +14,15 @@ export default function MainContainer({ children }: PropsWithChildren) {
 
   useEffect(() => {
     HealthApi.getHealth(connection as NetworkConnection)
-      .then((data) => {
-        setIsHealthy(data.healthy);
+      .then(() => {
+        setIsHealthy(true);
       })
-      .catch(() => {
-        setIsHealthy(false);
+      .catch((err) => {
+        if (err?.message?.includes("Failed to fetch data: 400")) {
+          setIsHealthy(false);
+        } else {
+          setIsHealthy(true);
+        }
       });
   });
 

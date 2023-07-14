@@ -136,7 +136,7 @@ function TokenHolderRow({
               value={data.value}
               className="text-white-50 break-all"
               suffix={data.token.symbol ? ` ${data.token.symbol}` : ""}
-              decimalScale={3}
+              decimalScale={2}
             />
           )}
           <NumericFormat
@@ -144,7 +144,7 @@ function TokenHolderRow({
             value={data.token.total_supply ? percentage : 0}
             className="text-white-700 break-all ml-2"
             suffix="%"
-            decimalScale={4}
+            decimalScale={2}
           />
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
@@ -26,14 +26,20 @@ import WalletAddressApi from "@api/WalletAddressApi";
 import { NetworkConnection } from "@contexts/Environment";
 import { DMX_TOKEN_SYMBOL } from "shared/constants";
 import { AddressTransactionsProps } from "pages/address/_components/WalletDetails";
+import TransactionDetails from "@components/TransactionDetails";
+import { useNetwork } from "@contexts/NetworkContext";
 import {
   WalletAddressCounterI,
   WalletAddressInfoI,
   WalletAddressToken,
 } from "@api/types";
 import clsx from "clsx";
-import AddressContractTabs from "pages/address/_components/shared/AddressContractTabs";
+// import AddressContractTabs from "pages/address/_components/shared/AddressContractTabs";
 import DetailRowTitle from "pages/address/_components/shared/DetailRowTitle";
+import { AddressContractTabsTitle } from "enum/tabsTitle";
+import ContractTabs from "./_components/ContractTabs";
+import ContractTokensList from "./_components/ContractTokensList";
+import ContractCode from "./_components/ContractCode";
 
 interface ContractDetailProps {
   addressTransactions: AddressTransactionsProps;
@@ -49,13 +55,25 @@ export default function VerifiedContract({
   addressDetail,
   balance,
   counters,
-  tokensCount,
   isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { connection } = useNetwork();
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
+  const [tokensCount, setTokensCount] = useState(0);
   const router = useRouter();
   const cid = router.query.cid?.toString()!;
 
+  const getAllTokens = async () => {
+    const t = await WalletAddressApi.getAllTokens(
+      connection as NetworkConnection,
+      cid
+    );
+    setTokensCount(t?.length);
+  };
+
+  useEffect(() => {
+    getAllTokens();
+  }, []);
   // Token Contract
   const isTokenContract = addressDetail.token !== null;
   const hasTokens = addressDetail.has_tokens;
@@ -88,7 +106,8 @@ export default function VerifiedContract({
           />
         </div>
       </GradientCardContainer>
-      <AddressContractTabs
+      <ContractSegmentTwo
+        tokensCount={tokensCount}
         addressHash={cid}
         isLoading={isLoading}
         transactions={addressTransactions}
@@ -310,6 +329,57 @@ function ContractSegmentOne({
           <span className="text-orange-700 ml-1">Unverified Contract</span>
         </div>
       )}
+    </div>
+  );
+}
+
+function ContractSegmentTwo({
+  addressHash,
+  isLoading,
+  tokensCount,
+  transactions,
+  implementationAddress,
+}: {
+  addressHash: string;
+  isLoading?: boolean;
+  tokensCount: number;
+  transactions: AddressTransactionsProps;
+  implementationAddress: string | null;
+}) {
+  const [selectedTab, setSelectedTab] = useState(
+    AddressContractTabsTitle.Transactions
+  );
+
+  return (
+    <div>
+      <div className="relative mt-10 lg:mt-8 md:px-10">
+        <ContractTabs
+          tokenCount={tokensCount}
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+        />
+      </div>
+      <GradientCardContainer className="relative mt-6" fullBorder>
+        <div className="p-5 md:p-10">
+          {selectedTab === AddressContractTabsTitle.Transactions && (
+            <div className="mt-8">
+              <TransactionDetails
+                data={transactions}
+                pathname={`/contract/${addressHash}`}
+                type="address"
+                isLoading={isLoading}
+                isHeaderDisplayed={false}
+              />
+            </div>
+          )}
+          {selectedTab === AddressContractTabsTitle.Contract && (
+            <ContractCode implementationAddress={implementationAddress} />
+          )}
+          {selectedTab === AddressContractTabsTitle.Tokens && (
+            <ContractTokensList address={addressHash} />
+          )}
+        </div>
+      </GradientCardContainer>
     </div>
   );
 }

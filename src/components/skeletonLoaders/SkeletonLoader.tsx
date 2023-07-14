@@ -2,6 +2,7 @@ import BlockRowLoader from "pages/blocks/_components/BlockRowLoader";
 import TransactionRowLoader from "./TransactionRowLoader";
 import RowItemLoader from "./RowItemLoader";
 import SmartContractLoader from "./SmartContractLoader";
+import AddressTokenLoader from "./AddressTokenLoader";
 import TokenHoldersLoader from "./TokenHoldersLoader";
 import AddressLogsLoader from "./AddressLogsLoader";
 
@@ -18,6 +19,7 @@ export enum SkeletonLoaderScreen {
   "Tx" = "Tx",
   "Block" = "Block",
   "Contract" = "Contract",
+  "AddressTokens" = "AddressTokens",
   "TokenHolders" = "TokenHolders",
   "AddressLogs" = "AddressLogs",
 }
@@ -57,6 +59,14 @@ export function SkeletonLoader(props: SkeletonLoaderProp): JSX.Element {
         <>
           {skeletonRow.map((row) => (
             <SmartContractLoader key={row} />
+          ))}
+        </>
+      );
+    case SkeletonLoaderScreen.AddressTokens:
+      return (
+        <>
+          {skeletonRow.map((row) => (
+            <AddressTokenLoader key={row} />
           ))}
         </>
       );

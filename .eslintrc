@@ -1,5 +1,8 @@
 {
   "extends": ["./node_modules/@waveshq/standard-web-linter"],
+  "globals": {
+    "JSX": "readonly"
+  },
   "rules": {
     "jsx-a11y/no-static-element-interactions": [
       "error",

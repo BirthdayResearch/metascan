@@ -59,7 +59,7 @@ export default function Pagination<T>({
       next: nextPageParams,
     };
 
-    if (nextPageParamsFromApi === undefined) {
+    if (nextPageParamsFromApi === undefined || nextPageParamsFromApi === null) {
       return [pageButton.previous, pageButton.current];
     }
     if (pageNumber === 1) {

@@ -1,161 +1,77 @@
-import {
-  CursorPage,
-  CursorPagination,
-} from "@components/commons/CursorPagination";
-import NumericFormat from "@components/commons/NumericFormat";
-import TokenSearchDropDown from "@components/commons/TokenSearchDropDown";
-import { Token } from "mockdata/TokenData";
+import TokenRow, {
+  TokenTableFixedTitle,
+} from "pages/address/_components/TokenRow";
+import { useEffect, useState } from "react";
+import WalletAddressApi from "@api/WalletAddressApi";
+import { NetworkConnection } from "@contexts/Environment";
+import { useNetwork } from "@contexts/NetworkContext";
+import { TokenItemI, TokensListPageParamsProps } from "@api/types";
+import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
+import Pagination from "@components/commons/Pagination";
 import { useRouter } from "next/router";
-import TokenRow from "pages/address/_components/TokenRow";
+import clsx from "clsx";
 import {
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+  SkeletonLoader,
+  SkeletonLoaderScreen,
+} from "@components/skeletonLoaders/SkeletonLoader";
 import DetailRowTitle from "pages/address/_components/shared/DetailRowTitle";
 import { AddressContractTabsTitle } from "../../../enum/tabsTitle";
 
 interface TokenDetailsProps {
-  contractTokenList: Token[];
-  contractTokenListPage: CursorPage[];
-  networth: number;
-  balance: {
-    dollarValue: number;
-    value: number;
-  };
-  otherTokens: {
-    value: number;
-    allTokens: ContractToken[];
-  };
+  address: string;
 }
 
-interface ContractToken {
-  value: number;
-  symbol: string;
+function TokensListPagination({
+  pathname,
+  nextPageParams,
+  isLoading,
+  containerClass = "",
+  loaderClass = "",
+}: {
+  pathname: string;
+  isLoading: boolean;
+  nextPageParams?: TokensListPageParamsProps;
+  containerClass?: string;
+  loaderClass?: string;
+}) {
+  return (
+    <div className={clsx("relative", containerClass)}>
+      {isLoading && <PaginationLoader customStyle={loaderClass} />}
+      <Pagination<TokensListPageParamsProps>
+        pathname={pathname}
+        nextPageParams={nextPageParams}
+        shallow
+      />
+    </div>
+  );
 }
 
-export default function TokenDetails({
-  contractTokenList,
-  contractTokenListPage,
-  networth,
-  balance,
-  otherTokens,
-}: TokenDetailsProps) {
+export default function ContractTokensList({ address }: TokenDetailsProps) {
+  const { connection } = useNetwork();
+  const [tokens, setTokens] = useState<TokenItemI[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [nextPage, setNextPage] = useState<TokensListPageParamsProps>();
   const router = useRouter();
-  const id = router.query.cid;
-  const [isTokenIconClicked, setIsTokenIconClicked] = useState(false);
-  const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef, setIsTokenIconClicked);
+
+  const params = router.query;
+  const getTokens = async () => {
+    setIsLoading(true);
+    const tokenList = await WalletAddressApi.getTokens(
+      connection as NetworkConnection,
+      address,
+      params
+    );
+    setTokens(tokenList.items);
+    setNextPage(tokenList.next_page_params as TokensListPageParamsProps);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getTokens();
+  }, [params.page_number]);
 
   return (
     <div>
-      <div className="flex flex-col lg:flex-row md:flex-row gap-y-6 lg:gap-x-[109px] md:gap-x-[76px] mb-[51.5px] md:mt-11 mt-[52px]">
-        <div className="flex flex-col gap-y-2">
-          <div
-            data-testid="contract-networth-title"
-            className="text-white-700 tracking-[0.005em] text-sm"
-          >
-            Net worth
-          </div>
-          <NumericFormat
-            data-testid="contract-networth"
-            className="text-white-50 text-2xl font-bold"
-            value={networth}
-            thousandSeparator
-            decimalScale={2}
-            prefix="$"
-          />
-        </div>
-        <div className="flex flex-col gap-y-2">
-          <div
-            data-testid="contract-dmctx-balance-title"
-            className="text-white-700 tracking-[0.005em] text-sm"
-          >
-            DMCTx Balance
-          </div>
-          <NumericFormat
-            data-testid="contract-dmctx-balance-dollar-value"
-            className="text-white-50 text-2xl font-bold"
-            thousandSeparator
-            value={balance.dollarValue}
-            decimalScale={2}
-            prefix="$"
-          />
-          <NumericFormat
-            data-testid="contract-dmctx-balance-value"
-            className="text-white-700 tracking-[0.05em]"
-            thousandSeparator
-            value={balance.value}
-            decimalScale={8}
-          />
-        </div>
-        <div className="flex flex-col gap-y-2">
-          <div
-            data-testid="contract-other-tokens-title"
-            className="text-white-700 text-sm tracking-[0.005em]"
-          >
-            Other tokens
-          </div>
-          <NumericFormat
-            data-testid="contract-other-tokens-dollar-value"
-            className="text-white-50 text-2xl font-bold"
-            thousandSeparator
-            value={otherTokens.value.toString()}
-            decimalScale={2}
-            prefix="$"
-          />
-          <div ref={wrapperRef} className="relative">
-            <div
-              role="button"
-              tabIndex={0}
-              onKeyDown={() =>
-                onTokenDropDownIconClick(
-                  setIsTokenIconClicked,
-                  isTokenIconClicked
-                )
-              }
-              onClick={() =>
-                onTokenDropDownIconClick(
-                  setIsTokenIconClicked,
-                  isTokenIconClicked
-                )
-              }
-              className="flex flex-row items-center gap-x-[10.29px]"
-            >
-              <div
-                data-testid="contract-other-tokens"
-                className="text-white-700 tracking-[0.005em]"
-              >
-                {otherTokens.allTokens.length} Tokens
-              </div>
-              {isTokenIconClicked ? (
-                <FiChevronDown
-                  data-testid="contract-other-tokens-dropdown-icon"
-                  size={24}
-                  className="text-white-700"
-                />
-              ) : (
-                <FiChevronUp
-                  data-testid="contract-other-tokens-up-icon"
-                  size={24}
-                  className="text-white-700"
-                />
-              )}
-            </div>
-            {isTokenIconClicked && (
-              <TokenSearchDropDown
-                data-testid="contract-other-tokens-dropdown"
-                addressTokens={otherTokens.allTokens}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-
       <div className="flex flex-col md:flex-row mb-9 justify-between md:items-center">
         <h2
           data-testid="contract-address-token-list-title"
@@ -163,37 +79,30 @@ export default function TokenDetails({
         >
           {AddressContractTabsTitle.Tokens}
         </h2>
-        <CursorPagination
-          pages={contractTokenListPage}
-          path={`/contract/${id}`}
-          className="justify-end mt-5 md:mt-0"
+        <TokensListPagination
+          pathname={`/contract/${address}`}
+          nextPageParams={nextPage}
+          isLoading={isLoading}
+          containerClass="justify-end mt-5 md:mt-0"
+          loaderClass="right-1 md: top-4"
         />
       </div>
       <div className="hidden lg:block">
-        <div className="grid grid-cols-9 mb-5">
+        <div className="grid grid-cols-7 mb-5">
           <div data-testid="contract-tokens-asset-title">
-            <DetailRowTitle title="Asset" />
+            <DetailRowTitle title={TokenTableFixedTitle.asset} />
           </div>
           <div data-testid="contract-tokens-type-title">
-            <DetailRowTitle title="Type" />
+            <DetailRowTitle title={TokenTableFixedTitle.type} />
           </div>
           <div data-testid="contract-tokens-symbol-title">
-            <DetailRowTitle title="Symbol" />
+            <DetailRowTitle title={TokenTableFixedTitle.symbol} />
           </div>
           <div
-            className="col-span-2 text-right pr-10"
-            data-testid="contract-tokens-amount-title"
+            className="col-span-2 text-right"
+            data-testid="contract-tokens-amount-title items-end"
           >
-            <DetailRowTitle title="Amount" />
-          </div>
-          <div
-            className="text-right pr-5"
-            data-testid="contract-tokens-price-title"
-          >
-            <DetailRowTitle title="Price" />
-          </div>
-          <div className="text-right" data-testid="contract-tokens-value-title">
-            <DetailRowTitle title="Value" />
+            <DetailRowTitle title={TokenTableFixedTitle.quantity} />
           </div>
           <div
             className="col-span-2 text-right"
@@ -204,42 +113,22 @@ export default function TokenDetails({
         </div>
         <div className="brand-gradient-1 h-[1px]" />
       </div>
-      {contractTokenList.map((item) => (
-        <TokenRow key={item.contractAddress} data={item} />
-      ))}
-      <CursorPagination
-        pages={contractTokenListPage}
-        path={`/contract/${id}`}
-        className="flex w-full md:justify-end mt-12 md:mt-10"
+      {isLoading ? (
+        <SkeletonLoader rows={22} screen={SkeletonLoaderScreen.AddressTokens} />
+      ) : (
+        <>
+          {tokens.map((item) => (
+            <TokenRow key={item.token.address} data={item} />
+          ))}
+        </>
+      )}
+      <TokensListPagination
+        pathname={`/contract/${address}`}
+        nextPageParams={nextPage}
+        isLoading={isLoading}
+        containerClass="flex w-full md:justify-end mt-12 md:mt-10"
+        loaderClass="left-1 md:left-auto md:right-1 top-4"
       />
     </div>
   );
 }
-
-function useOutsideAlerter(
-  ref: MutableRefObject<HTMLDivElement | null>,
-  setIsTokenClicked: Dispatch<SetStateAction<boolean>>
-) {
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (ref.current && !ref.current.contains(event.target)) {
-        setIsTokenClicked(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
-}
-
-const onTokenDropDownIconClick = (
-  setIsTokenIconClicked: Dispatch<SetStateAction<boolean>>,
-  isTokenIconClicked: boolean
-) => {
-  if (isTokenIconClicked) {
-    setIsTokenIconClicked(false);
-  } else {
-    setIsTokenIconClicked(true);
-  }
-};

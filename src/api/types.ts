@@ -344,3 +344,25 @@ export interface RawTokenI {
   total_supply: string;
   type: string;
 }
+
+export interface TokenItemI {
+  token: RawTokenI;
+  token_id?: string;
+  token_instance?: string;
+  value: string;
+}
+
+export interface RawTokensWithPaginationProps {
+  items: TokenItemI[];
+  next_page_params?: {
+    block_number?: string;
+    items_count?: string;
+    index?: string;
+  };
+}
+export interface TokensListPageParamsProps {
+  fiat_value?: string | null;
+  id?: string;
+  items_count?: string;
+  value?: string;
+}

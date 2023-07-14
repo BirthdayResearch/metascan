@@ -38,7 +38,6 @@ const Link = forwardRef<HTMLAnchorElement, PropsWithChildren<LinkProps>>(
     return (
       <NextLink
         passHref
-        shallow
         {...props}
         ref={ref}
         href={{

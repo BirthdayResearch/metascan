@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import StatisticCard from "@components/commons/StatisticCard";
 import clsx from "clsx";
+import { MdCheckCircle } from "react-icons/md";
 import LatestDataApi from "@api/LatestDataApi";
 import { useNetwork } from "@contexts/NetworkContext";
 import BigNumber from "bignumber.js";
 import { DashboardStatsProps, SmartContractStatsProps } from "@api/types";
+import NumericFormat from "./commons/NumericFormat";
 
 export default function GroupStatisticCard() {
   const { connection } = useNetwork();
@@ -12,7 +14,7 @@ export default function GroupStatisticCard() {
   const [dashboardStats, setDashboardStats] = useState<DashboardStatsProps>();
   const [smartContractStats, setSmartContractStats] =
     useState<SmartContractStatsProps>();
-
+  const unit = "fi";
   const fetchStats = async () => {
     setIsLoading(true);
     const dashStats = await LatestDataApi.getDashboardStats(connection);
@@ -25,45 +27,6 @@ export default function GroupStatisticCard() {
   useEffect(() => {
     fetchStats();
   }, []);
-
-  const groupStatsCardContent = [
-    {
-      title: "Blocks",
-      value: new BigNumber(dashboardStats?.total_blocks ?? 0),
-      // convert milliseconds to seconds
-      footer: `Avg. speed: ${new BigNumber(
-        dashboardStats?.average_block_time ?? 0
-      )
-        .dividedBy(1000)
-        .toFixed(1)} sec`,
-      testId: "blocks",
-    },
-    {
-      title: "Transactions",
-      value: new BigNumber(dashboardStats?.total_transactions ?? 0),
-      footer: `Today: ${new BigNumber(
-        dashboardStats?.transactions_today ?? 0
-      )} transactions`,
-      testId: "transactions",
-    },
-    {
-      title: "Contracts",
-      value: new BigNumber(smartContractStats?.smart_contracts ?? 0),
-      footer: `${new BigNumber(
-        smartContractStats?.verified_smart_contracts ?? 0
-      )
-        .multipliedBy(smartContractStats?.smart_contracts ?? 0)
-        .dividedBy(1000)
-        .toFixed(2)}% verified`,
-      testId: "contracts",
-    },
-    {
-      title: "Tokens",
-      value: new BigNumber(smartContractStats?.smart_contracts ?? 0),
-      footer: "",
-      testId: "tokens",
-    },
-  ];
 
   return (
     <div>
@@ -92,16 +55,81 @@ export default function GroupStatisticCard() {
           "grid lg:grid-cols-4 gap-6"
         )}
       >
-        {groupStatsCardContent.map((card) => (
-          <StatisticCard
-            key={card.title}
-            title={card.title}
-            value={card.value}
-            footer={card.footer}
-            testId={card.testId}
-            isLoading={isLoading}
+        <StatisticCard
+          title="Blocks"
+          value={new BigNumber(dashboardStats?.total_blocks ?? 0)}
+          testId="blocks"
+          isLoading={isLoading}
+        >
+          <span>
+            {`Avg. speed: ${new BigNumber(
+              dashboardStats?.average_block_time ?? 0
+            )
+              .dividedBy(1000)
+              .toFixed(1)} sec`}
+          </span>
+        </StatisticCard>
+
+        <StatisticCard
+          title="Transactions"
+          value={new BigNumber(dashboardStats?.total_transactions ?? 0)}
+          testId="transactions"
+          isLoading={isLoading}
+        >
+          <NumericFormat
+            value={new BigNumber(dashboardStats?.transactions_today ?? 0)}
+            thousandSeparator
+            prefix={`Today: `}
+            suffix={` transactions`}
+            decimalScale={0}
           />
-        ))}
+        </StatisticCard>
+
+        <StatisticCard
+          title="Contracts"
+          value={new BigNumber(dashboardStats?.total_transactions ?? 0)}
+          testId="contracts"
+          isLoading={isLoading}
+        >
+          <span className="flex flex-row items-center">
+            <NumericFormat
+              value={new BigNumber(
+                smartContractStats?.verified_smart_contracts ?? 0
+              )
+                .multipliedBy(smartContractStats?.smart_contracts ?? 0)
+                .dividedBy(1000)
+                .toFixed(2)}
+              thousandSeparator
+              suffix="% verified"
+              decimalScale={2}
+            />
+            <MdCheckCircle className="h-5 w-5 ml-1 text-green-800" />
+          </span>
+        </StatisticCard>
+
+        <StatisticCard
+          title="Gas price"
+          value={new BigNumber(dashboardStats?.gas_prices.average ?? 0)}
+          testId="gas-price"
+          suffix={` ${unit}`}
+          isLoading={isLoading}
+        >
+          <NumericFormat
+            value={new BigNumber(dashboardStats?.gas_prices.fast ?? 0)}
+            thousandSeparator
+            prefix={`High: `}
+            suffix={` ${unit}`}
+            decimalScale={0}
+          />
+          <NumericFormat
+            value={new BigNumber(dashboardStats?.gas_prices.slow ?? 0)}
+            thousandSeparator
+            prefix={`Low: `}
+            suffix={` ${unit}`}
+            decimalScale={0}
+            className="ml-2"
+          />
+        </StatisticCard>
       </div>
     </div>
   );

@@ -1,28 +1,24 @@
-import React from "react";
-import { IconType } from "react-icons";
+import React, { PropsWithChildren } from "react";
 import BigNumber from "bignumber.js";
 import GradientCardContainer from "./GradientCardContainer";
 import NumericFormat from "./NumericFormat";
 
 interface StatsCardProps {
   title: string;
-  footer: string;
   value: BigNumber;
-  icon?: IconType;
-  iconClass?: string;
   testId: string;
   isLoading: boolean;
+  suffix?: string;
 }
 
 export default function StatisticCard({
   title,
   value,
-  footer,
+  children,
+  suffix,
   testId,
-  icon: Icon,
-  iconClass,
   isLoading,
-}: StatsCardProps) {
+}: PropsWithChildren<StatsCardProps>) {
   return (
     <GradientCardContainer data-testid={testId} fullBorder>
       <div className="rounded-[15px] flex flex-col justify-center p-5 md:p-6">
@@ -39,20 +35,20 @@ export default function StatisticCard({
               value={value}
               thousandSeparator
               decimalScale={0}
+              suffix={suffix}
               className="text-white-50 text-2xl font-semibold"
             />
           )}
         </div>
-        <div className="text-white-50 -tracking-[0.14px]">
+        <div>
           {isLoading ? (
-            <div className="py-1">
+            <div className="py-0.5">
               <div className="bg-dark-200 rounded-[5px] mr-1 w-4/6 h-[16px]" />
             </div>
           ) : (
-            <>
-              {footer}
-              {Icon && <Icon size="20" className={iconClass} />}
-            </>
+            <div className="text-white-50 -tracking-[0.14px] text-sm">
+              {children}
+            </div>
           )}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { FiArrowLeft } from "react-icons/fi";
+import { useState, useEffect } from "react";
 import Dropdown, { DropdownOptionsI } from "@components/commons/Dropdown";
 import { MdRadioButtonUnchecked } from "react-icons/md";
 import { IoMdCheckmarkCircle } from "react-icons/io";
@@ -6,6 +7,8 @@ import clsx from "clsx";
 import { useRouter } from "next/router";
 import { CompilerType } from "@api/types";
 import InputComponent from "@components/commons/InputComponent";
+import WalletAddressApi from "@api/WalletAddressApi";
+import { useNetwork } from "@contexts/NetworkContext";
 
 export function ActionButton({
   onClick,
@@ -102,7 +105,8 @@ export default function StepOne({
   reset,
 }: StepOneProps) {
   const router = useRouter();
-
+  const { connection } = useNetwork();
+  const [isVerified, setIsVerified] = useState(false);
   const types = [
     {
       label: CompilerType.SoliditySingleFile,
@@ -173,12 +177,26 @@ export default function StepOne({
   // ];
 
   const checkAddress = (addressValue: string): string => {
-    // TODO add address check
-    if (addressValue.length === 42) {
-      return "";
+    if (addressValue.length !== 42) {
+      return "Invalid Length";
     }
-    return "Invalid Length";
+    if (isVerified) {
+      return "Unable to proceed. Contract address entered is already verified.";
+    }
+    return "";
   };
+
+  useEffect(() => {
+    if (checkAddress(address) === "") {
+      WalletAddressApi.getDetail(connection, address)
+        .then((details) => {
+          setIsVerified(details.is_verified);
+        })
+        .catch(() => setIsVerified(false));
+    } else {
+      setIsVerified(false);
+    }
+  }, [address]);
 
   const isDisabled = (): boolean => {
     if (

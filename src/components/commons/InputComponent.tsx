@@ -79,6 +79,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputProps>(
             />
           )}
         </div>
+        {error && isVisited && <div className="text-red-800 mt-2">{error}</div>}
       </div>
     );
   }

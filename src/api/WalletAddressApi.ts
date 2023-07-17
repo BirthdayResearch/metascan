@@ -6,7 +6,6 @@ import {
 } from "@api/index";
 import {
   RawTokensWithPaginationProps,
-  RawTxnWithPaginationProps,
   TokenItemI,
   TokensListPageParamsProps,
   WalletAddressCounterI,
@@ -66,24 +65,6 @@ export default {
       `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`
     );
     return wrapResponse<TokenItemI[]>(res);
-  },
-  getAddressTransactions: async (
-    network: NetworkConnection,
-    aid: string,
-    blockNumber?: string,
-    itemsCount?: string,
-    index?: string
-  ): Promise<RawTxnWithPaginationProps> => {
-    const baseUrl = getBaseUrl(network);
-    const params = filterParams([
-      { key: "block_number", value: blockNumber },
-      { key: "items_count", value: itemsCount },
-      { key: "index", value: index },
-    ]);
-    const res = await fetch(
-      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/transactions${params}`
-    );
-    return wrapResponse<RawTxnWithPaginationProps>(res);
   },
   getAllAddressTokens: async (
     network: NetworkConnection,

@@ -1,30 +1,32 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 import { ContractMethodType } from "@api/types";
 import { useNetwork } from "@contexts/NetworkContext";
 import { useGetContractMethodsQuery } from "@store/contract";
 import { FiLoader } from "react-icons/fi";
 import LinkText from "@components/commons/LinkText";
 import ContractMethod from "./ContractMethod";
-import ConnectButton from "../ConnectButton";
+import ConnectButton from "./ConnectButton";
+// import ConnectButton from "../ConnectButton";
 
 export default function ReadWriteContract({
   type,
   title,
+  addressHash,
   implementationAddress,
 }: {
   type: ContractMethodType;
   title: string;
+  addressHash: string;
   implementationAddress: string | null;
 }) {
   const [expandAll, setExpandAll] = useState<boolean>(false);
   const [resetForm, setResetForm] = useState<boolean>(false);
   const { connection } = useNetwork();
-  const router = useRouter();
-  const cid = router.query.cid?.toString()!;
+  // const router = useRouter();
+  // const cid = router.query.cid?.toString()!;
   const { data: methods, isLoading } = useGetContractMethodsQuery({
     network: connection,
-    cid,
+    addressHash,
     type,
   });
 
@@ -51,7 +53,7 @@ export default function ReadWriteContract({
           <LinkText
             testId="wallet-id-copied"
             label={` ${implementationAddress}`}
-            href={`/contract/${implementationAddress}`}
+            href={`/address/${implementationAddress}`}
             customStyle="font-semibold"
             // TODO (lyka): Redirect to new tab
           />

@@ -2,8 +2,8 @@ import { Fragment, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   useGetAddressLogsMutation,
-  LogsWithPaginationProps,
   LogsPageParamsProps,
+  Log,
 } from "@store/address";
 import LinkText from "@components/commons/LinkText";
 import { useNetwork } from "@contexts/NetworkContext";
@@ -14,31 +14,26 @@ import {
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
 
-export default function AddressLogs({
-  addressHash,
-  basePath,
-}: {
-  addressHash: string;
-  basePath: string;
-}) {
+export default function LogsList({ addressHash }: { addressHash: string }) {
   const { connection } = useNetwork();
-  const router = useRouter();
-  const params = router.query;
-
-  const [data, setData] = useState<LogsWithPaginationProps>();
+  const [logs, setLogs] = useState<Log[]>([]);
+  const [nextPage, setNextPage] = useState<LogsPageParamsProps>();
   const [isLoading, setIsLoading] = useState(false);
   const [trigger] = useGetAddressLogsMutation();
+  const router = useRouter();
 
+  const params = router.query;
   const fetchLogs = async () => {
     setIsLoading(true);
-    const logsData = await trigger({
+    const data = await trigger({
       network: connection,
       itemsCount: params.items_count as string,
       blockNumber: params.block_number as string,
       index: params.index as string,
       addressHash,
     }).unwrap();
-    setData(logsData);
+    setLogs(data.items);
+    setNextPage(data.next_page_params);
     setIsLoading(false);
   };
 
@@ -46,7 +41,6 @@ export default function AddressLogs({
     fetchLogs();
   }, [params.page_number]);
 
-  const logs = data?.items ?? [];
   if (!isLoading && logs.length === 0) {
     return <div className="text-white-50 mt-6">No logs</div>;
   }
@@ -60,8 +54,8 @@ export default function AddressLogs({
     <div>
       {showPagination && (
         <LogsPagination
-          pathname={`${basePath}/${addressHash}`}
-          nextPageParams={data?.next_page_params}
+          addressHash={addressHash}
+          nextPageParams={nextPage}
           isLoading={isLoading}
           containerClass="relative"
           loaderClass="right-1 top-0 md:top-0"
@@ -113,8 +107,8 @@ export default function AddressLogs({
 
       {showPagination && (
         <LogsPagination
-          pathname={`${basePath}/${addressHash}`}
-          nextPageParams={data?.next_page_params}
+          addressHash={addressHash}
+          nextPageParams={nextPage}
           isLoading={isLoading}
           containerClass="relative h-10 md:h-6 lg:pt-1.5"
           loaderClass="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]"
@@ -133,13 +127,13 @@ function LogDetailTitle({ title }: { title: string }) {
 }
 
 function LogsPagination({
-  pathname,
+  addressHash,
   nextPageParams,
   isLoading,
   containerClass = "",
   loaderClass = "",
 }: {
-  pathname: string;
+  addressHash: string;
   isLoading: boolean;
   nextPageParams?: LogsPageParamsProps;
   containerClass?: string;
@@ -149,7 +143,7 @@ function LogsPagination({
     <div className={containerClass}>
       {isLoading && <PaginationLoader customStyle={loaderClass} />}
       <Pagination<LogsPageParamsProps & { page_number?: string }>
-        pathname={pathname}
+        pathname={`/address/${addressHash}`}
         nextPageParams={
           nextPageParams
             ? {

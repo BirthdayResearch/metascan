@@ -21,7 +21,7 @@ export interface TokenHolderWithPaginationProps {
 }
 
 // Token Transfers
-interface TokenTransferProps {
+export interface TokenTransferProps {
   tx_hash: string;
   block_hash: string;
   type: string;
@@ -43,11 +43,6 @@ export interface TokenTransferWithPaginationProps {
 export interface TokenTransferPageParamsProps {
   block_number: string;
   index: string;
-}
-
-export interface TokenCountersProps {
-  token_holders_count: string;
-  transfers_count: string;
 }
 
 export const tokenApi = createApi({
@@ -100,23 +95,8 @@ export const tokenApi = createApi({
         };
       },
     }),
-    getTokenCounters: builder.mutation<
-      TokenCountersProps,
-      {
-        network: NetworkConnection;
-        tokenId: string;
-      }
-    >({
-      query: ({ network, tokenId }) => ({
-        url: `${getBaseUrl(network)}/${TOKENS_URL}/${tokenId}/counters`,
-        method: "GET",
-      }),
-    }),
   }),
 });
 
-export const {
-  useGetTokenHoldersMutation,
-  useGetTokenTransfersMutation,
-  useGetTokenCountersMutation,
-} = tokenApi;
+export const { useGetTokenHoldersMutation, useGetTokenTransfersMutation } =
+  tokenApi;

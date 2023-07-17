@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { CodeOptions } from "enum/codeOptions";
 import { ContractMethodType } from "@api/types";
@@ -8,25 +7,25 @@ import { useNetwork } from "@contexts/NetworkContext";
 import { transformContractData } from "shared/contractDataHelper";
 import { getEnvironment } from "@contexts/Environment";
 import Link from "@components/commons/Link";
-import ContractCodeBlock from "./ContractCodeBlock";
-import ReadWriteContract from "./read-write/ReadWriteContract";
-import ContractCodeTab from "./ContractCodeTab";
+import ContractCodeBlock from "./contract/ContractCodeBlock";
+import ContractCodeTab from "./contract/ContractCodeTab";
+import ReadWriteContract from "./contract/ReadWriteContract";
 
 export default function ContractCode({
+  addressHash,
   implementationAddress,
 }: {
+  addressHash: string;
   implementationAddress: string | null;
 }) {
-  const router = useRouter();
-  const cid = router.query.cid?.toString()!;
   const { connection } = useNetwork();
   const { data: rawContractDetail } = useGetContractQuery({
     network: connection,
-    cid,
+    addressHash,
   });
   const networkQuery = !getEnvironment().isDefaultConnection(connection)
-    ? { network: connection, cid }
-    : { cid };
+    ? { network: connection, addressHash }
+    : { addressHash };
 
   const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Code);
 
@@ -44,7 +43,7 @@ export default function ContractCode({
           <span>Are you the contract creator?</span>
           <Link
             className="mx-1 text-lightBlue"
-            href={{ pathname: `/contract/verify`, query: networkQuery }}
+            href={{ pathname: `/address/verify`, query: networkQuery }}
           >
             Verify and Publish
           </Link>
@@ -138,6 +137,7 @@ export default function ContractCode({
               key={tab.id}
               title={tab.id}
               type={tab.type}
+              addressHash={addressHash}
               implementationAddress={tab.implementationAddress}
             />
           )

@@ -65,7 +65,7 @@ export default function VerifiedContracts({ data, isLoading }) {
             <Button
               testId="verify-contract"
               label="Verify contract"
-              href="/contract/verify"
+              href="/address/verify"
               customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8"
             />
           </div>

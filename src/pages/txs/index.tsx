@@ -1,9 +1,6 @@
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import TransactionsApi, {
-  TxnNextPageParamsProps,
-  TxnQueryParamsProps,
-} from "@api/TransactionsApi";
+import TransactionsApi, { TxnQueryParamsProps } from "@api/TransactionsApi";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
@@ -11,7 +8,7 @@ import {
 } from "next";
 import { NetworkConnection } from "@contexts/Environment";
 import Pagination from "@components/commons/Pagination";
-import { RawTransactionI } from "@api/types";
+import { RawTransactionI, TxnNextPageParamsProps } from "@api/types";
 import { isNumeric } from "shared/textHelper";
 import {
   SkeletonLoader,

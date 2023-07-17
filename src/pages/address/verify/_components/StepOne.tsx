@@ -282,7 +282,7 @@ export default function StepOne({
                   <a
                     target="_blank"
                     data-testid="terms-of-service"
-                    href="/contract/verify/terms"
+                    href="/address/verify/terms"
                     className="text-lightBlue brand-gradient-1 active:brand-gradient-2 bg-clip-text hover:text-transparent transition-all ease-in duration-300"
                   >
                     Terms of Service

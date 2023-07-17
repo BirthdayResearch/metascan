@@ -3,4 +3,6 @@ export enum AddressContractTabsTitle {
   Contract = "Contract",
   Tokens = "Tokens",
   Logs = "Logs",
+  TokenTransfers = "Token Transfers",
+  TokenHolders = "Token Holders",
 }

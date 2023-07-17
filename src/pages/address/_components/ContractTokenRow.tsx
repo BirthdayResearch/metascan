@@ -5,7 +5,6 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import { TokenItemI } from "@api/types";
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
-import AddressTokenTableTitle from "./AddressTokenTableTitle";
 
 export const TokenTableFixedTitle = {
   asset: "Asset",
@@ -17,7 +16,7 @@ export const TokenTableFixedTitle = {
   contractAddress: "Contract Address",
 };
 
-export default function TokenRow({ data }: { data: TokenItemI }) {
+export default function ContractTokenRow({ data }: { data: TokenItemI }) {
   const { token } = data;
   const value = new BigNumber(data.value).dividedBy(
     new BigNumber(10).pow(token?.decimals)
@@ -48,7 +47,7 @@ export default function TokenRow({ data }: { data: TokenItemI }) {
           <div className="col-span-2 text-right">
             <LinkText
               label={truncateTextFromMiddle(token?.address, 5)}
-              href={`/contract/${token?.address}`}
+              href={`/address/${token?.address}`}
             />
           </div>
         </div>
@@ -103,6 +102,25 @@ export default function TokenRow({ data }: { data: TokenItemI }) {
         </div>
         <div className="bg-black-600 h-[1px] my-4" />
       </div>
+    </div>
+  );
+}
+
+function AddressTokenTableTitle({
+  title,
+  className,
+}: {
+  title: string;
+  className?: string;
+}) {
+  return (
+    <div
+      className={clsx(
+        "text-white-700 tracking-[0.01em] leading-[22.4px]",
+        className
+      )}
+    >
+      {title}
     </div>
   );
 }

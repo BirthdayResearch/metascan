@@ -1,52 +1,25 @@
-import TokenRow, {
-  TokenTableFixedTitle,
-} from "pages/address/_components/TokenRow";
+import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import WalletAddressApi from "@api/WalletAddressApi";
 import { NetworkConnection } from "@contexts/Environment";
 import { useNetwork } from "@contexts/NetworkContext";
 import { TokenItemI, TokensListPageParamsProps } from "@api/types";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import Pagination from "@components/commons/Pagination";
-import { useRouter } from "next/router";
-import clsx from "clsx";
 import {
   SkeletonLoader,
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
-import DetailRowTitle from "pages/address/_components/shared/DetailRowTitle";
 import { AddressContractTabsTitle } from "../../../enum/tabsTitle";
+import DetailRowTitle from "./DetailRowTitle";
+import ContractTokenRow, { TokenTableFixedTitle } from "./ContractTokenRow";
 
 interface TokenDetailsProps {
-  address: string;
+  addressHash: string;
 }
 
-function TokensListPagination({
-  pathname,
-  nextPageParams,
-  isLoading,
-  containerClass = "",
-  loaderClass = "",
-}: {
-  pathname: string;
-  isLoading: boolean;
-  nextPageParams?: TokensListPageParamsProps;
-  containerClass?: string;
-  loaderClass?: string;
-}) {
-  return (
-    <div className={clsx("relative", containerClass)}>
-      {isLoading && <PaginationLoader customStyle={loaderClass} />}
-      <Pagination<TokensListPageParamsProps>
-        pathname={pathname}
-        nextPageParams={nextPageParams}
-        shallow
-      />
-    </div>
-  );
-}
-
-export default function ContractTokensList({ address }: TokenDetailsProps) {
+export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
   const { connection } = useNetwork();
   const [tokens, setTokens] = useState<TokenItemI[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,11 +27,11 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
   const router = useRouter();
 
   const params = router.query;
-  const getTokens = async () => {
+  const fetchTokens = async () => {
     setIsLoading(true);
     const tokenList = await WalletAddressApi.getTokens(
       connection as NetworkConnection,
-      address,
+      addressHash,
       params
     );
     setTokens(tokenList.items);
@@ -67,8 +40,12 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
   };
 
   useEffect(() => {
-    getTokens();
+    fetchTokens();
   }, [params.page_number]);
+
+  if (!isLoading && tokens.length === 0) {
+    return <div className="text-white-50 mt-6">No contract tokens</div>;
+  }
 
   return (
     <div>
@@ -80,7 +57,7 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
           {AddressContractTabsTitle.Tokens}
         </h2>
         <TokensListPagination
-          pathname={`/contract/${address}`}
+          addressHash={addressHash}
           nextPageParams={nextPage}
           isLoading={isLoading}
           containerClass="justify-end mt-5 md:mt-0"
@@ -118,16 +95,41 @@ export default function ContractTokensList({ address }: TokenDetailsProps) {
       ) : (
         <>
           {tokens.map((item) => (
-            <TokenRow key={item.token.address} data={item} />
+            <ContractTokenRow key={item.token.address} data={item} />
           ))}
         </>
       )}
       <TokensListPagination
-        pathname={`/contract/${address}`}
+        addressHash={addressHash}
         nextPageParams={nextPage}
         isLoading={isLoading}
         containerClass="flex w-full md:justify-end mt-12 md:mt-10"
         loaderClass="left-1 md:left-auto md:right-1 top-4"
+      />
+    </div>
+  );
+}
+
+function TokensListPagination({
+  addressHash,
+  nextPageParams,
+  isLoading,
+  containerClass = "",
+  loaderClass = "",
+}: {
+  addressHash: string;
+  isLoading: boolean;
+  nextPageParams?: TokensListPageParamsProps;
+  containerClass?: string;
+  loaderClass?: string;
+}) {
+  return (
+    <div className={clsx("relative", containerClass)}>
+      {isLoading && <PaginationLoader customStyle={loaderClass} />}
+      <Pagination<TokensListPageParamsProps>
+        pathname={`/address/${addressHash}`}
+        nextPageParams={nextPageParams}
+        shallow
       />
     </div>
   );

@@ -1,7 +1,4 @@
-import {
-  TxnNextPageParamsProps,
-  TxnQueryParamsProps,
-} from "@api/TransactionsApi";
+import { TxnQueryParamsProps } from "@api/TransactionsApi";
 import Pagination from "@components/commons/Pagination";
 import TransactionRow from "@components/commons/TransactionRow";
 import {
@@ -9,11 +6,11 @@ import {
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
-import { RawTransactionI } from "@api/types";
+import { RawTransactionI, TxnNextPageParamsProps } from "@api/types";
 
 interface TransactionsProps {
   transactions: RawTransactionI[];
-  nextPageParams: TxnNextPageParamsProps;
+  nextPageParams?: TxnNextPageParamsProps;
 }
 
 interface TransactionDetailsProps {
@@ -29,7 +26,7 @@ function TxnPagination({
   nextPageParams,
 }: {
   pathname: string;
-  nextPageParams: TxnNextPageParamsProps;
+  nextPageParams?: TxnNextPageParamsProps;
 }) {
   return (
     <Pagination<TxnQueryParamsProps>

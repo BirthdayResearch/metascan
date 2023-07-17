@@ -192,7 +192,7 @@ export default function Transaction({
                 label={truncateTextFromMiddle(txDetails.from, 4)}
                 href={
                   txDetails.isFromContract
-                    ? `/contract/${txDetails.from}`
+                    ? `/address/${txDetails.from}`
                     : `/address/${txDetails.from}`
                 }
               />
@@ -217,7 +217,7 @@ export default function Transaction({
                   label={truncateTextFromMiddle(txDetails.to, 4)}
                   href={
                     txDetails.isToContract
-                      ? `/contract/${txDetails.to}`
+                      ? `/address/${txDetails.to}`
                       : `/address/${txDetails.to}`
                   }
                 />

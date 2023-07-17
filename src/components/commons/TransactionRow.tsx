@@ -41,12 +41,8 @@ export default function TransactionRow({
 }) {
   const data = transformTransactionData(rawData);
   const Icon = iconMapping[data.transactionType];
-  const fromPathname = data.isFromContract
-    ? `/contract/${data.from}`
-    : `/address/${data.from}`;
-  const toPathName = data.isToContract
-    ? `/contract/${data.to}`
-    : `/address/${data.to}`;
+  const fromPathname = `/address/${data.from}`;
+  const toPathName = `/address/${data.to}`;
 
   return (
     <div>

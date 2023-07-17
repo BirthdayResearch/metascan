@@ -239,3 +239,40 @@ export interface RawTransactionV1 {
   result: RawTransactionI | null;
   status: string;
 }
+
+export interface DashboardStatsProps {
+  average_block_time: number;
+  coin_price: string;
+  gas_prices: {
+    average: number;
+    fast: number;
+    slow: number;
+  };
+  average: number;
+  fast: number;
+  slow: number;
+  gas_used_today: string;
+  market_cap: string;
+  network_utilization_percentage: number;
+  static_gas_price: string | null;
+  total_addresses: string;
+  total_blocks: string;
+  total_gas_used: string;
+  total_transactions: string;
+  transactions_today: string;
+}
+
+export interface SmartContractStatsProps {
+  new_smart_contracts_24h: string;
+  new_verified_smart_contracts_24h: string;
+  smart_contracts: string;
+  verified_smart_contracts: string;
+}
+export interface ChartDataI {
+  date: string;
+  tx_count: number;
+}
+
+export interface ChartDataProps {
+  chart_data: ChartDataI[];
+}

@@ -14,7 +14,13 @@ import {
   MAIN_LATEST_TRANSACTION_URL,
   wrapResponse,
 } from "./index";
-import { BlockProps, RawTransactionI } from "./types";
+import {
+  BlockProps,
+  ChartDataProps,
+  DashboardStatsProps,
+  RawTransactionI,
+  SmartContractStatsProps,
+} from "./types";
 
 const MAX_ROW = 5;
 
@@ -77,5 +83,26 @@ export default {
         time,
       };
     });
+  },
+  getDashboardStats: async (
+    network: NetworkConnection
+  ): Promise<DashboardStatsProps> => {
+    const baseUrl = getBaseUrl(network);
+    const res = await fetch(`${baseUrl}/api/v2/stats`);
+    return wrapResponse<DashboardStatsProps>(res);
+  },
+  getSmartContractStats: async (
+    network: NetworkConnection
+  ): Promise<SmartContractStatsProps> => {
+    const baseUrl = getBaseUrl(network);
+    const res = await fetch(`${baseUrl}/api/v2/smart-contracts/counters`);
+    return wrapResponse<SmartContractStatsProps>(res);
+  },
+  getTxnChartsData: async (
+    network: NetworkConnection
+  ): Promise<ChartDataProps> => {
+    const baseUrl = getBaseUrl(network);
+    const res = await fetch(`${baseUrl}/api/v2/stats/charts/transactions`);
+    return wrapResponse<ChartDataProps>(res);
   },
 };

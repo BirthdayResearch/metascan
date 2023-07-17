@@ -42,7 +42,7 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
   }, [params.page_number]);
 
   if (!isLoading && logs.length === 0) {
-    return <div className="text-white-50 mt-6">No logs</div>;
+    return <div className="text-white-50">No logs</div>;
   }
 
   const pageNumber = Number(router.query.page_number ?? 1);

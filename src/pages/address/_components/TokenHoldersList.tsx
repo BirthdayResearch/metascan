@@ -49,7 +49,7 @@ export default function TokenHoldersList({
   console.log({ holders });
 
   if (!isLoading && holders.length === 0) {
-    return <div className="text-white-50 mt-6">No token holders</div>;
+    return <div className="text-white-50">No token holders</div>;
   }
 
   const numberOfItems = 50;

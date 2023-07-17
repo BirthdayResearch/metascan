@@ -45,7 +45,7 @@ export default function TokenTransfersList({
   }, [params.page_number]);
 
   if (!isLoading && transfers.length === 0) {
-    return <div className="text-white-50 mt-6">No token transfers</div>;
+    return <div className="text-white-50">No token transfers</div>;
   }
 
   return (

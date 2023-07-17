@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { FiCopy } from "react-icons/fi";
 import { MdOutlineQrCode } from "react-icons/md";
 import { formatEther } from "viem";
-import { useRouter } from "next/router";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
@@ -15,7 +14,7 @@ import { sleep } from "shared/sleep";
 import { isAlphanumeric, truncateTextFromMiddle } from "shared/textHelper";
 import { WalletAddressCounterI, WalletAddressInfoI } from "@api/types";
 import WalletAddressApi from "@api/WalletAddressApi";
-import TokenApi, { TokenCountersProps } from "@api/TokenApi";
+import { TokenCountersProps } from "@api/TokenApi";
 import useWindowDimensions from "@hooks/useWindowDimensions";
 import { AddressContractTabsTitle } from "enum/tabsTitle";
 
@@ -38,6 +37,14 @@ import TokenTransfersList from "./_components/TokenTransfersList";
 import TokenHoldersList from "./_components/TokenHoldersList";
 import TransactionsList from "./_components/TransactionsList";
 
+export interface WalletDetailProps {
+  walletDetail: WalletAddressInfoI;
+  counters: WalletAddressCounterI;
+  tokenCounters: TokenCountersProps | null;
+  tokensCount: number;
+  isTokenPage?: boolean;
+}
+
 function getAddressType({
   data,
   isTokenPage,
@@ -46,47 +53,39 @@ function getAddressType({
   isTokenPage: boolean;
 }) {
   switch (true) {
-    case data.is_contract && data.token === null:
-      return AddressType.Contract;
-    case !isTokenPage && data.token !== null:
-      return AddressType.TokenContract;
     case isTokenPage:
       return AddressType.Token;
+    case data.is_contract && data.token === null:
+      return AddressType.Contract;
+    case data.token !== null:
+      return AddressType.TokenContract;
     default:
       return AddressType.Wallet;
   }
 }
 
-const addressMapping = {
-  [AddressType.Contract]: {
-    defaultTitle: "Contract",
-    path: "/address",
-  },
-  [AddressType.Token]: {
-    defaultTitle: "Token details",
-    path: "/address",
-  },
-  [AddressType.TokenContract]: {
-    defaultTitle: "Contract",
-    path: "/address",
-  },
-  [AddressType.Wallet]: {
-    defaultTitle: "Wallet address",
-    path: "/address",
-  },
-};
+function getHeaderTitle(addressType: AddressType) {
+  switch (addressType) {
+    case AddressType.Contract:
+    case AddressType.TokenContract:
+      return "Contract";
+    case AddressType.Token:
+      return "Token details";
+    case AddressType.Wallet:
+    default:
+      return "Wallet address";
+  }
+}
 
-function Address({
+export default function Address({
   walletDetail,
   counters,
   tokenCounters,
   tokensCount,
+  isTokenPage = false,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const router = useRouter();
-  const aid = router.query.aid?.toString()!;
-  const isTokenPage = router.query?.token === "true";
+  const aid = walletDetail.hash;
   const addressType = getAddressType({ data: walletDetail, isTokenPage });
-  const mappedAddressInfo = addressMapping[addressType];
 
   const tokenCreator = walletDetail.creator_address_hash ?? aid;
   const creatorAddress =
@@ -126,7 +125,7 @@ function Address({
           >
             <div className="flex items-center gap-x-2 text-white-50">
               <span className="font-bold text-xl">
-                {walletDetail.name ?? mappedAddressInfo.defaultTitle}
+                {walletDetail.name ?? getHeaderTitle(addressType)}
               </span>
               {addressType === AddressType.Token && (
                 <span className="-tracking-[0.32px] shrink-0">
@@ -149,7 +148,7 @@ function Address({
                   <LinkText
                     testId="address-copied"
                     label="Copied!"
-                    href={`${mappedAddressInfo.path}/${aid}`}
+                    href={`/address/${aid}`}
                     customStyle="tracking-[0.01em]"
                   />
                   <GreenTickIcon data-testid="address-copied-icon" />
@@ -164,7 +163,7 @@ function Address({
                   <LinkText
                     testId="contract-address"
                     label={truncateTextFromMiddle(aid, 11)}
-                    href={`${mappedAddressInfo.path}/${aid}`}
+                    href={`/address/${aid}`}
                     customStyle="tracking-[0.01em]"
                   />
                   <FiCopy
@@ -211,8 +210,7 @@ function Address({
                 <div>
                   <LinkText
                     href={{
-                      pathname: `${mappedAddressInfo.path}/${walletDetail.token.address}`,
-                      query: { token: "true" },
+                      pathname: `/token/${walletDetail.token.address}`,
                     }}
                     label={walletDetail.token.name ?? "N/A"}
                   />
@@ -224,7 +222,7 @@ function Address({
                 </div>
               </div>
             )}
-            {creatorAddress && (
+            {(creatorAddress || addressType === AddressType.TokenContract) && (
               <div className={detailContainerCss}>
                 <DetailRowTitle
                   title="Creator"
@@ -235,9 +233,7 @@ function Address({
                   }
                 />
                 <LinkText
-                  href={`${mappedAddressInfo.path}/${
-                    walletDetail.creator_address_hash ?? aid
-                  }`}
+                  href={`/address/${walletDetail.creator_address_hash ?? aid}`}
                   label={truncateTextFromMiddle(
                     walletDetail.creator_address_hash ?? aid,
                     truncateTextLength
@@ -304,9 +300,13 @@ function Address({
                   />
                   <NumericFormat
                     thousandSeparator
-                    value={walletDetail.token.holders}
+                    value={tokenCounters?.token_holders_count ?? 0}
                     className={detailValueCss}
-                    suffix=" addresses"
+                    suffix={
+                      Number(tokenCounters?.token_holders_count ?? 0) > 1
+                        ? " addresses"
+                        : "address"
+                    }
                     decimalScale={0}
                   />
                 </div>
@@ -467,13 +467,6 @@ function Address({
   );
 }
 
-interface WalletDetailProps {
-  walletDetail: WalletAddressInfoI;
-  counters: WalletAddressCounterI;
-  tokenCounters: TokenCountersProps;
-  tokensCount: number;
-}
-
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult<WalletDetailProps>> {
@@ -493,10 +486,7 @@ export async function getServerSideProps(
       network as NetworkConnection,
       aid
     );
-    const tokenCounters = await TokenApi.getTokenCounters(
-      network as NetworkConnection,
-      aid
-    );
+
     const allTokens = await WalletAddressApi.getAllAddressTokens(
       network as NetworkConnection,
       aid
@@ -507,13 +497,11 @@ export async function getServerSideProps(
       props: {
         walletDetail,
         counters,
-        tokenCounters,
         tokensCount,
+        tokenCounters: null,
       },
     };
   } catch (e) {
     return { notFound: true };
   }
 }
-
-export default Address;

@@ -102,7 +102,7 @@ function TransfersPagination({
     <div className={containerClass}>
       {isLoading && <PaginationLoader customStyle={loaderClass} />}
       <Pagination<TokenTransferPageParamsProps & { page_number?: string }>
-        pathname={`/address/${addressHash}?token=true`}
+        pathname={`/token/${addressHash}`}
         nextPageParams={
           nextPageParams
             ? {

@@ -111,7 +111,7 @@ function HoldersPagination({
     <div className={containerClass}>
       {isLoading && <PaginationLoader customStyle={loaderClass} />}
       <Pagination<TokenHolderPageParamsProps & { page_number?: string }>
-        pathname={`/address/${addressHash}?token=true`}
+        pathname={`/token/${addressHash}`}
         nextPageParams={
           nextPageParams
             ? {

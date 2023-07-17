@@ -29,9 +29,10 @@ export default function ContractCode({
 
   const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Code);
 
-  // TODO: Add UI loaders
   if (!rawContractDetail) {
-    return <div />;
+    return (
+      <div className="text-white-50">Not able to get contract details</div>
+    );
   }
 
   const contractDetail = transformContractData(rawContractDetail);

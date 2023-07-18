@@ -42,7 +42,7 @@ export default function TokenTransfersList({
 
   useEffect(() => {
     fetchTokenTransfers();
-  }, [params.page_number]);
+  }, [params.page_number, addressHash]);
 
   if (!isLoading && transfers.length === 0) {
     return <div className="text-white-50">No token transfers</div>;
@@ -60,9 +60,9 @@ export default function TokenTransfersList({
       {isLoading ? (
         <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
       ) : (
-        transfers.map((item) => (
+        transfers.map((item, i) => (
           <TransactionRow
-            key={item.tx_hash}
+            key={`${item.tx_hash}_${i}`}
             rawData={
               {
                 ...item,

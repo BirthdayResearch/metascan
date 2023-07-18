@@ -39,7 +39,7 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
 
   useEffect(() => {
     fetchLogs();
-  }, [params.page_number]);
+  }, [params.page_number, addressHash]);
 
   if (!isLoading && logs.length === 0) {
     return <div className="text-white-50">No logs</div>;

@@ -45,7 +45,7 @@ export default function TokenHoldersList({
 
   useEffect(() => {
     fetchTokenHolders();
-  }, [router.query.page_number]);
+  }, [router.query.page_number, addressHash]);
 
   if (!isLoading && holders.length === 0) {
     return <div className="text-white-50">No token holders</div>;

@@ -41,7 +41,7 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
 
   useEffect(() => {
     fetchTokens();
-  }, [params.page_number]);
+  }, [params.page_number, addressHash]);
 
   if (!isLoading && tokens.length === 0) {
     return <div className="text-white-50">No contract tokens</div>;

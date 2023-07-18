@@ -35,7 +35,7 @@ export default function TransactionsList({
 
   useEffect(() => {
     getTransactions();
-  }, [params.page_number]);
+  }, [params.page_number, addressHash]);
 
   return (
     <div className="mt-8">

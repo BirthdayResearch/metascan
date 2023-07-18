@@ -425,7 +425,6 @@ export default function Address({
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
           addressType={addressType}
-          walletDetail={walletDetail}
         />
       </div>
       <GradientCardContainer className="relative mt-6" fullBorder>

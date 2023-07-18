@@ -159,5 +159,5 @@ module.exports = {
         xxs: ["10px", "12px"],
       },
     },
-  }
+  },
 };

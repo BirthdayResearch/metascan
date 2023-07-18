@@ -118,7 +118,7 @@ export default function Address({
     <div className="px-1 md:px-0 mt-12 min-h-screen">
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer className="relative z-[1]" fullBorder>
-        <div className="lg:p-10 md:p-10 px-5 py-8">
+        <div className="px-5 py-8 md:p-10">
           <div
             className="flex flex-row lg:pb-[5px] pb-[9px] items-center gap-x-[11px]"
             data-testid="address-title"

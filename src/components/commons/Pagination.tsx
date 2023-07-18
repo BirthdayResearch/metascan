@@ -22,9 +22,7 @@ export default function Pagination<T>({
 }: PaginationProps<T>): JSX.Element {
   const router = useRouter();
   const pathName = pathname ?? router.pathname;
-  const currentPageNumber = Number.isNaN(Number(router.query.page_number))
-    ? 1
-    : Number(router.query.page_number);
+  const currentPageNumber = Number(router.query.page_number ?? 1);
   const nextPageParams = {
     ...nextPageParamsFromApi,
     ...{ page_number: currentPageNumber + 1 },

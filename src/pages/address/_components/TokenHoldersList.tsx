@@ -46,14 +46,13 @@ export default function TokenHoldersList({
   useEffect(() => {
     fetchTokenHolders();
   }, [router.query.page_number]);
-  console.log({ holders });
 
   if (!isLoading && holders.length === 0) {
     return <div className="text-white-50">No token holders</div>;
   }
 
   const numberOfItems = 50;
-  const pageNumber = Number(router.query.page_number) ?? 1;
+  const pageNumber = Number(router.query.page_number ?? 1);
   const currentItemsCount =
     pageNumber > 1 ? (pageNumber - 1) * numberOfItems : 0;
   const showPagination =
@@ -141,7 +140,7 @@ function TokenHolderRow({
       <div className="w-8 lg:w-10 text-white-700">{num}</div>
       <div className="flex flex-col gap-1">
         <LinkText
-          href={`/address/${data.address}`}
+          href={`/address/${data.address.hash}`}
           label={truncateTextFromMiddle(data.address.hash, 8)}
         />
         <div>

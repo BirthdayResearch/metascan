@@ -305,7 +305,7 @@ export default function Address({
                     suffix={
                       Number(tokenCounters?.token_holders_count ?? 0) > 1
                         ? " addresses"
-                        : "address"
+                        : " address"
                     }
                     decimalScale={0}
                   />

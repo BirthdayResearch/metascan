@@ -55,7 +55,7 @@ export default function Tokens({
   isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
-  const pageNumber = Number(router.query.page_number) ?? 0;
+  const pageNumber = Number(router.query.page_number ?? 0);
   const numberOfItems = 50;
   // Page number > 1, then add numberOfItems * pageNumber
   const currentItemsCount =

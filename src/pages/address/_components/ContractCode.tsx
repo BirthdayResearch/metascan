@@ -19,7 +19,7 @@ export default function ContractCode({
   implementationAddress: string | null;
 }) {
   const { connection } = useNetwork();
-  const { data: rawContractDetail } = useGetContractQuery({
+  const { data: rawContractDetail, isLoading } = useGetContractQuery({
     network: connection,
     addressHash,
   });
@@ -29,6 +29,10 @@ export default function ContractCode({
 
   const [activeTab, setActiveTab] = useState<CodeOptions>(CodeOptions.Code);
 
+  // TODO: Add UI loaders
+  if (isLoading) {
+    return <div />;
+  }
   if (!rawContractDetail) {
     return (
       <div className="text-white-50">Not able to get contract details</div>

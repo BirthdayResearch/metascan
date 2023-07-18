@@ -36,7 +36,7 @@ export default function TokenHoldersList({
       network: connection,
       tokenId: addressHash,
       itemsCount: params.items_count as string,
-      value: params.value as string,
+      value: params.value ? BigInt(Number(params.value)).toString() : "",
     }).unwrap();
     setHolders(data.items);
     setNextPage(data.next_page_params);

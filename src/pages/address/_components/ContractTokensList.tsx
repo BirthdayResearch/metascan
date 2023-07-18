@@ -71,13 +71,19 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
             className="col-span-2 text-right"
             data-testid="contract-tokens-amount-title items-end"
           >
-            <DetailRowTitle title={TokenTableFixedTitle.quantity} />
+            <DetailRowTitle
+              title={TokenTableFixedTitle.quantity}
+              containerClass="justify-end"
+            />
           </div>
           <div
             className="col-span-2 text-right"
             data-testid="contract-tokens-contract-address-title"
           >
-            <DetailRowTitle title="Contract Address" />
+            <DetailRowTitle
+              title="Contract Address"
+              containerClass="justify-end"
+            />
           </div>
         </div>
         <div className="brand-gradient-1 h-[1px]" />

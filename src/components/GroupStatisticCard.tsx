@@ -97,7 +97,7 @@ export default function GroupStatisticCard() {
                 smartContractStats?.verified_smart_contracts ?? 0
               )
                 .multipliedBy(smartContractStats?.smart_contracts ?? 0)
-                .dividedBy(1000)
+                .dividedBy(100)
                 .toFixed(2)}
               thousandSeparator
               suffix="% verified"

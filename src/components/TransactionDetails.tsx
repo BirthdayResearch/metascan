@@ -82,24 +82,12 @@ export default function TransactionDetails({
           {isLoading ? (
             <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
           ) : (
-            transactions.map((item) => {
-              const transformedData = transformTransactionData(item);
-              return (
-                <TransactionRow
-                  key={item.hash}
-                  data={{
-                    transactionType: transformedData.transactionType,
-                    from: transformedData.from,
-                    to: transformedData.to,
-                    hash: transformedData.hash,
-                    amount: transformedData.amount,
-                    symbol: transformedData.symbol,
-                    timeInSec: transformedData.timeInSec,
-                    status: transformedData.status,
-                  }}
-                />
-              );
-            })
+            transactions.map((item) => (
+              <TransactionRow
+                key={item.hash}
+                data={transformTransactionData(item)}
+              />
+            ))
           )}
           <div className="relative h-10 md:h-6 lg:pt-1.5">
             {isLoading && (

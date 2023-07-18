@@ -115,7 +115,7 @@ export default function Address({
   const detailValueCss = "text-white-50 break-all text-right md:text-start";
 
   return (
-    <div className="px-1 md:px-0 mt-12">
+    <div className="px-1 md:px-0 mt-12 min-h-screen">
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer className="relative z-[1]" fullBorder>
         <div className="lg:p-10 md:p-10 px-5 py-8">

@@ -4,6 +4,7 @@ import TransactionDetails from "@components/TransactionDetails";
 import { useNetwork } from "@contexts/NetworkContext";
 import { useGetAddressTransactionsMutation } from "@store/address";
 import { RawTransactionI, TxnNextPageParamsProps } from "@api/types";
+import { sleep } from "shared/sleep";
 
 export default function TransactionsList({
   addressHash,
@@ -14,13 +15,12 @@ export default function TransactionsList({
   const [transactions, setTransactions] = useState<RawTransactionI[]>([]);
   const [nextPageParams, setNextPageParams] =
     useState<TxnNextPageParamsProps>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [trigger] = useGetAddressTransactionsMutation();
   const router = useRouter();
 
   const params = router.query;
   const getTransactions = async () => {
-    setIsLoading(true);
     const data = await trigger({
       network: connection,
       itemsCount: params.items_count as string,
@@ -30,6 +30,7 @@ export default function TransactionsList({
     }).unwrap();
     setTransactions(data.items);
     setNextPageParams(data.next_page_params);
+    await sleep(150);
     setIsLoading(false);
   };
 
@@ -38,7 +39,7 @@ export default function TransactionsList({
   }, [params.page_number, addressHash]);
 
   return (
-    <div className="mt-8">
+    <div>
       <TransactionDetails
         data={{ transactions, nextPageParams }}
         pathname={`/address/${addressHash}`}

@@ -13,18 +13,18 @@ import {
   SkeletonLoader,
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
+import { sleep } from "shared/sleep";
 
 export default function LogsList({ addressHash }: { addressHash: string }) {
   const { connection } = useNetwork();
   const [logs, setLogs] = useState<Log[]>([]);
   const [nextPage, setNextPage] = useState<LogsPageParamsProps>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [trigger] = useGetAddressLogsMutation();
   const router = useRouter();
 
   const params = router.query;
   const fetchLogs = async () => {
-    setIsLoading(true);
     const data = await trigger({
       network: connection,
       itemsCount: params.items_count as string,
@@ -34,6 +34,7 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
     }).unwrap();
     setLogs(data.items);
     setNextPage(data.next_page_params);
+    await sleep(150);
     setIsLoading(false);
   };
 
@@ -45,22 +46,16 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
     return <div className="text-white-50">No logs</div>;
   }
 
-  const pageNumber = Number(router.query.page_number ?? 1);
-  const showPagination =
-    pageNumber > 1 || (pageNumber === 1 && logs.length === 50);
-
   const rowCss = "flex gap-2";
   return (
     <div>
-      {showPagination && (
-        <LogsPagination
-          addressHash={addressHash}
-          nextPageParams={nextPage}
-          isLoading={isLoading}
-          containerClass="relative"
-          loaderClass="right-1 top-0 md:top-0"
-        />
-      )}
+      <LogsPagination
+        addressHash={addressHash}
+        nextPageParams={nextPage}
+        isLoading={isLoading}
+        containerClass="relative"
+        loaderClass="right-1 top-0"
+      />
       <div className="flex flex-col gap-12 md:gap-6 lg:gap-7 mt-7">
         {isLoading ? (
           <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.AddressLogs} />
@@ -104,16 +99,13 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
           ))
         )}
       </div>
-
-      {showPagination && (
-        <LogsPagination
-          addressHash={addressHash}
-          nextPageParams={nextPage}
-          isLoading={isLoading}
-          containerClass="relative h-10 md:h-6 lg:pt-1.5"
-          loaderClass="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]"
-        />
-      )}
+      <LogsPagination
+        addressHash={addressHash}
+        nextPageParams={nextPage}
+        isLoading={isLoading}
+        containerClass="relative h-10 md:h-6 lg:pt-1.5"
+        loaderClass="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]"
+      />
     </div>
   );
 }

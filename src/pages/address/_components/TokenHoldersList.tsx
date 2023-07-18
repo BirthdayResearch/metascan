@@ -16,6 +16,7 @@ import Pagination from "@components/commons/Pagination";
 import LinkText from "@components/commons/LinkText";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import NumericFormat from "@components/commons/NumericFormat";
+import { sleep } from "shared/sleep";
 
 export default function TokenHoldersList({
   addressHash,
@@ -25,13 +26,12 @@ export default function TokenHoldersList({
   const { connection } = useNetwork();
   const [holders, setHolders] = useState<TokenHolderProps[]>([]);
   const [nextPage, setNextPage] = useState<TokenHolderPageParamsProps>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [trigger] = useGetTokenHoldersMutation();
   const router = useRouter();
 
   const params = router.query;
   const fetchTokenHolders = async () => {
-    setIsLoading(true);
     const data = await trigger({
       network: connection,
       tokenId: addressHash,
@@ -40,35 +40,32 @@ export default function TokenHoldersList({
     }).unwrap();
     setHolders(data.items);
     setNextPage(data.next_page_params);
+    await sleep(150);
     setIsLoading(false);
   };
 
   useEffect(() => {
     fetchTokenHolders();
-  }, [router.query.page_number, addressHash]);
+  }, [params.page_number, addressHash]);
 
   if (!isLoading && holders.length === 0) {
     return <div className="text-white-50">No token holders</div>;
   }
 
   const numberOfItems = 50;
-  const pageNumber = Number(router.query.page_number ?? 1);
+  const pageNumber = Number(params.page_number ?? 1);
   const currentItemsCount =
     pageNumber > 1 ? (pageNumber - 1) * numberOfItems : 0;
-  const showPagination =
-    pageNumber > 1 || (pageNumber === 1 && holders.length === 50);
 
   return (
     <div>
-      {showPagination && (
-        <HoldersPagination
-          addressHash={addressHash}
-          nextPageParams={nextPage}
-          isLoading={isLoading}
-          containerClass="relative"
-          loaderClass="right-1 top-0 md:top-0"
-        />
-      )}
+      <HoldersPagination
+        addressHash={addressHash}
+        nextPageParams={nextPage}
+        isLoading={isLoading}
+        containerClass="relative"
+        loaderClass="right-1 top-0"
+      />
       {isLoading ? (
         <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.TokenHolders} />
       ) : (
@@ -80,15 +77,13 @@ export default function TokenHoldersList({
           />
         ))
       )}
-      {showPagination && (
-        <HoldersPagination
-          addressHash={addressHash}
-          nextPageParams={nextPage}
-          isLoading={isLoading}
-          containerClass="relative h-10 md:h-6 lg:pt-1.5"
-          loaderClass="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]"
-        />
-      )}
+      <HoldersPagination
+        addressHash={addressHash}
+        nextPageParams={nextPage}
+        isLoading={isLoading}
+        containerClass="relative h-10 md:h-6 lg:pt-1.5"
+        loaderClass="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]"
+      />
     </div>
   );
 }

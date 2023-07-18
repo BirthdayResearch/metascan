@@ -10,6 +10,7 @@ import {
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
 import { useGetContractTokensMutation } from "@store/token";
+import { sleep } from "shared/sleep";
 import DetailRowTitle from "./DetailRowTitle";
 import ContractTokenRow, { TokenTableFixedTitle } from "./ContractTokenRow";
 
@@ -21,13 +22,12 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
   const { connection } = useNetwork();
   const [tokens, setTokens] = useState<TokenItemI[]>([]);
   const [nextPage, setNextPage] = useState<TokensListPageParamsProps>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [trigger] = useGetContractTokensMutation();
   const router = useRouter();
 
   const params = router.query;
   const fetchTokens = async () => {
-    setIsLoading(true);
     const tokenList = await trigger({
       network: connection,
       addressHash,
@@ -35,6 +35,7 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
     }).unwrap();
     setTokens(tokenList.items);
     setNextPage(tokenList.next_page_params as TokensListPageParamsProps);
+    await sleep(150);
     setIsLoading(false);
   };
 
@@ -53,7 +54,7 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
         nextPageParams={nextPage}
         isLoading={isLoading}
         containerClass="justify-end mt-5 md:mt-0"
-        loaderClass="right-1 md: top-4"
+        loaderClass="right-1 top-0"
       />
       \
       <div className="hidden lg:block">

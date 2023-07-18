@@ -65,16 +65,14 @@ export default function TransactionDetails({
           </h2>
         </div>
       )}
-      {isTxnListEmpty ? (
+      {!isLoading && isTxnListEmpty ? (
         <div className="text-white-50">
           {`There are no transactions found in this ${type}`}
         </div>
       ) : (
         <>
           <div className="relative">
-            {isLoading && (
-              <PaginationLoader customStyle="right-1 top-0 md:top-0" />
-            )}
+            {isLoading && <PaginationLoader customStyle="right-1 top-0" />}
             <TxnPagination
               pathname={pathname}
               nextPageParams={nextPageParams}

@@ -15,6 +15,7 @@ import {
 import TransactionRow from "@components/commons/TransactionRow";
 import { getTransactionTypeFromTokenTransfers } from "shared/transactionDataHelper";
 import { getTimeAgo } from "shared/durationHelper";
+import { sleep } from "shared/sleep";
 
 export default function TokenTransfersList({
   addressHash,
@@ -24,13 +25,12 @@ export default function TokenTransfersList({
   const { connection } = useNetwork();
   const [transfers, setTransfers] = useState<TokenTransferProps[]>([]);
   const [nextPage, setNextPage] = useState<TokenTransferPageParamsProps>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [trigger] = useGetTokenTransfersMutation();
   const router = useRouter();
 
   const params = router.query;
   const fetchTokenTransfers = async () => {
-    setIsLoading(true);
     const data = await trigger({
       network: connection,
       tokenId: addressHash,
@@ -39,6 +39,7 @@ export default function TokenTransfersList({
     }).unwrap();
     setTransfers(data.items);
     setNextPage(data.next_page_params);
+    await sleep(150);
     setIsLoading(false);
   };
 
@@ -57,7 +58,7 @@ export default function TokenTransfersList({
         nextPageParams={nextPage}
         isLoading={isLoading}
         containerClass="relative pb-4"
-        loaderClass="right-1 top-0 md:top-0"
+        loaderClass="right-1 top-0"
       />
       {isLoading ? (
         <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />

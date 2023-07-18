@@ -87,7 +87,7 @@ export default function GroupStatisticCard() {
 
         <StatisticCard
           title="Contracts"
-          value={new BigNumber(dashboardStats?.total_transactions ?? 0)}
+          value={new BigNumber(smartContractStats?.verified_smart_contracts ?? 0)}
           testId="contracts"
           isLoading={isLoading}
         >

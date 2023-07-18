@@ -10,7 +10,6 @@ import {
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
 import { useGetContractTokensMutation } from "@store/token";
-import { AddressContractTabsTitle } from "../../../enum/tabsTitle";
 import DetailRowTitle from "./DetailRowTitle";
 import ContractTokenRow, { TokenTableFixedTitle } from "./ContractTokenRow";
 
@@ -49,21 +48,14 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row mb-9 justify-between md:items-center">
-        <h2
-          data-testid="contract-address-token-list-title"
-          className="font-bold text-xl text-white-50"
-        >
-          {AddressContractTabsTitle.Tokens}
-        </h2>
-        <TokensListPagination
-          addressHash={addressHash}
-          nextPageParams={nextPage}
-          isLoading={isLoading}
-          containerClass="justify-end mt-5 md:mt-0"
-          loaderClass="right-1 md: top-4"
-        />
-      </div>
+      <TokensListPagination
+        addressHash={addressHash}
+        nextPageParams={nextPage}
+        isLoading={isLoading}
+        containerClass="justify-end mt-5 md:mt-0"
+        loaderClass="right-1 md: top-4"
+      />
+      \
       <div className="hidden lg:block">
         <div className="grid grid-cols-7 mb-5">
           <div data-testid="contract-tokens-asset-title">

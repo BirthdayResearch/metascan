@@ -1,3 +1,4 @@
+import { WalletAddressInfoI } from "@api/types";
 import { AddressType } from "@components/types";
 import clsx from "clsx";
 import { AddressContractTabsTitle } from "enum/tabsTitle";
@@ -8,6 +9,7 @@ interface ContractOptionsProps {
   tokenCount: number;
   setSelectedTab: Dispatch<SetStateAction<AddressContractTabsTitle>>;
   addressType: AddressType;
+  walletDetail: WalletAddressInfoI;
 }
 
 const getTabsByAddressType = (addressType: AddressType) => {
@@ -40,29 +42,45 @@ export default function ListTabs({
   tokenCount,
   setSelectedTab,
   addressType,
+  walletDetail,
 }: ContractOptionsProps) {
   const tabs = getTabsByAddressType(addressType);
 
   return (
     <div className="flex flex-row gap-x-8">
-      {tabs.map(({ title }) => (
-        <ButtonTab
-          key={title}
-          testId={
-            selectedTab === title
-              ? `contract-${title}-clicked-title`
-              : `contract-${title}-title`
-          }
-          active={selectedTab === title}
-          tab={title}
-          setSelectedTab={setSelectedTab}
-        >
-          {selectedTab === AddressContractTabsTitle.Tokens &&
-            selectedTab === title && (
-              <TokenCounterBadge tokenCount={tokenCount} />
-            )}
-        </ButtonTab>
-      ))}
+      {tabs.map(({ title }) => {
+        // Hide respective tabs if no data available
+        if (
+          (!walletDetail.has_tokens &&
+            title === AddressContractTabsTitle.Tokens) ||
+          (!walletDetail.has_logs && title === AddressContractTabsTitle.Logs) ||
+          (!walletDetail.is_contract &&
+            title === AddressContractTabsTitle.Contract) ||
+          (!walletDetail.has_token_transfers &&
+            title === AddressContractTabsTitle.TokenTransfers)
+        ) {
+          return null;
+        }
+
+        return (
+          <ButtonTab
+            key={title}
+            testId={
+              selectedTab === title
+                ? `contract-${title}-clicked-title`
+                : `contract-${title}-title`
+            }
+            active={selectedTab === title}
+            tab={title}
+            setSelectedTab={setSelectedTab}
+          >
+            {selectedTab === AddressContractTabsTitle.Tokens &&
+              selectedTab === title && (
+                <TokenCounterBadge tokenCount={tokenCount} />
+              )}
+          </ButtonTab>
+        );
+      })}
     </div>
   );
 }

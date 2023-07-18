@@ -45,6 +45,8 @@ export interface WalletAddressInfoI {
   public_tags: PublicTag[];
   is_verified: boolean;
   has_tokens: boolean;
+  has_logs: boolean;
+  has_token_transfers: boolean;
 }
 
 export interface WalletAddressCounterI {

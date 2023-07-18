@@ -6,7 +6,6 @@ import { FiLoader } from "react-icons/fi";
 import LinkText from "@components/commons/LinkText";
 import ContractMethod from "./ContractMethod";
 import ConnectButton from "./ConnectButton";
-// import ConnectButton from "../ConnectButton";
 
 export default function ReadWriteContract({
   type,
@@ -22,8 +21,6 @@ export default function ReadWriteContract({
   const [expandAll, setExpandAll] = useState<boolean>(false);
   const [resetForm, setResetForm] = useState<boolean>(false);
   const { connection } = useNetwork();
-  // const router = useRouter();
-  // const cid = router.query.cid?.toString()!;
   const { data: methods, isLoading } = useGetContractMethodsQuery({
     network: connection,
     addressHash,

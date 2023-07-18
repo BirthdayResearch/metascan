@@ -13,6 +13,8 @@ import {
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
 import TransactionRow from "@components/commons/TransactionRow";
+import { getTransactionTypeFromTokenTransfers } from "shared/transactionDataHelper";
+import { getTimeAgo } from "shared/durationHelper";
 
 export default function TokenTransfersList({
   addressHash,
@@ -63,14 +65,17 @@ export default function TokenTransfersList({
         transfers.map((item, i) => (
           <TransactionRow
             key={`${item.tx_hash}_${i}`}
-            rawData={
-              {
-                ...item,
-                hash: item.tx_hash,
-                tx_types: [item.type],
-                token_transfers: [item],
-              } as any
-            }
+            data={{
+              transactionType: getTransactionTypeFromTokenTransfers([
+                { type: item.type },
+              ]),
+              from: item.from.hash,
+              to: item.to.hash,
+              hash: item.tx_hash,
+              amount: item.total.value,
+              symbol: item.token.symbol,
+              timeInSec: getTimeAgo(item.timestamp),
+            }}
           />
         ))
       )}

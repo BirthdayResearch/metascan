@@ -16,6 +16,7 @@ import {
 } from "@components/skeletonLoaders/SkeletonLoader";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import TransactionRow from "@components/commons/TransactionRow";
+import { transformTransactionData } from "shared/transactionDataHelper";
 
 interface PageProps {
   transactions: RawTransactionI[];
@@ -63,9 +64,24 @@ export default function Transactions({
           {isLoading ? (
             <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
           ) : (
-            data.transactions.map((tx) => (
-              <TransactionRow key={tx.hash} rawData={tx} />
-            ))
+            data.transactions.map((tx) => {
+              const transformedData = transformTransactionData(tx);
+              return (
+                <TransactionRow
+                  key={tx.hash}
+                  data={{
+                    transactionType: transformedData.transactionType,
+                    from: transformedData.from,
+                    to: transformedData.to,
+                    hash: transformedData.hash,
+                    amount: transformedData.amount,
+                    symbol: transformedData.symbol,
+                    timeInSec: transformedData.timeInSec,
+                    status: transformedData.status,
+                  }}
+                />
+              );
+            })
           )}
 
           <div className="relative h-10 md:h-6 lg:pt-1.5">

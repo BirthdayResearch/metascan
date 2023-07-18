@@ -7,6 +7,7 @@ import {
 } from "@components/skeletonLoaders/SkeletonLoader";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import { RawTransactionI, TxnNextPageParamsProps } from "@api/types";
+import { transformTransactionData } from "shared/transactionDataHelper";
 
 interface TransactionsProps {
   transactions: RawTransactionI[];
@@ -83,9 +84,24 @@ export default function TransactionDetails({
           {isLoading ? (
             <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
           ) : (
-            transactions.map((item) => (
-              <TransactionRow key={item.hash} rawData={item} />
-            ))
+            transactions.map((item) => {
+              const transformedData = transformTransactionData(item);
+              return (
+                <TransactionRow
+                  key={item.hash}
+                  data={{
+                    transactionType: transformedData.transactionType,
+                    from: transformedData.from,
+                    to: transformedData.to,
+                    hash: transformedData.hash,
+                    amount: transformedData.amount,
+                    symbol: transformedData.symbol,
+                    timeInSec: transformedData.timeInSec,
+                    status: transformedData.status,
+                  }}
+                />
+              );
+            })
           )}
           <div className="relative h-10 md:h-6 lg:pt-1.5">
             {isLoading && (

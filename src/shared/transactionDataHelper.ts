@@ -183,8 +183,8 @@ export const getTransactionType = ({
 /*
   Equivalent logic of get_transaction_type_from_token_transfers from blockscout
 */
-const getTransactionTypeFromTokenTransfers = (
-  tokenTransfers: TxTokenTransferProps[]
+export const getTransactionTypeFromTokenTransfers = (
+  tokenTransfers: TxTokenTransferProps[] | { type: string }[]
 ) => {
   if (tokenTransfers.length > 0) {
     if (

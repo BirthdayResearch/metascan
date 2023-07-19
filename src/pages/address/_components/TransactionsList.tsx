@@ -30,7 +30,7 @@ export default function TransactionsList({
     }).unwrap();
     setTransactions(data.items);
     setNextPageParams(data.next_page_params);
-    await sleep(150);
+    await sleep(150); // added timeout to prevent flicker
     setIsLoading(false);
   };
 

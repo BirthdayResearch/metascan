@@ -40,7 +40,7 @@ export default function TokenHoldersList({
     }).unwrap();
     setHolders(data.items);
     setNextPage(data.next_page_params);
-    await sleep(150);
+    await sleep(150); // added timeout to prevent flicker
     setIsLoading(false);
   };
 

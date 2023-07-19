@@ -64,9 +64,9 @@ export default function TokenTransfersList({
       {isLoading ? (
         <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
       ) : (
-        transfers.map((item, i) => (
+        transfers.map((item) => (
           <TransactionRow
-            key={`${item.tx_hash}_${i}`}
+            key={`${item.tx_hash}_${item.log_index}`}
             data={{
               transactionType: getTransactionTypeFromTokenTransfers([
                 { type: item.type },

@@ -61,8 +61,8 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
         {isLoading ? (
           <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.AddressLogs} />
         ) : (
-          logs.map((log, index) => (
-            <Fragment key={`${log.tx_hash}_${index}`}>
+          logs.map((log) => (
+            <Fragment key={`${log.tx_hash}_${log.index}`}>
               <div className="flex flex-col gap-3">
                 <div className={rowCss}>
                   <LogDetailTitle title="Transaction" />
@@ -79,7 +79,7 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
                       .filter((t) => t)
                       .map((topic, i) => (
                         <div
-                          key={i}
+                          key={i} // eslint-disable-line react/no-array-index-key
                           className="flex flex-col lg:flex-row lg:gap-1 text-white-50 break-all text-right sm:text-left"
                         >
                           <span>[{i}]</span>

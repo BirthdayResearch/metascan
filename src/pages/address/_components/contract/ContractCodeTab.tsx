@@ -1,7 +1,7 @@
 import { ContractProps } from "shared/contractDataHelper";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
-import VerifiedContractSubtitle from "./VerifiedContractSubtitle";
 import ContractCodeBlock from "./ContractCodeBlock";
+import DetailRowTitle from "../DetailRowTitle";
 
 export default function ContractCodeTab({
   contractDetail,
@@ -17,25 +17,25 @@ export default function ContractCodeTab({
       <div className="hidden lg:block">
         <div className="grid grid-cols-3 grid-rows-2 gap-y-8">
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.contractName} />
+            <DetailRowTitle title={fixedTitle.contractName} />
             <div className="text-white-50 tracking-[0.01em] break-words">
               {contractDetail.name}
             </div>
           </div>
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.compilerVersion} />
+            <DetailRowTitle title={fixedTitle.compilerVersion} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.compilerVersion}
             </div>
           </div>
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.evmVersion} />
+            <DetailRowTitle title={fixedTitle.evmVersion} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.evmVersion}
             </div>
           </div>
           <div className="flex flex-col gap-y-1 row-start-2">
-            <VerifiedContractSubtitle title={fixedTitle.optimizationEnabled} />
+            <DetailRowTitle title={fixedTitle.optimizationEnabled} />
             <div className="flex items-center text-white-50 tracking-[0.01em]">
               <span>{contractDetail.optimizationEnabled ? "Yes" : "No"}</span>
               {contractDetail.optimizationEnabled && (
@@ -46,13 +46,13 @@ export default function ContractCodeTab({
             </div>
           </div>
           <div className="flex flex-col gap-y-1 row-start-2">
-            <VerifiedContractSubtitle title={fixedTitle.optimizationRuns} />
+            <DetailRowTitle title={fixedTitle.optimizationRuns} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.optimizationRuns}
             </div>
           </div>
           <div className="flex flex-col gap-y-1 row-start-2">
-            <VerifiedContractSubtitle title={fixedTitle.verifiedAt} />
+            <DetailRowTitle title={fixedTitle.verifiedAt} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.verifiedAt}
             </div>
@@ -63,25 +63,25 @@ export default function ContractCodeTab({
       <div className="hidden lg:hidden md:block">
         <div className="grid grid-cols-2 grid-rows-4 gap-y-8">
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.contractName} />
+            <DetailRowTitle title={fixedTitle.contractName} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.name}
             </div>
           </div>
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.compilerVersion} />
+            <DetailRowTitle title={fixedTitle.compilerVersion} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.compilerVersion}
             </div>
           </div>
           <div className="flex flex-col gap-y-1 row-start-2">
-            <VerifiedContractSubtitle title={fixedTitle.evmVersion} />
+            <DetailRowTitle title={fixedTitle.evmVersion} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.evmVersion}
             </div>
           </div>
           <div className="flex flex-col gap-y-1 row-start-3">
-            <VerifiedContractSubtitle title={fixedTitle.optimizationEnabled} />
+            <DetailRowTitle title={fixedTitle.optimizationEnabled} />
             <div className="flex items-center text-white-50 tracking-[0.01em]">
               <span>{contractDetail.optimizationEnabled ? "Yes" : "No"}</span>
               {contractDetail.optimizationEnabled && (
@@ -92,13 +92,13 @@ export default function ContractCodeTab({
             </div>
           </div>
           <div className="flex flex-col gap-y-1 row-start-3">
-            <VerifiedContractSubtitle title={fixedTitle.optimizationRuns} />
+            <DetailRowTitle title={fixedTitle.optimizationRuns} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.optimizationRuns}
             </div>
           </div>
           <div className="flex flex-col gap-y-1 row-start-4">
-            <VerifiedContractSubtitle title={fixedTitle.verifiedAt} />
+            <DetailRowTitle title={fixedTitle.verifiedAt} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.verifiedAt}
             </div>
@@ -109,25 +109,25 @@ export default function ContractCodeTab({
       <div className="md:hidden block">
         <div className="grid grid-rows-6 gap-y-6">
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.contractName} />
+            <DetailRowTitle title={fixedTitle.contractName} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.name}
             </div>
           </div>
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.compilerVersion} />
+            <DetailRowTitle title={fixedTitle.compilerVersion} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.compilerVersion}
             </div>
           </div>
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.evmVersion} />
+            <DetailRowTitle title={fixedTitle.evmVersion} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.evmVersion}
             </div>
           </div>
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.optimizationEnabled} />
+            <DetailRowTitle title={fixedTitle.optimizationEnabled} />
             <div className="flex items-center text-white-50 tracking-[0.01em]">
               <span>{contractDetail.optimizationEnabled ? "Yes" : "No"}</span>
               {contractDetail.optimizationEnabled && (
@@ -138,13 +138,13 @@ export default function ContractCodeTab({
             </div>
           </div>
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.optimizationRuns} />
+            <DetailRowTitle title={fixedTitle.optimizationRuns} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.optimizationRuns}
             </div>
           </div>
           <div className="flex flex-col gap-y-1">
-            <VerifiedContractSubtitle title={fixedTitle.verifiedAt} />
+            <DetailRowTitle title={fixedTitle.verifiedAt} />
             <div className="text-white-50 tracking-[0.01em]">
               {contractDetail.verifiedAt}
             </div>

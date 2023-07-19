@@ -69,10 +69,10 @@ export const contractApi = createApi({
   endpoints: (builder) => ({
     getContract: builder.query<
       RawContractProps,
-      { network: NetworkConnection; cid: string }
+      { network: NetworkConnection; addressHash: string }
     >({
-      query: ({ network, cid }) => ({
-        url: `${getBaseUrl(network)}/${SMART_CONTRACT_URL}/${cid}`,
+      query: ({ network, addressHash }) => ({
+        url: `${getBaseUrl(network)}/${SMART_CONTRACT_URL}/${addressHash}`,
         method: "GET",
       }),
     }),
@@ -87,14 +87,14 @@ export const contractMethodsApi = createApi({
       SmartContractMethod[],
       {
         network: NetworkConnection;
-        cid: string;
+        addressHash: string;
         type: ContractMethodType;
       }
     >({
-      query: ({ network, cid, type }) => ({
+      query: ({ network, addressHash, type }) => ({
         url: `${getBaseUrl(
           network
-        )}/${SMART_CONTRACT_URL}/${cid}/methods-${type}?is_custom_abi=false`,
+        )}/${SMART_CONTRACT_URL}/${addressHash}/methods-${type}?is_custom_abi=false`,
         method: "GET",
       }),
     }),

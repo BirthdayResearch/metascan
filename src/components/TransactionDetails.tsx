@@ -1,7 +1,4 @@
-import {
-  TxnNextPageParamsProps,
-  TxnQueryParamsProps,
-} from "@api/TransactionsApi";
+import { TxnQueryParamsProps } from "@api/TransactionsApi";
 import Pagination from "@components/commons/Pagination";
 import TransactionRow from "@components/commons/TransactionRow";
 import {
@@ -9,11 +6,12 @@ import {
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
-import { RawTransactionI } from "@api/types";
+import { RawTransactionI, TxnNextPageParamsProps } from "@api/types";
+import { transformTransactionData } from "shared/transactionDataHelper";
 
 interface TransactionsProps {
   transactions: RawTransactionI[];
-  nextPageParams: TxnNextPageParamsProps;
+  nextPageParams?: TxnNextPageParamsProps;
 }
 
 interface TransactionDetailsProps {
@@ -29,7 +27,7 @@ function TxnPagination({
   nextPageParams,
 }: {
   pathname: string;
-  nextPageParams: TxnNextPageParamsProps;
+  nextPageParams?: TxnNextPageParamsProps;
 }) {
   return (
     <Pagination<TxnQueryParamsProps>
@@ -67,16 +65,14 @@ export default function TransactionDetails({
           </h2>
         </div>
       )}
-      {isTxnListEmpty ? (
+      {!isLoading && isTxnListEmpty ? (
         <div className="text-white-50">
           {`There are no transactions found in this ${type}`}
         </div>
       ) : (
         <>
           <div className="relative">
-            {isLoading && (
-              <PaginationLoader customStyle="right-1 top-0 md:top-0" />
-            )}
+            {isLoading && <PaginationLoader customStyle="right-1 top-0" />}
             <TxnPagination
               pathname={pathname}
               nextPageParams={nextPageParams}
@@ -87,7 +83,10 @@ export default function TransactionDetails({
             <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
           ) : (
             transactions.map((item) => (
-              <TransactionRow key={item.hash} rawData={item} />
+              <TransactionRow
+                key={item.hash}
+                data={transformTransactionData(item)}
+              />
             ))
           )}
           <div className="relative h-10 md:h-6 lg:pt-1.5">

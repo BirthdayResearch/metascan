@@ -4,14 +4,14 @@ import { FiArrowRight } from "react-icons/fi";
 import NumericFormat from "@components/commons/NumericFormat";
 import LinkText from "@components/commons/LinkText";
 import DetailRow from "@components/commons/DetailRow";
-import { RawTransactionType, TokenTransferProps } from "@api/types";
+import { RawTransactionType, TxTokenTransferProps } from "@api/types";
 
 export default function TokenTransferDetails({
   tokenTransfers,
 }: {
-  tokenTransfers: TokenTransferProps[];
+  tokenTransfers: TxTokenTransferProps[];
 }) {
-  const groupedTokenTransfers: { [key: string]: TokenTransferProps[] } =
+  const groupedTokenTransfers: { [key: string]: TxTokenTransferProps[] } =
     tokenTransfers.reduce((group, tokenTransfer) => {
       const { type } = tokenTransfer;
       /* eslint-disable no-param-reassign */

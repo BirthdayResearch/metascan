@@ -19,6 +19,10 @@ const ErrorMessages = {
     title: "Invalid Txn Hash",
     message: "Please double-check your transaction hash and try again.",
   },
+  [SearchResultType.Token]: {
+    title: "Invalid Token",
+    message: "Please double-check your token hash and try again.",
+  },
 };
 
 export default function DetailPageNotFound({ path }: { path: string }) {

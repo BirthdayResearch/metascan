@@ -60,7 +60,7 @@ export default function VerifiedContractRow({
             <div className="flex flex-col flex-1 gap-y-1">
               <LinkText
                 label={truncateTextFromMiddle(data.address.hash, 4)}
-                href={`/contract/${data.address.hash}`}
+                href={`/address/${data.address.hash}`}
                 customStyle="tracking-[0.01em] text-lg"
               />
               <ListBody body={data.address.name} className="text-sm" />
@@ -102,7 +102,7 @@ export default function VerifiedContractRow({
             <div className="flex flex-col flex-1">
               <LinkText
                 label={truncateTextFromMiddle(data.address.hash, 4)}
-                href={`/contract/${data.address.hash}`}
+                href={`/address/${data.address.hash}`}
                 customStyle="tracking-[0.01em] text-lg"
               />
               <ListBody body={data.address.name} className="text-sm" />
@@ -152,7 +152,7 @@ export default function VerifiedContractRow({
             <div className="flex flex-col flex-1">
               <LinkText
                 label={truncateTextFromMiddle(data.address.hash, 4)}
-                href={`/contract/${data.address.hash}`}
+                href={`/address/${data.address.hash}`}
                 customStyle="tracking-[0.01em] text-lg"
               />
               <ListBody body={data.address.name} className="text-sm" />

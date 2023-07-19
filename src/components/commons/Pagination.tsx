@@ -6,23 +6,23 @@ import Link from "./Link";
 
 interface PaginationProps<T> {
   nextPageParams?: T & {
-    items_count: string;
+    items_count?: string;
     page_number?: string;
   };
   pathname?: string;
   containerClass?: string;
+  shallow?: boolean;
 }
 
 export default function Pagination<T>({
   nextPageParams: nextPageParamsFromApi,
   pathname,
   containerClass,
+  shallow,
 }: PaginationProps<T>): JSX.Element {
   const router = useRouter();
   const pathName = pathname ?? router.pathname;
-  const currentPageNumber = Number.isNaN(Number(router.query.page_number))
-    ? 1
-    : Number(router.query.page_number);
+  const currentPageNumber = Number(router.query.page_number ?? 1);
   const nextPageParams = {
     ...nextPageParamsFromApi,
     ...{ page_number: currentPageNumber + 1 },
@@ -57,7 +57,7 @@ export default function Pagination<T>({
       next: nextPageParams,
     };
 
-    if (nextPageParamsFromApi === undefined) {
+    if (nextPageParamsFromApi === undefined || nextPageParamsFromApi === null) {
       return [pageButton.previous, pageButton.current];
     }
     if (pageNumber === 1) {
@@ -108,6 +108,7 @@ export default function Pagination<T>({
           type="Prev"
           query={previousPageQuery}
           pathName={pathName}
+          shallow={shallow}
         >
           <FiArrowLeft className="text-white-700" size={24} />
         </NavigateButton>
@@ -122,11 +123,17 @@ export default function Pagination<T>({
             active={currentPageNumber === page.page_number}
             query={page}
             pathName={pathName}
+            shallow={shallow}
           />
         ))}
 
       {nextPageParamsFromApi && (
-        <NavigateButton type="Next" query={nextPageParams} pathName={pathName}>
+        <NavigateButton
+          type="Next"
+          query={nextPageParams}
+          pathName={pathName}
+          shallow={shallow}
+        >
           <FiArrowRight className="text-white-700" size={24} />
         </NavigateButton>
       )}
@@ -139,6 +146,7 @@ interface NumberButtonProps {
   active: boolean;
   pathName: string;
   query: any;
+  shallow?: boolean;
 }
 
 function NumberButton({
@@ -146,6 +154,7 @@ function NumberButton({
   active,
   query,
   pathName,
+  shallow,
 }: NumberButtonProps): JSX.Element {
   if (active) {
     return (
@@ -159,7 +168,7 @@ function NumberButton({
   }
 
   return (
-    <Link href={{ pathname: pathName, query }}>
+    <Link href={{ pathname: pathName, query }} shallow={shallow}>
       <button
         type="button"
         className="rounded cursor-pointer h-6 w-6 flex items-center justify-center"
@@ -175,13 +184,15 @@ function NavigateButton({
   type,
   query,
   pathName,
+  shallow,
 }: PropsWithChildren<{
   type: "Next" | "Prev";
   pathName: string;
   query: any;
+  shallow?: boolean;
 }>): JSX.Element {
   return (
-    <Link href={{ pathname: pathName, query }}>
+    <Link href={{ pathname: pathName, query }} shallow={shallow}>
       <button
         type="button"
         data-testid={`Pagination.${type}`}

@@ -95,7 +95,7 @@ export default function VerifyContract() {
   const redirect = async () => {
     await sleep(redirectionDelay);
     router.push({
-      pathname: `/contract/${address}`,
+      pathname: `/address/${address}`,
       query: networkQuery,
     });
   };

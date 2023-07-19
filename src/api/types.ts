@@ -1,3 +1,5 @@
+import { TokenProps } from "./TokenApi";
+
 export interface WalletAddressToken {
   address: string;
   type: string;
@@ -42,6 +44,9 @@ export interface WalletAddressInfoI {
   watchlist_names: WatchlistName[];
   public_tags: PublicTag[];
   is_verified: boolean;
+  has_tokens: boolean;
+  has_logs: boolean;
+  has_token_transfers: boolean;
 }
 
 export interface WalletAddressCounterI {
@@ -49,6 +54,13 @@ export interface WalletAddressCounterI {
   token_transfers_count: string;
   gas_usage_count: string;
   validations_count: string;
+}
+
+export interface WalletAddressTokenBalanceI {
+  token: TokenProps;
+  token_id: string | null;
+  token_instance: string | null;
+  value: string;
 }
 
 export enum TransactionStatus {
@@ -95,24 +107,16 @@ export interface DecodedTxInput {
   method_call: string;
   parameters: TxParameters[];
 }
-export interface RawTxnWithPaginationProps {
-  items: RawTransactionI[];
-  next_page_params?: {
-    block_number?: string;
-    items_count?: string;
-    index?: string;
-  };
+
+export interface TxnNextPageParamsProps {
+  block_number: string;
+  items_count: string;
+  index: string;
 }
 
-export interface CreatedContractProps {
-  hash: string;
-  implementation_name?: string;
-  is_contract: boolean;
-  is_verified?: boolean;
-  name: string;
-  privateTags: [];
-  public_tags: [];
-  watchlist_names: [];
+export interface RawTxnWithPaginationProps {
+  items: RawTransactionI[];
+  next_page_params?: TxnNextPageParamsProps;
 }
 
 export interface RawTransactionI {
@@ -120,8 +124,8 @@ export interface RawTransactionI {
   type: number;
   hash: string;
   value: string;
-  from: { hash: string; is_contract: boolean };
-  to: { hash: string; is_contract: boolean } | null;
+  from: AddressProps;
+  to: AddressProps | null;
   status: string;
   result: string;
   timestamp: string;
@@ -140,19 +144,19 @@ export interface RawTransactionI {
   method: string | null;
   confirmations: number;
   token_transfers?: any;
-  created_contract?: CreatedContractProps;
+  created_contract?: AddressProps;
 }
 
-export interface TokenTransferProps {
+export interface TxTokenTransferProps {
   from: {
     hash: string;
     isContract: boolean;
-    isVerified: boolean;
+    isVerified: boolean | null;
   };
   to: {
     hash: string;
     isContract: boolean;
-    isVerified: boolean;
+    isVerified: boolean | null;
   };
   type: string;
   forToken: {
@@ -193,7 +197,7 @@ export interface TransactionI {
   revertReason: string | null;
   method: string | null;
   confirmations: number;
-  tokenTransfers?: TokenTransferProps[];
+  tokenTransfers?: TxTokenTransferProps[];
 }
 
 export interface BlockProps {
@@ -214,20 +218,10 @@ export interface BlockProps {
   size: number;
 }
 
-interface RawTokenTransferDirectionProps {
-  hash: string;
-  implementation_name?: string;
-  is_contract: boolean;
-  is_verified: boolean;
-  name?: string;
-  private_tags: [];
-  public_tags: [];
-  watchlist_names: [];
-}
 export interface RawTxTokenTransfersProps {
   block_hash;
-  from: RawTokenTransferDirectionProps;
-  to: RawTokenTransferDirectionProps;
+  from: AddressProps;
+  to: AddressProps;
   token: {
     address: string;
     decimals?: string | number;
@@ -252,17 +246,19 @@ export interface RawTransactionV1 {
   status: string;
 }
 
+export interface AddressProps {
+  hash: string;
+  implementation_name: string | null;
+  is_contract: boolean;
+  is_verified: boolean | null;
+  name: string;
+  private_tags: string[];
+  public_tags: string[];
+  watchlist_names: string[];
+}
+
 export interface SmartContractListItemProps {
-  address: {
-    hash: string;
-    implementation_name: string | null;
-    is_contract: boolean;
-    is_verified: boolean | null;
-    name: string;
-    private_tags: string[];
-    public_tags: string[];
-    watchlist_names: string[];
-  };
+  address: AddressProps;
   coin_balance: number;
   compiler_version: string;
   has_constructor_args: boolean;
@@ -352,4 +348,26 @@ export interface RawTokenI {
   symbol: string;
   total_supply: string;
   type: string;
+}
+
+export interface TokenItemI {
+  token: RawTokenI;
+  token_id?: string;
+  token_instance?: string;
+  value: string;
+}
+
+export interface RawTokensWithPaginationProps {
+  items: TokenItemI[];
+  next_page_params?: {
+    block_number?: string;
+    items_count?: string;
+    index?: string;
+  };
+}
+export interface TokensListPageParamsProps {
+  fiat_value?: string | null;
+  id?: string;
+  items_count?: string;
+  value?: string;
 }

@@ -1,13 +1,9 @@
+import { WALLET_ADDRESS_URL, getBaseUrl, wrapResponse } from "@api/index";
 import {
-  WALLET_ADDRESS_URL,
-  filterParams,
-  getBaseUrl,
-  wrapResponse,
-} from "@api/index";
-import {
-  RawTxnWithPaginationProps,
+  TokenItemI,
   WalletAddressCounterI,
   WalletAddressInfoI,
+  WalletAddressTokenBalanceI,
 } from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
 
@@ -28,22 +24,24 @@ export default {
     const res = await fetch(`${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/counters`);
     return wrapResponse<WalletAddressCounterI>(res);
   },
-  getAddressTransactions: async (
+  getAllTokens: async (
     network: NetworkConnection,
-    aid: string,
-    blockNumber?: string,
-    itemsCount?: string,
-    index?: string
-  ): Promise<RawTxnWithPaginationProps> => {
+    aid: string
+  ): Promise<TokenItemI[]> => {
     const baseUrl = getBaseUrl(network);
-    const params = filterParams([
-      { key: "block_number", value: blockNumber },
-      { key: "items_count", value: itemsCount },
-      { key: "index", value: index },
-    ]);
     const res = await fetch(
-      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/transactions${params}`
+      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`
     );
-    return wrapResponse<RawTxnWithPaginationProps>(res);
+    return wrapResponse<TokenItemI[]>(res);
+  },
+  getAllAddressTokens: async (
+    network: NetworkConnection,
+    aid: string
+  ): Promise<WalletAddressTokenBalanceI[]> => {
+    const baseUrl = getBaseUrl(network);
+    const res = await fetch(
+      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`
+    );
+    return wrapResponse<WalletAddressTokenBalanceI[]>(res);
   },
 };

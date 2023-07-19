@@ -29,18 +29,25 @@ interface PageProps {
 function TokenPagination({
   nextPageParams,
 }: {
-  nextPageParams: TokenNextPageParamsProps;
+  nextPageParams?: TokenNextPageParamsProps;
 }) {
-  const test: TokenQueryParamsProps = {
-    items_count: nextPageParams.items_count,
-    contract_address_hash: nextPageParams.contract_address_hash,
-    holder_count: nextPageParams.holder_count,
-    is_name_null: nextPageParams.is_name_null,
-    market_cap: nextPageParams.market_cap,
-    name: nextPageParams.name,
-  };
-
-  return <Pagination<TokenQueryParamsProps> nextPageParams={test} />;
+  return (
+    <Pagination<TokenQueryParamsProps>
+      pathname="/tokens"
+      nextPageParams={
+        nextPageParams
+          ? {
+              items_count: nextPageParams.items_count,
+              contract_address_hash: nextPageParams.contract_address_hash,
+              holder_count: nextPageParams.holder_count,
+              is_name_null: nextPageParams.is_name_null,
+              market_cap: nextPageParams.market_cap ?? "null",
+              name: nextPageParams.name,
+            }
+          : undefined
+      }
+    />
+  );
 }
 
 export default function Tokens({
@@ -48,7 +55,7 @@ export default function Tokens({
   isLoading,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
-  const pageNumber = Number(router.query.page_number) ?? 0;
+  const pageNumber = Number(router.query.page_number ?? 0);
   const numberOfItems = 50;
   // Page number > 1, then add numberOfItems * pageNumber
   const currentItemsCount =
@@ -59,7 +66,7 @@ export default function Tokens({
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
         <div className="p-5 md:p-10">
-          <div className="flex flex-col md:flex-row py-6 md:py-4 mb-6 justify-between md:items-center relative">
+          <div className="flex flex-col md:flex-row py-6 md:py-4 lg:mb-6 justify-between md:items-center relative">
             <span className="font-bold text-2xl text-white-50">Tokens</span>
             {isLoading && (
               <PaginationLoader customStyle="right-0 top-[72px] md:top-8" />
@@ -100,8 +107,7 @@ export async function getServerSideProps(
     !isNumeric(params?.holder_count as string) ||
     !isAlphanumeric(params?.is_name_null as string) ||
     !isNumeric(params?.items_count as string) ||
-    !isNumeric(params?.market_cap as string) ||
-    !isAlphanumeric(params?.name as string);
+    !isAlphanumeric(params?.market_cap as string);
 
   try {
     // Fetch data from external API

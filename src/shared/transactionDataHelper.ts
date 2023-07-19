@@ -1,10 +1,10 @@
 import { formatEther, formatUnits } from "viem";
 import {
-  CreatedContractProps,
+  AddressProps,
   RawTransactionI,
   RawTransactionType,
   RawTxTokenTransfersProps,
-  TokenTransferProps,
+  TxTokenTransferProps,
   TransactionI,
   TransactionStatus,
   TransactionType,
@@ -67,7 +67,7 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     nonce: tx.nonce,
     blockNumber: tx.block,
     value: formatEther(BigInt(tx.value ?? "0")),
-    fee: formatEther(BigInt(tx.fee.value ?? "0")),
+    fee: formatEther(BigInt(tx.fee?.value ?? "0")),
     gasUsed: tx.gas_used,
     gasLimit: tx.gas_limit,
     gasPrice: formatUnits(BigInt(tx.gas_price ?? "0"), GWEI_DECIMAL).toString(),
@@ -102,7 +102,7 @@ export const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
       from: tokenTransfer.to.hash,
       to: tokenTransfer.from.hash,
       value: formatUnits(
-        BigInt(tokenTransfer.total.value),
+        BigInt(tokenTransfer.total.value ?? "0"),
         Number(tokenTransfer.total.decimals ?? GWEI_DECIMAL)
       ),
       address: tokenTransfer.token.address,
@@ -143,11 +143,11 @@ export const getTransactionType = ({
   createdContract,
 }: {
   toHash: string | null;
-  tokenTransfers: TokenTransferProps[];
+  tokenTransfers: TxTokenTransferProps[];
   isFromContract: boolean;
   isToContract: boolean;
   txTypes: string[];
-  createdContract?: CreatedContractProps;
+  createdContract?: AddressProps;
 }) => {
   let transactionType = TransactionType.Transaction;
   // Note: tokenTransfers is always null in transactions list api
@@ -183,8 +183,8 @@ export const getTransactionType = ({
 /*
   Equivalent logic of get_transaction_type_from_token_transfers from blockscout
 */
-const getTransactionTypeFromTokenTransfers = (
-  tokenTransfers: TokenTransferProps[]
+export const getTransactionTypeFromTokenTransfers = (
+  tokenTransfers: TxTokenTransferProps[] | { type: string }[]
 ) => {
   if (tokenTransfers.length > 0) {
     if (

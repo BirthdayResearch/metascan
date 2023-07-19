@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { addressApi } from "@store/address";
+import { blocksApi } from "@store/blocks";
 import {
   contractApi,
   contractMethodsApi,
@@ -12,6 +13,7 @@ export function initializeStore() {
   return configureStore({
     reducer: {
       [searchApi.reducerPath]: searchApi.reducer,
+      [blocksApi.reducerPath]: blocksApi.reducer,
       [contractApi.reducerPath]: contractApi.reducer,
       [contractMethodsApi.reducerPath]: contractMethodsApi.reducer,
       [contractVerificationApi.reducerPath]: contractVerificationApi.reducer,
@@ -21,6 +23,7 @@ export function initializeStore() {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
         searchApi.middleware,
+        blocksApi.middleware,
         contractApi.middleware,
         contractMethodsApi.middleware,
         contractVerificationApi.middleware,

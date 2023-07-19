@@ -1,5 +1,15 @@
 import { TokenProps } from "./TokenApi";
 
+export interface BlocksPageParamsProps {
+  block_number: string;
+  items_count: string;
+}
+
+export interface BlockWithPaginationProps {
+  items: BlockProps[];
+  next_page_params: BlocksPageParamsProps;
+}
+
 export interface WalletAddressToken {
   address: string;
   type: string;

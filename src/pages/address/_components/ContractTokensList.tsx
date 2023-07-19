@@ -28,6 +28,7 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
 
   const params = router.query;
   const fetchTokens = async () => {
+    setIsLoading(true);
     const tokenList = await trigger({
       network: connection,
       addressHash,

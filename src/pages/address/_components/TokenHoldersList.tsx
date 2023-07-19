@@ -32,6 +32,7 @@ export default function TokenHoldersList({
 
   const params = router.query;
   const fetchTokenHolders = async () => {
+    setIsLoading(true);
     const data = await trigger({
       network: connection,
       tokenId: addressHash,

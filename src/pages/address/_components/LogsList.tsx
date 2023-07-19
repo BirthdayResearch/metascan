@@ -25,6 +25,7 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
 
   const params = router.query;
   const fetchLogs = async () => {
+    setIsLoading(true);
     const data = await trigger({
       network: connection,
       itemsCount: params.items_count as string,
@@ -60,8 +61,8 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
         {isLoading ? (
           <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.AddressLogs} />
         ) : (
-          logs.map((log) => (
-            <Fragment key={log.tx_hash}>
+          logs.map((log, index) => (
+            <Fragment key={`${log.tx_hash}_${index}`}>
               <div className="flex flex-col gap-3">
                 <div className={rowCss}>
                   <LogDetailTitle title="Transaction" />

@@ -31,6 +31,7 @@ export default function TokenTransfersList({
 
   const params = router.query;
   const fetchTokenTransfers = async () => {
+    setIsLoading(true);
     const data = await trigger({
       network: connection,
       tokenId: addressHash,

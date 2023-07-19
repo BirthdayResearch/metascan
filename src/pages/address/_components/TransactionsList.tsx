@@ -21,6 +21,7 @@ export default function TransactionsList({
 
   const params = router.query;
   const getTransactions = async () => {
+    setIsLoading(true);
     const data = await trigger({
       network: connection,
       itemsCount: params.items_count as string,

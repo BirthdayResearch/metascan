@@ -14,7 +14,7 @@ export default function GroupStatisticCard() {
   const [dashboardStats, setDashboardStats] = useState<DashboardStatsProps>();
   const [smartContractStats, setSmartContractStats] =
     useState<SmartContractStatsProps>();
-  const unit = "fi";
+  const unit = "gwei";
   const fetchStats = async () => {
     setIsLoading(true);
     const dashStats = await LatestDataApi.getDashboardStats(connection);

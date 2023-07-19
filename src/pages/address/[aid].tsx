@@ -257,7 +257,7 @@ export default function Address({
                 <div className={detailContainerCss}>
                   <DetailRowTitle
                     title="Total supply"
-                    tooltip="The total number of tokens that currently exist for this contract"
+                    tooltip="The total amount of tokens issued"
                   />
                   {walletDetail.token.total_supply ? (
                     <NumericFormat

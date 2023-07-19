@@ -1,9 +1,6 @@
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import TransactionsApi, {
-  TxnNextPageParamsProps,
-  TxnQueryParamsProps,
-} from "@api/TransactionsApi";
+import TransactionsApi, { TxnQueryParamsProps } from "@api/TransactionsApi";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
@@ -11,7 +8,7 @@ import {
 } from "next";
 import { NetworkConnection } from "@contexts/Environment";
 import Pagination from "@components/commons/Pagination";
-import { RawTransactionI } from "@api/types";
+import { RawTransactionI, TxnNextPageParamsProps } from "@api/types";
 import { isNumeric } from "shared/textHelper";
 import {
   SkeletonLoader,
@@ -19,6 +16,7 @@ import {
 } from "@components/skeletonLoaders/SkeletonLoader";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import TransactionRow from "@components/commons/TransactionRow";
+import { transformTransactionData } from "shared/transactionDataHelper";
 
 interface PageProps {
   transactions: RawTransactionI[];
@@ -67,7 +65,10 @@ export default function Transactions({
             <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
           ) : (
             data.transactions.map((tx) => (
-              <TransactionRow key={tx.hash} rawData={tx} />
+              <TransactionRow
+                key={tx.hash}
+                data={transformTransactionData(tx)}
+              />
             ))
           )}
 

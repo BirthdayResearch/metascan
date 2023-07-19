@@ -4,12 +4,7 @@ import { truncateTextFromMiddle } from "shared/textHelper";
 import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import { TimeComponent } from "@components/commons/TimeComponent";
-import {
-  RawTransactionI,
-  TransactionStatus,
-  TransactionType,
-} from "@api/types";
-import { transformTransactionData } from "shared/transactionDataHelper";
+import { TransactionStatus, TransactionType } from "@api/types";
 import { TokenTransferIcon } from "@components/icons/TokenTransfer";
 import {
   FiFileText,
@@ -34,19 +29,21 @@ export const iconMapping = {
   [TransactionType.CoinTransfer]: TransactionsIcon,
 };
 
-export default function TransactionRow({
-  rawData,
-}: {
-  rawData: RawTransactionI;
-}) {
-  const data = transformTransactionData(rawData);
+interface TransactionRowData {
+  transactionType: TransactionType;
+  from: string;
+  to: string;
+  hash: string;
+  amount: string;
+  symbol: string;
+  timeInSec: number;
+  status?: TransactionStatus;
+}
+
+export default function TransactionRow({ data }: { data: TransactionRowData }) {
   const Icon = iconMapping[data.transactionType];
-  const fromPathname = data.isFromContract
-    ? `/contract/${data.from}`
-    : `/address/${data.from}`;
-  const toPathName = data.isToContract
-    ? `/contract/${data.to}`
-    : `/address/${data.to}`;
+  const fromPathname = `/address/${data.from}`;
+  const toPathName = `/address/${data.to}`;
 
   return (
     <div>
@@ -96,8 +93,13 @@ export default function TransactionRow({
               )}
             </div>
           </div>
-          <div className="row-start-1 col-start-7 md:col-start-4 lg:col-start-8 col-end-9 xl:col-start-11 xl:col-end-13 justify-self-end">
-            <StatusComponent status={data.status} />
+          <div
+            className={clsx(
+              "row-start-1 col-start-7 md:col-start-4 lg:col-start-8 col-end-9 xl:col-start-11 xl:col-end-13 justify-self-end",
+              { "flex items-center": !data.status }
+            )}
+          >
+            {data.status && <StatusComponent status={data.status} />}
             <div className="text-right mt-1">
               <TimeComponent time={data.timeInSec} />
             </div>
@@ -114,9 +116,11 @@ export default function TransactionRow({
               <span className="text-white-50">{data.transactionType}</span>
             </div>
           </div>
-          <div className="text-right">
-            <StatusComponent status={data.status} />
-          </div>
+          {data.status && (
+            <div className="text-right">
+              <StatusComponent status={data.status} />
+            </div>
+          )}
         </div>
         <div className="ml-8">
           <AmountComponent

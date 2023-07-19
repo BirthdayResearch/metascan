@@ -10,6 +10,14 @@ export default {
     const res = await fetch(`${baseUrl}/${TOKENS_URL}/${tokenId}`);
     return wrapResponse<TokenProps>(res);
   },
+  getTokenCounters: async (
+    network: NetworkConnection,
+    tokenId: string
+  ): Promise<TokenCountersProps> => {
+    const baseUrl = getBaseUrl(network);
+    const res = await fetch(`${baseUrl}/${TOKENS_URL}/${tokenId}/counters`);
+    return wrapResponse<TokenCountersProps>(res);
+  },
 };
 
 export interface TokenProps {
@@ -23,4 +31,9 @@ export interface TokenProps {
   symbol: string;
   total_supply: string;
   type: string;
+}
+
+export interface TokenCountersProps {
+  token_holders_count: string;
+  transfers_count: string;
 }

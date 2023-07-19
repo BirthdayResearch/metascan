@@ -29,7 +29,7 @@ const MenuItems = [
   {
     label: "Contracts",
     pathname: "/contracts",
-    childPaths: ["/contract"],
+    childPaths: [],
     testId: "Desktop.HeaderLink.Contracts",
     imagePath: "/menu/VerifiedContracts.svg",
   },

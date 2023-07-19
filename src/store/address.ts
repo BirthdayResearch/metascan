@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { NetworkConnection } from "@contexts/Environment";
 import { WALLET_ADDRESS_URL, filterParams, getBaseUrl } from "@api/index";
-import { AddressProps } from "@api/types";
+import { AddressProps, RawTxnWithPaginationProps } from "@api/types";
 
 export interface Log {
   tx_hash: string;
@@ -28,6 +28,30 @@ export const addressApi = createApi({
     baseUrl: "/",
   }),
   endpoints: (builder) => ({
+    getAddressTransactions: builder.mutation<
+      RawTxnWithPaginationProps,
+      {
+        network: NetworkConnection;
+        addressHash: string;
+        itemsCount: string;
+        blockNumber: string;
+        index: string;
+      }
+    >({
+      query: ({ network, addressHash, itemsCount, blockNumber, index }) => {
+        const params = filterParams([
+          { key: "items_count", value: itemsCount },
+          { key: "block_number", value: blockNumber },
+          { key: "index", value: index },
+        ]);
+        return {
+          url: `${getBaseUrl(
+            network
+          )}/${WALLET_ADDRESS_URL}/${addressHash}/transactions${params}`,
+          method: "GET",
+        };
+      },
+    }),
     getAddressLogs: builder.mutation<
       LogsWithPaginationProps,
       {
@@ -55,4 +79,5 @@ export const addressApi = createApi({
   }),
 });
 
-export const { useGetAddressLogsMutation } = addressApi;
+export const { useGetAddressTransactionsMutation, useGetAddressLogsMutation } =
+  addressApi;

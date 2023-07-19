@@ -5,7 +5,6 @@ import { useNetwork } from "@contexts/NetworkContext";
 import {
   TokenHolderPageParamsProps,
   TokenHolderProps,
-  TokenHolderWithPaginationProps,
   useGetTokenHoldersMutation,
 } from "@store/token";
 import {
@@ -17,56 +16,60 @@ import Pagination from "@components/commons/Pagination";
 import LinkText from "@components/commons/LinkText";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import NumericFormat from "@components/commons/NumericFormat";
+import { sleep } from "shared/sleep";
 
-export default function TokenHolders() {
+export default function TokenHoldersList({
+  addressHash,
+}: {
+  addressHash: string;
+}) {
   const { connection } = useNetwork();
-  const router = useRouter();
-  const { tokenId, ...params } = router.query;
-
-  const [data, setData] = useState<TokenHolderWithPaginationProps>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [holders, setHolders] = useState<TokenHolderProps[]>([]);
+  const [nextPage, setNextPage] = useState<TokenHolderPageParamsProps>();
+  const [isLoading, setIsLoading] = useState(true);
   const [trigger] = useGetTokenHoldersMutation();
+  const router = useRouter();
 
+  const params = router.query;
   const fetchTokenHolders = async () => {
-    setIsLoading(true);
-    const holdersData = await trigger({
+    const data = await trigger({
       network: connection,
-      tokenId: tokenId as string,
+      tokenId: addressHash,
       itemsCount: params.items_count as string,
-      value: params.value as string,
+      value: params.value ? BigInt(Number(params.value)).toString() : "",
     }).unwrap();
-    setData(holdersData);
+    setHolders(data.items);
+    setNextPage(data.next_page_params);
+    await sleep(150);
     setIsLoading(false);
   };
 
   useEffect(() => {
     fetchTokenHolders();
-  }, [router.query.page_number]);
+  }, [params.page_number, addressHash]);
 
-  const tokenHolders = data?.items ?? [];
-  if (!isLoading && tokenHolders.length === 0) {
-    return <div className="text-white-50 mt-6">No token holders</div>;
+  if (!isLoading && holders.length === 0) {
+    return <div className="text-white-50">No token holders</div>;
   }
 
   const numberOfItems = 50;
-  const pageNumber = Number(router.query.page_number) ?? 0;
+  const pageNumber = Number(params.page_number ?? 1);
   const currentItemsCount =
     pageNumber > 1 ? (pageNumber - 1) * numberOfItems : 0;
 
   return (
     <div>
-      <div className="relative">
-        {isLoading && <PaginationLoader customStyle="right-1 top-0 md:top-0" />}
-        <HoldersPagination
-          pathname={`/token/${tokenId}`}
-          nextPageParams={data?.next_page_params}
-        />
-      </div>
-
+      <HoldersPagination
+        addressHash={addressHash}
+        nextPageParams={nextPage}
+        isLoading={isLoading}
+        containerClass="relative"
+        loaderClass="right-1 top-0"
+      />
       {isLoading ? (
         <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.TokenHolders} />
       ) : (
-        tokenHolders.map((item, index) => (
+        holders.map((item, index) => (
           <TokenHolderRow
             key={item.address.hash}
             num={currentItemsCount + index + 1}
@@ -74,40 +77,46 @@ export default function TokenHolders() {
           />
         ))
       )}
-
-      <div className="relative h-10 md:h-6 lg:pt-1.5">
-        {isLoading && (
-          <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
-        )}
-        <HoldersPagination
-          pathname={`/token/${tokenId}`}
-          nextPageParams={data?.next_page_params}
-        />
-      </div>
+      <HoldersPagination
+        addressHash={addressHash}
+        nextPageParams={nextPage}
+        isLoading={isLoading}
+        containerClass="relative h-10 md:h-6 lg:pt-1.5"
+        loaderClass="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]"
+      />
     </div>
   );
 }
 
 function HoldersPagination({
-  pathname,
+  addressHash,
   nextPageParams,
+  isLoading,
+  containerClass = "",
+  loaderClass = "",
 }: {
-  pathname: string;
+  addressHash: string;
+  isLoading: boolean;
   nextPageParams?: TokenHolderPageParamsProps;
+  containerClass?: string;
+  loaderClass?: string;
 }) {
   return (
-    <Pagination<TokenHolderPageParamsProps & { page_number?: string }>
-      pathname={pathname}
-      nextPageParams={
-        nextPageParams
-          ? {
-              items_count: nextPageParams.items_count,
-              value: nextPageParams.value,
-            }
-          : undefined
-      }
-      shallow
-    />
+    <div className={containerClass}>
+      {isLoading && <PaginationLoader customStyle={loaderClass} />}
+      <Pagination<TokenHolderPageParamsProps & { page_number?: string }>
+        pathname={`/token/${addressHash}`}
+        nextPageParams={
+          nextPageParams
+            ? {
+                items_count: nextPageParams.items_count,
+                value: nextPageParams.value,
+              }
+            : undefined
+        }
+        shallow
+      />
+    </div>
   );
 }
 
@@ -126,7 +135,7 @@ function TokenHolderRow({
       <div className="w-8 lg:w-10 text-white-700">{num}</div>
       <div className="flex flex-col gap-1">
         <LinkText
-          href={`/address/${data.address}`}
+          href={`/address/${data.address.hash}`}
           label={truncateTextFromMiddle(data.address.hash, 8)}
         />
         <div>

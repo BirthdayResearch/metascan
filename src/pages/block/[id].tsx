@@ -20,8 +20,11 @@ import { isNumeric } from "shared/textHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
 import BlocksApi from "@api/BlocksApi";
-import { TxnNextPageParamsProps } from "@api/TransactionsApi";
-import { BlockProps, RawTransactionI } from "@api/types";
+import {
+  BlockProps,
+  RawTransactionI,
+  TxnNextPageParamsProps,
+} from "@api/types";
 import { GWEI_DECIMAL } from "shared/constants";
 import AddressRow from "./_components/AddressRow";
 import DetailRow from "./_components/DetailRow";

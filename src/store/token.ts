@@ -1,8 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { NetworkConnection } from "@contexts/Environment";
-import { TOKENS_URL, filterParams, getBaseUrl } from "@api/index";
+import {
+  TOKENS_URL,
+  WALLET_ADDRESS_URL,
+  filterParams,
+  getBaseUrl,
+} from "@api/index";
 import { TokenProps } from "@api/TokenApi";
-import { AddressProps } from "@api/types";
+import {
+  AddressProps,
+  RawTokensWithPaginationProps,
+  TokensListPageParamsProps,
+} from "@api/types";
 
 // Token Holders
 export interface TokenHolderProps {
@@ -21,7 +30,7 @@ export interface TokenHolderWithPaginationProps {
 }
 
 // Token Transfers
-interface TokenTransferProps {
+export interface TokenTransferProps {
   tx_hash: string;
   block_hash: string;
   type: string;
@@ -45,17 +54,43 @@ export interface TokenTransferPageParamsProps {
   index: string;
 }
 
-export interface TokenCountersProps {
-  token_holders_count: string;
-  transfers_count: string;
-}
-
 export const tokenApi = createApi({
   reducerPath: "token",
   baseQuery: fetchBaseQuery({
     baseUrl: "/",
   }),
   endpoints: (builder) => ({
+    getContractTokens: builder.mutation<
+      RawTokensWithPaginationProps,
+      {
+        network: NetworkConnection;
+        addressHash: string;
+        queryParams: TokensListPageParamsProps;
+      }
+    >({
+      query: ({ network, addressHash, queryParams }) => {
+        const params = queryParams
+          ? filterParams([
+              {
+                key: "fiat_value",
+                value:
+                  queryParams?.fiat_value || queryParams?.fiat_value === ""
+                    ? "null"
+                    : queryParams?.fiat_value,
+              },
+              { key: "items_count", value: queryParams?.items_count },
+              { key: "value", value: queryParams?.value },
+              { key: "id", value: queryParams?.id },
+            ])
+          : "";
+        return {
+          url: `${getBaseUrl(
+            network
+          )}/${WALLET_ADDRESS_URL}/${addressHash}/tokens${params}`,
+          method: "GET",
+        };
+      },
+    }),
     getTokenHolders: builder.mutation<
       TokenHolderWithPaginationProps,
       {
@@ -100,23 +135,11 @@ export const tokenApi = createApi({
         };
       },
     }),
-    getTokenCounters: builder.mutation<
-      TokenCountersProps,
-      {
-        network: NetworkConnection;
-        tokenId: string;
-      }
-    >({
-      query: ({ network, tokenId }) => ({
-        url: `${getBaseUrl(network)}/${TOKENS_URL}/${tokenId}/counters`,
-        method: "GET",
-      }),
-    }),
   }),
 });
 
 export const {
+  useGetContractTokensMutation,
   useGetTokenHoldersMutation,
   useGetTokenTransfersMutation,
-  useGetTokenCountersMutation,
 } = tokenApi;

@@ -1,7 +1,7 @@
 import { ContractProps } from "shared/contractDataHelper";
 import VerifiedGreenTickIcon from "@components/icons/VerifiedGreenTickIcon";
-import DetailRowTitle from "pages/address/_components/shared/DetailRowTitle";
 import ContractCodeBlock from "./ContractCodeBlock";
+import DetailRowTitle from "../DetailRowTitle";
 
 export default function ContractCodeTab({
   contractDetail,

@@ -48,11 +48,7 @@ export default function TokenTransferDetails({
                         customStyle="tracking-[0.01em]"
                         testId="token-transferred-from"
                         label={truncateTextFromMiddle(from.hash, 4)}
-                        href={
-                          from.isContract
-                            ? `/address/${from.hash}` // TODO: Update to /contract
-                            : `/address/${from.hash}`
-                        }
+                        href={`/address/${from.hash}`}
                       />
                     </div>
                     <FiArrowRight className="text-white-50 mx-2" size={24} />
@@ -60,11 +56,7 @@ export default function TokenTransferDetails({
                       <LinkText
                         testId="token-transferred-to"
                         label={truncateTextFromMiddle(to.hash, 4)}
-                        href={
-                          to.isContract
-                            ? `/address/${to.hash}` // TODO: Update to /contract
-                            : `/address/${to.hash}`
-                        }
+                        href={`/address/${to.hash}`}
                       />
                     </div>
                   </div>

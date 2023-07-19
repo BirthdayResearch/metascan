@@ -5,9 +5,7 @@ import { BlockWithPaginationProps } from "@api/types";
 
 export const blocksApi = createApi({
   reducerPath: "blocks",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "/", // This will be overridden by query url below, need to dynamically get the base url based on network
-  }),
+  baseQuery: fetchBaseQuery({ baseUrl: "/" }),
   endpoints: (builder) => ({
     getBlocks: builder.mutation<
       BlockWithPaginationProps,

@@ -85,10 +85,9 @@ export default function AddZeroesModal({
             inputClass="!text-base"
             inputContainerClassName="!py-2 mt-4"
             error={error}
+            errorClass="text-xxs text-red-800"
           />
-          {error ? (
-            <div className="text-xxs text-red-800 mt-2">{error}</div>
-          ) : (
+          {!error && (
             <div className="text-xxs text-white-700 mt-2">
               Enter the number of zeroes to add. Example: 3 to add three (000)
               zeroes.

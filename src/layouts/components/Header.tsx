@@ -38,7 +38,7 @@ const MenuItems = [
     pathname: "/tokens",
     testId: "Desktop.HeaderLink.Tokens",
     childPaths: ["/token"],
-    imagePath: "/menu/VerifiedContracts.svg",
+    imagePath: "/menu/Tokens.svg",
   },
 ];
 

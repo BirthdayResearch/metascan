@@ -8,6 +8,7 @@ interface InputProps {
   type?: string;
   setValue: (value: string | number) => void;
   error?: string;
+  errorClass?: string;
   disabled?: boolean;
   inputClass?: string;
   labelClassName?: string;
@@ -25,6 +26,7 @@ const InputComponent = forwardRef<HTMLInputElement, InputProps>(
       inputClass,
       placeholder,
       labelClassName,
+      errorClass,
       type = "string",
       disabled = false,
       showClearIcon = true,
@@ -79,6 +81,9 @@ const InputComponent = forwardRef<HTMLInputElement, InputProps>(
             />
           )}
         </div>
+        {error && isVisited && (
+          <div className={clsx("text-red-800 mt-2", errorClass)}>{error}</div>
+        )}
       </div>
     );
   }

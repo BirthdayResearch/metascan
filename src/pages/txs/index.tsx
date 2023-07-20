@@ -59,7 +59,7 @@ export default function Transactions() {
             <TxnPagination nextPageParams={nextPage} />
           </div>
           {isLoading ? (
-            <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
+            <SkeletonLoader rows={22} screen={SkeletonLoaderScreen.Tx} />
           ) : (
             transactions.map((tx) => (
               <TransactionRow

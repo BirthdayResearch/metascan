@@ -12,6 +12,7 @@ import {
   RawTokensWithPaginationProps,
   TokensListPageParamsProps,
 } from "@api/types";
+import { RawTokenWithPaginationProps } from "@api/TokensApi";
 
 // Token Holders
 export interface TokenHolderProps {
@@ -60,6 +61,42 @@ export const tokenApi = createApi({
     baseUrl: "/",
   }),
   endpoints: (builder) => ({
+    getTokens: builder.mutation<
+      RawTokenWithPaginationProps,
+      {
+        network: NetworkConnection;
+        contractAddressHash?: string;
+        holderCount?: string;
+        isNameNull?: string;
+        itemsCount?: string;
+        marketCap?: string;
+        name?: string;
+      }
+    >({
+      query: ({
+        network,
+        contractAddressHash,
+        holderCount,
+        isNameNull,
+        itemsCount,
+        marketCap,
+        name,
+      }) => {
+        const baseUrl = getBaseUrl(network);
+        const params = filterParams([
+          { key: "contract_address_hash", value: contractAddressHash },
+          { key: "holder_count", value: holderCount },
+          { key: "is_name_null", value: isNameNull },
+          { key: "items_count", value: itemsCount },
+          { key: "market_cap", value: marketCap },
+          { key: "name", value: name },
+        ]);
+        return {
+          url: `${baseUrl}/${TOKENS_URL}${params}`,
+          method: "GET",
+        };
+      },
+    }),
     getContractTokens: builder.mutation<
       RawTokensWithPaginationProps,
       {
@@ -139,6 +176,7 @@ export const tokenApi = createApi({
 });
 
 export const {
+  useGetTokensMutation,
   useGetContractTokensMutation,
   useGetTokenHoldersMutation,
   useGetTokenTransfersMutation,

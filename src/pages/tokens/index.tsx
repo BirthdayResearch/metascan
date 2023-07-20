@@ -1,11 +1,8 @@
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import {
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  InferGetServerSidePropsType,
-} from "next";
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { NetworkConnection } from "@contexts/Environment";
 import Pagination from "@components/commons/Pagination";
 import { isAlphanumeric, isNumeric } from "shared/textHelper";
@@ -19,6 +16,9 @@ import TokensApi, {
   TokenQueryParamsProps,
 } from "@api/TokensApi";
 import { RawTokenI } from "@api/types";
+import { sleep } from "shared/sleep";
+import { useNetwork } from "@contexts/NetworkContext";
+import { useGetTokensMutation } from "@store/token";
 import TokenRow from "./_components/TokenRow";
 
 interface PageProps {
@@ -26,35 +26,37 @@ interface PageProps {
   next_page_params: TokenNextPageParamsProps;
 }
 
-function TokenPagination({
-  nextPageParams,
-}: {
-  nextPageParams?: TokenNextPageParamsProps;
-}) {
-  return (
-    <Pagination<TokenQueryParamsProps>
-      pathname="/tokens"
-      nextPageParams={
-        nextPageParams
-          ? {
-              items_count: nextPageParams.items_count,
-              contract_address_hash: nextPageParams.contract_address_hash,
-              holder_count: nextPageParams.holder_count,
-              is_name_null: nextPageParams.is_name_null,
-              market_cap: nextPageParams.market_cap ?? "null",
-              name: nextPageParams.name,
-            }
-          : undefined
-      }
-    />
-  );
-}
+export default function Tokens() {
+  const [tokens, setTokens] = useState<RawTokenI[]>([]);
+  const [nextPage, setNextPage] = useState<TokenNextPageParamsProps>();
 
-export default function Tokens({
-  data,
-  isLoading,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const [isLoading, setIsLoading] = useState(true);
+  const { connection } = useNetwork();
+  const [trigger] = useGetTokensMutation();
   const router = useRouter();
+
+  const params = router.query;
+  const fetchTransactions = async () => {
+    setIsLoading(true);
+    const data = await trigger({
+      network: connection,
+      itemsCount: params.items_count as string,
+      contractAddressHash: params.contract_address_hash as string,
+      holderCount: params.holder_count as string,
+      isNameNull: params.is_name_null as string,
+      marketCap: params.market_cap as string,
+      name: params.name as string,
+    }).unwrap();
+    setTokens(data.items);
+    setNextPage(data.next_page_params);
+    await sleep(150); // added timeout to prevent flicker
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, [params.page_number]);
+
   const pageNumber = Number(router.query.page_number ?? 0);
   const numberOfItems = 50;
   // Page number > 1, then add numberOfItems * pageNumber
@@ -71,12 +73,12 @@ export default function Tokens({
             {isLoading && (
               <PaginationLoader customStyle="right-0 top-[72px] md:top-8" />
             )}
-            <TokenPagination nextPageParams={data.next_page_params} />
+            <TokenPagination nextPageParams={nextPage} />
           </div>
           {isLoading ? (
-            <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
+            <SkeletonLoader rows={22} screen={SkeletonLoaderScreen.Tx} />
           ) : (
-            data.tokens.map((token, index) => (
+            tokens.map((token, index) => (
               <TokenRow
                 key={token.address}
                 rawData={token}
@@ -89,7 +91,7 @@ export default function Tokens({
             {isLoading && (
               <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
             )}
-            <TokenPagination nextPageParams={data.next_page_params} />
+            <TokenPagination nextPageParams={nextPage} />
           </div>
         </div>
       </GradientCardContainer>
@@ -132,4 +134,28 @@ export async function getServerSideProps(
   } catch (e) {
     return { notFound: true };
   }
+}
+
+function TokenPagination({
+  nextPageParams,
+}: {
+  nextPageParams?: TokenNextPageParamsProps;
+}) {
+  return (
+    <Pagination<TokenQueryParamsProps>
+      pathname="/tokens"
+      nextPageParams={
+        nextPageParams
+          ? {
+              items_count: nextPageParams.items_count,
+              contract_address_hash: nextPageParams.contract_address_hash,
+              holder_count: nextPageParams.holder_count,
+              is_name_null: nextPageParams.is_name_null,
+              market_cap: nextPageParams.market_cap ?? "null",
+              name: nextPageParams.name,
+            }
+          : undefined
+      }
+    />
+  );
 }

@@ -493,6 +493,249 @@ export default function Terms() {
           </SectionRow>
         </SectionRow>
       </section>
+
+      {/* Section 7 */}
+      <section className="mt-10">
+        <SectionTitle secNum="7." secTitle="INTELLECTUAL PROPERTY" />
+        <SectionRow subSecNumber="7.1.">
+          Unless otherwise indicated by us, the Company and/or our Affiliates
+          has proprietary rights to/over all copyright and other intellectual
+          property rights in all content and other materials contained on our
+          website or provided in connection with the Services, including,
+          without limitation, the Company’s logo and all designs, text,
+          graphics, pictures, information, data, source code, software, sound
+          files, other files and the selection and arrangement thereof
+          (collectively,{" "}
+          <span className="font-semibold">“Company Materials”</span>), and these
+          Company Materials are protected by copyright laws and other
+          intellectual property rights laws.
+        </SectionRow>
+        <SectionRow subSecNumber="7.2.">
+          Unauthorized use and/or duplication of this material without express
+          and written permission from the Company is strictly prohibited.
+          Excerpts and links may be used, provided that full and clear credit is
+          given to the Company with appropriate and specific direction to the
+          original content.
+        </SectionRow>
+      </section>
+
+      {/* Section 8 */}
+      <section className="mt-10">
+        <SectionTitle secNum="8." secTitle="DISCLAIMER OF WARRANTIES" />
+        <SectionRow subSecNumber="8.1.">
+          TO THE MAXIMUM EXTENT PERMITTED UNDER APPLICABLE LAW, AND EXCEPT AS
+          EXPRESSLY PROVIDED TO THE CONTRARY IN A WRITING BY US, OUR SERVICES
+          ARE PROVIDED ON AN “AS IS” AND “AS AVAILABLE” BASIS. WE EXPRESSLY
+          DISCLAIM, AND YOU WAIVE ANY RIGHTS RELATING TO OR IN RESPECT OF, ALL
+          WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, WITHOUT
+          LIMITATION, IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+          PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT AS TO OUR SERVICES,
+          INCLUDING THE INFORMATION, CONTENT AND MATERIALS CONTAINED THEREIN.
+        </SectionRow>
+        <SectionRow subSecNumber="8.2.">
+          THE COMPANY DOES NOT MAKE ANY WARRANTIES, EXPRESS, STATUTORY, OR
+          IMPLIED THAT THE SERVICE WILL FUNCTION UNINTERRUPTED, THAT IT WILL
+          MEET YOUR REQUIREMENTS OR EXPECTATIONS, THAT IT IS TIMELY, SECURE,
+          ACCURATE, ERROR-FREE, COMPLETE, UP-TO-DATE, OR THAT ANY ERRORS WILL BE
+          CORRECTED. YOU ACKNOWLEDGE AND AGREE THAT TO THE EXTENT PERMITTED BY
+          APPLICABLE LAW, YOUR USE OF THE SERVICES IS AT YOUR SOLE
+          RESPONSIBILITY AND RISK. IF APPLICABLE LAW DOES NOT ALLOW THE
+          EXCLUSION OF SOME OR ALL OF THE ABOVE IMPLIED OR STATUTORY WARRANTIES
+          TO APPLY TO YOU, THE ABOVE EXCLUSIONS WILL APPLY TO YOU TO THE FULLEST
+          EXTENT PERMITTED BY APPLICABLE LAW
+        </SectionRow>
+        <SectionRow subSecNumber="8.3.">
+          THE COMPANY ALSO DOES NOT MAKE ANY REPRESENTATION OR WARRANTY WITH
+          RESPECT TO ANY OPEN-SOURCE SOFTWARE (OSS) OR FREE SOFTWARE THAT MAY BE
+          INCLUDED IN, UTILIZED BY, OR ACCOMPANY THE SERVICES. THE COMPANY
+          HEREBY DISCLAIMS ALL LIABILITY TO YOU OR ANY THIRD PARTY RELATED TO
+          ANY SUCH SOFTWARE THAT MAY BE INCLUDED IN OR ACCOMPANY THE SERVICES.
+        </SectionRow>
+      </section>
+
+      {/* Section 9 */}
+      <section className="mt-10">
+        <SectionTitle secNum="9." secTitle="LIMITATION OF LIABILITY" />
+        <SectionRow subSecNumber="9.1.">
+          EXCEPT AS OTHERWISE REQUIRED BY LAW, IN NO EVENT SHALL THE COMPANY,
+          OUR DIRECTORS, MEMBERS, EMPLOYEES OR AGENTS BE LIABLE FOR ANY SPECIAL,
+          INDIRECT OR CONSEQUENTIAL DAMAGES, OR ANY OTHER DAMAGES OF ANY KIND,
+          INCLUDING BUT NOT LIMITED TO LOSS OF USE, LOSS OF PROFITS, LOSS OF
+          DATA, OR OTHER INTANGIBLE LOSSES, WHETHER IN AN ACTION IN CONTRACT,
+          TORT (INCLUDING BUT NOT LIMITED TO NEGLIGENCE) OR OTHERWISE, ARISING
+          OUT OF OR IN ANY WAY CONNECTED WITH THE USE OF OR INABILITY TO USE OUR
+          SERVICES OR THE SITES, INCLUDING WITHOUT LIMITATION ANY DAMAGES CAUSED
+          BY OR RESULTING FROM RELIANCE BY ANY USER ON ANY INFORMATION OBTAINED
+          FROM THE SITES, OR THAT RESULT FROM MISTAKES, OMISSIONS,
+          INTERRUPTIONS, DELETION OF FILES OR EMAIL, ERRORS, DEFECTS, VIRUSES,
+          DELAYS IN OPERATION OR TRANSMISSION OR ANY FAILURE OF PERFORMANCE,
+          WHETHER OR NOT RESULTING FROM A FORCE MAJEURE EVENT, COMMUNICATIONS
+          FAILURE, THEFT, DESTRUCTION OR UNAUTHORIZED ACCESS TO THE COMPANY’S
+          RECORDS, PROGRAMS OR SERVICES.
+        </SectionRow>
+        <SectionRow subSecNumber="9.2.">
+          SOME JURISDICTIONS DO NOT ALLOW THE DISCLAIMER OR EXCLUSION OF CERTAIN
+          WARRANTIES OR THE LIMITATION OR EXCLUSION OF LIABILITY FOR INCIDENTAL
+          OR CONSEQUENTIAL DAMAGES. ACCORDINGLY, SOME OF THE ABOVE LIMITATIONS
+          OF LIABILITY MAY NOT APPLY TO YOU OR BE ENFORCEABLE WITH RESPECT TO
+          YOU. IF YOU ARE DISSATISFIED WITH ANY PORTION OF THE SERVICE OR WITH
+          THESE TERMS, YOUR SOLE AND EXCLUSIVE REMEDY IS TO DISCONTINUE USE OF
+          THE SERVICE.
+        </SectionRow>
+      </section>
+
+      {/* Section 10 */}
+      <section className="mt-10">
+        <SectionTitle secNum="10." secTitle="INDEMNITY" />
+        <SectionRow subSecNumber="10.1.">
+          You agree to defend, indemnify and hold harmless the Company (and each
+          of our officers, directors, members, employees, agents and affiliates)
+          (the <span className="font-semibold">“Indemnified Persons”</span>)
+          from any claim, demand, action, damage, loss, cost or expense,
+          including without limitation reasonable attorneys’ fees, arising out
+          or relating to:
+          <SectionRow subSecNumber="a.">
+            your use of, or conduct in connection with, our Services;
+          </SectionRow>
+          <SectionRow subSecNumber="b.">any feedback you provide;</SectionRow>
+          <SectionRow subSecNumber="c.">
+            your violation of these Terms; or
+          </SectionRow>
+          <SectionRow subSecNumber="d.">
+            your violation of any rights of any other person or entity
+          </SectionRow>
+        </SectionRow>
+        <SectionRow subSecNumber="10.2.">
+          The Company will provide notice to you of any such claim, suit, or
+          proceeding. The Company reserves the right to assume the exclusive
+          defense and control of any matter which is subject to indemnification
+          under this section, and you agree to cooperate with any reasonable
+          requests assisting the Company’s defense of such matter. You may not
+          settle or compromise any claim against the Company without the
+          Company’s written consent.
+        </SectionRow>
+      </section>
+
+      {/* Section 11 */}
+      <section className="mt-10">
+        <SectionTitle secNum="11." secTitle="MISCELLANEOUS" />
+        <SectionRow subSecNumber="11.1.">
+          <span className="font-semibold">Governing law.</span> These Terms
+          shall be governed by, and construed in accordance with, the laws of
+          the Republic of Singapore.
+        </SectionRow>
+        <SectionRow subSecNumber="11.2.">
+          <span className="font-semibold">Dispute resolution.</span> Any dispute
+          arising out of or in connection with these Terms, including any
+          question regarding its existence, validity or termination, shall be
+          referred to and finally be resolved by arbitration in Singapore in
+          accordance with the rules of the Singapore International Arbitration
+          Centre (“<span className="font-semibold">SIAC”</span>) for the time
+          being in force, which rules are deemed to be incorporated by reference
+          in this paragraph. The seat of the arbitration shall be Singapore. The
+          tribunal shall consist of a sole arbitrator, with reasonable
+          experience, qualifications and/or knowledge in blockchain
+          technologies, to be appointed by the Chairman of the SIAC. The
+          language of the arbitration shall be English. This arbitration
+          agreement shall be governed by the laws of the Republic of Singapore.
+        </SectionRow>
+        <SectionRow subSecNumber="11.3.">
+          <span className="font-semibold">
+            Entire Agreement; Order of Precedence.
+          </span>{" "}
+          These Terms contain the entire agreement, and supersede all prior and
+          contemporaneous understandings between the parties regarding the
+          Services. These Terms do not alter the terms or conditions of any
+          other electronic or written agreement you may have with the Company
+          for the Services or for any other product or service by the Company or
+          otherwise. In the event of any conflict between these Terms and any
+          other agreement you may have with the Company, the terms of that other
+          agreement will control only if these Terms are specifically identified
+          and declared to be overridden by such other agreement. Each Party
+          irrevocably submits to the non-exclusive jurisdiction of the Courts of
+          the Republic of Singapore to support and assist the arbitration
+          process pursuant to this Clause, including if necessary the grant of
+          interlocutory relief pending the outcome of that process.
+        </SectionRow>
+        <SectionRow subSecNumber="11.4.">
+          <span className="font-semibold">Amendment.</span> We reserve the right
+          to make changes or modifications to these Terms from time to time, in
+          our sole discretion. Amended Terms will become effective immediately
+          on the date they are posted to the Services unless we state otherwise
+          via our notice of such amended Terms. Any amended Terms will apply
+          prospectively to use of the Services after such changes become
+          effective. Your continued use of the Services following the effective
+          date of such changes will constitute your acceptance of such changes.
+          If you do not agree to any amended Terms, you must discontinue using
+          the Services.
+        </SectionRow>
+        <SectionRow subSecNumber="11.5.">
+          <span className="font-semibold">Waiver.</span> Our failure or delay in
+          exercising any right, power or privilege under these Terms will not
+          operate as a waiver thereof.
+        </SectionRow>
+        <SectionRow subSecNumber="11.6.">
+          <span className="font-semibold">Third Party rights.</span> The
+          Contracts (Rights of Third Parties) Act 2001 of the Republic of
+          Singapore, as may be modified, amended or supplemented from time to
+          time, shall apply to these Terms. HOWEVER, provided always that save
+          for the Company and the Indemnified Persons who shall have rights to
+          the extent accorded to it under these Terms, a person who is not a
+          Party shall not have any rights whatsoever under these Terms or to
+          enforce these Terms.
+        </SectionRow>
+        <SectionRow subSecNumber="11.7.">
+          <span className="font-semibold">Severability.</span> The invalidity or
+          unenforceability of any of these Terms will not affect the validity or
+          enforceability of any other of these Terms, all of which will remain
+          in full force and effect. The illegality, invalidity or
+          unenforceability of any provision of these Terms under the law of any
+          jurisdiction shall not affect its legality, validity or enforceability
+          under the law of any other jurisdiction nor the legality, validity or
+          enforceability of any other provision.
+        </SectionRow>
+        <SectionRow subSecNumber="11.8.">
+          <span className="font-semibold">Force Majeure Events.</span> The
+          Company will not be liable for any loss or damage arising from any
+          event beyond the Company’s reasonable control, including, but not
+          limited to: (i) any act, event or occurrence (including without
+          limitation any strike, riot or civil unrest, act of terrorism, war,
+          industrial action, acts and regulations of any governmental or supra
+          national bodies or authorities) that, in our opinion, prevents us from
+          providing the Services; (ii) the suspension or closure of any exchange
+          or the nationalisation, government sequestration, abandonment or
+          failure of any instrument on which we are based, or to which we in any
+          way relate, our quote, or the imposition of limits or special or
+          unusual terms on the trading in any such market or on any such event;
+          (iii) periods of high volume, illiquidity, or volatility in any such
+          market for any Digital Asset or market disruption of any kind; (iv)
+          the occurrence of an excessive movement in the level of any
+          transaction and/or exchange or our anticipation (acting reasonably) of
+          the occurrence of such a movement; (v) any breakdown or failure of
+          transmission, communication or computer facilities, interruption of
+          power supply, or electronic or communications equipment failure; or
+          (vi) the failure of any relevant supplier, financial institution,
+          intermediate broker, agent or principal of ours, custodian,
+          sub-custodian, dealer, exchange, clearing house or regulatory or
+          self-regulatory organisation, for any reason, to perform its
+          obligations (each, a “
+          <span className="font-semibold">Force Majeure Event</span>”). We may,
+          in our reasonable opinion, determine that a Force Majeure Event
+          exists. If we determine that a Force Majeure Event exists, we may
+          without notice and at any time, acting reasonably, take such steps as
+          we deem reasonable to mitigate any adverse effects of the Force
+          Majeure Event, but shall not be liable to you for the nature of such
+          decisions or any related acts of omissions.
+        </SectionRow>
+        <SectionRow subSecNumber="11.9.">
+          <span className="font-semibold">Assignment.</span> You may not assign
+          or transfer any of your rights or obligations under these Terms
+          without prior written consent from the Company, including by operation
+          of law or in connection with any change of control. The Company may
+          assign or transfer any or all of its rights under these Terms, in
+          whole or in part, without obtaining your consent or approval.
+        </SectionRow>
+      </section>
     </div>
   );
 }

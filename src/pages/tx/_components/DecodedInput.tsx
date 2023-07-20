@@ -73,9 +73,14 @@ function ParameterRow({ title, value }: Input) {
       <div className="flex flex-col text-end md:text-start">
         {typeof value === "object" ? (
           <>
-            {value.map((v) => (
-              <div className="break-all">{v}</div>
+            <span className="text-start">[</span>
+            {value.map((v, i, { length }) => (
+              <div className="break-all ml-1">
+                {v}
+                {i < length - 1 && ","}
+              </div>
             ))}
+            <span className="text-start">]</span>
           </>
         ) : (
           <div className="break-all text-end md:text-start">{value}</div>

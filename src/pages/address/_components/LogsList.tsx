@@ -25,6 +25,7 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
 
   const params = router.query;
   const fetchLogs = async () => {
+    setIsLoading(true);
     const data = await trigger({
       network: connection,
       itemsCount: params.items_count as string,
@@ -34,7 +35,7 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
     }).unwrap();
     setLogs(data.items);
     setNextPage(data.next_page_params);
-    await sleep(150);
+    await sleep(150); // added timeout to prevent flicker
     setIsLoading(false);
   };
 
@@ -61,7 +62,7 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
           <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.AddressLogs} />
         ) : (
           logs.map((log) => (
-            <Fragment key={log.tx_hash}>
+            <Fragment key={`${log.tx_hash}_${log.index}`}>
               <div className="flex flex-col gap-3">
                 <div className={rowCss}>
                   <LogDetailTitle title="Transaction" />
@@ -78,7 +79,7 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
                       .filter((t) => t)
                       .map((topic, i) => (
                         <div
-                          key={i}
+                          key={i} // eslint-disable-line react/no-array-index-key
                           className="flex flex-col lg:flex-row lg:gap-1 text-white-50 break-all text-right sm:text-left"
                         >
                           <span>[{i}]</span>

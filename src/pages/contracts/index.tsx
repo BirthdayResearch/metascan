@@ -1,16 +1,13 @@
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import {
   SmartContractPageParamsProps,
   SmartContractListItemProps,
 } from "@api/types";
-import SmartContractApi, {
-  SmartContractQueryParamsProps,
-} from "@api/SmartContractApi";
-import { NetworkConnection } from "@contexts/Environment";
+import { SmartContractQueryParamsProps } from "@api/SmartContractApi";
 import Pagination from "@components/commons/Pagination";
-import { isNumeric } from "shared/textHelper";
 import clsx from "clsx";
 import Button from "@components/commons/Button";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
@@ -18,38 +15,38 @@ import {
   SkeletonLoader,
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
+import { useNetwork } from "@contexts/NetworkContext";
+import { useGetContractsMutation } from "@store/contract";
+import { sleep } from "shared/sleep";
 import VerifiedContractRow from "./_components/VerifiedContractRow";
 
-interface PageProps {
-  items: SmartContractListItemProps[];
-  next_page_params: SmartContractPageParamsProps;
-}
+export default function VerifiedContracts() {
+  const [contracts, setContracts] = useState<SmartContractListItemProps[]>([]);
+  const [nextPage, setNextPage] = useState<SmartContractPageParamsProps>();
 
-function SmartContractPagination({
-  nextPageParams,
-  containerClass,
-}: {
-  nextPageParams: SmartContractPageParamsProps;
-  containerClass?: string;
-}) {
-  return (
-    <Pagination<SmartContractQueryParamsProps>
-      nextPageParams={
-        nextPageParams
-          ? {
-              smart_contract_id: nextPageParams.smart_contract_id,
-              items_count: nextPageParams.items_count,
-              type: "smartcontracts",
-            }
-          : undefined
-      }
-      containerClass={clsx("!justify-start md:!justify-end", containerClass)}
-      pathname="/contracts"
-    />
-  );
-}
+  const [isLoading, setIsLoading] = useState(true);
+  const { connection } = useNetwork();
+  const [trigger] = useGetContractsMutation();
+  const router = useRouter();
 
-export default function VerifiedContracts({ data, isLoading }) {
+  const params = router.query;
+  const fetchTransactions = async () => {
+    setIsLoading(true);
+    const data = await trigger({
+      network: connection,
+      smartContractId: params.smart_contract_id as string,
+      itemsCount: params.items_count as string,
+    }).unwrap();
+    setContracts(data.items);
+    setNextPage(data.next_page_params);
+    await sleep(150); // added timeout to prevent flicker
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, [params.page_number]);
+
   return (
     <div className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
@@ -72,7 +69,7 @@ export default function VerifiedContracts({ data, isLoading }) {
           {isLoading ? (
             <SkeletonLoader rows={22} screen={SkeletonLoaderScreen.Contract} />
           ) : (
-            data.items.map((item) => (
+            contracts.map((item) => (
               <VerifiedContractRow key={item.address.hash} data={item} />
             ))
           )}
@@ -80,7 +77,7 @@ export default function VerifiedContracts({ data, isLoading }) {
             {isLoading && (
               <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
             )}
-            <SmartContractPagination nextPageParams={data.next_page_params} />
+            <SmartContractPagination nextPageParams={nextPage} />
           </div>
         </div>
       </GradientCardContainer>
@@ -88,29 +85,26 @@ export default function VerifiedContracts({ data, isLoading }) {
   );
 }
 
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<GetServerSidePropsResult<{ data: PageProps; isLoading?: boolean }>> {
-  const { network, ...params } = context.query;
-  // Avoid fetching if some params are not valid
-  const hasInvalidParams =
-    !isNumeric(params?.smart_contract_id as string) ||
-    !isNumeric(params?.items_count as string) ||
-    !isNumeric(params?.page_number as string);
-  try {
-    const data = hasInvalidParams
-      ? await SmartContractApi.getSmartContracts(network as NetworkConnection)
-      : await SmartContractApi.getSmartContracts(
-          network as NetworkConnection,
-          params?.smart_contract_id as string,
-          params?.items_count as string
-        );
-    return {
-      props: {
-        data,
-      },
-    };
-  } catch (e) {
-    return { notFound: true };
-  }
+function SmartContractPagination({
+  nextPageParams,
+  containerClass,
+}: {
+  nextPageParams?: SmartContractPageParamsProps;
+  containerClass?: string;
+}) {
+  return (
+    <Pagination<SmartContractQueryParamsProps>
+      nextPageParams={
+        nextPageParams
+          ? {
+              smart_contract_id: nextPageParams.smart_contract_id,
+              items_count: nextPageParams.items_count,
+              type: "smartcontracts",
+            }
+          : undefined
+      }
+      containerClass={clsx("!justify-start md:!justify-end", containerClass)}
+      pathname="/contracts"
+    />
+  );
 }

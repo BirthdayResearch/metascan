@@ -5,7 +5,7 @@ export default function Terms() {
     <div className="px-1 md:px-0 mt-12 w-full lg:w-9/12 mb-14 md:mb-8 lg:mb-6 text-base md:text-lg -tracking-[0.02em] text-white-50">
       <div className="mb-12">
         <div className="text-2xl md:text-[32px] font-semibold mb-2">
-          Terms and Conditions
+          Terms and conditions
         </div>
         <div className="text-base text-white-700">Updated 8 June 2023</div>
       </div>

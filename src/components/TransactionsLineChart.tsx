@@ -20,7 +20,7 @@ function CustomizedTickX(props) {
           textAnchor="middle"
           className="text-dark-700 text-xs -tracking-[0.12px]"
         >
-          {dayjs(payload.value).format("MMM d")}
+          {dayjs(payload.value).format("MMM D")}
         </tspan>
       </text>
     </g>
@@ -49,7 +49,7 @@ function CustomTooltip({ active, payload, label }) {
     return (
       <div className="bg-white-50 p-3 rounded-[10px]">
         <div className="text-xs text-light-700 -tracking-[0.12px]">
-          {dayjs(label).format("MMM d, YYYY")}
+          {dayjs(label).format("MMM D, YYYY")}
         </div>
         {payload.map((pld) => (
           <div className="text-base text-light-1000 -tracking-[0.32px]">

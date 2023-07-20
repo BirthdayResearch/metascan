@@ -4,25 +4,25 @@ export default function Terms() {
   return (
     <div className="px-1 md:px-0 mt-12 w-full lg:w-9/12 mb-14 md:mb-8 lg:mb-6 text-base md:text-lg -tracking-[0.02em] text-white-50">
       <div className="mb-12">
-        <div className="text-2xl md:text-[32px] font-bold text-white-50 mb-2">
+        <div className="text-2xl md:text-[32px] font-semibold mb-2">
           Terms and Conditions
         </div>
         <div className="text-base text-white-700">Updated 8 June 2023</div>
       </div>
       <section>
-        <div className="text-white-50 text-xl">
+        <p className="text-white-50 text-xl">
           These terms of service and any other terms expressly incorporated
           herein (“Terms”) constitute a legal agreement between Birthday
           Research Ltd. (the “Company”) and you under which you can access and
           use Meta Scan (the “Services”) as accessible through our website,
           mobile applications, or any other applications as and when available
           (collectively referred to as, “Sites”).
-        </div>
-        <div className="text-white-50 text-xl mt-4">
+        </p>
+        <p className="text-white-50 text-xl mt-4">
           Each of you and Company shall hereinafter be referred to as a “Party”,
           and collectively, you and Company shall hereinafter be referred to as
           the “Parties”.
-        </div>
+        </p>
       </section>
 
       {/* Section 1 */}
@@ -80,13 +80,13 @@ export default function Terms() {
           <SectionRow subSecNumber="c.">
             any other information or document,
           </SectionRow>
-          <div className="mt-5">
+          <p className="mt-5">
             shall constitute part of these Terms (unless otherwise stated on the
             Sites or in these Terms), and no representations, warranties or
             undertakings are or are intended or purported to be given by the
             Company in respect of any information contained in or on, or any
             part of, the items as stated in Paragraphs 1.4(a) to (c) above.
-          </div>
+          </p>
         </SectionRow>
       </section>
 

@@ -6,6 +6,7 @@ import LatestDataApi from "@api/LatestDataApi";
 import { useNetwork } from "@contexts/NetworkContext";
 import BigNumber from "bignumber.js";
 import { DashboardStatsProps, SmartContractStatsProps } from "@api/types";
+import { GWEI_SYMBOL } from "shared/constants";
 import NumericFormat from "./commons/NumericFormat";
 
 export default function GroupStatisticCard() {
@@ -14,7 +15,6 @@ export default function GroupStatisticCard() {
   const [dashboardStats, setDashboardStats] = useState<DashboardStatsProps>();
   const [smartContractStats, setSmartContractStats] =
     useState<SmartContractStatsProps>();
-  const unit = "gwei";
   const fetchStats = async () => {
     setIsLoading(true);
     const dashStats = await LatestDataApi.getDashboardStats(connection);
@@ -113,21 +113,21 @@ export default function GroupStatisticCard() {
           title="Gas price"
           value={new BigNumber(dashboardStats?.gas_prices.average ?? 0)}
           testId="gas-price"
-          suffix={` ${unit}`}
+          suffix={` ${GWEI_SYMBOL}`}
           isLoading={isLoading}
         >
           <NumericFormat
             value={new BigNumber(dashboardStats?.gas_prices.fast ?? 0)}
             thousandSeparator
             prefix={`High: `}
-            suffix={` ${unit}`}
+            suffix={` ${GWEI_SYMBOL}`}
             decimalScale={0}
           />
           <NumericFormat
             value={new BigNumber(dashboardStats?.gas_prices.slow ?? 0)}
             thousandSeparator
             prefix={`Low: `}
-            suffix={` ${unit}`}
+            suffix={` ${GWEI_SYMBOL}`}
             decimalScale={0}
             className="ml-2"
           />

@@ -18,7 +18,7 @@ export default function TokenStatsDisplay(): JSX.Element {
 
   const fetchStats = async () => {
     const data = await LatestDataApi.getTxnChartsData(connection);
-    setChartData(data.chart_data);
+    setChartData(data.chart_data?.reverse());
   };
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { useRouter } from "next/router";
 import {
   useGetAddressLogsMutation,
@@ -13,35 +13,26 @@ import {
   SkeletonLoader,
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
-import { sleep } from "shared/sleep";
+import useFetchListData from "@hooks/useFetchListData";
 
 export default function LogsList({ addressHash }: { addressHash: string }) {
   const { connection } = useNetwork();
-  const [logs, setLogs] = useState<Log[]>([]);
-  const [nextPage, setNextPage] = useState<LogsPageParamsProps>();
-  const [isLoading, setIsLoading] = useState(true);
   const [trigger] = useGetAddressLogsMutation();
   const router = useRouter();
 
   const params = router.query;
-  const fetchLogs = async () => {
-    setIsLoading(true);
-    const data = await trigger({
-      network: connection,
-      itemsCount: params.items_count as string,
-      blockNumber: params.block_number as string,
-      index: params.index as string,
-      addressHash,
-    }).unwrap();
-    setLogs(data.items);
-    setNextPage(data.next_page_params);
-    await sleep(150); // added timeout to prevent flicker
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchLogs();
-  }, [params.page_number, addressHash]);
+  const fetchedData = useFetchListData<Log, LogsPageParamsProps>({
+    addressHash,
+    triggerApiCall: () =>
+      trigger({
+        network: connection,
+        itemsCount: params.items_count as string,
+        blockNumber: params.block_number as string,
+        index: params.index as string,
+        addressHash,
+      }),
+  });
+  const { data: logs, isLoading, nextPage } = fetchedData;
 
   if (!isLoading && logs.length === 0) {
     return <div className="text-white-50">No logs</div>;

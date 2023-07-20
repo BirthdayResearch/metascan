@@ -21,6 +21,7 @@ export default function TransactionsList({
 
   const params = router.query;
   const getTransactions = async () => {
+    setIsLoading(true);
     const data = await trigger({
       network: connection,
       itemsCount: params.items_count as string,
@@ -30,7 +31,7 @@ export default function TransactionsList({
     }).unwrap();
     setTransactions(data.items);
     setNextPageParams(data.next_page_params);
-    await sleep(150);
+    await sleep(150); // added timeout to prevent flicker
     setIsLoading(false);
   };
 

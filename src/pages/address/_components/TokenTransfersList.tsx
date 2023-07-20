@@ -31,6 +31,7 @@ export default function TokenTransfersList({
 
   const params = router.query;
   const fetchTokenTransfers = async () => {
+    setIsLoading(true);
     const data = await trigger({
       network: connection,
       tokenId: addressHash,
@@ -39,7 +40,7 @@ export default function TokenTransfersList({
     }).unwrap();
     setTransfers(data.items);
     setNextPage(data.next_page_params);
-    await sleep(150);
+    await sleep(150); // added timeout to prevent flicker
     setIsLoading(false);
   };
 
@@ -63,9 +64,9 @@ export default function TokenTransfersList({
       {isLoading ? (
         <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
       ) : (
-        transfers.map((item, i) => (
+        transfers.map((item) => (
           <TransactionRow
-            key={`${item.tx_hash}_${i}`}
+            key={`${item.tx_hash}_${item.log_index}`}
             data={{
               transactionType: getTransactionTypeFromTokenTransfers([
                 { type: item.type },

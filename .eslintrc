@@ -36,7 +36,6 @@
       "error",
       { "props": true, "ignorePropertyModificationsFor": ["state"] }
     ],
-    "react/no-array-index-key":"off",
     "@typescript-eslint/no-use-before-define": "warn",
     "@typescript-eslint/no-throw-literal": "off",
     "@typescript-eslint/no-implied-eval": "off",

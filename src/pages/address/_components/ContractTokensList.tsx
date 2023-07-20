@@ -28,6 +28,7 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
 
   const params = router.query;
   const fetchTokens = async () => {
+    setIsLoading(true);
     const tokenList = await trigger({
       network: connection,
       addressHash,
@@ -35,7 +36,7 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
     }).unwrap();
     setTokens(tokenList.items);
     setNextPage(tokenList.next_page_params as TokensListPageParamsProps);
-    await sleep(150);
+    await sleep(150); // added timeout to prevent flicker
     setIsLoading(false);
   };
 

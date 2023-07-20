@@ -32,6 +32,7 @@ export default function TokenHoldersList({
 
   const params = router.query;
   const fetchTokenHolders = async () => {
+    setIsLoading(true);
     const data = await trigger({
       network: connection,
       tokenId: addressHash,
@@ -40,7 +41,7 @@ export default function TokenHoldersList({
     }).unwrap();
     setHolders(data.items);
     setNextPage(data.next_page_params);
-    await sleep(150);
+    await sleep(150); // added timeout to prevent flicker
     setIsLoading(false);
   };
 

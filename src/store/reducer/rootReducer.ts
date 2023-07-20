@@ -9,6 +9,7 @@ import {
 } from "@store/contract";
 import { searchApi } from "@store/search";
 import { tokenApi } from "@store/token";
+import { latestDataApi } from "@store/latestData";
 
 export function initializeStore() {
   return configureStore({
@@ -21,6 +22,7 @@ export function initializeStore() {
       [contractVerificationApi.reducerPath]: contractVerificationApi.reducer,
       [tokenApi.reducerPath]: tokenApi.reducer,
       [addressApi.reducerPath]: addressApi.reducer,
+      [latestDataApi.reducerPath]: latestDataApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }).concat(
@@ -31,7 +33,8 @@ export function initializeStore() {
         contractMethodsApi.middleware,
         contractVerificationApi.middleware,
         tokenApi.middleware,
-        addressApi.middleware
+        addressApi.middleware,
+        latestDataApi.middleware
       ),
   });
 }

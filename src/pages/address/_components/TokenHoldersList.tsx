@@ -17,6 +17,8 @@ import LinkText from "@components/commons/LinkText";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import NumericFormat from "@components/commons/NumericFormat";
 import { sleep } from "shared/sleep";
+import { GWEI_DECIMAL } from "shared/constants";
+import { formatUnits } from "viem";
 
 export default function TokenHoldersList({
   addressHash,
@@ -143,7 +145,10 @@ function TokenHolderRow({
           {data.value && (
             <NumericFormat
               thousandSeparator
-              value={data.value}
+              value={formatUnits(
+                BigInt(data.value ?? "0"),
+                Number(data.token.decimals ?? GWEI_DECIMAL)
+              )}
               className="text-white-50 break-all"
               suffix={data.token.symbol ? ` ${data.token.symbol}` : ""}
               decimalScale={2}

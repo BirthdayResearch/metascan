@@ -2,14 +2,14 @@ import clsx from "clsx";
 import React, { useState } from "react";
 import { FiCopy } from "react-icons/fi";
 import { MdOutlineQrCode } from "react-icons/md";
-import { formatEther } from "viem";
+import { formatEther, formatUnits } from "viem";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
   InferGetServerSidePropsType,
 } from "next";
 
-import { DFI_TOKEN_SYMBOL } from "shared/constants";
+import { DFI_TOKEN_SYMBOL, GWEI_DECIMAL } from "shared/constants";
 import { sleep } from "shared/sleep";
 import { isAlphanumeric, truncateTextFromMiddle } from "shared/textHelper";
 import { WalletAddressCounterI, WalletAddressInfoI } from "@api/types";
@@ -263,7 +263,10 @@ export default function Address({
                     <NumericFormat
                       data-testid="total-supply"
                       thousandSeparator
-                      value={walletDetail.token.total_supply}
+                      value={formatUnits(
+                        BigInt(walletDetail.token.total_supply ?? "0"),
+                        Number(walletDetail.token.decimals ?? GWEI_DECIMAL)
+                      )}
                       decimalScale={0}
                       suffix={
                         walletDetail.token.symbol
@@ -332,22 +335,23 @@ export default function Address({
             )}
             {(addressType !== AddressType.Wallet ||
               (addressType === AddressType.Wallet &&
-                walletDetail.has_tokens)) && (
-              <div className={detailContainerCss}>
-                <DetailRowTitle
-                  title="Tokens"
-                  tooltip="The current number of tokens held in a specific address"
-                />
-                <NumericFormat
-                  className="text-white-50 tracking-[0.01em]"
-                  thousandSeparator
-                  value={tokensCount}
-                  decimalScale={0}
-                  suffix={tokensCount > 1 ? " tokens" : " token"}
-                  data-testid="token-contract-tokens-count"
-                />
-              </div>
-            )}
+                walletDetail.has_tokens)) &&
+              !isTokenPage && (
+                <div className={detailContainerCss}>
+                  <DetailRowTitle
+                    title="Tokens"
+                    tooltip="The current number of tokens held in a specific address"
+                  />
+                  <NumericFormat
+                    className="text-white-50 tracking-[0.01em]"
+                    thousandSeparator
+                    value={tokensCount}
+                    decimalScale={0}
+                    suffix={tokensCount > 1 ? " tokens" : " token"}
+                    data-testid="token-contract-tokens-count"
+                  />
+                </div>
+              )}
             {Number(counters.transactions_count ?? 0) > 0 &&
               addressType !== AddressType.Token && (
                 <div className={detailContainerCss}>

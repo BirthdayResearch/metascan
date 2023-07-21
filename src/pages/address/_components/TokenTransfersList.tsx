@@ -14,6 +14,8 @@ import {
 import TransactionRow from "@components/commons/TransactionRow";
 import { getTransactionTypeFromTokenTransfers } from "shared/transactionDataHelper";
 import { getTimeAgo } from "shared/durationHelper";
+import { GWEI_DECIMAL } from "shared/constants";
+import { formatUnits } from "viem";
 import useFetchListData from "@hooks/useFetchListData";
 
 export default function TokenTransfersList({
@@ -67,7 +69,10 @@ export default function TokenTransfersList({
               from: item.from.hash,
               to: item.to.hash,
               hash: item.tx_hash,
-              amount: item.total.value,
+              amount: formatUnits(
+                BigInt(item.total.value ?? "0"),
+                Number(item.total.decimals ?? GWEI_DECIMAL)
+              ),
               symbol: item.token.symbol,
               timeInSec: getTimeAgo(item.timestamp),
             }}

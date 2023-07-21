@@ -4,7 +4,7 @@ import BoldedTitle from "./BoldedTitle";
 
 interface Input {
   title: string;
-  value: string;
+  value: string | string[];
 }
 
 export default function DecodedInput({ input }: { input: DecodedTxInput }) {
@@ -55,7 +55,7 @@ function MethodRow({ title, value }: Input) {
       )}
     >
       <div className="text-white-700 font-medium">{title}</div>
-      <div className="text-white-50 font-space-mono text-right xs:text-left">
+      <div className="text-white-50 font-space-mono text-right xs:text-left break-all">
         {value}
       </div>
     </div>
@@ -70,7 +70,22 @@ function ParameterRow({ title, value }: Input) {
       )}
     >
       <div className="md:hidden text-white-700">{title}</div>
-      <div className="break-all ">{value}</div>
+      <div className="flex flex-col text-end md:text-start">
+        {typeof value === "object" ? (
+          <>
+            <span className="text-start">[</span>
+            {value.map((v, i, { length }) => (
+              <div className="break-all ml-1">
+                {v}
+                {i < length - 1 && ","}
+              </div>
+            ))}
+            <span className="text-start">]</span>
+          </>
+        ) : (
+          <div className="break-all text-end md:text-start">{value}</div>
+        )}
+      </div>
     </div>
   );
 }

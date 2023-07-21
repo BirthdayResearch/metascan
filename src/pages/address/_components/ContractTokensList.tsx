@@ -23,7 +23,11 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
   const router = useRouter();
   const params = router.query;
 
-  const fetchedData = useFetchListData<TokenItemI, TokensListPageParamsProps>({
+  const {
+    data: tokens,
+    isLoading,
+    nextPage,
+  } = useFetchListData<TokenItemI, TokensListPageParamsProps>({
     addressHash,
     triggerApiCall: () =>
       trigger({
@@ -32,7 +36,6 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
         queryParams: params,
       }),
   });
-  const { data: tokens, isLoading, nextPage } = fetchedData;
 
   if (!isLoading && tokens.length === 0) {
     return <div className="text-white-50">No contract tokens</div>;

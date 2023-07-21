@@ -26,10 +26,11 @@ export default function TokenTransfersList({
   const router = useRouter();
   const params = router.query;
 
-  const fetchedData = useFetchListData<
-    TokenTransferProps,
-    TokenTransferPageParamsProps
-  >({
+  const {
+    data: transfers,
+    isLoading,
+    nextPage,
+  } = useFetchListData<TokenTransferProps, TokenTransferPageParamsProps>({
     addressHash,
     triggerApiCall: () =>
       trigger({
@@ -39,7 +40,6 @@ export default function TokenTransfersList({
         index: params.index as string,
       }),
   });
-  const { data: transfers, isLoading, nextPage } = fetchedData;
 
   if (!isLoading && transfers.length === 0) {
     return <div className="text-white-50">No token transfers</div>;

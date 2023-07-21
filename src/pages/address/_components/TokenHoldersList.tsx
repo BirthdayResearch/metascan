@@ -27,10 +27,11 @@ export default function TokenHoldersList({
   const router = useRouter();
   const params = router.query;
 
-  const fetchedData = useFetchListData<
-    TokenHolderProps,
-    TokenHolderPageParamsProps
-  >({
+  const {
+    data: holders,
+    isLoading,
+    nextPage,
+  } = useFetchListData<TokenHolderProps, TokenHolderPageParamsProps>({
     addressHash,
     triggerApiCall: () =>
       trigger({
@@ -40,7 +41,6 @@ export default function TokenHoldersList({
         value: params.value ? BigInt(Number(params.value)).toString() : "",
       }),
   });
-  const { data: holders, isLoading, nextPage } = fetchedData;
 
   if (!isLoading && holders.length === 0) {
     return <div className="text-white-50">No token holders</div>;

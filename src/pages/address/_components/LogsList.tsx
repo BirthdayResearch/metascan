@@ -21,7 +21,11 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
   const router = useRouter();
 
   const params = router.query;
-  const fetchedData = useFetchListData<Log, LogsPageParamsProps>({
+  const {
+    data: logs,
+    isLoading,
+    nextPage,
+  } = useFetchListData<Log, LogsPageParamsProps>({
     addressHash,
     triggerApiCall: () =>
       trigger({
@@ -32,7 +36,6 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
         addressHash,
       }),
   });
-  const { data: logs, isLoading, nextPage } = fetchedData;
 
   if (!isLoading && logs.length === 0) {
     return <div className="text-white-50">No logs</div>;

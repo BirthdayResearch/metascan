@@ -15,20 +15,21 @@ export default function TransactionsList({
   const router = useRouter();
   const params = router.query;
 
-  const fetchedData = useFetchListData<RawTransactionI, TxnNextPageParamsProps>(
-    {
-      addressHash,
-      triggerApiCall: () =>
-        trigger({
-          network: connection,
-          itemsCount: params.items_count as string,
-          blockNumber: params.block_number as string,
-          index: params.index as string,
-          addressHash,
-        }),
-    }
-  );
-  const { data: transactions, isLoading, nextPage } = fetchedData;
+  const {
+    data: transactions,
+    isLoading,
+    nextPage,
+  } = useFetchListData<RawTransactionI, TxnNextPageParamsProps>({
+    addressHash,
+    triggerApiCall: () =>
+      trigger({
+        network: connection,
+        itemsCount: params.items_count as string,
+        blockNumber: params.block_number as string,
+        index: params.index as string,
+        addressHash,
+      }),
+  });
 
   return (
     <div>

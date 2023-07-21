@@ -121,11 +121,26 @@ export default function Terms() {
               use of the foregoing;
             </p>
             <p>
-              <span className="font-semibold">“Digital Asset”</span> means
-              application programming interface(s) made available by the Company
-              or third parties to allow access to the Service, Supplier’s
-              Platform, and/or third-party services integrated with or
-              facilitating the use of the foregoing;
+              <span className="font-semibold">“Digital Asset”</span> means any
+              cryptographic asset, digital asset or virtual currency including
+              but not limited to the Supported Digital Assets;
+            </p>
+            <p>
+              <span className="font-semibold">
+                “Disqualified Person/Entity”
+              </span>{" "}
+              {`means (a) any person or body corporate seeking to access the Sites
+              / use the Services from within the Excluded Jurisdictions; (b) any
+              person or body corporate who or which is currently the subject of
+              any sanction administered by the OFAC or any other United States
+              government authority, is designated as a "Specially Designated
+              National" or "Blocked Person" by OFAC; (c) any person (being a
+              natural person) who is citizen of, domiciled in, or resident of, a
+              country whose laws prohibit or conflict with the access of the
+              Sites or use of Services; and/or (d) anybody corporate that is
+              incorporated in, domiciled in, or organised in, a country whose
+              laws prohibit or conflict with the access of the Sites or use of
+              Services;`}
             </p>
             <p>
               <span className="font-semibold">“Excluded Jurisdiction”</span>{" "}
@@ -143,7 +158,7 @@ export default function Terms() {
             <p>
               <span className="font-semibold">“Fork”</span> means a change in
               the existing source code or the creation of new or additional
-              source code for a blockchain
+              source code for a blockchain;
             </p>
             <p>
               <span className="font-semibold">“Governmental Authority”</span>{" "}
@@ -265,41 +280,36 @@ export default function Terms() {
           unviable or undesirable to obtain the necessary regulatory approval(s)
           to operate in such jurisdiction.
         </SectionRow>
-        <SectionRow subSecNumber="4.4">
+        <SectionRow subSecNumber="4.4.">
           If we decide to discontinue access to the Services in part or in full:
           <SectionRow subSecNumber="a.">
             we shall notify you in writing of such discontinuation; and
           </SectionRow>
           <SectionRow subSecNumber="b.">
-            represent and warrant that in the jurisdiction to which you are
-            subject, you are of legal age to use the Sites and/or the Services
-            and to create binding legal and financial obligations for any
-            liability you may incur as a result of the use of the Sites and/or
-            the Services; and
-          </SectionRow>
-          <SectionRow subSecNumber="c.">
             you acknowledge and agree that you shall have no right(s), claim(s)
             or causes of action in any way whatsoever against the Company in
             relation to such discontinuation.
           </SectionRow>
         </SectionRow>
         <SectionRow subSecNumber="4.5.">
-          Vulnerabilities. The Company utilises open-source software for its
-          Services and/or the Sites. You understand and acknowledge that the
-          Company has no control or oversight over such open-source software,
-          and there is a possibility that there might be operational risks,
-          development insufficiencies, compatibility issues, and other
-          vulnerabilities and risks resulting from or associated with the
-          open-source software. Accordingly, by using the Sites and/or the
-          Services, you expressly agree that the Company and/or any of its
-          respective officers, directors, agents, employees or representatives
-          shall not be liable for any Loss arising out of or in connection with
-          the use of open-source software for the Services, even if we are
-          advised of or knew or should have known of the possibility of the
-          same.
+          <span className="font-semibold">Vulnerabilities.</span> The Company
+          utilises open-source software for its Services and/or the Sites. You
+          understand and acknowledge that the Company has no control or
+          oversight over such open-source software, and there is a possibility
+          that there might be operational risks, development insufficiencies,
+          compatibility issues, and other vulnerabilities and risks resulting
+          from or associated with the open-source software. Accordingly, by
+          using the Sites and/or the Services, you expressly agree that the
+          Company and/or any of its respective officers, directors, agents,
+          employees or representatives shall not be liable for any Loss arising
+          out of or in connection with the use of open-source software for the
+          Services, even if we are advised of or knew or should have known of
+          the possibility of the same.
         </SectionRow>
         <SectionRow subSecNumber="4.6.">
-          Third-Party Wallet Support Services
+          <span className="font-semibold">
+            Third-Party Wallet Support Services
+          </span>
           <SectionRow subSecNumber="4.6.1.">
             By connecting your third-party wallet to the Sites, you agree that
             you are using that wallet under the terms and conditions of the
@@ -330,7 +340,7 @@ export default function Terms() {
           </SectionRow>
         </SectionRow>
         <SectionRow subSecNumber="4.7.">
-          APIs
+          <span className="font-semibold">APIs</span>
           <SectionRow subSecNumber="4.7.1">
             At its sole discretion, the Company may provide integration of the
             Services withAPIs.
@@ -362,12 +372,14 @@ export default function Terms() {
               have known of the possibility of the Loss;
             </SectionRow>
             <SectionRow subSecNumber="4.7.2.4.">
-              At its sole discretion, the Company may provide integration of the
-              Services withAPIs.
+              the use of the APIs may be subject to additional end-user
+              licensing terms which you may be subject to through use of the
+              APIs; and
             </SectionRow>
             <SectionRow subSecNumber="4.7.2.5.">
-              At its sole discretion, the Company may provide integration of the
-              Services withAPIs.
+              {`the APIs, and the Company’s integration with them, are made
+              available on an "as is", “where is”, “if applicable” and “where
+              available” basis`}
             </SectionRow>
           </SectionRow>
         </SectionRow>
@@ -379,10 +391,11 @@ export default function Terms() {
         <SectionRow subSecNumber="5.1.">
           In using our Services, you may view content or utilize services that
           are provided or otherwise made available by third parties, including
-          links to web pages and services of such parties (“Third-Party
-          Content”). You agree that you must evaluate, and bear all risks
-          associated with, the use of any content, including any reliance on the
-          accuracy, completeness, or usefulness of such content.
+          links to web pages and services of such parties (“
+          <span className="font-semibold">Third-Party Content</span>”). You
+          agree that you must evaluate, and bear all risks associated with, the
+          use of any content, including any reliance on the accuracy,
+          completeness, or usefulness of such content.
         </SectionRow>
         <SectionRow subSecNumber="5.2.">
           In particular, the Services may display, include, or make available
@@ -438,7 +451,7 @@ export default function Terms() {
 
       {/* Section 6 */}
       <section className="mt-10">
-        <SectionTitle secNum="6." secTitle="THIRD-PARTY SERVICES AND CONTENT" />
+        <SectionTitle secNum="6." secTitle="ACCEPTABLE USE POLICY" />
         <SectionRow subSecNumber="6.1.">
           When accessing or using the Services, you agree that you will not
           violate any law, contract, intellectual property or other third-party

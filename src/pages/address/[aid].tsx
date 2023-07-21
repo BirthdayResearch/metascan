@@ -332,22 +332,23 @@ export default function Address({
             )}
             {(addressType !== AddressType.Wallet ||
               (addressType === AddressType.Wallet &&
-                walletDetail.has_tokens)) && (
-              <div className={detailContainerCss}>
-                <DetailRowTitle
-                  title="Tokens"
-                  tooltip="The current number of tokens held in a specific address"
-                />
-                <NumericFormat
-                  className="text-white-50 tracking-[0.01em]"
-                  thousandSeparator
-                  value={tokensCount}
-                  decimalScale={0}
-                  suffix={tokensCount > 1 ? " tokens" : " token"}
-                  data-testid="token-contract-tokens-count"
-                />
-              </div>
-            )}
+                walletDetail.has_tokens)) &&
+              !isTokenPage && (
+                <div className={detailContainerCss}>
+                  <DetailRowTitle
+                    title="Tokens"
+                    tooltip="The current number of tokens held in a specific address"
+                  />
+                  <NumericFormat
+                    className="text-white-50 tracking-[0.01em]"
+                    thousandSeparator
+                    value={tokensCount}
+                    decimalScale={0}
+                    suffix={tokensCount > 1 ? " tokens" : " token"}
+                    data-testid="token-contract-tokens-count"
+                  />
+                </div>
+              )}
             {Number(counters.transactions_count ?? 0) > 0 &&
               addressType !== AddressType.Token && (
                 <div className={detailContainerCss}>

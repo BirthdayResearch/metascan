@@ -29,7 +29,7 @@ export default function DetailRow({
           {label}
         </div>
         {tooltip && (
-          <Tooltip text={tooltip}>
+          <Tooltip title={label} text={tooltip}>
             <InfoIcon data-testid={`${testId}-icon`} className="ml-1 md:ml-2" />
           </Tooltip>
         )}

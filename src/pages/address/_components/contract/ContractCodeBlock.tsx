@@ -72,7 +72,7 @@ export default function ContractCodeBlock({
           </div>
         </div>
         <div className="flex flex-row md:gap-x-6 gap-x-4">
-          <Tooltip text="Code Copied!" active={isCodeCopied}>
+          <Tooltip title="Copy" text="Code Copied!" active={isCodeCopied}>
             <FiCopy
               size={18}
               role="button"
@@ -81,7 +81,7 @@ export default function ContractCodeBlock({
               className="text-white-50"
             />
           </Tooltip>
-          <Tooltip text="Link Copied!" active={isPermaLinkClicked}>
+          <Tooltip title="Copy" text="Link Copied!" active={isPermaLinkClicked}>
             <FiShare2
               size={18}
               role="button"

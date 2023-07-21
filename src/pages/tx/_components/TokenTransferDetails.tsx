@@ -39,10 +39,10 @@ export default function TokenTransferDetails({
             <div className="flex flex-col gap-y-4 mb-6">
               {group.map(({ from, to, forToken }) => (
                 <div
-                  className="flex flex-row flex-wrap justify-end md:justify-start"
+                  className="flex flex-col md:flex-row flex-wrap justify-end md:justify-start"
                   key={`${from.hash}-${to.hash}`}
                 >
-                  <div className="flex flex-row">
+                  <div className="flex flex-col items-end md:items-start md:flex-row">
                     <div className="min-w-[94px]">
                       <LinkText
                         customStyle="tracking-[0.01em]"
@@ -51,7 +51,10 @@ export default function TokenTransferDetails({
                         href={`/address/${from.hash}`}
                       />
                     </div>
-                    <FiArrowRight className="text-white-50 mx-2" size={24} />
+                    <FiArrowRight
+                      className="text-white-50 rotate-90 md:rotate-0 mr-9 md:mx-2"
+                      size={24}
+                    />
                     <div className="min-w-[94px]">
                       <LinkText
                         testId="token-transferred-to"
@@ -60,7 +63,7 @@ export default function TokenTransferDetails({
                       />
                     </div>
                   </div>
-                  <div className="flex flex-row ml-4">
+                  <div className="flex flex-row mt-2 md:mt-0 md:ml-4">
                     <div className="text-white-900 mr-1">For: </div>
                     <NumericFormat
                       data-testid="token-transferred-for"
@@ -68,8 +71,14 @@ export default function TokenTransferDetails({
                       thousandSeparator
                       value={forToken.value}
                       decimalScale={8}
-                      suffix={` ${forToken.symbol}`}
                     />
+                    <div className="ml-1">
+                      <LinkText
+                        testId="token-transferred-to "
+                        label={forToken.symbol}
+                        href={`/token/${forToken.address}`}
+                      />
+                    </div>
                   </div>
                 </div>
               ))}

@@ -343,7 +343,7 @@ export default function Terms() {
           <span className="font-semibold">APIs</span>
           <SectionRow subSecNumber="4.7.1">
             At its sole discretion, the Company may provide integration of the
-            Services withAPIs.
+            Services with APIs.
           </SectionRow>
           <SectionRow subSecNumber="4.7.2">
             Where the APIs are provided by third-parties (including the

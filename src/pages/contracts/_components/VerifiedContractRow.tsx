@@ -47,6 +47,15 @@ export default function VerifiedContractRow({
 }: {
   data: SmartContractListItemProps;
 }) {
+  /**
+   * [Why this is added] in the api response for verified SC listing, txn for contract creation is not getting counted.
+   * with the below logic we are adding 1 txn count to justify actual txn count
+   * */
+  const txnCount = new BigNumber(data.tx_count ?? 0).plus(1).toFormat({
+    groupSeparator: ",",
+    groupSize: 3,
+  });
+
   return (
     <>
       {/* desktop */}
@@ -76,12 +85,7 @@ export default function VerifiedContractRow({
           </div>
           <div className="flex flex-row gap-x-2 col-span-2">
             <ListTitle title={fixedTitle.transactions} />
-            <ListBody
-              body={new BigNumber(data.tx_count ?? 0).toFormat({
-                groupSeparator: ",",
-                groupSize: 3,
-              })}
-            />
+            <ListBody body={txnCount} />
           </div>
           <div className="flex flex-row gap-x-2 justify-end col-span-2">
             <ListTitle title={fixedTitle.verified} />
@@ -121,13 +125,7 @@ export default function VerifiedContractRow({
           <div className="flex flex-col gap-x-2">
             <div className="flex flex-row gap-x-2 justify-end">
               <ListTitle title={fixedTitle.transactions} className="text-sm" />
-              <ListBody
-                body={new BigNumber(data.tx_count ?? 0).toFormat({
-                  groupSeparator: ",",
-                  groupSize: 3,
-                })}
-                className="text-sm"
-              />
+              <ListBody body={txnCount} className="text-sm" />
             </div>
             <div className="flex flex-row gap-x-2 justify-end mt-3">
               <ListTitle title={fixedTitle.verified} className="text-sm" />
@@ -168,13 +166,7 @@ export default function VerifiedContractRow({
           </div>
           <div className="flex flex-row justify-between ">
             <ListTitle title={fixedTitle.transactions} />
-            <ListBody
-              body={new BigNumber(data.tx_count ?? 0).toFormat({
-                groupSeparator: ",",
-                groupSize: 3,
-              })}
-              className="text-sm"
-            />
+            <ListBody body={txnCount} className="text-sm" />
           </div>
           <div className="flex flex-row justify-between">
             <ListTitle title={fixedTitle.verified} className="text-sm" />

@@ -57,7 +57,6 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
         containerClass="justify-end mt-5 md:mt-0"
         loaderClass="right-1 top-0"
       />
-      \
       <div className="hidden lg:block">
         <div className="grid grid-cols-7 mb-5">
           <div data-testid="contract-tokens-asset-title">

@@ -30,7 +30,7 @@ export default function ContractTokenRow({ data }: { data: TokenItemI }) {
         <div className="grid grid-cols-7 py-5">
           <LinkText
             label={token.name}
-            href={`/address/${token?.address}`}
+            href={`/token/${token?.address}`}
             customStyle="tracking-[0.032em]"
           />
           <div className={valueClass}>{token?.type}</div>
@@ -47,7 +47,7 @@ export default function ContractTokenRow({ data }: { data: TokenItemI }) {
           <div className="col-span-2 text-right">
             <LinkText
               label={truncateTextFromMiddle(token?.address, 5)}
-              href={`/address/${token?.address}`}
+              href={`/token/${token?.address}`}
             />
           </div>
         </div>
@@ -58,7 +58,7 @@ export default function ContractTokenRow({ data }: { data: TokenItemI }) {
         <div className="py-3 space-y-3">
           <LinkText
             label={token.name}
-            href={`/address/${token?.address}`}
+            href={`/token/${token?.address}`}
             customStyle="text-xl font-semibold tracking-[0.032em]"
           />
           <div className="flex flex-row justify-between">
@@ -95,7 +95,7 @@ export default function ContractTokenRow({ data }: { data: TokenItemI }) {
             />
             <LinkText
               label={truncateTextFromMiddle(token?.address, 4)}
-              href={`/address/${token?.address}`}
+              href={`/token/${token?.address}`}
               customStyle="tracking-[0.032em]"
             />
           </div>

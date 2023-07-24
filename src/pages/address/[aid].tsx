@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiCopy } from "react-icons/fi";
 import { MdOutlineQrCode } from "react-icons/md";
 import { formatEther, formatUnits } from "viem";
@@ -96,10 +96,16 @@ export default function Address({
   const [isAddressCopied, setIsAddressCopied] = useState(false);
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
   const [selectedTab, setSelectedTab] = useState(
-    addressType === AddressType.Token
-      ? AddressContractTabsTitle.TokenTransfers
-      : AddressContractTabsTitle.Transactions
+    AddressContractTabsTitle.Transactions
   );
+
+  useEffect(() => {
+    const defaultTab =
+      addressType === AddressType.Token
+        ? AddressContractTabsTitle.TokenTransfers
+        : AddressContractTabsTitle.Transactions;
+    setSelectedTab(defaultTab);
+  }, [addressType]);
 
   const onCopyAddressIconClick = async (address: string) => {
     setIsAddressCopied(true);

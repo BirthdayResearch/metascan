@@ -138,7 +138,7 @@ export default function ContractCodeBlock({
               wordBreak: "break-word",
               background: `linearGradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), linearGradient(152.58deg, rgba(51, 51, 51, 0.4) -3.08%, rgba(128, 128, 128, 0.1) 77.78%)`,
               whiteSpace: "pre-wrap",
-              display: "block",
+              display: "flex",
             }}
           />
         </div>

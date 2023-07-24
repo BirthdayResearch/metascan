@@ -80,7 +80,7 @@ export default function TokenTransfersList({
                 BigInt(item.total.value ?? "0"),
                 Number(item.total.decimals ?? GWEI_DECIMAL)
               ),
-              symbol: item.token.symbol,
+              symbol: item.token.symbol ?? "",
               timeInSec: getTimeAgo(item.timestamp),
             }}
           />

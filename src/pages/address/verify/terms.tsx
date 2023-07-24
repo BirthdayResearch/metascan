@@ -379,7 +379,7 @@ export default function Terms() {
             <SectionRow subSecNumber="4.7.2.5.">
               {`the APIs, and the Company’s integration with them, are made
               available on an "as is", “where is”, “if applicable” and “where
-              available” basis`}
+              available” basis.`}
             </SectionRow>
           </SectionRow>
         </SectionRow>
@@ -555,7 +555,7 @@ export default function Terms() {
           RESPONSIBILITY AND RISK. IF APPLICABLE LAW DOES NOT ALLOW THE
           EXCLUSION OF SOME OR ALL OF THE ABOVE IMPLIED OR STATUTORY WARRANTIES
           TO APPLY TO YOU, THE ABOVE EXCLUSIONS WILL APPLY TO YOU TO THE FULLEST
-          EXTENT PERMITTED BY APPLICABLE LAW
+          EXTENT PERMITTED BY APPLICABLE LAW.
         </SectionRow>
         <SectionRow subSecNumber="8.3.">
           THE COMPANY ALSO DOES NOT MAKE ANY REPRESENTATION OR WARRANTY WITH
@@ -615,7 +615,7 @@ export default function Terms() {
             your violation of these Terms; or
           </SectionRow>
           <SectionRow subSecNumber="d.">
-            your violation of any rights of any other person or entity
+            your violation of any rights of any other person or entity.
           </SectionRow>
         </SectionRow>
         <SectionRow subSecNumber="10.2.">

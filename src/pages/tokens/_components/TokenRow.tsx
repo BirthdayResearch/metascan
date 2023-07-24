@@ -84,7 +84,7 @@ export default function TokenRow({
             </div>
           </div>
           <div className="flex flex-col col-start-12 col-end-12 items-end">
-            <span className="text-white-700 mr-1">Holders</span>
+            <span className="text-white-700">Holders</span>
             <NumericFormat
               thousandSeparator
               value={token.holders}
@@ -124,7 +124,7 @@ export default function TokenRow({
             </div>
             <div className="flex justify-between sm:justify-start sm:gap-2 text-sm sm:text-base mb-2">
               <span className="text-white-700 mr-1">Total Supply</span>
-              <span className="text-white-50 mr-1">
+              <span className="text-white-50">
                 {token.totalSupply ? (
                   <NumericFormat
                     data-testid="total-supply"

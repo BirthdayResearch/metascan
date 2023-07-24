@@ -35,7 +35,7 @@ export default function Tooltip({
         {children}
       </div>
 
-      {/* Tabley & Mobile */}
+      {/* Tablet & Mobile */}
       <div
         className="lg:hidden relative"
         role="button"

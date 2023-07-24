@@ -17,7 +17,7 @@ export default function DetailRowTitle({
     <div className={clsx("flex items-center text-white-700", containerClass)}>
       <span>{title}</span>
       {tooltip && (
-        <Tooltip text={tooltip}>
+        <Tooltip title={title} text={tooltip}>
           <FiInfo size={16} className="ml-1 md:ml-2" />
         </Tooltip>
       )}

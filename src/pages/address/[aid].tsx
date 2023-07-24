@@ -200,7 +200,7 @@ export default function Address({
               <div className={clsx(detailContainerCss, "flex")}>
                 <DetailRowTitle
                   title="Contract"
-                  tooltip="The unique address identifying the smart contract on the blockchaddasin"
+                  tooltip="The unique address identifying the smart contract on the blockchain"
                 />
                 <AddressWithQrCode
                   address={aid}

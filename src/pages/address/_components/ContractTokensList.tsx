@@ -10,6 +10,7 @@ import {
 } from "@components/skeletonLoaders/SkeletonLoader";
 import { useGetContractTokensMutation } from "@store/token";
 import useFetchListData from "@hooks/useFetchListData";
+import { PaginationSource } from "enum/tabsTitle";
 import DetailRowTitle from "./DetailRowTitle";
 import ContractTokenRow, { TokenTableFixedTitle } from "./ContractTokenRow";
 
@@ -29,6 +30,7 @@ export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
     nextPage,
   } = useFetchListData<TokenItemI, TokensListPageParamsProps>({
     addressHash,
+    source: PaginationSource.ContractTokens,
     triggerApiCall: () =>
       trigger({
         network: connection,
@@ -122,6 +124,7 @@ function TokensListPagination({
       <Pagination<TokensListPageParamsProps>
         pathname={`/address/${addressHash}`}
         nextPageParams={nextPageParams}
+        source={PaginationSource.ContractTokens}
         shallow
       />
     </div>

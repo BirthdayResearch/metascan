@@ -18,6 +18,7 @@ import NumericFormat from "@components/commons/NumericFormat";
 import { GWEI_DECIMAL } from "shared/constants";
 import { formatUnits } from "viem";
 import useFetchListData from "@hooks/useFetchListData";
+import { PaginationSource } from "enum/tabsTitle";
 
 export default function TokenHoldersList({
   addressHash,
@@ -35,6 +36,7 @@ export default function TokenHoldersList({
     nextPage,
   } = useFetchListData<TokenHolderProps, TokenHolderPageParamsProps>({
     addressHash,
+    source: PaginationSource.TokenHolders,
     triggerApiCall: () =>
       trigger({
         network: connection,
@@ -110,6 +112,7 @@ function HoldersPagination({
               }
             : undefined
         }
+        source={PaginationSource.TokenHolders}
         shallow
       />
     </div>

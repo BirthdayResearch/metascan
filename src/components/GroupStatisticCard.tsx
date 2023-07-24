@@ -29,25 +29,7 @@ export default function GroupStatisticCard() {
   }, []);
 
   return (
-    <div>
-      <div className="flex flex-col space-y-5 md:space-y-0 md:flex-row md:space-x-7 md:justify-end md:px-10 mb-11 md:mb-8 lg:mb-[72px]">
-        <div className="flex flex-row justify-between md:justify-start md:space-x-2 items-center">
-          <span className="text-white-700 text-sm -tracking-[0.14px]">
-            Gas Tracker:
-          </span>
-          <span className="text-white-50 text-base -tracking-[0.32px] font-semibold">
-            {dashboardStats?.gas_prices.average}
-          </span>
-        </div>
-        <div className="flex flex-row justify-between md:justify-start md:space-x-2 items-center">
-          <span className="text-white-700 text-sm -tracking-[0.14px]">
-            Daily transactions:
-          </span>
-          <span className="text-white-50 text-base -tracking-[0.32px] font-semibold">
-            {dashboardStats?.transactions_today}
-          </span>
-        </div>
-      </div>
+    <div className="mt-11 md:mt-8 lg:mt-[72px]">
       <div
         className={clsx(
           "grid grid-cols-1 gap-4",

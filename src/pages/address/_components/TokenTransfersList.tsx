@@ -17,6 +17,7 @@ import { getTimeAgo } from "shared/durationHelper";
 import { GWEI_DECIMAL } from "shared/constants";
 import { formatUnits } from "viem";
 import useFetchListData from "@hooks/useFetchListData";
+import { PaginationSource } from "enum/tabsTitle";
 
 export default function TokenTransfersList({
   addressHash,
@@ -34,6 +35,7 @@ export default function TokenTransfersList({
     nextPage,
   } = useFetchListData<TokenTransferProps, TokenTransferPageParamsProps>({
     addressHash,
+    source: PaginationSource.TokenTransfers,
     triggerApiCall: () =>
       trigger({
         network: connection,
@@ -116,6 +118,7 @@ function TransfersPagination({
               }
             : undefined
         }
+        source={PaginationSource.TokenTransfers}
         shallow
       />
     </div>

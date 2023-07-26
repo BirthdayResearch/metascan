@@ -4,6 +4,7 @@ import { useNetwork } from "@contexts/NetworkContext";
 import { useGetAddressTransactionsMutation } from "@store/address";
 import { RawTransactionI, TxnNextPageParamsProps } from "@api/types";
 import useFetchListData from "@hooks/useFetchListData";
+import { PaginationSource } from "enum/tabsTitle";
 
 export default function TransactionsList({
   addressHash,
@@ -21,6 +22,7 @@ export default function TransactionsList({
     nextPage,
   } = useFetchListData<RawTransactionI, TxnNextPageParamsProps>({
     addressHash,
+    source: PaginationSource.Transactions,
     triggerApiCall: () =>
       trigger({
         network: connection,

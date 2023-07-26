@@ -14,6 +14,7 @@ import {
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
 import useFetchListData from "@hooks/useFetchListData";
+import { PaginationSource } from "enum/tabsTitle";
 
 export default function LogsList({ addressHash }: { addressHash: string }) {
   const { connection } = useNetwork();
@@ -27,6 +28,7 @@ export default function LogsList({ addressHash }: { addressHash: string }) {
     nextPage,
   } = useFetchListData<Log, LogsPageParamsProps>({
     addressHash,
+    source: PaginationSource.Logs,
     triggerApiCall: () =>
       trigger({
         network: connection,
@@ -140,6 +142,7 @@ function LogsPagination({
               }
             : undefined
         }
+        source={PaginationSource.Logs}
         shallow
       />
     </div>

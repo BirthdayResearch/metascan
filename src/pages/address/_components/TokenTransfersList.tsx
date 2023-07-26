@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useNetwork } from "@contexts/NetworkContext";
 import {
@@ -15,9 +14,10 @@ import {
 import TransactionRow from "@components/commons/TransactionRow";
 import { getTransactionTypeFromTokenTransfers } from "shared/transactionDataHelper";
 import { getTimeAgo } from "shared/durationHelper";
-import { sleep } from "shared/sleep";
 import { GWEI_DECIMAL } from "shared/constants";
 import { formatUnits } from "viem";
+import useFetchListData from "@hooks/useFetchListData";
+import { PaginationSource } from "enum/tabsTitle";
 
 export default function TokenTransfersList({
   addressHash,
@@ -25,30 +25,25 @@ export default function TokenTransfersList({
   addressHash: string;
 }) {
   const { connection } = useNetwork();
-  const [transfers, setTransfers] = useState<TokenTransferProps[]>([]);
-  const [nextPage, setNextPage] = useState<TokenTransferPageParamsProps>();
-  const [isLoading, setIsLoading] = useState(true);
   const [trigger] = useGetTokenTransfersMutation();
   const router = useRouter();
-
   const params = router.query;
-  const fetchTokenTransfers = async () => {
-    setIsLoading(true);
-    const data = await trigger({
-      network: connection,
-      tokenId: addressHash,
-      blockNumber: params.block_number as string,
-      index: params.index as string,
-    }).unwrap();
-    setTransfers(data.items);
-    setNextPage(data.next_page_params);
-    await sleep(150); // added timeout to prevent flicker
-    setIsLoading(false);
-  };
 
-  useEffect(() => {
-    fetchTokenTransfers();
-  }, [params.page_number, addressHash]);
+  const {
+    data: transfers,
+    isLoading,
+    nextPage,
+  } = useFetchListData<TokenTransferProps, TokenTransferPageParamsProps>({
+    addressHash,
+    source: PaginationSource.TokenTransfers,
+    triggerApiCall: () =>
+      trigger({
+        network: connection,
+        tokenId: addressHash,
+        blockNumber: params.block_number as string,
+        index: params.index as string,
+      }),
+  });
 
   if (!isLoading && transfers.length === 0) {
     return <div className="text-white-50">No token transfers</div>;
@@ -123,6 +118,7 @@ function TransfersPagination({
               }
             : undefined
         }
+        source={PaginationSource.TokenTransfers}
         shallow
       />
     </div>

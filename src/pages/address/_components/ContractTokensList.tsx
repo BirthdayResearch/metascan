@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useNetwork } from "@contexts/NetworkContext";
 import { TokenItemI, TokensListPageParamsProps } from "@api/types";
@@ -10,7 +9,8 @@ import {
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
 import { useGetContractTokensMutation } from "@store/token";
-import { sleep } from "shared/sleep";
+import useFetchListData from "@hooks/useFetchListData";
+import { PaginationSource } from "enum/tabsTitle";
 import DetailRowTitle from "./DetailRowTitle";
 import ContractTokenRow, { TokenTableFixedTitle } from "./ContractTokenRow";
 
@@ -20,29 +20,24 @@ interface TokenDetailsProps {
 
 export default function ContractTokensList({ addressHash }: TokenDetailsProps) {
   const { connection } = useNetwork();
-  const [tokens, setTokens] = useState<TokenItemI[]>([]);
-  const [nextPage, setNextPage] = useState<TokensListPageParamsProps>();
-  const [isLoading, setIsLoading] = useState(true);
   const [trigger] = useGetContractTokensMutation();
   const router = useRouter();
-
   const params = router.query;
-  const fetchTokens = async () => {
-    setIsLoading(true);
-    const tokenList = await trigger({
-      network: connection,
-      addressHash,
-      queryParams: params,
-    }).unwrap();
-    setTokens(tokenList.items);
-    setNextPage(tokenList.next_page_params as TokensListPageParamsProps);
-    await sleep(150); // added timeout to prevent flicker
-    setIsLoading(false);
-  };
 
-  useEffect(() => {
-    fetchTokens();
-  }, [params.page_number, addressHash]);
+  const {
+    data: tokens,
+    isLoading,
+    nextPage,
+  } = useFetchListData<TokenItemI, TokensListPageParamsProps>({
+    addressHash,
+    source: PaginationSource.ContractTokens,
+    triggerApiCall: () =>
+      trigger({
+        network: connection,
+        addressHash,
+        queryParams: params,
+      }),
+  });
 
   if (!isLoading && tokens.length === 0) {
     return <div className="text-white-50">No contract tokens</div>;
@@ -128,6 +123,7 @@ function TokensListPagination({
       <Pagination<TokensListPageParamsProps>
         pathname={`/address/${addressHash}`}
         nextPageParams={nextPageParams}
+        source={PaginationSource.ContractTokens}
         shallow
       />
     </div>

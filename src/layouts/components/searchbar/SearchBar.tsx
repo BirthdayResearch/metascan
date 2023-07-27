@@ -121,7 +121,7 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
             "relative group flex w-full rounded-lg p-[1px] bg-black-500 focus-within:bg-lightBlue black-gradient-1-shadow backdrop-blur-[6px]",
             transitionClass
           )}
-          data-testid="searchBar"
+          data-testid="search-bar-container"
           ref={reference}
         >
           {!isFocused && (
@@ -142,7 +142,7 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
                 onBlur={() => setIsFocused(false)}
                 placeholder="Search for txn hash / block height"
                 className="h-full w-full focus:outline-none bg-transparent caret-lightBlue placeholder-white-700 placeholder-opacity-50 text-white-50 text-xl tracking-[0.01em]"
-                data-testid="searchBar-input"
+                data-testid="search-bar-input"
                 displayValue={(item: SearchResult) => item?.title}
                 onChange={onChangeDebounceHandler}
               />

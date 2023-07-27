@@ -14,7 +14,7 @@ export default function BlockRow({ data }: { data: any }) {
   return (
     <div>
       {/* for desktop and tablet */}
-      <div className="hidden md:block">
+      <div data-testid="desktop-block-row" className="hidden md:block">
         <div className="grid grid-cols-8 lg:grid-cols-12 gap-5 py-4">
           <div className="col-start-1 col-end-3">
             <BlockHeightComponent blockHeight={data.height} />
@@ -39,6 +39,7 @@ export default function BlockRow({ data }: { data: any }) {
                 containerClass="w-full text-start md:text-right lg:text-start lg:w-1/2"
               />
               <TimeComponent
+                testId="desktop-block-timeago"
                 time={timestamp}
                 containerClass="text-right md:mt-4 lg:mt-0"
               />
@@ -48,13 +49,17 @@ export default function BlockRow({ data }: { data: any }) {
       </div>
 
       {/* For mobile */}
-      <div className="md:hidden py-6">
+      <div data-testid="mobile-block-row" className="md:hidden py-6">
         <BlockHeightComponent blockHeight={data.height} />
         <div className="ml-8">
           <RewardComponent amount={reward} symbol="DFI" containerClass="mt-2" />
           <RecipientComponent value={data.miner.hash} containerClass="mt-4" />
           <TxnCountComponent count={data.tx_count} containerClass="mt-4" />
-          <TimeComponent time={timestamp} containerClass="mt-4" />
+          <TimeComponent
+            testId="mobile-block-timeago"
+            time={timestamp}
+            containerClass="mt-4"
+          />
         </div>
       </div>
       <div className="border-b border-black-600 ml-8 lg:ml-10" />
@@ -91,7 +96,10 @@ function RewardComponent({
   containerClass?: string;
 }): JSX.Element {
   return (
-    <div className={clsx("flex flex-row", containerClass)}>
+    <div
+      data-testid="block-reward"
+      className={clsx("flex flex-row", containerClass)}
+    >
       <span className="text-white-700 text-base mr-1">Reward</span>
       <NumericFormat
         className="text-white-50 text-base"
@@ -112,7 +120,7 @@ function RecipientComponent({
   containerClass?: string;
 }): JSX.Element {
   return (
-    <div className={containerClass}>
+    <div data-testid="fee-recipient" className={containerClass}>
       <span className="text-white-700 text-base mr-1">Fee recipient</span>
       <LinkText
         testId={`from-address-link-${value}`}
@@ -131,7 +139,7 @@ function TxnCountComponent({
   containerClass?: string;
 }): JSX.Element {
   return (
-    <div className={containerClass}>
+    <div data-testid="block-txs-count" className={containerClass}>
       <NumericFormat
         className="text-white-700 text-base"
         thousandSeparator

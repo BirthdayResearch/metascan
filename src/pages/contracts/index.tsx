@@ -56,12 +56,12 @@ export default function VerifiedContracts({ data, isLoading }) {
       <GradientCardContainer className="relative">
         <div className="p-5 md:p-10">
           <div className="flex flex-row justify-between items-center md:my-4 lg:my-[18px]">
-            <h2
+            <h1
               data-testid="verified-contract-list-title"
               className="font-bold text-xl text-white-50"
             >
               Contracts
-            </h2>
+            </h1>
             <Button
               testId="verify-contract"
               label="Verify contract"

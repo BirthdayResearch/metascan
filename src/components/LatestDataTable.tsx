@@ -14,7 +14,7 @@ type DataType = "blocks" | "transactions";
 interface Props {
   type: DataType;
   title: string;
-  data: RowData[];
+  data: RowData[] | [];
   listPageUrl: string;
   detailsPageBaseUrl: string;
   containerClass?: string;
@@ -47,7 +47,11 @@ export default function LatestDataTable({
             <div className="md:order-last md:flex-1 md:pt-6 md:col-span-8">
               {isLoading ? (
                 <SkeletonLoader
-                  screen={SkeletonLoaderScreen.MainTable}
+                  screen={
+                    type === "transactions"
+                      ? SkeletonLoaderScreen.MainTableTxs
+                      : SkeletonLoaderScreen.MainTableBlocks
+                  }
                   rows={5}
                 />
               ) : (

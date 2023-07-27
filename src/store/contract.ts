@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { SMART_CONTRACT_URL, getBaseUrl } from "@api/index";
+import { SMART_CONTRACT_URL, filterParams, getBaseUrl } from "@api/index";
 import {
   ContractMethodType,
   SmartContractMethod,
+  SmartContractWithPaginationProps,
   StateMutability,
 } from "@api/types";
 import { NetworkConnection } from "@contexts/Environment";
@@ -67,6 +68,25 @@ export const contractApi = createApi({
     baseUrl: "/", // This will be overridden by query url below, need to dynamically get the base url based on network
   }),
   endpoints: (builder) => ({
+    getContracts: builder.mutation<
+      SmartContractWithPaginationProps,
+      {
+        network: NetworkConnection;
+        smartContractId: string;
+        itemsCount: string;
+      }
+    >({
+      query: ({ network, smartContractId, itemsCount }) => {
+        const params = filterParams([
+          { key: "smart_contract_id", value: smartContractId },
+          { key: "items_count", value: itemsCount },
+        ]);
+        return {
+          url: `${getBaseUrl(network)}/${SMART_CONTRACT_URL}${params}`,
+          method: "GET",
+        };
+      },
+    }),
     getContract: builder.query<
       RawContractProps,
       { network: NetworkConnection; addressHash: string }
@@ -117,6 +137,6 @@ export const contractVerificationApi = createApi({
   }),
 });
 
-export const { useGetContractQuery } = contractApi;
+export const { useGetContractsMutation, useGetContractQuery } = contractApi;
 export const { useGetContractMethodsQuery } = contractMethodsApi;
 export const { useGetVerificationConfigQuery } = contractVerificationApi;

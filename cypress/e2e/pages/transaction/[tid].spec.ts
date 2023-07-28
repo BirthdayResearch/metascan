@@ -1,7 +1,7 @@
-const txHash =
-  "0x45496f046c1c33569860bf3950db2d7edf9706b9ee16bc566a20d2febe90af7e";
-
 context("/tx/[tid] on macbook-16", () => {
+  const txHash =
+    "0x45496f046c1c33569860bf3950db2d7edf9706b9ee16bc566a20d2febe90af7e";
+
   beforeEach(() => {
     cy.visit(`/tx/${txHash}`);
     cy.viewport("macbook-16");
@@ -142,6 +142,9 @@ context("/tx/[tid] on macbook-16", () => {
 });
 
 context("/tx/[tid] on iphone-x", () => {
+  const txHash =
+    "0x45496f046c1c33569860bf3950db2d7edf9706b9ee16bc566a20d2febe90af7e";
+
   beforeEach(() => {
     cy.visit(`/tx/${txHash}`);
     cy.viewport("iphone-x");

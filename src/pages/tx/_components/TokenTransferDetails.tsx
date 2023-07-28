@@ -36,7 +36,10 @@ export default function TokenTransferDetails({
             }
             key={key}
           >
-            <div className="flex flex-col gap-y-4 mb-6">
+            <div
+              data-testid="token-transfers"
+              className="flex flex-col gap-y-4 mb-6"
+            >
               {group.map(({ from, to, forToken }) => (
                 <div
                   className="flex flex-col md:flex-row flex-wrap justify-end md:justify-start"
@@ -63,10 +66,13 @@ export default function TokenTransferDetails({
                       />
                     </div>
                   </div>
-                  <div className="flex flex-row mt-2 md:mt-0 md:ml-4">
+                  <div
+                    data-testid="for-token-container"
+                    className="flex flex-row mt-2 md:mt-0 md:ml-4"
+                  >
                     <div className="text-white-900 mr-1">For: </div>
                     <NumericFormat
-                      data-testid="token-transferred-for"
+                      testId="token-transferred-for"
                       className="text-white-50 whitespace-normal tracking-[0.01em]"
                       thousandSeparator
                       value={forToken.value}
@@ -74,7 +80,7 @@ export default function TokenTransferDetails({
                     />
                     <div className="ml-1">
                       <LinkText
-                        testId="token-transferred-to "
+                        testId="token-transferred-for-symbol"
                         label={forToken.symbol}
                         href={`/token/${forToken.address}`}
                       />

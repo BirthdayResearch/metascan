@@ -7,6 +7,7 @@ interface TooltipProps {
   text: string;
   children?: JSX.Element;
   active?: boolean;
+  testId?: string;
 }
 
 export default function Tooltip({
@@ -14,13 +15,17 @@ export default function Tooltip({
   text,
   children,
   active = true,
+  testId = "",
 }: TooltipProps) {
   const [isMobileModalOpen, setIsMobileModalOpen] = useState(false);
 
   return (
     <>
       {/* Web */}
-      <div className="hidden lg:block group relative cursor-pointer">
+      <div
+        data-testid={`desktop-tooltip-${testId}`}
+        className="hidden lg:block group relative cursor-pointer"
+      >
         <div
           className={clsx(
             "rounded bg-white-50 text-xs text-black-900 -tracking-[0.12px] pointer-events-none",
@@ -37,6 +42,7 @@ export default function Tooltip({
 
       {/* Tablet & Mobile */}
       <div
+        data-testid={`mobile-tooltip-${testId}`}
         className="lg:hidden relative"
         role="button"
         aria-label="tooltip-button"

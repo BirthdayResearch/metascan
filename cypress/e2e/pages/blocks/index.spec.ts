@@ -2,7 +2,7 @@ context("/blocks on macbook-16", () => {
   const BASE_URL = Cypress.config().baseUrl;
 
   beforeEach(() => {
-    cy.visit("/blocks?network=TestNet");
+    cy.visit("/blocks");
     cy.viewport("macbook-16");
   });
 
@@ -114,7 +114,7 @@ context("/blocks on macbook-16", () => {
 
 context("/blocks on iphone-x", () => {
   beforeEach(() => {
-    cy.visit("/blocks?network=TestNet");
+    cy.visit("/blocks");
     cy.viewport("iphone-x");
   });
 

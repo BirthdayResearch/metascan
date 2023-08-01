@@ -8,6 +8,7 @@ import {
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import { RawTransactionI, TxnNextPageParamsProps } from "@api/types";
 import { transformTransactionData } from "shared/transactionDataHelper";
+import { PaginationSource } from "enum/tabsTitle";
 
 interface TransactionsProps {
   transactions: RawTransactionI[];
@@ -29,6 +30,9 @@ function TxnPagination({
   pathname: string;
   nextPageParams?: TxnNextPageParamsProps;
 }) {
+  const source = pathname.includes("/txs")
+    ? undefined // source not needed for main transaction list page (/txs)
+    : PaginationSource.Transactions;
   return (
     <Pagination<TxnQueryParamsProps>
       pathname={pathname}
@@ -41,6 +45,7 @@ function TxnPagination({
             }
           : undefined
       }
+      source={source}
     />
   );
 }

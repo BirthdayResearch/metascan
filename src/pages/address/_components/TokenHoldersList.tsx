@@ -1,5 +1,4 @@
 import BigNumber from "bignumber.js";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useNetwork } from "@contexts/NetworkContext";
 import {
@@ -16,9 +15,10 @@ import Pagination from "@components/commons/Pagination";
 import LinkText from "@components/commons/LinkText";
 import { truncateTextFromMiddle } from "shared/textHelper";
 import NumericFormat from "@components/commons/NumericFormat";
-import { sleep } from "shared/sleep";
 import { GWEI_DECIMAL } from "shared/constants";
 import { formatUnits } from "viem";
+import useFetchListData from "@hooks/useFetchListData";
+import { PaginationSource } from "enum/tabsTitle";
 
 export default function TokenHoldersList({
   addressHash,
@@ -26,30 +26,25 @@ export default function TokenHoldersList({
   addressHash: string;
 }) {
   const { connection } = useNetwork();
-  const [holders, setHolders] = useState<TokenHolderProps[]>([]);
-  const [nextPage, setNextPage] = useState<TokenHolderPageParamsProps>();
-  const [isLoading, setIsLoading] = useState(true);
   const [trigger] = useGetTokenHoldersMutation();
   const router = useRouter();
-
   const params = router.query;
-  const fetchTokenHolders = async () => {
-    setIsLoading(true);
-    const data = await trigger({
-      network: connection,
-      tokenId: addressHash,
-      itemsCount: params.items_count as string,
-      value: params.value ? BigInt(Number(params.value)).toString() : "",
-    }).unwrap();
-    setHolders(data.items);
-    setNextPage(data.next_page_params);
-    await sleep(150); // added timeout to prevent flicker
-    setIsLoading(false);
-  };
 
-  useEffect(() => {
-    fetchTokenHolders();
-  }, [params.page_number, addressHash]);
+  const {
+    data: holders,
+    isLoading,
+    nextPage,
+  } = useFetchListData<TokenHolderProps, TokenHolderPageParamsProps>({
+    addressHash,
+    source: PaginationSource.TokenHolders,
+    triggerApiCall: () =>
+      trigger({
+        network: connection,
+        tokenId: addressHash,
+        itemsCount: params.items_count as string,
+        value: params.value ? BigInt(Number(params.value)).toString() : "",
+      }),
+  });
 
   if (!isLoading && holders.length === 0) {
     return <div className="text-white-50">No token holders</div>;
@@ -117,6 +112,7 @@ function HoldersPagination({
               }
             : undefined
         }
+        source={PaginationSource.TokenHolders}
         shallow
       />
     </div>

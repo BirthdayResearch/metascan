@@ -12,6 +12,7 @@ interface PaginationProps<T> {
   pathname?: string;
   containerClass?: string;
   shallow?: boolean;
+  source?: string;
 }
 
 export default function Pagination<T>({
@@ -19,11 +20,13 @@ export default function Pagination<T>({
   pathname,
   containerClass,
   shallow,
+  source,
 }: PaginationProps<T>): JSX.Element {
   const router = useRouter();
   const pathName = pathname ?? router.pathname;
   const currentPageNumber = Number(router.query.page_number ?? 1);
   const nextPageParams = {
+    ...(source !== undefined && { source }),
     ...nextPageParamsFromApi,
     ...{ page_number: currentPageNumber + 1 },
   };
@@ -65,6 +68,17 @@ export default function Pagination<T>({
     }
     return [pageButton.previous, pageButton.current, pageButton.next];
   };
+
+  useEffect(() => {
+    // Set `source` params on page load
+    // Update `source` params on tab change
+    if (
+      (source !== undefined && router.query.source === undefined) ||
+      source !== router.query.source
+    ) {
+      router.query.source = source;
+    }
+  }, [source]);
 
   useEffect(() => {
     if (

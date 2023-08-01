@@ -6,3 +6,12 @@ export enum AddressContractTabsTitle {
   TokenTransfers = "Token Transfers",
   TokenHolders = "Token Holders",
 }
+
+export enum PaginationSource {
+  Transactions = "transactions",
+  Contract = "contract",
+  ContractTokens = "contract-tokens",
+  Logs = "logs",
+  TokenTransfers = "token-transfers",
+  TokenHolders = "token-holders",
+}

@@ -64,7 +64,7 @@ export default function GasDetails({
             tooltip="Maximum amount of gas allocated for the transaction"
           >
             <NumericFormat
-              data-testid="gas-limit"
+              testId="gas-limit"
               className={rowValueFont}
               thousandSeparator
               value={gasLimit}
@@ -77,14 +77,14 @@ export default function GasDetails({
           >
             <div className="flex flex-col">
               <NumericFormat
-                data-testid="gas-used"
+                testId="gas-used"
                 className={rowValueFont}
                 thousandSeparator
                 value={gasUsed}
                 decimalScale={0}
               />
               <NumericFormat
-                data-testid="gas-used-percentage"
+                testId="gas-used-percentage"
                 className="text-white-700 tracking-[0.02em] text-xs mt-1"
                 thousandSeparator
                 value={gasUsedPercentage}
@@ -98,7 +98,7 @@ export default function GasDetails({
             tooltip="Number of transaction sent from the sender’s address"
           >
             <NumericFormat
-              data-testid="nonce"
+              testId="nonce"
               className={rowValueFont}
               thousandSeparator
               value={nonce}
@@ -110,7 +110,7 @@ export default function GasDetails({
             tooltip="The position refers to the index number assigned to a transaction within a block on the blockchain"
           >
             <NumericFormat
-              data-testid="position"
+              testId="position"
               className={rowValueFont}
               thousandSeparator
               value={position}

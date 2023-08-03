@@ -72,11 +72,14 @@ const MenuItems = [
 
 function Footer() {
   return (
-    <footer className="w-full relative lg:pb-[70px] md:pb-[52px] pb-[57.05px] md:pt-[104px] pt-20">
+    <footer
+      data-testid="footer-container"
+      className="w-full relative lg:pb-[70px] md:pb-[52px] pb-[57.05px] md:pt-[104px] pt-20"
+    >
       <Container className="px-5 md:px-10 lg:px-[120px]">
         <div className="black-gradient-1-shadow backdrop-blur-[6px] bg-opacity-70 bg-black-900 flex flex-col lg:flex-row md:flex-row lg:py-10 md:py-10 py-8 lg:px-[126px] md:px-10 px-5 rounded-[30px] black-gradient-1 gap-y-10 lg:gap-0 md:gap-0">
           {MenuItems.map(({ category, childLink }) => (
-            <div className="flex flex-row grow">
+            <div key={category} className="flex flex-row grow">
               <FooterColumn
                 key={category}
                 category={category}

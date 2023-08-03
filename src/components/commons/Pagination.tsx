@@ -112,6 +112,7 @@ export default function Pagination<T>({
 
   return (
     <div
+      data-testid="pagination-container"
       className={clsx(
         "flex space-x-1 flex-row justify-end mt-4",
         containerClass
@@ -182,7 +183,11 @@ function NumberButton({
   }
 
   return (
-    <Link href={{ pathname: pathName, query }} shallow={shallow}>
+    <Link
+      data-testid={`page-${n}`}
+      href={{ pathname: pathName, query }}
+      shallow={shallow}
+    >
       <button
         type="button"
         className="rounded cursor-pointer h-6 w-6 flex items-center justify-center"
@@ -206,10 +211,13 @@ function NavigateButton({
   shallow?: boolean;
 }>): JSX.Element {
   return (
-    <Link href={{ pathname: pathName, query }} shallow={shallow}>
+    <Link
+      data-testid={`Pagination.${type}`}
+      href={{ pathname: pathName, query }}
+      shallow={shallow}
+    >
       <button
         type="button"
-        data-testid={`Pagination.${type}`}
         className="text-white-700 cursor-pointer h-6 w-6 flex items-center justify-center"
       >
         {children}

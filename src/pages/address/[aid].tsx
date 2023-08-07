@@ -55,10 +55,10 @@ function getAddressType({
   switch (true) {
     case isTokenPage:
       return AddressType.Token;
-    case data.is_contract && data.token === null:
-      return AddressType.Contract;
-    case data.token !== null:
+    case data.is_contract && data.token !== null:
       return AddressType.TokenContract;
+    case data.is_contract:
+      return AddressType.Contract;
     default:
       return AddressType.Wallet;
   }

@@ -59,8 +59,11 @@ export default function Transaction({
               title="Transaction details"
             />
           </div>
-          <div className="">
-            <span className="text-white-50 text-lg md:text-2xl font-semibold md:leading-9 break-all -tracking-[0.02em] md:tracking-normal">
+          <div>
+            <span
+              data-testid="tx-hash"
+              className="text-white-50 text-lg md:text-2xl font-semibold md:leading-9 break-all -tracking-[0.02em] md:tracking-normal"
+            >
               {txDetails.hash}
             </span>
             <WithCopy
@@ -98,14 +101,14 @@ export default function Transaction({
             {/* Confirmations */}
             <div className={rowCss}>
               <div
-                data-testid="transaction-block-title"
+                data-testid="transaction-confimations-title"
                 className={titleFontCss}
               >
                 Confirmation
               </div>
               <div className="flex flex-row gap-x-2.5 items-center">
                 <NumericFormat
-                  data-testid="transaction-confirmations"
+                  testId="transaction-confirmations"
                   className={valueFontCss}
                   value={txDetails.confirmations ?? "0"}
                   decimalScale={0}
@@ -152,7 +155,7 @@ export default function Transaction({
               </div>
               <div>
                 <NumericFormat
-                  data-testid="transaction-amount"
+                  testId="transaction-amount"
                   className={valueFontCss}
                   thousandSeparator
                   value={txDetails.value}
@@ -168,7 +171,7 @@ export default function Transaction({
               </div>
               <div>
                 <NumericFormat
-                  data-testid="transaction-fee"
+                  testId="transaction-fee"
                   className={valueFontCss}
                   thousandSeparator
                   value={txDetails.fee}

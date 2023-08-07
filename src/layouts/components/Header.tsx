@@ -16,20 +16,30 @@ const MenuItems = [
     label: "Blocks",
     pathname: "/blocks",
     testId: "Desktop.HeaderLink.Blocks",
+    childPaths: ["/block"],
     imagePath: "/menu/Blocks.svg",
   },
   {
     label: "Transactions",
     pathname: "/txs",
     testId: "Desktop.HeaderLink.Transactions",
+    childPaths: ["/tx"],
     imagePath: "/menu/Transactions.svg",
   },
-  // {
-  //   label: "Verified Contracts",
-  //   pathname: "/contracts",
-  //   testId: "Desktop.HeaderLink.VerifiedContracts",
-  //   imagePath: "/menu/VerifiedContracts.svg",
-  // },
+  {
+    label: "Contracts",
+    pathname: "/contracts",
+    childPaths: [],
+    testId: "Desktop.HeaderLink.Contracts",
+    imagePath: "/menu/VerifiedContracts.svg",
+  },
+  {
+    label: "Tokens",
+    pathname: "/tokens",
+    testId: "Desktop.HeaderLink.Tokens",
+    childPaths: ["/token"],
+    imagePath: "/menu/Tokens.svg",
+  },
 ];
 
 export default function Header(): JSX.Element {
@@ -93,6 +103,7 @@ function DesktopNavbar({ currentPath }: { currentPath: string }): JSX.Element {
           label={item.label}
           pathname={item.pathname}
           currentPath={currentPath}
+          childPaths={item.childPaths}
           testId={item.testId}
           key={item.testId}
         />
@@ -165,14 +176,17 @@ function HeaderLink({
   label,
   pathname,
   testId,
+  childPaths,
   currentPath,
 }: {
   label: string;
   pathname: string;
   currentPath: string;
+  childPaths?: string[];
   testId?: string;
 }): JSX.Element {
-  const isActive = currentPath === pathname;
+  const isActive =
+    currentPath === pathname || childPaths?.includes(currentPath);
   return (
     <Link href={{ pathname }}>
       <div

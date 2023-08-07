@@ -21,13 +21,17 @@
     "@waveshq/standard-web": "^1.0.4",
     "bignumber.js": "^9.1.1",
     "clsx": "^1.2.1",
+    "connectkit": "^1.4.0",
     "dayjs": "^1.11.8",
     "dayjs-plugin-utc": "^0.1.2",
     "ethers": "^5.7.2",
     "lodash": "^4.17.21",
     "react-code-blocks": "0.0.9-0",
+    "react-dropzone": "^14.2.3",
     "react-qr-code": "^2.0.11",
-    "recharts": "^2.7.1"
+    "recharts": "^2.7.1",
+    "viem": "^1.1.0",
+    "wagmi": "^1.2.0"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.10.7",
@@ -37,6 +41,7 @@
     "@testing-library/cypress": "^9.0.0",
     "@types/node": "18.16.3",
     "@types/recharts": "^1.8.24",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@waveshq/standard-web-linter": "^1.0.4",
     "autoprefixer": "^10.4.14",
     "babel-plugin-istanbul": "^6.1.1",

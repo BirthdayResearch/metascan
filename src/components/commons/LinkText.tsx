@@ -9,6 +9,7 @@ export default function LinkText({
   customStyle,
   testId,
   children,
+  ...props
 }: LinkProps &
   PropsWithChildren<{
     label?: string;
@@ -23,6 +24,7 @@ export default function LinkText({
         "text-lightBlue brand-gradient-1 active:brand-gradient-2 bg-clip-text hover:text-transparent transition-all ease-in duration-300",
         customStyle
       )}
+      {...props}
     >
       {label}
       {children}

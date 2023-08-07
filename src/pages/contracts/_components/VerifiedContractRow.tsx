@@ -1,75 +1,139 @@
+import { SmartContractListItemProps } from "@api/types";
 import LinkText from "@components/commons/LinkText";
-import { VerifiedContract } from "mockdata/VerifiedContractData";
+import clsx from "clsx";
+import { formatDateToUTC } from "shared/durationHelper";
 import { truncateTextFromMiddle } from "shared/textHelper";
+import { FiFileText } from "react-icons/fi";
+import BigNumber from "bignumber.js";
+
+interface ListTitleProps {
+  title: string;
+  className?: string;
+}
+
+function ListTitle({ title, className }: ListTitleProps) {
+  return (
+    <div className={clsx("tracking-[0.01em] text-white-700", className)}>
+      {title}
+    </div>
+  );
+}
+
+interface ListBodyProps {
+  body: string;
+  className?: string;
+}
+
+function ListBody({ body, className }: ListBodyProps) {
+  return (
+    <div
+      className={clsx("tracking-[0.01em] text-white-50 break-all", className)}
+    >
+      {body}
+    </div>
+  );
+}
+
+const fixedTitle = {
+  contractName: "Contract name",
+  version: "Version",
+  compiler: "Compiler",
+  transactions: "Transactions",
+  verified: "Verified",
+};
 
 export default function VerifiedContractRow({
   data,
 }: {
-  data: VerifiedContract;
+  data: SmartContractListItemProps;
 }) {
+  /**
+   * [Why this is added] in the api response for verified SC listing, txn for contract creation is not getting counted.
+   * with the below logic we are adding 1 txn count to justify actual txn count
+   * */
+  const txnCount = new BigNumber(data.tx_count ?? 0).plus(1).toFormat({
+    groupSeparator: ",",
+    groupSize: 3,
+  });
+
   return (
     <>
       {/* desktop */}
       <div
-        data-testid={`${data.contract}-desktop-verified-list`}
+        data-testid={`${data.address.hash}-desktop-verified-list`}
         className="hidden lg:block"
       >
-        <div className="grid grid-cols-7 py-[21px]">
-          <div className="flex flex-row">
-            <LinkText
-              label={truncateTextFromMiddle(data.contract, 4)}
-              href={`/contract/${data.contract}`}
-              customStyle="tracking-[0.01em]"
-            />
+        <div className="grid grid-cols-12 py-[22px] gap-x-5 items-center">
+          <div className="flex flex-row items-center col-span-3 gap-x-4">
+            <FiFileText size={24} className="text-white-50 stroke-white-50" />
+            <div className="flex flex-col flex-1 gap-y-1">
+              <LinkText
+                label={truncateTextFromMiddle(data.address.hash, 4)}
+                href={`/address/${data.address.hash}`}
+                customStyle="tracking-[0.01em] text-lg"
+              />
+              <ListBody body={data.address.name} className="text-sm" />
+            </div>
           </div>
-          <div className="flex flex-row gap-x-[4px] col-span-2 justify-center pr-20">
-            <ListTitle title={fixedTitle.contractName} />
-            <ListBody body={data.contractName} />
-          </div>
-          <div className="flex flex-row gap-x-[4px]">
-            <ListTitle title={fixedTitle.version} />
-            <ListBody body={data.version} />
-          </div>
-          <div className="flex flex-row gap-x-[4px] col-span-2 justify-center pl-10">
+          <div className="flex flex-row gap-x-2 col-span-2">
             <ListTitle title={fixedTitle.compiler} />
-            <ListBody body={data.compiler} />
+            <ListBody body={data.language} className="capitalize" />
           </div>
-          <div className="flex flex-row gap-x-[4px] justify-end">
+          <div className="flex flex-row gap-x-2 col-span-3">
+            <ListTitle title={fixedTitle.version} />
+            <ListBody body={data.compiler_version} />
+          </div>
+          <div className="flex flex-row gap-x-2 col-span-2">
+            <ListTitle title={fixedTitle.transactions} />
+            <ListBody body={txnCount} />
+          </div>
+          <div className="flex flex-row gap-x-2 justify-end col-span-2">
             <ListTitle title={fixedTitle.verified} />
-            <ListBody body={data.verifiedDate} />
+            <ListBody body={formatDateToUTC(data.verified_at, "MM/DD/YYYY")} />
           </div>
         </div>
-        <div className="bg-black-600 h-[1px]" />
+        <div className="bg-black-600 h-[1px] my-1" />
       </div>
 
       {/* tablet */}
       <div
-        data-testid={`${data.contract}-tablet-verified-list`}
+        data-testid={`${data.address.hash}-tablet-verified-list`}
         className="hidden lg:hidden md:block"
       >
-        <div className="grid grid-cols-4 grid-rows-2 py-5 gap-y-3">
-          <div className="flex flex-row gap-x-[11px]">
-            <LinkText
-              label={truncateTextFromMiddle(data.contract, 4)}
-              href={`/contract/${data.contract}`}
-              customStyle="tracking-[0.01em]"
-            />
+        <div className="grid grid-cols-3 py-6 gap-x-4">
+          <div className="flex flex-row gap-x-4 items-center">
+            <FiFileText size={24} className="text-white-50 stroke-white-50" />
+            <div className="flex flex-col flex-1">
+              <LinkText
+                label={truncateTextFromMiddle(data.address.hash, 4)}
+                href={`/address/${data.address.hash}`}
+                customStyle="tracking-[0.01em] text-lg"
+              />
+              <ListBody body={data.address.name} className="text-sm" />
+            </div>
           </div>
-          <div className="flex flex-row gap-x-[4px] col-span-2 ">
-            <ListTitle title={fixedTitle.contractName} />
-            <ListBody body={data.contractName} />
+          <div className="flex flex-col gap-y-2">
+            <div className="flex flex-row gap-x-2">
+              <ListTitle title={fixedTitle.compiler} className="text-sm" />
+              <ListBody body={data.language} className="capitalize text-sm" />
+            </div>
+            <div className="flex flex-row gap-x-2">
+              <ListTitle title={fixedTitle.version} className="text-sm" />
+              <ListBody body={data.compiler_version} className="text-sm" />
+            </div>
           </div>
-          <div className="col-start-2 row-start-2 flex flex-row gap-x-[4px] ">
-            <ListTitle title={fixedTitle.compiler} />
-            <ListBody body={data.compiler} />
-          </div>
-          <div className="col-start-4 flex flex-row gap-x-[4px] justify-end">
-            <ListTitle title={fixedTitle.version} />
-            <ListBody body={data.version} />
-          </div>
-          <div className="row-start-2 col-start-4 flex flex-row gap-x-[4px] justify-end">
-            <ListTitle title={fixedTitle.verified} />
-            <ListBody body={data.verifiedDate} />
+          <div className="flex flex-col gap-x-2">
+            <div className="flex flex-row gap-x-2 justify-end">
+              <ListTitle title={fixedTitle.transactions} className="text-sm" />
+              <ListBody body={txnCount} className="text-sm" />
+            </div>
+            <div className="flex flex-row gap-x-2 justify-end mt-3">
+              <ListTitle title={fixedTitle.verified} className="text-sm" />
+              <ListBody
+                body={formatDateToUTC(data.verified_at, "MM/DD/YYYY")}
+                className="text-sm"
+              />
+            </div>
           </div>
         </div>
         <div className="bg-black-600 h-[1px]" />
@@ -77,59 +141,43 @@ export default function VerifiedContractRow({
 
       {/* mobile */}
       <div
-        data-testid={`${data.contract}-mobile-verified-list`}
-        className="md:hidden sm:block"
+        data-testid={`${data.address.hash}-mobile-verified-list`}
+        className="md:hidden sm:block mt-4"
       >
-        <div className="grid grid-rows-5 py-6 gap-y-4">
-          <div className="flex flex-row gap-x-[11px]">
-            <LinkText
-              label={truncateTextFromMiddle(data.contract, 4)}
-              href={`/contract/${data.contract}`}
-              customStyle="tracking-[0.01em]"
+        <div className="flex flex-col py-4 gap-y-2">
+          <div className="flex flex-row gap-x-4 items-center mb-2">
+            <FiFileText size={24} className="text-white-50 stroke-white-50" />
+            <div className="flex flex-col flex-1">
+              <LinkText
+                label={truncateTextFromMiddle(data.address.hash, 4)}
+                href={`/address/${data.address.hash}`}
+                customStyle="tracking-[0.01em] text-lg"
+              />
+              <ListBody body={data.address.name} className="text-sm" />
+            </div>
+          </div>
+          <div className="flex flex-row justify-between">
+            <ListTitle title={fixedTitle.compiler} className="text-sm" />
+            <ListBody body={data.language} className="capitalize text-sm" />
+          </div>
+          <div className="flex flex-row justify-between">
+            <ListTitle title={fixedTitle.version} className="text-sm" />
+            <ListBody body={data.compiler_version} className="text-sm" />
+          </div>
+          <div className="flex flex-row justify-between ">
+            <ListTitle title={fixedTitle.transactions} />
+            <ListBody body={txnCount} className="text-sm" />
+          </div>
+          <div className="flex flex-row justify-between">
+            <ListTitle title={fixedTitle.verified} className="text-sm" />
+            <ListBody
+              body={formatDateToUTC(data.verified_at, "MM/DD/YYYY")}
+              className="text-sm"
             />
           </div>
-          <div className="flex flex-row gap-x-[4px]">
-            <ListTitle title={fixedTitle.contractName} />
-            <ListBody body={data.contractName} />
-          </div>
-          <div className="flex flex-row gap-x-[4px]">
-            <ListTitle title={fixedTitle.version} />
-            <ListBody body={data.version} />
-          </div>
-          <div className="flex flex-row gap-x-[4px] ">
-            <ListTitle title={fixedTitle.compiler} />
-            <ListBody body={data.compiler} />
-          </div>
-          <div className="flex flex-row gap-x-[4px]">
-            <ListTitle title={fixedTitle.verified} />
-            <ListBody body={data.verifiedDate} />
-          </div>
         </div>
-        <div className="bg-black-600 h-[1px]" />
+        <div className="bg-black-600 h-[1px] my-2" />
       </div>
     </>
   );
 }
-
-interface ListTitleProps {
-  title: string;
-}
-
-function ListTitle({ title }: ListTitleProps) {
-  return <div className="tracking-[0.01em] text-white-700">{title}</div>;
-}
-
-interface ListBodyProps {
-  body: string;
-}
-
-function ListBody({ body }: ListBodyProps) {
-  return <div className="tracking-[0.01em] text-white-50">{body}</div>;
-}
-
-const fixedTitle = {
-  contractName: "Contract name",
-  version: "Version",
-  compiler: "Compiler",
-  verified: "Verified",
-};

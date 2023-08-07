@@ -17,7 +17,7 @@ const securityHeaders = [
       `font-src fonts.gstatic.com;` +
       `connect-src 'self' changi.ocean.jellyfishsdk.com blockscout-index.changi.dfi.team ${
         process.env.NODE_ENV === "development"
-          ? `ws://localhost:3000/_next/webpack-hmr base-goerli.blockscout.com eth-goerli.blockscout.com 34.87.158.111:4000`
+          ? `ws://localhost:3000/_next/webpack-hmr base-goerli.blockscout.com eth-goerli.blockscout.com`
           : ""
       };`,
   },

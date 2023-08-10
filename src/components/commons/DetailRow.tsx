@@ -13,7 +13,7 @@ export default function DetailRow({
   children: any;
   className?: string;
 }) {
-  const testId = label.replaceAll(" ", "");
+  const testId = label.replaceAll(" ", "-").toLowerCase();
   return (
     <div
       className={clsx(
@@ -29,7 +29,7 @@ export default function DetailRow({
           {label}
         </div>
         {tooltip && (
-          <Tooltip text={tooltip}>
+          <Tooltip testId={testId} title={label} text={tooltip}>
             <InfoIcon data-testid={`${testId}-icon`} className="ml-1 md:ml-2" />
           </Tooltip>
         )}

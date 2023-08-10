@@ -51,6 +51,7 @@ export default function WithCopy({
           {children}
           <FiCopy
             role="button"
+            data-testid={`copy-${testId}`}
             onClick={() => onCopyAddressIconClick(setIsCopied, textToCopy)}
             className={clsx("text-white-50 inline-block ml-2", copyIconStyle)}
           />

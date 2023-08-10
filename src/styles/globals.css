@@ -42,7 +42,7 @@ body {
   .textarea-scrollbar::-webkit-scrollbar-track {
     box-shadow: none;
   }
-  .textarea-scrollbar::-webkit-resizer {
+  .textarea-scrollbar-resizer::-webkit-resizer {
     background: #121212;
     border-bottom-right-radius: 10px;
   }

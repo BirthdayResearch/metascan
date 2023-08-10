@@ -111,6 +111,7 @@ module.exports = {
         800: "#082FD4",
       },
       dark: {
+        100: "#121212",
         200: "#2B2B2B",
       },
       lightBlue: "#0964F4",

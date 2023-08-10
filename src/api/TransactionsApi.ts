@@ -10,6 +10,7 @@ import {
   RawTransactionI,
   RawTransactionV1,
   RawTxnWithPaginationProps,
+  TxnNextPageParamsProps,
 } from "./types";
 
 export default {
@@ -47,11 +48,6 @@ export default {
     return transaction;
   },
 };
-export interface TxnNextPageParamsProps {
-  block_number: string;
-  items_count: string;
-  index: string;
-}
 
 export interface TxnQueryParamsProps extends TxnNextPageParamsProps {
   page_number?: string;

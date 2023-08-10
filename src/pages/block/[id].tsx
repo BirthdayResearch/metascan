@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { utils } from "ethers";
+import { formatEther, formatUnits } from "viem";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import {
   GetServerSidePropsContext,
@@ -20,8 +20,12 @@ import { isNumeric } from "shared/textHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
 import BlocksApi from "@api/BlocksApi";
-import { TxnNextPageParamsProps } from "@api/TransactionsApi";
-import { BlockProps, RawTransactionI } from "@api/types";
+import {
+  BlockProps,
+  RawTransactionI,
+  TxnNextPageParamsProps,
+} from "@api/types";
+import { GWEI_DECIMAL } from "shared/constants";
 import AddressRow from "./_components/AddressRow";
 import DetailRow from "./_components/DetailRow";
 import GasUsedRow from "./_components/GasUsedRow";
@@ -40,7 +44,7 @@ export default function Block({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const blockNumber = new BigNumber(block.height);
   const prevBlockNumber = blockNumber.minus(1);
-  const nextBlockNumber = blockNumber.plus(1); // TODO: check if nextBlockNumber exists when api is readys
+  const nextBlockNumber = blockNumber.plus(1);
   const timeago = getTimeAgo(block.timestamp);
   const timeDuration = getDuration(Number(timeago));
   const timeInUTC = formatDateToUTC(block.timestamp);
@@ -144,16 +148,17 @@ export default function Block({
               <DetailRow
                 testId="base-fee"
                 label="Base fee"
-                value={utils
-                  .formatUnits(block.base_fee_per_gas ?? "0", "gwei")
-                  .toString()}
+                value={formatUnits(
+                  BigInt(block.base_fee_per_gas ?? "0"),
+                  GWEI_DECIMAL
+                ).toString()}
                 decimalScale={9}
                 suffix=" Gwei" // TODO: Confirm if this is Gwei, DFI or ETH
               />
               <DetailRow
                 testId="burnt-fee"
                 label="Burnt fee"
-                value={utils.formatEther(block.burnt_fees ?? "0")}
+                value={formatEther(BigInt(block.burnt_fees ?? "0"))}
                 decimalScale={10}
                 suffix=" DFI" // TODO: Confirm if this is DFI or ETH
               />

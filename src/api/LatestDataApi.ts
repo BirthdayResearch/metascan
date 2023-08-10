@@ -1,4 +1,4 @@
-import { utils } from "ethers";
+import { formatEther } from "viem";
 import { getTimeAgo } from "shared/durationHelper";
 import { getRewards } from "shared/getRewards";
 import { NetworkConnection } from "@contexts/Environment";
@@ -68,7 +68,7 @@ export default {
 
       return {
         transactionId: data.hash,
-        tokenAmount: utils.formatEther(data.value ?? "0"),
+        tokenAmount: formatEther(BigInt(data.value ?? "0")),
         txnOrBlockInfo: {
           from: data.from.hash ?? BURN_ADDRESS_HASH,
           to: data.to?.hash ?? BURN_ADDRESS_HASH,

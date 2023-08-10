@@ -14,6 +14,7 @@ interface MappingProps {
   symbol?: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const mapping: Record<string, ({ size, symbol }: MappingProps) => JSX.Element> =
   {
     _UTXO: DFI,

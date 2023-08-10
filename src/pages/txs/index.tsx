@@ -1,9 +1,6 @@
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import { SearchBar } from "layouts/components/searchbar/SearchBar";
-import TransactionsApi, {
-  TxnNextPageParamsProps,
-  TxnQueryParamsProps,
-} from "@api/TransactionsApi";
+import TransactionsApi, { TxnQueryParamsProps } from "@api/TransactionsApi";
 import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
@@ -11,7 +8,7 @@ import {
 } from "next";
 import { NetworkConnection } from "@contexts/Environment";
 import Pagination from "@components/commons/Pagination";
-import { RawTransactionI } from "@api/types";
+import { RawTransactionI, TxnNextPageParamsProps } from "@api/types";
 import { isNumeric } from "shared/textHelper";
 import {
   SkeletonLoader,
@@ -19,6 +16,7 @@ import {
 } from "@components/skeletonLoaders/SkeletonLoader";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import TransactionRow from "@components/commons/TransactionRow";
+import { transformTransactionData } from "shared/transactionDataHelper";
 
 interface PageProps {
   transactions: RawTransactionI[];
@@ -55,9 +53,7 @@ export default function Transactions({
       <GradientCardContainer>
         <div className="p-5 md:p-10">
           <div className="flex flex-col md:flex-row py-6 md:py-4 mb-6 justify-between md:items-center relative">
-            <span className="font-bold text-2xl text-white-50">
-              Transactions
-            </span>
+            <h1 className="font-bold text-2xl text-white-50">Transactions</h1>
             {isLoading && (
               <PaginationLoader customStyle="right-0 top-[72px] md:top-8" />
             )}
@@ -67,7 +63,10 @@ export default function Transactions({
             <SkeletonLoader rows={7} screen={SkeletonLoaderScreen.Tx} />
           ) : (
             data.transactions.map((tx) => (
-              <TransactionRow key={tx.hash} rawData={tx} />
+              <TransactionRow
+                key={tx.hash}
+                data={transformTransactionData(tx)}
+              />
             ))
           )}
 

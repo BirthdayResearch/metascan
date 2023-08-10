@@ -7,6 +7,7 @@ export enum SearchResultType {
   Contract = "contract",
   Block = "block",
   Transaction = "transaction",
+  Token = "token",
 }
 
 export interface ResultAddressContract {

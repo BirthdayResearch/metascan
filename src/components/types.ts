@@ -1,5 +1,12 @@
 import { TransactionType } from "@api/types";
 
+export enum AddressType {
+  "Contract" = "Contract",
+  "Token" = "Token",
+  "TokenContract" = "TokenContract",
+  "Wallet" = "Wallet",
+}
+
 export interface TxnWalletInfo {
   from: string;
   to: string | null;

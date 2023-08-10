@@ -1,3 +1,5 @@
+import { TokenProps } from "./TokenApi";
+
 export interface WalletAddressToken {
   address: string;
   type: string;
@@ -42,6 +44,9 @@ export interface WalletAddressInfoI {
   watchlist_names: WatchlistName[];
   public_tags: PublicTag[];
   is_verified: boolean;
+  has_tokens: boolean;
+  has_logs: boolean;
+  has_token_transfers: boolean;
 }
 
 export interface WalletAddressCounterI {
@@ -49,6 +54,13 @@ export interface WalletAddressCounterI {
   token_transfers_count: string;
   gas_usage_count: string;
   validations_count: string;
+}
+
+export interface WalletAddressTokenBalanceI {
+  token: TokenProps;
+  token_id: string | null;
+  token_instance: string | null;
+  value: string;
 }
 
 export enum TransactionStatus {
@@ -95,13 +107,16 @@ export interface DecodedTxInput {
   method_call: string;
   parameters: TxParameters[];
 }
+
+export interface TxnNextPageParamsProps {
+  block_number: string;
+  items_count: string;
+  index: string;
+}
+
 export interface RawTxnWithPaginationProps {
   items: RawTransactionI[];
-  next_page_params?: {
-    block_number?: string;
-    items_count?: string;
-    index?: string;
-  };
+  next_page_params?: TxnNextPageParamsProps;
 }
 
 export interface RawTransactionI {
@@ -109,8 +124,8 @@ export interface RawTransactionI {
   type: number;
   hash: string;
   value: string;
-  from: { hash: string; is_contract: boolean };
-  to: { hash: string; is_contract: boolean } | null;
+  from: AddressProps;
+  to: AddressProps | null;
   status: string;
   result: string;
   timestamp: string;
@@ -129,18 +144,19 @@ export interface RawTransactionI {
   method: string | null;
   confirmations: number;
   token_transfers?: any;
+  created_contract?: AddressProps;
 }
 
-export interface TokenTransferProps {
+export interface TxTokenTransferProps {
   from: {
     hash: string;
     isContract: boolean;
-    isVerified: boolean;
+    isVerified: boolean | null;
   };
   to: {
     hash: string;
     isContract: boolean;
-    isVerified: boolean;
+    isVerified: boolean | null;
   };
   type: string;
   forToken: {
@@ -181,7 +197,7 @@ export interface TransactionI {
   revertReason: string | null;
   method: string | null;
   confirmations: number;
-  tokenTransfers?: TokenTransferProps[];
+  tokenTransfers?: TxTokenTransferProps[];
 }
 
 export interface BlockProps {
@@ -202,20 +218,10 @@ export interface BlockProps {
   size: number;
 }
 
-interface RawTokenTransferDirectionProps {
-  hash: string;
-  implementation_name?: string;
-  is_contract: boolean;
-  is_verified: boolean;
-  name?: string;
-  private_tags: [];
-  public_tags: [];
-  watchlist_names: [];
-}
 export interface RawTxTokenTransfersProps {
   block_hash;
-  from: RawTokenTransferDirectionProps;
-  to: RawTokenTransferDirectionProps;
+  from: AddressProps;
+  to: AddressProps;
   token: {
     address: string;
     decimals?: string | number;
@@ -238,4 +244,130 @@ export interface RawTransactionV1 {
   message: string;
   result: RawTransactionI | null;
   status: string;
+}
+
+export interface AddressProps {
+  hash: string;
+  implementation_name: string | null;
+  is_contract: boolean;
+  is_verified: boolean | null;
+  name: string;
+  private_tags: string[];
+  public_tags: string[];
+  watchlist_names: string[];
+}
+
+export interface SmartContractListItemProps {
+  address: AddressProps;
+  coin_balance: number;
+  compiler_version: string;
+  has_constructor_args: boolean;
+  language: string;
+  market_cap: number | null;
+  optimization_enabled: boolean;
+  tx_count: number | null;
+  verified_at: string;
+}
+
+export interface SmartContractPageParamsProps {
+  items_count: string;
+  smart_contract_id: string;
+}
+
+export interface SmartContractWithPaginationProps {
+  items: SmartContractListItemProps[];
+  next_page_params: SmartContractPageParamsProps;
+}
+
+// TODO (Lyka): Check if we can add typings
+// type InputOutputType = "address" | "_owner" | "uint256" | "bool";
+// type MethodType = "function";
+export enum StateMutability {
+  "Payable" = "payable",
+  "Nonpayable" = "nonpayable",
+  "View" = "view",
+  "Pure" = "pure",
+}
+
+export interface SmartContractInputOutput {
+  internalType: string;
+  name: string;
+  type: string;
+}
+
+export interface SmartContractOutputWithValue {
+  type: string;
+  value: string;
+}
+
+export interface SmartContractMethod {
+  inputs: SmartContractInputOutput[] | [];
+  outputs: SmartContractInputOutput[] | SmartContractOutputWithValue[];
+  method_id?: string;
+  name: string;
+  names?: string[];
+  stateMutability: StateMutability;
+  type: string;
+  description?: string; // TODO: Check if possible to get
+  error?: string;
+}
+
+export enum ContractMethodType {
+  Read = "read",
+  Write = "write",
+  ReadProxy = "read-proxy",
+  WriteProxy = "write-proxy",
+}
+
+export interface SCVersionsBuilds {
+  build: string;
+  longVersion: string;
+  sha256: string;
+  path: string;
+  version: string;
+}
+export interface SCVersionsResponseProps {
+  builds: SCVersionsBuilds[];
+}
+
+export enum CompilerType {
+  "SoliditySingleFile" = "Solidity (Single file)",
+  "SolidityMultiPartFiles" = "Solidity (Multi-Part files)",
+  "SolidityStandardJsonInput" = "Solidity (Standard-Json-Input)",
+  "Vyper" = "Vyper (Experimental)",
+}
+
+export interface RawTokenI {
+  address: string;
+  circulating_market_cap?: string;
+  decimals: string;
+  exchange_rate?: string;
+  holders: string;
+  icon_url?: string;
+  name: string;
+  symbol: string;
+  total_supply: string;
+  type: string;
+}
+
+export interface TokenItemI {
+  token: RawTokenI;
+  token_id?: string;
+  token_instance?: string;
+  value: string;
+}
+
+export interface RawTokensWithPaginationProps {
+  items: TokenItemI[];
+  next_page_params?: {
+    block_number?: string;
+    items_count?: string;
+    index?: string;
+  };
+}
+export interface TokensListPageParamsProps {
+  fiat_value?: string | null;
+  id?: string;
+  items_count?: string;
+  value?: string;
 }

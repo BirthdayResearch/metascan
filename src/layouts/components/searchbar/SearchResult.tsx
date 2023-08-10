@@ -46,6 +46,7 @@ const iconMapping: Record<SearchResultType, IconType> = {
   [SearchResultType.Transaction]: TransactionsIcon,
   [SearchResultType.Address]: FiFileText,
   [SearchResultType.Contract]: FiFileText,
+  [SearchResultType.Token]: FiFileText,
 };
 
 function SearchResultRow({

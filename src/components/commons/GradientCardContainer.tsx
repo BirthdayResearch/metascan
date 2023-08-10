@@ -4,9 +4,14 @@ import React from "react";
 interface GradientCardProps {
   children?: JSX.Element;
   className?: string;
+  fullBorder?: boolean;
 }
 
-function GradientCardContainer({ children, className }: GradientCardProps) {
+function GradientCardContainer({
+  children,
+  className,
+  fullBorder,
+}: GradientCardProps) {
   return (
     <div
       className={clsx(
@@ -14,7 +19,12 @@ function GradientCardContainer({ children, className }: GradientCardProps) {
         className
       )}
     >
-      <div className="bg-black-900 black-gradient-1 rounded-lg w-full h-full">
+      <div
+        className={clsx(
+          "bg-black-900 black-gradient-1 rounded-lg w-full h-full",
+          { "border-[0.5px] border-white-50 border-opacity-[0.15]": fullBorder }
+        )}
+      >
         {children}
       </div>
     </div>

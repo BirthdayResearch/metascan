@@ -54,9 +54,9 @@ export default function Blocks({
     <Container className="px-1 md:px-0 mt-12">
       <SearchBar containerClass="mt-1 mb-6" />
       <GradientCardContainer>
-        <div className="p-5 md:p-10">
+        <div data-testid="blocks-list" className="p-5 md:p-10">
           <div className="flex flex-col md:flex-row py-6 md:py-4 mb-6 justify-between md:items-center relative">
-            <span className="font-bold text-2xl text-white-50">Blocks</span>
+            <h1 className="font-bold text-2xl text-white-50">Blocks</h1>
             {isLoading && (
               <PaginationLoader customStyle="right-0 top-[72px] md:top-8" />
             )}

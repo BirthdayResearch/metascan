@@ -13,11 +13,13 @@ import Pagination from "@components/commons/Pagination";
 import { isNumeric } from "shared/textHelper";
 import clsx from "clsx";
 import Button from "@components/commons/Button";
+import { FiFileText } from "react-icons/fi";
 import PaginationLoader from "@components/skeletonLoaders/PaginationLoader";
 import {
   SkeletonLoader,
   SkeletonLoaderScreen,
 } from "@components/skeletonLoaders/SkeletonLoader";
+import EmptyComponent from "@components/commons/EmptyComponent";
 import VerifiedContractRow from "./_components/VerifiedContractRow";
 
 interface PageProps {
@@ -49,48 +51,69 @@ function SmartContractPagination({
   );
 }
 
-export default function VerifiedContracts({ data, isLoading }) {
+export default function VerifiedContracts({ data, isLoading, isFirstPage }) {
   return (
     <div className="px-1 md:px-0 mt-12">
-      <SearchBar containerClass="mt-1 mb-6" />
-      <GradientCardContainer className="relative">
-        <div className="p-5 md:p-10">
-          <div className="flex flex-row justify-between items-center md:my-4 lg:my-[18px]">
-            <h1
-              data-testid="verified-contract-list-title"
-              className="font-bold text-xl text-white-50"
-            >
-              Contracts
-            </h1>
-            <Button
-              testId="verify-contract"
-              label="Verify contract"
-              href="/address/verify"
-              customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8"
-            />
-          </div>
-          {isLoading ? (
-            <SkeletonLoader rows={22} screen={SkeletonLoaderScreen.Contract} />
-          ) : (
-            data.items.map((item) => (
-              <VerifiedContractRow key={item.address.hash} data={item} />
-            ))
-          )}
-          <div className="relative h-10 md:h-6 lg:pt-1.5">
-            {isLoading && (
-              <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
-            )}
-            <SmartContractPagination nextPageParams={data.next_page_params} />
-          </div>
-        </div>
-      </GradientCardContainer>
+      {isFirstPage && data.items.length === 0 && !isLoading ? (
+        <EmptyComponent
+          icon={FiFileText}
+          title="No contracts found"
+          testId="empty-contracts"
+        />
+      ) : (
+        <>
+          <SearchBar containerClass="mt-1 mb-6" />
+          <GradientCardContainer className="relative">
+            <div className="p-5 md:p-10">
+              <div className="flex flex-row justify-between items-center md:my-4 lg:my-[18px]">
+                <h1
+                  data-testid="verified-contract-list-title"
+                  className="font-bold text-xl text-white-50"
+                >
+                  Contracts
+                </h1>
+                <Button
+                  testId="verify-contract"
+                  label="Verify contract"
+                  href="/address/verify"
+                  customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8"
+                />
+              </div>
+              {isLoading ? (
+                <SkeletonLoader
+                  rows={22}
+                  screen={SkeletonLoaderScreen.Contract}
+                />
+              ) : (
+                data.items.map((item) => (
+                  <VerifiedContractRow key={item.address.hash} data={item} />
+                ))
+              )}
+              <div className="relative h-10 md:h-6 lg:pt-1.5">
+                {isLoading && (
+                  <PaginationLoader customStyle="top-0 lg:top-auto right-0 bottom-0 lg:-bottom-[22px]" />
+                )}
+                <SmartContractPagination
+                  nextPageParams={data.next_page_params}
+                />
+              </div>
+            </div>
+          </GradientCardContainer>
+        </>
+      )}
     </div>
   );
 }
 
 export async function getServerSideProps(
   context: GetServerSidePropsContext
-): Promise<GetServerSidePropsResult<{ data: PageProps; isLoading?: boolean }>> {
+): Promise<
+  GetServerSidePropsResult<{
+    data: PageProps;
+    isLoading?: boolean;
+    isFirstPage: boolean;
+  }>
+> {
   const { network, ...params } = context.query;
   // Avoid fetching if some params are not valid
   const hasInvalidParams =
@@ -108,6 +131,7 @@ export async function getServerSideProps(
     return {
       props: {
         data,
+        isFirstPage: params?.smart_contract_id === undefined,
       },
     };
   } catch (e) {

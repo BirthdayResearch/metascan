@@ -25,7 +25,7 @@ const initialLibraryValues: { [key: string]: string } = [...Array(10)].reduce(
 );
 export default function VerifyContract() {
   const router = useRouter();
-  const queryAddress = router.query.cid;
+  const queryAddress = router.query.aid;
   const [address, setAddress] = useState((queryAddress as string) ?? "");
   const [libraryValues, setLibraryValues] = useState<{ [key: string]: string }>(
     initialLibraryValues

@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { ContractMethodType, SmartContractMethod } from "@api/types";
+import {
+  ContractMethodType,
+  SmartContractMethod,
+  StateMutability,
+} from "@api/types";
 import { useNetwork } from "@contexts/NetworkContext";
 import { useGetContractMethodsMutation } from "@store/contract";
 import { FiLoader } from "react-icons/fi";
@@ -33,26 +37,15 @@ export default function ReadWriteContract({
       type,
     }).unwrap();
 
-    /**
-     * Workaround that manually filters out methods that are not part of `read` methods
-     * TODO: Check in blockscout api why `read` is returning all functions including write
-     */
     if (
       type === ContractMethodType.Read ||
       type === ContractMethodType.ReadProxy
     ) {
-      const writeMethods = await trigger({
-        network: connection,
-        addressHash,
-        type:
-          type === ContractMethodType.Read
-            ? ContractMethodType.Write
-            : ContractMethodType.WriteProxy,
-      }).unwrap();
       // Filter out read methods that are also in write methods
-      const readMethods = data.filter(
-        (readMethod) =>
-          !writeMethods.some((write) => write.name === readMethod.name)
+      const readMethods = data.filter((method) =>
+        [StateMutability.Pure, StateMutability.View].includes(
+          method.stateMutability
+        )
       );
       setMethods(readMethods ?? []);
       setIsLoading(false);

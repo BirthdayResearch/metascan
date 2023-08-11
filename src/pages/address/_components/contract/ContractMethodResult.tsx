@@ -7,12 +7,16 @@ export default function ContractMethodResult({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      {outputs.map((output) => (
+      {outputs.map((output, index) => (
         <div
-          key={`${output.type}${output.value}`}
+          key={`${output.type}${index}`} // eslint-disable-line react/no-array-index-key
           className="text-white-300 break-all"
         >
-          <span>{output.value}</span>
+          <span>
+            {typeof output.value === "bigint"
+              ? BigInt(output.value).toString()
+              : output.value}
+          </span>
           <span className="italic text-sm text-white-900 ml-2">
             {output.type}
           </span>

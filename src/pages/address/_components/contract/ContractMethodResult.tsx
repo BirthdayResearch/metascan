@@ -12,7 +12,7 @@ export default function ContractMethodResult({
           key={`${output.type}${output.value}`}
           className="text-white-300 break-all"
         >
-          <span>{output.value}</span>
+          <span>{output.value.toString()}</span>
           <span className="italic text-sm text-white-900 ml-2">
             {output.type}
           </span>

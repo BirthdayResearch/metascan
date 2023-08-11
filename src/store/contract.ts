@@ -83,7 +83,7 @@ export const contractMethodsApi = createApi({
   reducerPath: "contractMethods",
   baseQuery: fetchBaseQuery({ baseUrl: "/" }),
   endpoints: (builder) => ({
-    getContractMethods: builder.query<
+    getContractMethods: builder.mutation<
       SmartContractMethod[],
       {
         network: NetworkConnection;
@@ -118,5 +118,5 @@ export const contractVerificationApi = createApi({
 });
 
 export const { useGetContractQuery } = contractApi;
-export const { useGetContractMethodsQuery } = contractMethodsApi;
+export const { useGetContractMethodsMutation } = contractMethodsApi;
 export const { useGetVerificationConfigQuery } = contractVerificationApi;

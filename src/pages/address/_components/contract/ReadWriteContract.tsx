@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { ContractMethodType } from "@api/types";
+import { useEffect, useState } from "react";
+import { ContractMethodType, SmartContractMethod } from "@api/types";
 import { useNetwork } from "@contexts/NetworkContext";
-import { useGetContractMethodsQuery } from "@store/contract";
+import { useGetContractMethodsMutation } from "@store/contract";
 import { FiLoader } from "react-icons/fi";
 import LinkText from "@components/commons/LinkText";
 import ContractMethod from "./ContractMethod";
@@ -18,14 +18,54 @@ export default function ReadWriteContract({
   addressHash: string;
   implementationAddress: string | null;
 }) {
+  const [isLoading, setIsLoading] = useState(true);
   const [expandAll, setExpandAll] = useState<boolean>(false);
   const [resetForm, setResetForm] = useState<boolean>(false);
   const { connection } = useNetwork();
-  const { data: methods, isLoading } = useGetContractMethodsQuery({
-    network: connection,
-    addressHash,
-    type,
-  });
+  const [trigger] = useGetContractMethodsMutation();
+  const [methods, setMethods] = useState<SmartContractMethod[]>([]);
+
+  const fetchMethods = async () => {
+    setIsLoading(true);
+    const data = await trigger({
+      network: connection,
+      addressHash,
+      type,
+    }).unwrap();
+
+    /**
+     * Work-around that manually filters out methods that are not part of `read` methods
+     * TODO: Check in blockscout api why `read` is returning all functions including write
+     */
+    if (
+      type === ContractMethodType.Read ||
+      type === ContractMethodType.ReadProxy
+    ) {
+      const writeMethods = await trigger({
+        network: connection,
+        addressHash,
+        type:
+          type === ContractMethodType.Read
+            ? ContractMethodType.Write
+            : ContractMethodType.WriteProxy,
+      }).unwrap();
+      // Filter out read methods that are also in write methods
+      const readMethods = data.filter(
+        (readMethod) =>
+          writeMethods.findIndex((write) => write.name === readMethod.name) < 0
+      );
+      setMethods(readMethods ?? []);
+      setIsLoading(false);
+      return;
+    }
+
+    setMethods(data ?? []);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    fetchMethods();
+  }, []);
 
   // TODO: Add UI loaders
   if (isLoading) {

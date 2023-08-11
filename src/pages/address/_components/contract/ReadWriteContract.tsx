@@ -50,9 +50,8 @@ export default function ReadWriteContract({
             : ContractMethodType.WriteProxy,
       }).unwrap();
       // Filter out read methods that are also in write methods
-      const readMethods = data.filter(
-        (readMethod) =>
-          writeMethods.findIndex((write) => write.name === readMethod.name) < 0
+      const readMethods = data.filter((readMethod) =>
+        writeMethods.some((write) => write.name === readMethod.name)
       );
       setMethods(readMethods ?? []);
       setIsLoading(false);

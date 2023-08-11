@@ -34,7 +34,7 @@ export default function ReadWriteContract({
     }).unwrap();
 
     /**
-     * Work-around that manually filters out methods that are not part of `read` methods
+     * Workaround that manually filters out methods that are not part of `read` methods
      * TODO: Check in blockscout api why `read` is returning all functions including write
      */
     if (

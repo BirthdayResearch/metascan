@@ -34,7 +34,7 @@ export default function ContractMethodForm({
   setResetForm: (reset: boolean) => void;
 }) {
   const router = useRouter();
-  const contractId = router.query.cid as string;
+  const contractId = router.query.aid as string;
   const { isConnected } = useAccount();
 
   const defaultInputValues = getDefaultValues(method.inputs ?? []);

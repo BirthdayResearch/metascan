@@ -41,12 +41,12 @@ export default function ReadWriteContract({
       type === ContractMethodType.Read ||
       type === ContractMethodType.ReadProxy
     ) {
-      // Filter out read methods that are also in write methods
       const readMethods = data.filter((method) =>
         [StateMutability.Pure, StateMutability.View].includes(
           method.stateMutability
         )
       );
+
       setMethods(readMethods ?? []);
       setIsLoading(false);
       return;

@@ -23,9 +23,13 @@ export const V1_TRANSACTION_URL =
 
 export const getBaseUrl = (network: NetworkConnection) => {
   if (network === NetworkConnection.Changi) {
+    return process.env.NEXT_PUBLIC_RPC_URL_CHANGI;
+  }
+  if (network === NetworkConnection.TestNet) {
     return process.env.NEXT_PUBLIC_RPC_URL_TESTNET;
   }
-  return process.env.NEXT_PUBLIC_RPC_URL_TESTNET; // TODO: Replace with NEXT_PUBLIC_RPC_URL_MAINNET when MainNet is enabled
+
+  return process.env.NEXT_PUBLIC_RPC_URL_MAINNET;
 };
 
 export function filterParams(params: { key: string; value }[]): string {

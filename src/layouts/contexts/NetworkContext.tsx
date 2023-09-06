@@ -43,8 +43,8 @@ function mapNetworkObject(connection: NetworkConnection): NetworkContextObject {
   switch (connection) {
     case NetworkConnection.MainNet:
       return { connection, ...getNetwork("mainnet") };
-    // case NetworkConnection.TestNet:
-    //   return { connection, ...getNetwork("testnet") };
+    case NetworkConnection.TestNet:
+      return { connection, ...getNetwork("testnet") };
     case NetworkConnection.Changi:
       return { connection, ...getNetwork("changi") };
     default:

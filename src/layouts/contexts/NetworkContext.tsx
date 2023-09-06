@@ -45,6 +45,8 @@ function mapNetworkObject(connection: NetworkConnection): NetworkContextObject {
       return { connection, ...getNetwork("mainnet") };
     case NetworkConnection.TestNet:
       return { connection, ...getNetwork("testnet") };
+    case NetworkConnection.Changi:
+      return { connection, ...getNetwork("changi") };
     default:
       throw new Error(`${connection as string} network not found`);
   }

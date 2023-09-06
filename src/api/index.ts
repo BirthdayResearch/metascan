@@ -29,10 +29,6 @@ export const getBaseUrl = (network: NetworkConnection) => {
     return process.env.NEXT_PUBLIC_RPC_URL_TESTNET;
   }
 
-  if (network === NetworkConnection.Changi) {
-    return process.env.NEXT_PUBLIC_RPC_URL_CHANGI;
-  }
-
   return process.env.NEXT_PUBLIC_RPC_URL_CHANGI;
 };
 

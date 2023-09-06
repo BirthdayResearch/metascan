@@ -47,21 +47,19 @@ export function HeaderNetworkMenu(): JSX.Element {
               >
                 <GradientCardContainer>
                   <div className="p-5">
-                    {networks
-                      .filter((network) => network === "Changi")
-                      .map((item) => (
-                        <Menu.Item key={item}>
-                          <a
-                            className="flex items-center cursor-pointer py-1.5 mb-1 justify-between"
-                            href={`/?network=${item}`}
-                          >
-                            <div className="text-xl text-white-50">{item}</div>
-                            {connection === item && (
-                              <MdCheckCircle className="h-6 w-6 ml-3 text-green-800" />
-                            )}
-                          </a>
-                        </Menu.Item>
-                      ))}
+                    {networks.map((item) => (
+                      <Menu.Item key={item}>
+                        <a
+                          className="flex items-center cursor-pointer py-1.5 mb-1 justify-between"
+                          href={`/?network=${item}`}
+                        >
+                          <div className="text-xl text-white-50">{item}</div>
+                          {connection === item && (
+                            <MdCheckCircle className="h-6 w-6 ml-3 text-green-800" />
+                          )}
+                        </a>
+                      </Menu.Item>
+                    ))}
                   </div>
                 </GradientCardContainer>
               </Menu.Items>

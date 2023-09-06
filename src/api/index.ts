@@ -22,14 +22,14 @@ export const V1_TRANSACTION_URL =
   "api?module=transaction&action=gettxinfo&txhash=";
 
 export const getBaseUrl = (network: NetworkConnection) => {
-  if (network === NetworkConnection.Changi) {
-    return process.env.NEXT_PUBLIC_RPC_URL_CHANGI;
+  if (network === NetworkConnection.MainNet) {
+    return process.env.NEXT_PUBLIC_RPC_URL_MAINNET;
   }
   if (network === NetworkConnection.TestNet) {
     return process.env.NEXT_PUBLIC_RPC_URL_TESTNET;
   }
 
-  return process.env.NEXT_PUBLIC_RPC_URL_MAINNET;
+  return process.env.NEXT_PUBLIC_RPC_URL_CHANGI;
 };
 
 export function filterParams(params: { key: string; value }[]): string {

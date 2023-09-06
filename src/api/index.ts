@@ -22,7 +22,7 @@ export const V1_TRANSACTION_URL =
   "api?module=transaction&action=gettxinfo&txhash=";
 
 export const getBaseUrl = (network: NetworkConnection) => {
-  if (network === NetworkConnection.TestNet) {
+  if (network === NetworkConnection.Changi) {
     return process.env.NEXT_PUBLIC_RPC_URL_TESTNET;
   }
   return process.env.NEXT_PUBLIC_RPC_URL_TESTNET; // TODO: Replace with NEXT_PUBLIC_RPC_URL_MAINNET when MainNet is enabled

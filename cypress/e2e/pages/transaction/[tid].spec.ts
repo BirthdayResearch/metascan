@@ -1,6 +1,7 @@
+// TODO: Get tx hash from MainNet
 context("/tx/[tid] on macbook-16", () => {
   const txHash =
-    "0x45496f046c1c33569860bf3950db2d7edf9706b9ee16bc566a20d2febe90af7e";
+    "0x5cd0da0095a6ce53ed7c2c9e547b67ac92e0e4afeecfbb3d6f9e9cbb2603ba8a";
 
   beforeEach(() => {
     cy.visit(`/tx/${txHash}`);
@@ -28,12 +29,12 @@ context("/tx/[tid] on macbook-16", () => {
 
   it("should display transaction timestamp", () => {
     cy.findByTestId("transaction-timestamp").contains(
-      "(06-16-2023 04:57:05 AM +UTC)"
+      "(08-06-2023 10:05:10 PM +UTC)"
     );
   });
 
   it("should display transaction block height and redirect to block page", () => {
-    const block = 12137;
+    const block = 12204;
     cy.findByTestId("transaction-block-title").should("have.text", "Block");
     cy.findByTestId("transaction-block")
       .should("be.visible")
@@ -75,12 +76,12 @@ context("/tx/[tid] on macbook-16", () => {
 
   it("should display transaction amount and fee", () => {
     cy.findByTestId("transaction-amount-title").should("have.text", "Amount");
-    cy.findByTestId("transaction-amount").contains("0.30000000 DFI");
+    cy.findByTestId("transaction-amount").contains("100.00000000 DFI");
     cy.findByTestId("transaction-fee-title").should(
       "have.text",
       "Transaction fee"
     );
-    cy.findByTestId("transaction-fee").should("have.text", "0.00028350 DFI");
+    cy.findByTestId("transaction-fee").should("have.text", "0.00027300 DFI");
   });
 
   it("should display wallet details", () => {
@@ -88,7 +89,7 @@ context("/tx/[tid] on macbook-16", () => {
     cy.findByTestId("from-title").should("have.text", "From");
     cy.findByTestId("transaction-details-from")
       .should("have.attr", "href")
-      .and("include", "/address/0xC9CD1e2319C20E792f9f56f3464a44ce2ab5ED7F");
+      .and("include", "/address/0x85F20Bec30f5d12E0C5c8E426268f2F523B308D7");
     cy.findByTestId("transaction-details-from-copied").should("not.exist");
     cy.findByTestId("copy-transaction-details-from").trigger("click");
     cy.findByTestId("transaction-details-from-copied").should("be.visible");
@@ -96,29 +97,29 @@ context("/tx/[tid] on macbook-16", () => {
     cy.findByTestId("to-title").should("have.text", "To");
     cy.findByTestId("transaction-details-to")
       .should("have.attr", "href")
-      .and("include", "/address/0x3494AD49D47fbD5E845f27317A1Ab67093D7324B");
+      .and("include", "/address/0x32dc7D78a638c7a121c5CBb360f4B9BC11e13494");
     cy.findByTestId("transaction-details-to-copied").should("not.exist");
   });
 
   it("should display gas details", () => {
     cy.findByTestId("gas-detail-title").should("have.text", "Gas detail");
     cy.findByTestId("gas-price-title").should("have.text", "Gas price");
-    cy.findByTestId("gas-price").should("have.text", "13.5 Gwei");
+    cy.findByTestId("gas-price").should("have.text", "13 Gwei");
     cy.findByTestId("gas-limit-title").should("have.text", "Gas limit");
-    cy.findByTestId("gas-limit").should("have.text", "21,000");
+    cy.findByTestId("gas-limit").should("have.text", "23,000");
     cy.findByTestId("gas-used-by-txn-title").should(
       "have.text",
       "Gas used by txn"
     );
     cy.findByTestId("gas-used").should("have.text", "21,000");
-    cy.findByTestId("gas-used-percentage").should("have.text", "100.00%");
+    cy.findByTestId("gas-used-percentage").should("have.text", "91.30%");
     cy.findByTestId("nonce-title").should("have.text", "Nonce");
-    cy.findByTestId("nonce").should("have.text", "2");
+    cy.findByTestId("nonce").should("have.text", "8,213");
     cy.findByTestId("position-in-block-title").should(
       "have.text",
       "Position in block"
     );
-    cy.findByTestId("position").should("have.text", "1");
+    cy.findByTestId("position").should("have.text", "9");
     cy.findByTestId("desktop-tooltip-gas-price").should("be.visible");
     cy.findByTestId("desktop-tooltip-gas-limit").should("be.visible");
     cy.findByTestId("desktop-tooltip-gas-used-by-txn").should("be.visible");
@@ -143,7 +144,7 @@ context("/tx/[tid] on macbook-16", () => {
 
 context("/tx/[tid] on iphone-x", () => {
   const txHash =
-    "0x45496f046c1c33569860bf3950db2d7edf9706b9ee16bc566a20d2febe90af7e";
+    "0x5cd0da0095a6ce53ed7c2c9e547b67ac92e0e4afeecfbb3d6f9e9cbb2603ba8a";
 
   beforeEach(() => {
     cy.visit(`/tx/${txHash}`);
@@ -171,12 +172,12 @@ context("/tx/[tid] on iphone-x", () => {
 
   it("should display transaction timestamp", () => {
     cy.findByTestId("transaction-timestamp").contains(
-      "(06-16-2023 04:57:05 AM +UTC)"
+      "08-06-2023 10:05:10 PM +UTC)"
     );
   });
 
   it("should display transaction block height and redirect to block page", () => {
-    const block = 12137;
+    const block = 12204;
     cy.findByTestId("transaction-block-title").should("have.text", "Block");
     cy.findByTestId("transaction-block")
       .should("be.visible")
@@ -218,12 +219,12 @@ context("/tx/[tid] on iphone-x", () => {
 
   it("should display transaction amount and fee", () => {
     cy.findByTestId("transaction-amount-title").should("have.text", "Amount");
-    cy.findByTestId("transaction-amount").contains("0.30000000 DFI");
+    cy.findByTestId("transaction-amount").contains("100.00000000 DFI");
     cy.findByTestId("transaction-fee-title").should(
       "have.text",
       "Transaction fee"
     );
-    cy.findByTestId("transaction-fee").should("have.text", "0.00028350 DFI");
+    cy.findByTestId("transaction-fee").should("have.text", "0.00027300 DFI");
   });
 
   it("should display wallet details", () => {
@@ -231,7 +232,7 @@ context("/tx/[tid] on iphone-x", () => {
     cy.findByTestId("from-title").should("have.text", "From");
     cy.findByTestId("transaction-details-from")
       .should("have.attr", "href")
-      .and("include", "/address/0xC9CD1e2319C20E792f9f56f3464a44ce2ab5ED7F");
+      .and("include", "/address/0x85F20Bec30f5d12E0C5c8E426268f2F523B308D7");
     cy.findByTestId("transaction-details-from-copied").should("not.exist");
     cy.findByTestId("copy-transaction-details-from").trigger("click");
     cy.findByTestId("transaction-details-from-copied").should("be.visible");
@@ -239,29 +240,29 @@ context("/tx/[tid] on iphone-x", () => {
     cy.findByTestId("to-title").should("have.text", "To");
     cy.findByTestId("transaction-details-to")
       .should("have.attr", "href")
-      .and("include", "/address/0x3494AD49D47fbD5E845f27317A1Ab67093D7324B");
+      .and("include", "/address/0x32dc7D78a638c7a121c5CBb360f4B9BC11e13494");
     cy.findByTestId("transaction-details-to-copied").should("not.exist");
   });
 
   it("should display gas details", () => {
     cy.findByTestId("gas-detail-title").should("have.text", "Gas detail");
     cy.findByTestId("gas-price-title").should("have.text", "Gas price");
-    cy.findByTestId("gas-price").should("have.text", "13.5 Gwei");
+    cy.findByTestId("gas-price").should("have.text", "13 Gwei");
     cy.findByTestId("gas-limit-title").should("have.text", "Gas limit");
-    cy.findByTestId("gas-limit").should("have.text", "21,000");
+    cy.findByTestId("gas-limit").should("have.text", "23,000");
     cy.findByTestId("gas-used-by-txn-title").should(
       "have.text",
       "Gas used by txn"
     );
     cy.findByTestId("gas-used").should("have.text", "21,000");
-    cy.findByTestId("gas-used-percentage").should("have.text", "100.00%");
+    cy.findByTestId("gas-used-percentage").should("have.text", "91.30%");
     cy.findByTestId("nonce-title").should("have.text", "Nonce");
-    cy.findByTestId("nonce").should("have.text", "2");
+    cy.findByTestId("nonce").should("have.text", "8,213");
     cy.findByTestId("position-in-block-title").should(
       "have.text",
       "Position in block"
     );
-    cy.findByTestId("position").should("have.text", "1");
+    cy.findByTestId("position").should("have.text", "9");
     cy.findByTestId("mobile-tooltip-gas-price").should("be.visible");
     cy.findByTestId("mobile-tooltip-gas-limit").should("be.visible");
     cy.findByTestId("mobile-tooltip-gas-used-by-txn").should("be.visible");

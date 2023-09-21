@@ -30,7 +30,6 @@ export default function TokenRow({
   rawData: RawTokenI;
   index: number;
 }) {
-  console.log({ totalSup: rawData.total_supply, decimals: rawData.decimals });
   const token = transformTokenData(rawData);
   return (
     <div>
@@ -168,6 +167,8 @@ function TokenName({
 
     if (name !== null) {
       label = name;
+    } else if (name === null && symbol !== null) {
+      label = symbol;
     }
 
     if (name !== null && symbol !== null) {

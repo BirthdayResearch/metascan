@@ -49,7 +49,6 @@ export default {
     const txnRows = Math.min(responseTxnData.length, MAX_ROW);
 
     return responseTxnData.slice(0, txnRows).map((data) => {
-      const toHash = data.to?.hash ?? BURN_ADDRESS_HASH;
       const isFromContract = data.from.is_contract;
       const isToContract = data.to?.is_contract ?? false;
       const tokenTransfers =
@@ -58,7 +57,6 @@ export default {
           : [];
 
       const transactionType = getTransactionType({
-        toHash,
         tokenTransfers,
         isFromContract,
         isToContract,

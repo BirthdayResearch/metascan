@@ -1,38 +1,57 @@
-import React from "react";
-import clsx from "clsx";
-import { useUnitSuffix } from "hooks/useUnitSuffix";
+import React, { PropsWithChildren } from "react";
+import BigNumber from "bignumber.js";
 import GradientCardContainer from "./GradientCardContainer";
+import NumericFormat from "./NumericFormat";
 
 interface StatsCardProps {
   title: string;
-  body: string;
-  footer: string;
+  value: BigNumber;
   testId: string;
+  isLoading: boolean;
+  suffix?: string;
 }
 
-function StatisticCard({ title, body, footer, testId }: StatsCardProps) {
-  const valueToUnitSuffix = useUnitSuffix(body);
-
+export default function StatisticCard({
+  title,
+  value,
+  children,
+  suffix,
+  testId,
+  isLoading,
+}: PropsWithChildren<StatsCardProps>) {
   return (
-    <GradientCardContainer data-testid={testId}>
-      <div className="rounded-[15px] flex flex-col justify-center px-5 lg:px-10 md:px-10 py-8">
-        <div className="text-white-700 font-medium text-xs tracking-wider uppercase ">
+    <GradientCardContainer data-testid={testId} fullBorder>
+      <div className="rounded-[15px] flex flex-col justify-center p-5 md:p-6">
+        <div className="text-white-700 font-medium text-base -tracking-[0.32px]">
           {title}
         </div>
-        <div className="text-white-50 text-2xl font-light tracking-wider py-2">
-          {valueToUnitSuffix}
-        </div>
-        <div
-          className={clsx(
-            "text-transparent bg-clip-text font-medium text-xs tracking-wider uppercase max-w-[60px]",
-            footer.includes("-") ? "brand-gradient-1" : "brand-gradient-2"
+        <div className="py-1">
+          {isLoading ? (
+            <div className="py-1">
+              <div className="bg-dark-200 rounded-[5px] mr-1 w-2/4 h-[24px]" />
+            </div>
+          ) : (
+            <NumericFormat
+              value={value}
+              thousandSeparator
+              decimalScale={0}
+              suffix={suffix}
+              className="text-white-50 text-2xl font-semibold"
+            />
           )}
-        >
-          {footer}
+        </div>
+        <div>
+          {isLoading ? (
+            <div className="py-0.5">
+              <div className="bg-dark-200 rounded-[5px] mr-1 w-4/6 h-[16px]" />
+            </div>
+          ) : (
+            <div className="text-white-50 -tracking-[0.14px] text-sm">
+              {children}
+            </div>
+          )}
         </div>
       </div>
     </GradientCardContainer>
   );
 }
-
-export default StatisticCard;

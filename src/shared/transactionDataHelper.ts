@@ -38,7 +38,6 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
   const tokenTransfers =
     tx.token_transfers?.length > 0 ? getTokenTransfers(tx.token_transfers) : [];
   const transactionType = getTransactionType({
-    toHash,
     tokenTransfers,
     isFromContract,
     isToContract,
@@ -135,14 +134,12 @@ export const getTransactionStatus = ({
   Equivalent logic of transaction_display_type from blockscout
 */
 export const getTransactionType = ({
-  toHash,
   tokenTransfers,
   isFromContract,
   isToContract,
   txTypes,
   createdContract,
 }: {
-  toHash: string | null;
   tokenTransfers: TxTokenTransferProps[];
   isFromContract: boolean;
   isToContract: boolean;
@@ -164,7 +161,7 @@ export const getTransactionType = ({
 
   if (involvesTokenTransfers) {
     transactionType = getTransactionTypeFromTokenTransfers(tokenTransfers);
-  } else if (toHash === BURN_ADDRESS_HASH) {
+  } else if (createdContract?.hash !== undefined) {
     transactionType = TransactionType.ContractCreation;
   } else if (involvesContract) {
     transactionType = TransactionType.ContractCall;

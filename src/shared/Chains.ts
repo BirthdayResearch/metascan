@@ -1,5 +1,24 @@
 import { Chain } from "viem";
 
+export const metachainChangi = {
+  id: 1133,
+  name: "MetaChain Changi",
+  network: "metachainChangi",
+  nativeCurrency: {
+    decimals: 18,
+    name: "MetaChain Changi",
+    symbol: "DFI",
+  },
+  rpcUrls: {
+    // TODO: Replace RPC URLs
+    public: { http: ["https://changi.dfi.team"] },
+    default: { http: ["https://changi.dfi.team"] },
+  },
+  blockExplorers: {
+    default: { name: "MetaScan", url: "https://meta.defiscan.live" },
+  },
+} as const satisfies Chain;
+
 export const metachainTestnet = {
   id: 1133,
   name: "MetaChain Testnet",

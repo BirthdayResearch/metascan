@@ -25,7 +25,7 @@ const initialLibraryValues: { [key: string]: string } = [...Array(10)].reduce(
 );
 export default function VerifyContract() {
   const router = useRouter();
-  const queryAddress = router.query.cid;
+  const queryAddress = router.query.addressHash;
   const [address, setAddress] = useState((queryAddress as string) ?? "");
   const [libraryValues, setLibraryValues] = useState<{ [key: string]: string }>(
     initialLibraryValues
@@ -143,73 +143,81 @@ export default function VerifyContract() {
   };
 
   const submitForm = async () => {
-    setIsVerifying(true);
-    // for standard input json
-    if (compiler.value === CompilerType.SolidityStandardJsonInput) {
-      const data = new FormData();
-      data.append("codeformat", "solidity-standard-json-input");
-      data.append("sourceCode", sourceCode);
-      data.append("contractaddress", address);
-      data.append("compilerversion", version.value);
-      data.append("optimizationRuns", `${optimizationRuns}`);
-      data.append("optimization", `${hasOptimization}`);
-      data.append("contractname", "");
-      const res = await SmartContractApi.verifySmartContractUsingJSONInput(
+    try {
+      setIsVerifying(true);
+      // for standard input json
+      if (compiler.value === CompilerType.SolidityStandardJsonInput) {
+        const data = new FormData();
+        data.append("codeformat", "solidity-standard-json-input");
+        data.append("sourceCode", sourceCode);
+        data.append("contractaddress", address);
+        data.append("compilerversion", version.value);
+        data.append("optimizationRuns", `${optimizationRuns}`);
+        data.append("optimization", `${hasOptimization}`);
+        data.append("contractname", "");
+        const res = await SmartContractApi.verifySmartContractUsingJSONInput(
+          connection,
+          data
+        );
+        await sleep(2000);
+        const verificationStatus = await SmartContractApi.checkVerifyStatus(
+          connection,
+          res.result
+        );
+        setIsVerifying(false);
+        if (
+          verificationStatus.status === "1" &&
+          verificationStatus.result === "Pass - Verified"
+        ) {
+          setIsVerified(true);
+          await redirect();
+        } else {
+          setError(verificationStatus.result);
+          setIsVerified(false);
+        }
+        return;
+      }
+
+      // for multi part file
+      if (compiler.value === CompilerType.SolidityMultiPartFiles) {
+        await submitUsingMultiPartFile();
+        return;
+      }
+
+      // for solidity single file and vyper contract verification
+      const data = {
+        addressHash: address,
+        compilerVersion: version.value,
+        contractSourceCode: sourceCode,
+        optimization: hasOptimization,
+        name: "",
+        // for Solidity single file verification
+        ...(compiler.value === CompilerType.SoliditySingleFile && {
+          evmVersion: evmVersion.value,
+          optimizationRuns,
+          constructorArguments,
+          autodetectConstructorArguments: constructorArguments === "",
+          ...libraryValues,
+        }),
+      };
+      const res = await SmartContractApi.verifySmartContract(
         connection,
-        data
-      );
-      await sleep(2000);
-      const verificationStatus = await SmartContractApi.checkVerifyStatus(
-        connection,
-        res.result
+        data,
+        compiler.value as CompilerType
       );
       setIsVerifying(false);
-      if (
-        verificationStatus.status === "1" &&
-        verificationStatus.result === "Pass - Verified"
-      ) {
+      if (res.status === "1") {
         setIsVerified(true);
         await redirect();
       } else {
-        setError(verificationStatus.result);
+        setError(res.message);
         setIsVerified(false);
       }
-      return;
-    }
-
-    // for multi part file
-    if (compiler.value === CompilerType.SolidityMultiPartFiles) {
-      await submitUsingMultiPartFile();
-      return;
-    }
-
-    // for solidity single file and vyper contract verification
-    const data = {
-      addressHash: address,
-      compilerVersion: version.value,
-      contractSourceCode: sourceCode,
-      optimization: hasOptimization,
-      name: "",
-      // for Solidity single file verification
-      ...(compiler.value === CompilerType.SoliditySingleFile && {
-        evmVersion: evmVersion.value,
-        optimizationRuns,
-        constructorArguments,
-        autodetectConstructorArguments: constructorArguments === "",
-        ...libraryValues,
-      }),
-    };
-    const res = await SmartContractApi.verifySmartContract(
-      connection,
-      data,
-      compiler.value as CompilerType
-    );
-    setIsVerifying(false);
-    if (res.status === "1") {
-      setIsVerified(true);
-      await redirect();
-    } else {
-      setError(res.message);
+    } catch (err) {
+      setError(
+        "An error occurred while verifying the smart contract. Please try again."
+      );
+      setIsVerifying(false);
       setIsVerified(false);
     }
   };

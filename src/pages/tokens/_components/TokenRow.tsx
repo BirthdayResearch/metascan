@@ -3,6 +3,7 @@ import LinkText from "@components/commons/LinkText";
 import NumericFormat from "@components/commons/NumericFormat";
 import { RawTokenI } from "@api/types";
 import { formatUnits } from "viem";
+import { useMemo } from "react";
 
 const transformTokenData = (rawToken: RawTokenI) => ({
   address: rawToken.address,
@@ -160,15 +161,37 @@ function TokenName({
   name: string;
   symbol: string;
 }) {
+  const { displayedLabel, displayedSymbol } = useMemo(() => {
+    let label = "N/A";
+    let tokenSymbol: string | undefined = symbol;
+
+    if (name !== null) {
+      label = name;
+    } else if (name === null && symbol !== null) {
+      label = symbol;
+    }
+
+    if (name !== null && symbol !== null) {
+      tokenSymbol = symbol;
+    } else {
+      tokenSymbol = undefined;
+    }
+
+    return {
+      displayedLabel: label,
+      displayedSymbol: tokenSymbol,
+    };
+  }, [name, symbol]);
+
   return (
-    <div>
+    <div className="flex items-center">
       <LinkText
         href={`/token/${address}`}
         customStyle="font-semibold"
-        label={name ?? "N/A"}
+        label={displayedLabel}
       />
       <span className="text-sm text-white-700 ml-1">
-        {symbol ? `(${symbol})` : ""}
+        {displayedSymbol ? `(${displayedSymbol})` : ""}
       </span>
     </div>
   );

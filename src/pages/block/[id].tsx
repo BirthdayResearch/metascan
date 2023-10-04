@@ -220,7 +220,7 @@ export async function getServerSideProps(
     );
 
     // Handle block that has lost consensus (reorg)
-    if (!block.height && block.hash) {
+    if ((block.height === undefined || block.height === null) && block.hash) {
       return {
         redirect: {
           permanent: false,

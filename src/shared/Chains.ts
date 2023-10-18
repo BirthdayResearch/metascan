@@ -32,8 +32,8 @@ export const metachainTestNet = {
   },
   rpcUrls: {
     // TODO: Replace RPC URLs
-    public: { http: ["http://34.126.92.162:18551"] },
-    default: { http: ["http://34.126.92.162:18551"] },
+    public: { http: ["http://34.38.30.102:18551"] },
+    default: { http: ["http://34.38.30.102:18551"] },
   },
   blockExplorers: {
     default: {

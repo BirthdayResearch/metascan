@@ -3,7 +3,7 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { createConfig, WagmiConfig } from "wagmi";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { metachain, metachainChangi, metachainTestnet } from "shared/Chains";
+import { metachain, metachainChangi, metachainTestNet } from "shared/Chains";
 
 import { NetworkProvider } from "@contexts/NetworkContext";
 import { StoreProvider } from "@contexts/StoreProvider";
@@ -19,13 +19,13 @@ const description =
 const website = "https://meta.defiscan.live";
 
 const metamask = new MetaMaskConnector({
-  chains: [metachain, metachainTestnet, metachainChangi],
+  chains: [metachain, metachainTestNet, metachainChangi],
 });
 
 const config = createConfig(
   getDefaultConfig({
     autoConnect: true,
-    chains: [metachain, metachainTestnet, metachainChangi],
+    chains: [metachain, metachainTestNet, metachainChangi],
     appName,
     connectors: [metamask],
     walletConnectProjectId: "",

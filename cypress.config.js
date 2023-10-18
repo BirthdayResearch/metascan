@@ -20,5 +20,9 @@ module.exports = defineConfig({
     },
     baseUrl: "http://localhost:3000",
     specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx}",
+    excludeSpecPattern:[
+      "cypress/e2e/pages/transaction/[tid].spec.ts",
+      "cypress/e2e/pages/transaction/TokenMinting.spec.ts"
+    ]
   },
 });

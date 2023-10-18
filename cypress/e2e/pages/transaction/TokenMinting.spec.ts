@@ -1,4 +1,4 @@
-context.skip("/tx/[tid] on macbook-16", () => {
+describe.skip("/tx/[tid] on macbook-16", () => {
   // TODO: Replace with mainnet transaction id
   const txHash =
     "0x760e433e8d215309412d8ecd9927192ddf61d0f2546e532951c129ce5bc33c7b";

@@ -1,4 +1,4 @@
-import { NetworkConnection } from "@contexts/Environment";
+import { getEnvironment, NetworkConnection } from "@contexts/Environment";
 
 export function wrapResponse<T>(res: Response): Promise<T> {
   if (!res?.ok) {
@@ -22,10 +22,12 @@ export const V1_TRANSACTION_URL =
   "api?module=transaction&action=gettxinfo&txhash=";
 
 export const getBaseUrl = (network: NetworkConnection) => {
-  if (network === NetworkConnection.MainNet) {
+  const defautlEnv = getEnvironment().networks[0];
+  const currentNetwork = network ?? defautlEnv;
+  if (currentNetwork === NetworkConnection.MainNet) {
     return process.env.NEXT_PUBLIC_RPC_URL_MAINNET;
   }
-  if (network === NetworkConnection.TestNet) {
+  if (currentNetwork === NetworkConnection.TestNet) {
     return process.env.NEXT_PUBLIC_RPC_URL_TESTNET;
   }
 

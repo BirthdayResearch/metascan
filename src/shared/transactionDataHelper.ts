@@ -18,17 +18,6 @@ import { getTimeAgo } from "./durationHelper";
  * @returns formatted tx data
  */
 export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
-  // TODO: Revisit the amount/value format once actual tx data is available
-  const amountIndex = tx.decoded_input?.parameters?.findIndex(
-    (p) => p.name === "amount"
-  );
-  let dfiAmount = "0";
-  if (amountIndex && amountIndex > -1) {
-    dfiAmount = formatEther(
-      BigInt((tx.decoded_input?.parameters[amountIndex].value as string) ?? "0")
-    );
-  }
-
   const fromHash = tx.from.hash ?? BURN_ADDRESS_HASH;
   const toHash = tx.to?.hash ?? tx.created_contract?.hash ?? BURN_ADDRESS_HASH;
   const isFromContract = tx.from.is_contract;
@@ -53,7 +42,7 @@ export const transformTransactionData = (tx: RawTransactionI): TransactionI => {
     transactionType,
     type: tx.type,
     hash: tx.hash,
-    amount: dfiAmount,
+    amount: formatEther(BigInt(tx.value ?? "0")),
     symbol: DFI_TOKEN_SYMBOL, // TODO: Revisit tx symbol
     from: fromHash,
     to: toHash,

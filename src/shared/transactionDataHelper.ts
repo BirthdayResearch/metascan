@@ -145,8 +145,7 @@ export const getTransactionType = ({
   // const involvesCoinTransfer =
   //   txTypes.includes(RawTransactionType.CoinTransfer) &&
   //   !txTypes.includes(RawTransactionType.ContractCreation);
-  const involvesContract =
-    isFromContract || isToContract || createdContract !== undefined;
+  const involvesContract = isFromContract || isToContract || createdContract;
 
   if (involvesTokenTransfers) {
     transactionType = getTransactionTypeFromTokenTransfers(tokenTransfers);

@@ -153,14 +153,14 @@ export default function Block({
                   GWEI_DECIMAL
                 ).toString()}
                 decimalScale={9}
-                suffix=" Gwei" // TODO: Confirm if this is Gwei, DFI or ETH
+                suffix=" Gwei"
               />
               <DetailRow
                 testId="burnt-fee"
                 label="Burnt fee"
                 value={formatEther(BigInt(block.burnt_fees ?? "0"))}
                 decimalScale={10}
-                suffix=" DFI" // TODO: Confirm if this is DFI or ETH
+                suffix=" DFI"
               />
               <DetailRow
                 testId="gas-limit"

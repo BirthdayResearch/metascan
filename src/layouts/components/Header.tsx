@@ -40,6 +40,13 @@ const MenuItems = [
     childPaths: ["/token"],
     imagePath: "/menu/Tokens.svg",
   },
+  {
+    label: "Faucet",
+    pathname: "/faucet",
+    testId: "Desktop.HeaderLink.Faucet",
+    childPaths: ["/token"],
+    imagePath: "/menu/Transactions.svg",
+  },
 ];
 
 export default function Header(): JSX.Element {

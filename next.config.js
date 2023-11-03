@@ -4,13 +4,13 @@ const securityHeaders = [
     value:
       `default-src 'none';` +
       `base-uri 'self';` +
-      `child-src 'self' app.netlify.com;` +
+      `child-src 'self' app.netlify.com https://www.google.com;` +
       `form-action 'none';` +
       `frame-ancestors 'none';` +
       `img-src 'self' images.prismic.io data:;` +
       `media-src 'self';` +
       `object-src 'none';` +
-      `script-src 'self' app.netlify.com netlify-cdp-loader.netlify.app ${
+      `script-src 'self' app.netlify.com netlify-cdp-loader.netlify.app https://www.google.com/recaptcha/ https://www.gstatic.com ${
         process.env.NODE_ENV === "development" ? `'unsafe-eval'` : ""
       };` +
       `style-src 'self' fonts.googleapis.com 'unsafe-inline';` +

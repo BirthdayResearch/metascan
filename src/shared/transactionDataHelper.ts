@@ -142,11 +142,10 @@ export const getTransactionType = ({
     tokenTransfers?.length > 0 ||
     (txTypes.includes(RawTransactionType.TokenTransfer) &&
       !txTypes.includes(RawTransactionType.ContractCreation));
-  // const involvesCoinTransfer =
-  //   txTypes.includes(RawTransactionType.CoinTransfer) &&
-  //   !txTypes.includes(RawTransactionType.ContractCreation);
-  const involvesContract =
-    isFromContract || isToContract || createdContract !== undefined;
+  const involvesCoinTransfer =
+    txTypes.includes(RawTransactionType.CoinTransfer) &&
+    !txTypes.includes(RawTransactionType.ContractCreation);
+  const involvesContract = isFromContract || isToContract || createdContract;
 
   if (involvesTokenTransfers) {
     transactionType = getTransactionTypeFromTokenTransfers(tokenTransfers);
@@ -156,10 +155,9 @@ export const getTransactionType = ({
     transactionType = TransactionType.ContractCall;
   }
   // Display Transaction as tx type for CoinTransfer
-  // else if (involvesCoinTransfer) {
-  //   transactionType = TransactionType.CoinTransfer;
-  // }
-  else {
+  else if (involvesCoinTransfer) {
+    transactionType = TransactionType.CoinTransfer;
+  } else {
     transactionType = TransactionType.Transaction;
   }
 

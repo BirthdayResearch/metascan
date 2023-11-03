@@ -2,15 +2,28 @@ import Container from "@components/commons/Container";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import Button from "@components/commons/Button";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNetwork } from "@contexts/NetworkContext";
+import { NetworkConnection } from "@contexts/Environment";
+import { useRouter } from "next/router";
 import TextInput from "../../layouts/components/TextInput";
 import SectionTitle from "../../layouts/components/SectionTitle";
 
+// hide this page if not on testnet
 export default function Faucet() {
+  const { connection } = useNetwork();
+  const router = useRouter();
+
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
   function onChange() {
     setIsCaptchaSuccess(true);
   }
+
+  useEffect(() => {
+    if (connection !== NetworkConnection.TestNet) {
+      router.push(`/404?network=${connection}`);
+    }
+  }, [connection]);
 
   return (
     <Container className="px-1 md:px-0 mt-12">

@@ -107,7 +107,7 @@ export function HeaderNetworkMenuMobile(): JSX.Element {
           <a
             key={item}
             className={clsx(
-              "flex items-center justify-between cursor-pointer py-3 justify-between flex-1",
+              "flex items-center justify-between cursor-pointer py-3 flex-1",
               { "mb-16": index === networks.length - 1 }
             )}
             href={`/?network=${item}`}

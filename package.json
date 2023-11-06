@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@waveshq/standard-defichain-jellyfishsdk": "^2.4.1",
     "@waveshq/standard-web": "^1.0.4",
+    "@waveshq/walletkit-core": "^1.3.8",
     "bignumber.js": "^9.1.1",
     "clsx": "^1.2.1",
     "connectkit": "^1.4.0",

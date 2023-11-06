@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { useNetwork } from "@contexts/NetworkContext";
 import { NetworkConnection } from "@contexts/Environment";
 import { useRouter } from "next/router";
-import TextInput from "../../layouts/components/TextInput";
 import SectionTitle from "../../layouts/components/SectionTitle";
+import WalletAddressTextInput from "../../layouts/components/WalletAddressTextInput";
 
 // hide this page if not on testnet
 export default function Faucet() {
@@ -15,7 +15,9 @@ export default function Faucet() {
   const router = useRouter();
 
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
-  function onChange() {
+  const [isValidInput, setIsValidInput] = useState(false);
+
+  function onCaptchaChange() {
     setIsCaptchaSuccess(true);
   }
 
@@ -33,18 +35,18 @@ export default function Faucet() {
           <div className="flex flex-col md:flex-row py-6 md:py-4 justify-between md:items-center relative">
             <h1 className="font-bold text-2xl text-white-50">Wallet Address</h1>
           </div>
-          <TextInput />
+          <WalletAddressTextInput setIsValidInput={setIsValidInput} />
           <div className="py-6 flex gap-x-4 flex-row justify-end">
             <ReCAPTCHA
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
-              onChange={() => onChange()}
+              onChange={() => onCaptchaChange()}
               className="text-center items-center"
             />
             <Button
               testId="send_tokens_btn"
               label="Send Tokens"
               customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!isCaptchaSuccessful}
+              disabled={!isCaptchaSuccessful || !isValidInput}
               onClick={() => {}}
             />
           </div>

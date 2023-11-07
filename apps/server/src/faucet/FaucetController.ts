@@ -20,13 +20,13 @@ export class FaucetController {
   @Get(':address')
   @UseInterceptors(AddressValidationInterceptor, CacheInterceptor, DefaultNetworkInterceptor)
   async sendFunds(@Param('address') address: string, @Query('network') network: EnvironmentNetwork): Promise<TransactionResponse> {
-    const key = address;
+    const key = `FAUCET_${address}`;
     const isCached = await this.cacheManager.get(key);
     if (isCached) {
       throw new HttpException('Transfer already done, pleas try again later.', 403);
     }
     const amountToSend: string = this.configService.getOrThrow('faucetAmountPerRequest'); // Amount to send in DFI
-    const ttl = +this.configService.getOrThrow('faucetAmountPerRequest')
+    const ttl = +this.configService.getOrThrow('throttleTimePerAddress')
     const response = await this.faucetService.sendFundsToUser(address, amountToSend, network);
     await this.cacheManager.set(key, true, { ttl });
     return response;

@@ -3,7 +3,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentNetwork } from '@waveshq/walletkit-core';
 import { ethers, parseEther,TransactionResponse } from 'ethers';
-import { EVMProviderService } from 'src/service/EVMProviderService';
+
+import { EVMProviderService } from '../service/EVMProviderService';
 
 @Injectable()
 export class FaucetService {

@@ -193,6 +193,9 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
+      wait-for-expect:
+        specifier: ^3.0.2
+        version: 3.0.2
 
   apps/web:
     dependencies:
@@ -16160,6 +16163,10 @@ packages:
       - utf-8-validate
       - zod
     dev: false
+
+  /wait-for-expect@3.0.2:
+    resolution: {integrity: sha512-cfS1+DZxuav1aBYbaO/kE06EOS8yRw7qOFoD3XtjTkYvCvh3zUvNST8DXK/nPaeqIzIv3P3kL3lRJn8iwOiSag==}
+    dev: true
 
   /walker@1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}

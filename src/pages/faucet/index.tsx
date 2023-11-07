@@ -15,7 +15,7 @@ export default function Faucet() {
   const router = useRouter();
 
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
-  const [isValidInput, setIsValidInput] = useState(false);
+  const [validEvmAddress, setValidEvmAddress] = useState<boolean>(false);
 
   function onCaptchaChange() {
     setIsCaptchaSuccess(true);
@@ -35,7 +35,10 @@ export default function Faucet() {
           <div className="flex flex-col md:flex-row py-6 md:py-4 justify-between md:items-center relative">
             <h1 className="font-bold text-2xl text-white-50">Wallet Address</h1>
           </div>
-          <WalletAddressTextInput setIsValidInput={setIsValidInput} />
+          <WalletAddressTextInput
+            validEvmAddress={validEvmAddress}
+            setValidEvmAddress={setValidEvmAddress}
+          />
           <div className="py-6 flex gap-x-4 flex-row justify-end">
             <ReCAPTCHA
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
@@ -46,7 +49,7 @@ export default function Faucet() {
               testId="send_tokens_btn"
               label="Send Tokens"
               customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!isCaptchaSuccessful || !isValidInput}
+              disabled={!isCaptchaSuccessful || !validEvmAddress}
               onClick={() => {}}
             />
           </div>

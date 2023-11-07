@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, CacheInterceptor,  } from '@nestjs/cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Controller, Get, HttpException, Inject, Param, Query, UseInterceptors } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentNetwork } from '@waveshq/walletkit-core';
@@ -18,9 +18,9 @@ export class FaucetController {
   ) {}
 
   @Get(':address')
-  @UseInterceptors(AddressValidationInterceptor, CacheInterceptor, DefaultNetworkInterceptor)
+  @UseInterceptors(AddressValidationInterceptor, DefaultNetworkInterceptor)
   async sendFunds(@Param('address') address: string, @Query('network') network: EnvironmentNetwork): Promise<TransactionResponse> {
-    const key = `FAUCET_${address}`;
+    const key = `FAUCET_${address}_${network}`;
     const isCached = await this.cacheManager.get(key);
     if (isCached) {
       throw new HttpException('Transfer already done, pleas try again later.', 403);

@@ -25,7 +25,7 @@ export async function waitForTxnToConfirm(
 
 describe('Faucet (e2e)', () => {
   let app: NestFastifyApplication;
-  let defichain: StartedDeFiChainStubContainer;
+  let defichainContainer: StartedDeFiChainStubContainer;
   let testing: MetachainTestingApp;
   let evmRpcUrl: string
   let dvmAddress;
@@ -34,9 +34,9 @@ describe('Faucet (e2e)', () => {
   const evmAddress = "0x9f1FF3f9A4F99f39Ec7F799F90e54bfC88B43FFA"
   const evmPrivateKey = "0x814233c91d926169e9a6817db4de4f325cee91639ff6cfce74029ec9e568d2ad"
   beforeAll(async () => {
-    defichain = await new DeFiChainStubContainer().start();
-    evmRpcUrl = await defichain.getEvmURL();
-    dvmAddress = await defichain.defid.rpc.getNewAddress('legacy', 'legacy');
+    defichainContainer = await new DeFiChainStubContainer().start();
+    evmRpcUrl = await defichainContainer.getEvmURL();
+    dvmAddress = await defichainContainer.defid.rpc.getNewAddress('legacy', 'legacy');
 
     testing = new MetachainTestingApp();
     app = await testing.createNestApp({ 
@@ -45,10 +45,10 @@ describe('Faucet (e2e)', () => {
       privateKey: evmPrivateKey,
     });
     provider = new JsonRpcProvider(evmRpcUrl);
-    await defichain.playgroundClient.wallet.sendUtxo('20', dvmAddress);
-    await defichain.playgroundClient.wallet.sendToken('0', '20', dvmAddress);
-    await defichain.generateBlock(1);
-    await defichain.playgroundRpcClient.account.transferDomain([
+    await defichainContainer.playgroundClient.wallet.sendUtxo('20', dvmAddress);
+    await defichainContainer.playgroundClient.wallet.sendToken('0', '20', dvmAddress);
+    await defichainContainer.generateBlock(1);
+    await defichainContainer.playgroundRpcClient.account.transferDomain([
       {
         src: {
           address: dvmAddress,
@@ -62,12 +62,12 @@ describe('Faucet (e2e)', () => {
         },
       },
     ]);
-    await defichain.generateBlock(10);
+    await defichainContainer.generateBlock(10);
     await testing.start();
   });
 
   afterAll(async () => {
-    await defichain.stop();
+    await defichainContainer.stop();
     await testing.stop();
     app = undefined;
   });
@@ -76,7 +76,7 @@ describe('Faucet (e2e)', () => {
   it('/faucet/:address (GET) should send DFI to address', async () => {
     // mock getEthRpcUrl method
     EVMProviderService.prototype.getEthRpcUrl = jest.fn().mockReturnValue(evmRpcUrl);
-    const address = await defichain.defid.rpc.getNewAddress('eth', 'eth');
+    const address = await defichainContainer.defid.rpc.getNewAddress('eth', 'eth');
     const response = await request(app.getHttpServer())
           .get(`/faucet/${address}?network=${EnvironmentNetwork.LocalPlayground}`)
           .expect(200)

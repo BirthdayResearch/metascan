@@ -59,15 +59,22 @@ describe('FaucetController (e2e)', () => {
   });
 
   it('should return 200 and the expected response for valid request', async () => {
+    const invalidAddress = "0xInvalidAddress"
+    const response = await request(app.getHttpServer())
+      .get(`/faucet/${invalidAddress}?network=${network}`)
+      .expect(400)
+    expect(response.body.message).toBe('Invalid Ethereum address');
+  });
+
+
+  it('should return 200 and the expected response for valid request', async () => {
     const mockTransactionResponse = {} as TransactionResponse;
     jest.spyOn(faucetService, 'sendFundsToUser').mockResolvedValueOnce(mockTransactionResponse);
 
-    await request(app.getHttpServer())
+    const response = await request(app.getHttpServer())
       .get(`/faucet/${evmAddress}?network=${network}`)
       .expect(200)
-      .expect((res) => {
-        expect(res.body).toEqual(mockTransactionResponse);
-      });
+    expect(response.body).toEqual(mockTransactionResponse);
   });
 
   it('should return 403 for repeated requests from the same address', async () => {

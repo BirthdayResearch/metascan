@@ -85,7 +85,6 @@ function ButtonElement({
   };
 
   const transitionStyle = "transition-all ease-in duration-300";
-  console.log({ disabled });
   return (
     <button
       data-testid={`${testId}-button`}

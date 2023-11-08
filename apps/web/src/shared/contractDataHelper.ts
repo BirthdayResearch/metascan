@@ -55,7 +55,7 @@ export interface ContractProps {
  * @returns formatted contract data
  */
 export const transformContractData = (
-  contract: RawContractProps
+  contract: RawContractProps,
 ): ContractProps => ({
   abi: contract.abi,
   compilerSettings: contract.compiler_settings,

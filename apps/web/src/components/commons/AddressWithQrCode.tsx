@@ -50,7 +50,7 @@ export default function AddressWithQrCode({
         <div
           className={clsx(
             "flex flex-row gap-x-2.5 items-center flex-wrap",
-            customStyle ?? ""
+            customStyle ?? "",
           )}
         >
           <LinkText

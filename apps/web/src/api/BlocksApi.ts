@@ -11,7 +11,7 @@ export default {
   getBlocks: async (
     network: NetworkConnection,
     blockNumber?: string,
-    itemsCount?: string
+    itemsCount?: string,
   ): Promise<BlockWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
@@ -25,7 +25,7 @@ export default {
   },
   getBlock: async (
     network: NetworkConnection,
-    blockId: string
+    blockId: string,
   ): Promise<BlockProps> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}`);
@@ -40,7 +40,7 @@ export default {
     blockId: string,
     blockNumber?: string,
     itemsCount?: string,
-    index?: string
+    index?: string,
   ): Promise<RawTxnWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
@@ -49,7 +49,7 @@ export default {
       { key: "index", value: index },
     ]);
     const res = await fetch(
-      `${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}/transactions${params}`
+      `${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}/transactions${params}`,
     );
     return wrapResponse<RawTxnWithPaginationProps>(res);
   },

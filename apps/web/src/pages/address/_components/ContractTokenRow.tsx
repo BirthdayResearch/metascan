@@ -19,7 +19,7 @@ export const TokenTableFixedTitle = {
 export default function ContractTokenRow({ data }: { data: TokenItemI }) {
   const { token } = data;
   const value = new BigNumber(data.value).dividedBy(
-    new BigNumber(10).pow(token?.decimals)
+    new BigNumber(10).pow(token?.decimals),
   );
   const titleClass = "text-base tracking-[0.032em]";
   const valueClass = "text-white-50 tracking-[0.032em]";
@@ -117,7 +117,7 @@ function AddressTokenTableTitle({
     <div
       className={clsx(
         "text-white-700 tracking-[0.01em] leading-[22.4px]",
-        className
+        className,
       )}
     >
       {title}

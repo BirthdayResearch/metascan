@@ -83,7 +83,7 @@ export default function Transactions({
 }
 
 export async function getServerSideProps(
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<{ data: PageProps; isLoading?: boolean }>> {
   const { network, ...params } = context.query;
   // Avoid fetching if some params are not valid
@@ -101,7 +101,7 @@ export async function getServerSideProps(
           network as NetworkConnection,
           params?.block_number as string,
           params?.items_count as string,
-          params?.index as string
+          params?.index as string,
         );
     const data = {
       transactions: txs.items,

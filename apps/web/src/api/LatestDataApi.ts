@@ -41,7 +41,7 @@ export default {
     });
   },
   getLatestTransactions: async (
-    network: NetworkConnection
+    network: NetworkConnection,
   ): Promise<RowData[]> => {
     const baseUrl = getBaseUrl(network);
     const resTxn = await fetch(`${baseUrl}/${MAIN_LATEST_TRANSACTION_URL}`);

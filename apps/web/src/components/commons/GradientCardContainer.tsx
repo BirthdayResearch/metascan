@@ -16,13 +16,15 @@ function GradientCardContainer({
     <div
       className={clsx(
         "rounded-lg w-full h-full p-[0.5px] white-gradient-1 black-gradient-1-shadow backdrop-blur-[6px]",
-        className
+        className,
       )}
     >
       <div
         className={clsx(
           "bg-black-900 black-gradient-1 rounded-lg w-full h-full",
-          { "border-[0.5px] border-white-50 border-opacity-[0.15]": fullBorder }
+          {
+            "border-[0.5px] border-white-50 border-opacity-[0.15]": fullBorder,
+          },
         )}
       >
         {children}

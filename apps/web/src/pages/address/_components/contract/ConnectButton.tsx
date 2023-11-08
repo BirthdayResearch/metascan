@@ -14,7 +14,7 @@ export default function ConnectButton() {
           <div
             className={clsx(
               "rounded-full w-2 h-2",
-              isConnected ? "bg-green-800" : "bg-red-800"
+              isConnected ? "bg-green-800" : "bg-red-800",
             )}
           />
           {isConnected ? (

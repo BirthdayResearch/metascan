@@ -150,7 +150,7 @@ export default function Block({
                 label="Base fee"
                 value={formatUnits(
                   BigInt(block.base_fee_per_gas ?? "0"),
-                  GWEI_DECIMAL
+                  GWEI_DECIMAL,
                 ).toString()}
                 decimalScale={9}
                 suffix=" Gwei"
@@ -172,7 +172,7 @@ export default function Block({
                 label="Gas used"
                 gasUsed={block.gas_used}
                 gasPercentage={new BigNumber(block.gas_used_percentage).toFixed(
-                  2
+                  2,
                 )}
               />
             </div>
@@ -203,7 +203,7 @@ export default function Block({
 }
 
 export async function getServerSideProps(
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<{ data: PageProps; isLoading?: boolean }>> {
   const { network, ...params } = context.query;
 
@@ -216,7 +216,7 @@ export async function getServerSideProps(
   try {
     const block = await BlocksApi.getBlock(
       network as NetworkConnection,
-      blockId
+      blockId,
     );
 
     // Handle block that has lost consensus (reorg)
@@ -238,14 +238,14 @@ export async function getServerSideProps(
     const blockTransactions = hasInvalidParams
       ? await BlocksApi.getBlockTransactions(
           network as NetworkConnection,
-          blockId
+          blockId,
         )
       : await BlocksApi.getBlockTransactions(
           network as NetworkConnection,
           blockId,
           params?.block_number as string,
           params?.items_count as string,
-          params?.index as string
+          params?.index as string,
         );
 
     return {

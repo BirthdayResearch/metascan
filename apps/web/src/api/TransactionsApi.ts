@@ -18,7 +18,7 @@ export default {
     network: NetworkConnection,
     blockNumber?: string,
     itemsCount?: string,
-    index?: string
+    index?: string,
   ): Promise<RawTxnWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
@@ -32,7 +32,7 @@ export default {
   },
   getTransaction: async (
     network: NetworkConnection,
-    txnHash: string
+    txnHash: string,
   ): Promise<RawTransactionI> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}/${txnHash}`);

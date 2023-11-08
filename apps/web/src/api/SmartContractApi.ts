@@ -16,7 +16,7 @@ export default {
   getSmartContracts: async (
     network: NetworkConnection,
     smartContractId?: string,
-    itemsCount?: string
+    itemsCount?: string,
   ): Promise<SmartContractWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([
@@ -29,7 +29,7 @@ export default {
   verifySmartContract: async (
     network: NetworkConnection,
     data,
-    type: CompilerType
+    type: CompilerType,
   ): Promise<any> => {
     const baseUrl = getBaseUrl(network);
     const action =
@@ -45,7 +45,7 @@ export default {
   },
   verifySmartContractUsingJSONInput: async (
     network: NetworkConnection,
-    data
+    data,
   ): Promise<any> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(
@@ -53,13 +53,13 @@ export default {
       {
         method: "POST",
         body: data,
-      }
+      },
     );
     return wrapResponse(res);
   },
   verifySmartContractUsingMultiPartFile: async (
     network: NetworkConnection,
-    data
+    data,
   ): Promise<any> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${VERIFY_SMART_CONTRACT_URL}`, {
@@ -74,7 +74,7 @@ export default {
       `${baseUrl}/api?module=contract&action=checkverifystatus&guid=${guid}`,
       {
         method: "GET",
-      }
+      },
     );
     return wrapResponse(res);
   },

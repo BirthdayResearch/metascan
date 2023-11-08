@@ -45,7 +45,7 @@ export default function GasDetails({
           "border-b border-black-600",
           "mt-9 mb-6",
           "md:mt-[58px] md:mb-9",
-          "lg:mt-[38px] lg:mb-11"
+          "lg:mt-[38px] lg:mb-11",
         )}
       />
       <div>
@@ -147,7 +147,7 @@ export default function GasDetails({
               testId="token-transferred-from"
               label={truncateTextFromMiddle(
                 from,
-                windowDimension <= 1280 ? 4 : 11
+                windowDimension <= 1280 ? 4 : 11,
               )}
               href={`/address/${from}`}
             />
@@ -171,7 +171,7 @@ export default function GasDetails({
               testId="token-transferred-to"
               label={truncateTextFromMiddle(
                 to,
-                windowDimension <= 1280 ? 4 : 11
+                windowDimension <= 1280 ? 4 : 11,
               )}
               href={`/address/${to}`}
             />

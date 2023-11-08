@@ -110,7 +110,7 @@ export default function ContractCode({
             "whitespace-nowrap py-2 px-4 rounded-[24px] text-sm font-medium",
             activeTab === CodeOptions.Code
               ? "bg-white-50 text-black-900"
-              : "text-white-50 bg-black-600"
+              : "text-white-50 bg-black-600",
           )}
         >
           {CodeOptions.Code}
@@ -124,7 +124,7 @@ export default function ContractCode({
               "whitespace-nowrap py-2 px-4 rounded-[24px] text-sm font-medium",
               activeTab === id
                 ? "bg-white-50 text-black-900"
-                : "text-white-50 bg-black-600"
+                : "text-white-50 bg-black-600",
             )}
           >
             {id}
@@ -145,7 +145,7 @@ export default function ContractCode({
               addressHash={addressHash}
               implementationAddress={tab.implementationAddress}
             />
-          )
+          ),
       )}
     </div>
   );

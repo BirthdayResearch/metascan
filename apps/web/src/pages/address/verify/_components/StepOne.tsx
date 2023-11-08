@@ -32,7 +32,7 @@ export function ActionButton({
       className={clsx(
         "flex items-center justify-center rounded-[40px] group border border-white-50 py-5 bg-white-50",
         disabled ? "opacity-[0.3]" : "hover:bg-white-300",
-        customStyle
+        customStyle,
       )}
       disabled={disabled}
       onClick={onClick}
@@ -40,7 +40,7 @@ export function ActionButton({
       <span
         className={clsx(
           "text-black-900 font-semibold -tracking-[0.01em] text-xl",
-          labelStyle
+          labelStyle,
         )}
       >
         {label}

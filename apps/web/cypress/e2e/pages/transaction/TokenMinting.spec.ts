@@ -23,7 +23,7 @@ context("/tx/[tid] on macbook-16", () => {
   it("should display transaction details", () => {
     cy.findByTestId("tx-hash").should("have.text", txHash);
     cy.findByTestId("transaction-timestamp").contains(
-      "(07-26-2023 09:31:33 AM +UTC)"
+      "(07-26-2023 09:31:33 AM +UTC)",
     );
     cy.findByTestId("transaction-block").should("have.text", "89946");
     cy.findByTestId("transaction-block")
@@ -45,7 +45,7 @@ context("/tx/[tid] on macbook-16", () => {
     // Interacted with contract
     cy.findByTestId("interacted-with-contract-(to)-title").should(
       "have.text",
-      "Interacted with contract (To)"
+      "Interacted with contract (To)",
     );
     cy.findByTestId("transaction-details-to")
       .should("have.attr", "href")
@@ -64,7 +64,7 @@ context("/tx/[tid] on macbook-16", () => {
     cy.findByTestId("for-token-container").contains("For: ");
     cy.findByTestId("token-transferred-for").should(
       "have.text",
-      "100,000.00000000"
+      "100,000.00000000",
     );
     cy.findAllByTestId("token-transferred-for-symbol")
       .should("contain.text", "fDUSD")

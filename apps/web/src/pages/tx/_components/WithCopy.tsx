@@ -21,7 +21,7 @@ export default function WithCopy({
 
   const onCopyAddressIconClick = async (
     onTextClick: Dispatch<SetStateAction<boolean>>,
-    address: string
+    address: string,
   ) => {
     onTextClick(true);
     navigator.clipboard.writeText(address);
@@ -38,7 +38,7 @@ export default function WithCopy({
           data-testid={`${testId}-copied`}
           className={clsx(
             "flex flex-row gap-x-2.5 items-center",
-            successCopyStyle
+            successCopyStyle,
           )}
         >
           <span className="text-lightBlue tracking-[0.01em] leading-[22.4px]">

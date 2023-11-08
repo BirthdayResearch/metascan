@@ -60,7 +60,7 @@ function TokenPriceSection({ data }: { data: TokenStats }) {
           <div
             className={clsx(
               "text-right text-sm pt-2 md:pt-0 md:pl-2",
-              data.percentChange < 0 ? "text-red-800" : "text-green-800"
+              data.percentChange < 0 ? "text-red-800" : "text-green-800",
             )}
           >
             {data.percentChange >= 0 ? "+" : ""}

@@ -32,7 +32,7 @@ export default function Maintenance() {
       <div
         className={clsx(
           "pt-4 text-white-50 text-[32px] leading-10 font-bold",
-          "md:text-[48px] md:leading-[56px]"
+          "md:text-[48px] md:leading-[56px]",
         )}
       >
         Block explorer is under maintenance

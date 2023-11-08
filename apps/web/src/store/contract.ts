@@ -93,7 +93,7 @@ export const contractMethodsApi = createApi({
     >({
       query: ({ network, addressHash, type }) => ({
         url: `${getBaseUrl(
-          network
+          network,
         )}/${SMART_CONTRACT_URL}/${addressHash}/methods-${type}?is_custom_abi=false`,
         method: "GET",
       }),

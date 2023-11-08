@@ -18,7 +18,7 @@ export default function DetailRow({
     <div
       className={clsx(
         "flex items-start gap-8 justify-between md:justify-normal",
-        className
+        className,
       )}
     >
       <div className="flex flex-row items-center md:w-[212px]">

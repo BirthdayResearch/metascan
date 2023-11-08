@@ -72,7 +72,7 @@ export default function TransactionRow({ data }: { data: TransactionRowData }) {
             className={clsx(
               "col-start-1 col-end-7 ml-10 lg:ml-0",
               "lg:col-start-4 lg:col-end-8",
-              "xl:col-start-5 xl:col-end-10"
+              "xl:col-start-5 xl:col-end-10",
             )}
           >
             <AmountComponent amount={data.amount} symbol={data.symbol} />
@@ -96,7 +96,7 @@ export default function TransactionRow({ data }: { data: TransactionRowData }) {
           <div
             className={clsx(
               "row-start-1 col-start-7 md:col-start-4 lg:col-start-8 col-end-9 xl:col-start-11 xl:col-end-13 justify-self-end",
-              { "flex items-center": !data.status }
+              { "flex items-center": !data.status },
             )}
           >
             {data.status && <StatusComponent status={data.status} />}

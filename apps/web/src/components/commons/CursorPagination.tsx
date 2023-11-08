@@ -79,11 +79,11 @@ function NumberButton({
 }
 
 NavigateButton.Prev = (
-  props: PropsWithChildren<{ path: string; cursors: string[] | undefined }>
+  props: PropsWithChildren<{ path: string; cursors: string[] | undefined }>,
 ) => NavigateButton({ type: "Prev", ...props });
 
 NavigateButton.Next = (
-  props: PropsWithChildren<{ path: string; cursors: string[] | undefined }>
+  props: PropsWithChildren<{ path: string; cursors: string[] | undefined }>,
 ) => NavigateButton({ type: "Next", ...props });
 
 function NavigateButton({
@@ -137,7 +137,7 @@ function getCursorsFromContext(context: GetServerSidePropsContext): string[] {
  * @param {GetServerSidePropsContext} context to get the last next
  */
 CursorPagination.getNext = (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): string | undefined => last(getCursorsFromContext(context));
 
 /**
@@ -146,7 +146,7 @@ CursorPagination.getNext = (
  */
 CursorPagination.getPages = (
   context: GetServerSidePropsContext,
-  paged: any
+  paged: any,
 ): CursorPage[] => {
   const pages: CursorPage[] = [{ n: 1, active: false, cursors: [] }];
 

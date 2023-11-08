@@ -46,7 +46,7 @@ export const addressApi = createApi({
         ]);
         return {
           url: `${getBaseUrl(
-            network
+            network,
           )}/${WALLET_ADDRESS_URL}/${addressHash}/transactions${params}`,
           method: "GET",
         };
@@ -70,7 +70,7 @@ export const addressApi = createApi({
         ]);
         return {
           url: `${getBaseUrl(
-            network
+            network,
           )}/${WALLET_ADDRESS_URL}/${addressHash}/logs${params}`,
           method: "GET",
         };

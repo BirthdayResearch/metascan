@@ -128,7 +128,7 @@ export default function Transaction({
                 data-testid="transaction-type"
                 className={clsx(
                   "flex gap-1 md:gap-2 items-center",
-                  valueFontCss
+                  valueFontCss,
                 )}
               >
                 <Icon className="text-white-50 stroke-white-50 w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
@@ -254,7 +254,7 @@ function SectionDivider() {
         "border-b border-black-600",
         "mt-9 mb-6",
         "md:mt-14 md:mb-9",
-        "lg:mt-10 lg:mb-11"
+        "lg:mt-10 lg:mb-11",
       )}
     />
   );
@@ -268,7 +268,7 @@ export async function getServerSideProps(context) {
   try {
     const data = await TransactionsApi.getTransaction(
       network as NetworkConnection,
-      tid
+      tid,
     );
     const txDetails = transformTransactionData(data);
 

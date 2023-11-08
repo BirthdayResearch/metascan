@@ -29,7 +29,7 @@ const config = createConfig(
     appName,
     connectors: [metamask],
     walletConnectProjectId: "",
-  })
+  }),
 );
 
 /**

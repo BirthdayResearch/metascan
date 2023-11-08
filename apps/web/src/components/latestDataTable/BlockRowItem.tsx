@@ -25,7 +25,7 @@ export default function BlockRowItem({
       className={clsx(
         "grid grid-cols-1 gap-4 text-white-50 pt-7 ",
         "md:grid-cols-3 md:gap-2 md:pt-5",
-        "xl:grid-cols-4 xs:flex xs:flex-col"
+        "xl:grid-cols-4 xs:flex xs:flex-col",
       )}
     >
       <div
@@ -86,7 +86,7 @@ function WithLabel({
       className={clsx(
         "flex justify-between gap-2 flex-wrap",
         "md:flex-col md:justify-start md:pt-0",
-        "xl:flex-row xs:flex-col"
+        "xl:flex-row xs:flex-col",
       )}
     >
       <div className="inline-block text-white-700">

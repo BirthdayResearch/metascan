@@ -35,7 +35,7 @@ const mapping: Record<string, ({ size, symbol }: MappingProps) => JSX.Element> =
   };
 
 export function getTokenIcon(
-  symbol: string
+  symbol: string,
 ): (size: MappingProps) => JSX.Element {
   let icon = mapping[symbol];
   if (icon === undefined) {

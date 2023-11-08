@@ -31,7 +31,7 @@ export default function DecodedInput({ input }: { input: DecodedTxInput }) {
             <div
               className={clsx(
                 "flex flex-col gap-2 border-b border-black-600 pb-2 last:border-0",
-                "md:grid md:grid-cols-4"
+                "md:grid md:grid-cols-4",
               )}
             >
               <ParameterRow title="Name" value={param.name} />
@@ -51,7 +51,7 @@ function MethodRow({ title, value }: Input) {
       className={clsx(
         "flex justify-between gap-y-2 gap-x-1",
         "md:flex-col md:justify-normal",
-        "xs:flex-col xs:gap-y-1"
+        "xs:flex-col xs:gap-y-1",
       )}
     >
       <div className="text-white-700 font-medium">{title}</div>
@@ -66,7 +66,7 @@ function ParameterRow({ title, value }: Input) {
   return (
     <div
       className={clsx(
-        "flex gap-2 items-center justify-between last:col-span-2 xs:flex-col xs:items-start xs:gap-1"
+        "flex gap-2 items-center justify-between last:col-span-2 xs:flex-col xs:items-start xs:gap-1",
       )}
     >
       <div className="md:hidden text-white-700">{title}</div>

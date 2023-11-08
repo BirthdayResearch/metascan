@@ -91,7 +91,7 @@ export const getTokenTransfers = (tokenTransfers: RawTxTokenTransfersProps[]) =>
       to: tokenTransfer.from.hash,
       value: formatUnits(
         BigInt(tokenTransfer.total.value ?? "0"),
-        Number(tokenTransfer.total.decimals ?? GWEI_DECIMAL)
+        Number(tokenTransfer.total.decimals ?? GWEI_DECIMAL),
       ),
       address: tokenTransfer.token.address,
       type: tokenTransfer.token.type,
@@ -168,7 +168,7 @@ export const getTransactionType = ({
   Equivalent logic of get_transaction_type_from_token_transfers from blockscout
 */
 export const getTransactionTypeFromTokenTransfers = (
-  tokenTransfers: TxTokenTransferProps[] | { type: string }[]
+  tokenTransfers: TxTokenTransferProps[] | { type: string }[],
 ) => {
   if (tokenTransfers.length > 0) {
     if (
@@ -185,7 +185,7 @@ export const getTransactionTypeFromTokenTransfers = (
     }
     if (
       tokenTransfers.filter(
-        (tt) => tt.type === RawTransactionType.TokenCreation
+        (tt) => tt.type === RawTransactionType.TokenCreation,
       ).length === tokenTransfers.length
     ) {
       return TransactionType.TokenCreate;

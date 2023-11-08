@@ -68,20 +68,20 @@ export default function TokenSearchDropDown({
       <div
         className={clsx(
           "p-5 w-full h-full overflow-y-hidden hover:overflow-y-auto",
-          { "hover:overflow-y-hidden": searchedList.length <= 3 }
+          { "hover:overflow-y-hidden": searchedList.length <= 3 },
         )}
       >
         <div
           className={clsx(
             "relative group flex w-full rounded-lg p-[0.5px] mb-5 bg-black-500 focus-within:bg-lightBlue black-gradient-1-shadow backdrop-blur-[6px]",
-            "transition duration-300 ease-in"
+            "transition duration-300 ease-in",
           )}
         >
           {!isFocused && (
             <div
               className={clsx(
                 "absolute opacity-0 inset-0 rounded-lg transition brand-gradient-1 group-hover:opacity-100 z-[-10]",
-                "transition duration-300 ease-in"
+                "transition duration-300 ease-in",
               )}
             />
           )}

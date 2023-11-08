@@ -96,7 +96,7 @@ export default function Address({
   const [isAddressCopied, setIsAddressCopied] = useState(false);
   const [isQrCodeClicked, setIsQrCodeClicked] = useState(false);
   const [selectedTab, setSelectedTab] = useState(
-    AddressContractTabsTitle.Transactions
+    AddressContractTabsTitle.Transactions,
   );
 
   useEffect(() => {
@@ -193,7 +193,7 @@ export default function Address({
               "grid gap-x-5 gap-y-6",
               "md:grid md:grid-cols-2",
               "lg:grid-cols-3",
-              "mt-8"
+              "mt-8",
             )}
           >
             {addressType === AddressType.Token && (
@@ -242,7 +242,7 @@ export default function Address({
                   href={`/address/${walletDetail.creator_address_hash ?? aid}`}
                   label={truncateTextFromMiddle(
                     walletDetail.creator_address_hash ?? aid,
-                    truncateTextLength
+                    truncateTextLength,
                   )}
                   customStyle="break-all text-end md:text-start"
                 />
@@ -271,7 +271,7 @@ export default function Address({
                       thousandSeparator
                       value={formatUnits(
                         BigInt(walletDetail.token.total_supply ?? "0"),
-                        Number(walletDetail.token.decimals ?? GWEI_DECIMAL)
+                        Number(walletDetail.token.decimals ?? GWEI_DECIMAL),
                       )}
                       decimalScale={0}
                       suffix={
@@ -478,7 +478,7 @@ export default function Address({
 }
 
 export async function getServerSideProps(
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<WalletDetailProps>> {
   const { network } = context.query;
   const aid = context.params?.aid?.toString().trim() as string;
@@ -490,16 +490,16 @@ export async function getServerSideProps(
   try {
     const walletDetail = await WalletAddressApi.getDetail(
       network as NetworkConnection,
-      aid
+      aid,
     );
     const counters = await WalletAddressApi.getCounters(
       network as NetworkConnection,
-      aid
+      aid,
     );
 
     const allTokens = await WalletAddressApi.getAllAddressTokens(
       network as NetworkConnection,
-      aid
+      aid,
     );
     const tokensCount = allTokens?.length ?? 0;
 

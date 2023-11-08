@@ -27,7 +27,7 @@ export function HeaderNetworkMenu(): JSX.Element {
               <CgChevronDown
                 className={clsx(
                   "h-6 w-6 text-white-700 transition-[transform]",
-                  { "rotate-180": open }
+                  { "rotate-180": open },
                 )}
               />
             </Menu.Button>
@@ -100,7 +100,7 @@ export function HeaderNetworkMenuMobile(): JSX.Element {
       <div
         className={clsx(
           "absolute left-0 transition-[max-height] duration-300 overflow-hidden pl-12 pr-5 mr-0.5 w-full",
-          { "max-h-0": !open, "max-h-screen": open }
+          { "max-h-0": !open, "max-h-screen": open },
         )}
       >
         {networks.map((item, index) => (
@@ -108,7 +108,7 @@ export function HeaderNetworkMenuMobile(): JSX.Element {
             key={item}
             className={clsx(
               "flex items-center justify-between cursor-pointer py-3 justify-between flex-1",
-              { "mb-16": index === networks.length - 1 }
+              { "mb-16": index === networks.length - 1 },
             )}
             href={`/?network=${item}`}
           >

@@ -35,12 +35,12 @@ export default function Pagination<T>({
 
   const getPageQueryParams = (pageNumber: number) =>
     previousPagesParams.find(
-      (page) => Number(page?.page_number) === pageNumber
+      (page) => Number(page?.page_number) === pageNumber,
     );
 
   const previousPageQuery = useMemo(
     () => getPageQueryParams(Number(router.query.page_number) - 1),
-    [router.query]
+    [router.query],
   );
 
   const getPageButtons = (pageNumber) => {
@@ -83,7 +83,7 @@ export default function Pagination<T>({
   useEffect(() => {
     if (
       !previousPagesParams.some(
-        (page) => page?.page_number === (router.query.page_number as string)
+        (page) => page?.page_number === (router.query.page_number as string),
       )
     ) {
       // Store page query params to be used for previouPage button
@@ -115,7 +115,7 @@ export default function Pagination<T>({
       data-testid="pagination-container"
       className={clsx(
         "flex space-x-1 flex-row justify-end mt-4",
-        containerClass
+        containerClass,
       )}
     >
       {previousPageQuery && (

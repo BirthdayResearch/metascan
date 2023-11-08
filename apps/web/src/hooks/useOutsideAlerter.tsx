@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, MutableRefObject } from "react";
 
 export function useOutsideAlerter(
   ref: MutableRefObject<HTMLDivElement | null>,
-  setIsTokenClicked: Dispatch<SetStateAction<boolean>>
+  setIsTokenClicked: Dispatch<SetStateAction<boolean>>,
 ) {
   useEffect(() => {
     function handleClickOutside(event) {

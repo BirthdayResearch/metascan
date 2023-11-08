@@ -22,7 +22,7 @@ export default function Page404() {
       <div
         className={clsx(
           "pt-1 text-white-50 text-[32px] font-bold",
-          "md:text-[56px]"
+          "md:text-[56px]",
         )}
       >
         Page Not Found

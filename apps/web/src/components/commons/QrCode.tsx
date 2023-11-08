@@ -78,7 +78,7 @@ const sleep = (ms: number) =>
 
 const onCopyAddressIconClick = async (
   onTextClick: Dispatch<SetStateAction<boolean>>,
-  address: string
+  address: string,
 ) => {
   onTextClick(true);
   navigator.clipboard.writeText(address);

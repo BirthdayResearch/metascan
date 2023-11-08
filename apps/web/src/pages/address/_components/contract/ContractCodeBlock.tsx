@@ -57,7 +57,7 @@ export default function ContractCodeBlock({
       id={fileName}
       className={clsx(
         "flex flex-col md:gap-y-[23px] gap-y-[21px]",
-        index === 1 ? "mt-[47.5px] mb-[53px]" : "my-[53px]"
+        index === 1 ? "mt-[47.5px] mb-[53px]" : "my-[53px]",
       )}
     >
       <div className="flex flex-row md:items-center">
@@ -120,7 +120,7 @@ export default function ContractCodeBlock({
           onMouseLeave={handleMouseLeave}
           className={clsx(
             "px-[19px] py-4",
-            isCodeExpanded ? "h-full" : `h-[${codeBlockHeight}px] over`
+            isCodeExpanded ? "h-full" : `h-[${codeBlockHeight}px] over`,
           )}
         >
           <CodeBlock
@@ -149,7 +149,7 @@ export default function ContractCodeBlock({
 
 const onCopyCodeIconClick = async (
   onCopyClick: Dispatch<SetStateAction<boolean>>,
-  address: string
+  address: string,
 ) => {
   onCopyClick(true);
   navigator.clipboard.writeText(address);
@@ -159,14 +159,14 @@ const onCopyCodeIconClick = async (
 
 const onExpandCodeIconClick = (
   onExpandClick: Dispatch<SetStateAction<boolean>>,
-  isCodeExpanded: boolean
+  isCodeExpanded: boolean,
 ) => {
   onExpandClick(!isCodeExpanded);
 };
 
 const onPermaLinkClick = async (
   setIsPermaLinkClick: Dispatch<SetStateAction<boolean>>,
-  componentId: string
+  componentId: string,
 ) => {
   setIsPermaLinkClick(true);
   let copyLink = window.location.href;

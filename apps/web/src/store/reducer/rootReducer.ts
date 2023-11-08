@@ -25,7 +25,7 @@ export function initializeStore() {
         contractMethodsApi.middleware,
         contractVerificationApi.middleware,
         tokenApi.middleware,
-        addressApi.middleware
+        addressApi.middleware,
       ),
   });
 }

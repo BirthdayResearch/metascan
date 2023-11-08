@@ -11,7 +11,7 @@ class Environment {
   constructor(
     public readonly name: "Production" | "Development",
     public readonly debug: boolean,
-    public readonly networks: NetworkConnection[]
+    public readonly networks: NetworkConnection[],
   ) {}
 
   /**

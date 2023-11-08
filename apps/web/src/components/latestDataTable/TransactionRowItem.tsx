@@ -29,7 +29,7 @@ export default function TransactionRowItem({
         "grid grid-cols-1 gap-2 text-white-50 pt-7 ",
         "md:grid-cols-4 md:gap-5 md:pt-5",
         "xl:grid-cols-6 xl:gap-x-9",
-        "2.5xl:gap-x-12"
+        "2.5xl:gap-x-12",
       )}
     >
       <div
@@ -56,7 +56,7 @@ export default function TransactionRowItem({
         className={clsx(
           "flex flex-col flex-wrap gap-2 ml-8 mt-[14px]",
           "md:flex-row md:items-center md:ml-0 md:mt-0",
-          "xl:col-span-3 xl:grid xl:grid-cols-2 xs:ml-0"
+          "xl:col-span-3 xl:grid xl:grid-cols-2 xs:ml-0",
         )}
       >
         <div className="inline-flex gap-1 md:justify-center">
@@ -85,7 +85,7 @@ export default function TransactionRowItem({
         className={clsx(
           "flex flex-col justify-between ml-8",
           "md:col-span-2 md:text-right md:ml-0",
-          "xl:grid xl:grid-cols-2 xl:gap-2 xs:ml-0"
+          "xl:grid xl:grid-cols-2 xl:gap-2 xs:ml-0",
         )}
       >
         <NumericFormat

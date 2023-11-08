@@ -85,7 +85,7 @@ export const tokenApi = createApi({
           : "";
         return {
           url: `${getBaseUrl(
-            network
+            network,
           )}/${WALLET_ADDRESS_URL}/${addressHash}/tokens${params}`,
           method: "GET",
         };
@@ -107,7 +107,7 @@ export const tokenApi = createApi({
         ]);
         return {
           url: `${getBaseUrl(
-            network
+            network,
           )}/${TOKENS_URL}/${tokenId}/holders${params}`,
           method: "GET",
         };
@@ -129,7 +129,7 @@ export const tokenApi = createApi({
         ]);
         return {
           url: `${getBaseUrl(
-            network
+            network,
           )}/${TOKENS_URL}/${tokenId}/transfers${params}`,
           method: "GET",
         };

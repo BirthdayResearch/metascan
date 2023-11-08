@@ -12,7 +12,7 @@ export default function BalanceDetails() {
 
   const onTokenDropDownIconClick = (
     setIsTokenIconDropdownClicked: Dispatch<SetStateAction<boolean>>,
-    isTokenClicked: boolean
+    isTokenClicked: boolean,
   ) => {
     if (isTokenClicked) {
       setIsTokenIconDropdownClicked(false);
@@ -84,13 +84,13 @@ export default function BalanceDetails() {
             onKeyDown={() =>
               onTokenDropDownIconClick(
                 setIsTokenIconClicked,
-                isTokenIconClicked
+                isTokenIconClicked,
               )
             }
             onClick={() =>
               onTokenDropDownIconClick(
                 setIsTokenIconClicked,
-                isTokenIconClicked
+                isTokenIconClicked,
               )
             }
             className="flex flex-row items-center gap-x-[10.29px]"

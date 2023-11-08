@@ -6,7 +6,7 @@ export const truncateTextFromMiddle = (text: string, length = 5): string => {
   }
   return `${text.substring(0, length)}...${text.substring(
     text.length - length,
-    text.length
+    text.length,
   )}`;
 };
 
@@ -22,9 +22,9 @@ export function isAlphanumeric(input: string, ignore?: string): boolean {
     str = input.replace(
       new RegExp(
         "[".concat(ignore.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), "]"),
-        "g"
+        "g",
       ),
-      ""
+      "",
     );
   }
 

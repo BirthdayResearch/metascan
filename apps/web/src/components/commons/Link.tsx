@@ -51,7 +51,7 @@ const Link = forwardRef<HTMLAnchorElement, PropsWithChildren<LinkProps>>(
         {children}
       </NextLink>
     );
-  }
+  },
 );
 
 export default Link;

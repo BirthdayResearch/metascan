@@ -29,7 +29,7 @@ context("/tx/[tid] on macbook-16", () => {
 
   it("should display transaction timestamp", () => {
     cy.findByTestId("transaction-timestamp").contains(
-      "(06-16-2023 04:57:05 AM +UTC)"
+      "(06-16-2023 04:57:05 AM +UTC)",
     );
   });
 
@@ -45,14 +45,14 @@ context("/tx/[tid] on macbook-16", () => {
     cy.findByTestId("transaction-block").click();
     cy.location("href").should(
       "eq",
-      `${Cypress.config().baseUrl}/block/${block}`
+      `${Cypress.config().baseUrl}/block/${block}`,
     );
   });
 
   it("should have number of block confirmations", () => {
     cy.findByTestId("transaction-confimations-title").should(
       "have.text",
-      "Confirmation"
+      "Confirmation",
     );
     cy.findByTestId("transaction-confirmations")
       .should("be.visible")
@@ -67,7 +67,7 @@ context("/tx/[tid] on macbook-16", () => {
   it("should display transaction type and status", () => {
     cy.findByTestId("transaction-type-title").should(
       "have.text",
-      "Transaction type"
+      "Transaction type",
     );
     cy.findByTestId("transaction-type").should("have.text", "Contract call");
     cy.findByTestId("transaction-status-title").should("have.text", "Status");
@@ -79,7 +79,7 @@ context("/tx/[tid] on macbook-16", () => {
     cy.findByTestId("transaction-amount").contains("0.30000000 DFI");
     cy.findByTestId("transaction-fee-title").should(
       "have.text",
-      "Transaction fee"
+      "Transaction fee",
     );
     cy.findByTestId("transaction-fee").should("have.text", "0.00028350 DFI");
   });
@@ -109,7 +109,7 @@ context("/tx/[tid] on macbook-16", () => {
     cy.findByTestId("gas-limit").should("have.text", "21,000");
     cy.findByTestId("gas-used-by-txn-title").should(
       "have.text",
-      "Gas used by txn"
+      "Gas used by txn",
     );
     cy.findByTestId("gas-used").should("have.text", "21,000");
     cy.findByTestId("gas-used-percentage").should("have.text", "100.00%");
@@ -117,7 +117,7 @@ context("/tx/[tid] on macbook-16", () => {
     cy.findByTestId("nonce").should("have.text", "2");
     cy.findByTestId("position-in-block-title").should(
       "have.text",
-      "Position in block"
+      "Position in block",
     );
     cy.findByTestId("position").should("have.text", "1");
     cy.findByTestId("desktop-tooltip-gas-price").should("be.visible");
@@ -130,7 +130,7 @@ context("/tx/[tid] on macbook-16", () => {
   it("should display raw input", () => {
     cy.findByTestId("transaction-raw-input-title").should(
       "have.text",
-      "Raw input"
+      "Raw input",
     );
     cy.findByTestId("hex-btn").should("have.text", "Hex (Default)");
     cy.findByTestId("transaction-hex").should("have.text", "0x");
@@ -172,7 +172,7 @@ context("/tx/[tid] on iphone-x", () => {
 
   it("should display transaction timestamp", () => {
     cy.findByTestId("transaction-timestamp").contains(
-      "(06-16-2023 04:57:05 AM +UTC)"
+      "(06-16-2023 04:57:05 AM +UTC)",
     );
   });
 
@@ -188,14 +188,14 @@ context("/tx/[tid] on iphone-x", () => {
     cy.findByTestId("transaction-block").click();
     cy.location("href").should(
       "eq",
-      `${Cypress.config().baseUrl}/block/${block}`
+      `${Cypress.config().baseUrl}/block/${block}`,
     );
   });
 
   it("should have number of block confirmations", () => {
     cy.findByTestId("transaction-confimations-title").should(
       "have.text",
-      "Confirmation"
+      "Confirmation",
     );
     cy.findByTestId("transaction-confirmations")
       .should("be.visible")
@@ -210,7 +210,7 @@ context("/tx/[tid] on iphone-x", () => {
   it("should display transaction type and status", () => {
     cy.findByTestId("transaction-type-title").should(
       "have.text",
-      "Transaction type"
+      "Transaction type",
     );
     cy.findByTestId("transaction-type").should("have.text", "Contract call");
     cy.findByTestId("transaction-status-title").should("have.text", "Status");
@@ -222,7 +222,7 @@ context("/tx/[tid] on iphone-x", () => {
     cy.findByTestId("transaction-amount").contains("0.30000000 DFI");
     cy.findByTestId("transaction-fee-title").should(
       "have.text",
-      "Transaction fee"
+      "Transaction fee",
     );
     cy.findByTestId("transaction-fee").should("have.text", "0.00028350 DFI");
   });
@@ -252,7 +252,7 @@ context("/tx/[tid] on iphone-x", () => {
     cy.findByTestId("gas-limit").should("have.text", "21,000");
     cy.findByTestId("gas-used-by-txn-title").should(
       "have.text",
-      "Gas used by txn"
+      "Gas used by txn",
     );
     cy.findByTestId("gas-used").should("have.text", "21,000");
     cy.findByTestId("gas-used-percentage").should("have.text", "100.00%");
@@ -260,7 +260,7 @@ context("/tx/[tid] on iphone-x", () => {
     cy.findByTestId("nonce").should("have.text", "2");
     cy.findByTestId("position-in-block-title").should(
       "have.text",
-      "Position in block"
+      "Position in block",
     );
     cy.findByTestId("position").should("have.text", "1");
     cy.findByTestId("mobile-tooltip-gas-price").should("be.visible");
@@ -273,7 +273,7 @@ context("/tx/[tid] on iphone-x", () => {
   it("should display raw input", () => {
     cy.findByTestId("transaction-raw-input-title").should(
       "have.text",
-      "Raw input"
+      "Raw input",
     );
     cy.findByTestId("hex-btn").should("have.text", "Hex (Default)");
     cy.findByTestId("transaction-hex").should("have.text", "0x");

@@ -57,7 +57,7 @@ export default function RawInput({ hex }: { hex: string }) {
         data-testid="transaction-hex"
         className={clsx(
           "textarea-scrollbar textarea-scrollbar-resizer w-full h-[200px] md:h-28 lg:h-auto transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-black-800 border-[1px] border-black-600 text-white-50 p-4 lg:px-10",
-          allowResize ? "resize-y" : "resize-none"
+          allowResize ? "resize-y" : "resize-none",
         )}
         disabled
         value={displayedInput}
@@ -92,7 +92,7 @@ function RawInputSelectButton({
         "font-semibold md:font-medium text-xs md:text-sm leading-[18.2px] px-4 py-2 mr-2 rounded-[24px]",
         isSelected
           ? "bg-white-50 text-black-900"
-          : "bg-black-600 text-white-50 hover:opacity-70"
+          : "bg-black-600 text-white-50 hover:opacity-70",
       )}
       onClick={() => !isSelected && onClick(id)}
     >

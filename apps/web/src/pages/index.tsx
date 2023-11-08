@@ -50,13 +50,12 @@ interface LatestDataProps {
 }
 
 export async function getServerSideProps(
-  context
+  context,
 ): Promise<GetServerSidePropsResult<LatestDataProps>> {
   try {
     const { network } = context.query;
-    const latestTransactions = await LatestDataApi.getLatestTransactions(
-      network
-    );
+    const latestTransactions =
+      await LatestDataApi.getLatestTransactions(network);
     const latestBlocks = await LatestDataApi.getLatestBlocks(network);
     return {
       props: {

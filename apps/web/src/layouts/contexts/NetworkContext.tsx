@@ -18,7 +18,7 @@ export interface NetworkContextObject extends NetworkObject {
 }
 
 export const NetworkContext = createContext<NetworkContextObject>(
-  undefined as any
+  undefined as any,
 );
 
 export function useNetwork(): NetworkContextObject {

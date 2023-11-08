@@ -4,7 +4,7 @@ import { TOKENS_URL, getBaseUrl, wrapResponse } from ".";
 export default {
   getToken: async (
     network: NetworkConnection,
-    tokenId: string
+    tokenId: string,
   ): Promise<TokenProps> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${TOKENS_URL}/${tokenId}`);
@@ -12,7 +12,7 @@ export default {
   },
   getTokenCounters: async (
     network: NetworkConnection,
-    tokenId: string
+    tokenId: string,
   ): Promise<TokenCountersProps> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${TOKENS_URL}/${tokenId}/counters`);

@@ -106,7 +106,7 @@ export default function VerifiedContracts({ data, isLoading, isFirstPage }) {
 }
 
 export async function getServerSideProps(
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): Promise<
   GetServerSidePropsResult<{
     data: PageProps;
@@ -126,7 +126,7 @@ export async function getServerSideProps(
       : await SmartContractApi.getSmartContracts(
           network as NetworkConnection,
           params?.smart_contract_id as string,
-          params?.items_count as string
+          params?.items_count as string,
         );
     return {
       props: {

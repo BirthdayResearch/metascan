@@ -11,13 +11,13 @@ import Address, { WalletDetailProps } from "pages/address/[aid]";
 import { isAlphanumeric } from "shared/textHelper";
 
 export default function Token(
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
+  props: InferGetServerSidePropsType<typeof getServerSideProps>,
 ) {
   return <Address {...props} isTokenPage />;
 }
 
 export async function getServerSideProps(
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<WalletDetailProps>> {
   const { network } = context.query;
   const tokenId = context.params?.tokenId?.toString().trim() as string;
@@ -29,22 +29,22 @@ export async function getServerSideProps(
   try {
     const walletDetail = await WalletAddressApi.getDetail(
       network as NetworkConnection,
-      tokenId
+      tokenId,
     );
     const counters = await WalletAddressApi.getCounters(
       network as NetworkConnection,
-      tokenId
+      tokenId,
     );
 
     const allTokens = await WalletAddressApi.getAllAddressTokens(
       network as NetworkConnection,
-      tokenId
+      tokenId,
     );
     const tokensCount = allTokens?.length ?? 0;
 
     const tokenCounters = await TokenApi.getTokenCounters(
       network as NetworkConnection,
-      tokenId
+      tokenId,
     );
 
     return {

@@ -84,7 +84,7 @@ function ButtonTab({
         type="button"
         className={clsx(
           "font-medium",
-          active ? "text-white-50" : "text-white-700"
+          active ? "text-white-50" : "text-white-700",
         )}
         data-testid={testId}
         onClick={() => setSelectedTab(tab)}

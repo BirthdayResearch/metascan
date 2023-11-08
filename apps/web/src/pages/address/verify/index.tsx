@@ -21,14 +21,14 @@ const initialLibraryValues: { [key: string]: string } = [...Array(10)].reduce(
     [`library${currentIndex + 1}Name`]: "",
     [`library${currentIndex + 1}Address`]: "",
   }),
-  {}
+  {},
 );
 export default function VerifyContract() {
   const router = useRouter();
   const queryAddress = router.query.addressHash;
   const [address, setAddress] = useState((queryAddress as string) ?? "");
   const [libraryValues, setLibraryValues] = useState<{ [key: string]: string }>(
-    initialLibraryValues
+    initialLibraryValues,
   );
 
   const defaultDropdownValue: DropdownOptionsI = { label: "", value: "" };
@@ -47,10 +47,10 @@ export default function VerifyContract() {
   const [sourceCode, setSourceCode] = useState("");
   const [constructorArguments, setConstructorArguments] = useState("");
   const [optimizationRuns, setOptimizationRuns] = useState<number>(
-    defaultOptimizationRuns
+    defaultOptimizationRuns,
   );
   const [compilerVersions, setCompilerVersions] = useState<DropdownOptionsI[]>(
-    []
+    [],
   );
   const [isEditStepOne, setIsEditStepOne] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -115,11 +115,11 @@ export default function VerifyContract() {
     for (let i = 1; i <= 10; i += 1) {
       formData.append(
         `external_libraries[library${i}_name]`,
-        libraryValues[`library${i}Name`]
+        libraryValues[`library${i}Name`],
       );
       formData.append(
         `external_libraries[library${i}_address]`,
-        libraryValues[`library${i}Address`]
+        libraryValues[`library${i}Address`],
       );
     }
 
@@ -128,7 +128,7 @@ export default function VerifyContract() {
     }
     await SmartContractApi.verifySmartContractUsingMultiPartFile(
       connection,
-      formData
+      formData,
     );
     await sleep(2000);
     const details = await WalletAddressApi.getDetail(connection, address);
@@ -157,12 +157,12 @@ export default function VerifyContract() {
         data.append("contractname", "");
         const res = await SmartContractApi.verifySmartContractUsingJSONInput(
           connection,
-          data
+          data,
         );
         await sleep(2000);
         const verificationStatus = await SmartContractApi.checkVerifyStatus(
           connection,
-          res.result
+          res.result,
         );
         setIsVerifying(false);
         if (
@@ -203,7 +203,7 @@ export default function VerifyContract() {
       const res = await SmartContractApi.verifySmartContract(
         connection,
         data,
-        compiler.value as CompilerType
+        compiler.value as CompilerType,
       );
       setIsVerifying(false);
       if (res.status === "1") {
@@ -215,7 +215,7 @@ export default function VerifyContract() {
       }
     } catch (err) {
       setError(
-        "An error occurred while verifying the smart contract. Please try again."
+        "An error occurred while verifying the smart contract. Please try again.",
       );
       setIsVerifying(false);
       setIsVerified(false);
@@ -246,7 +246,7 @@ export default function VerifyContract() {
     setCompiler(value);
     const versions = getCompilerVersions(value.value);
     const isVersionAvailable = versions.find(
-      (item) => version.value === item.value
+      (item) => version.value === item.value,
     );
     if (!isVersionAvailable) {
       setVersion(defaultDropdownValue);

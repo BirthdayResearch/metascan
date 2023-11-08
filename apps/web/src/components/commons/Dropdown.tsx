@@ -40,7 +40,7 @@ export default function Dropdown<T extends DropdownOptionsI>({
           <Listbox.Button
             className={clsx(
               "relative px-4 py-[18px] w-full cursor-default text-left shadow-md",
-              dropdownContainerClassName
+              dropdownContainerClassName,
             )}
           >
             {value?.value === "" ? (
@@ -57,14 +57,14 @@ export default function Dropdown<T extends DropdownOptionsI>({
                 "pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4",
                 {
                   "opacity-30": isDisabled,
-                }
+                },
               )}
             >
               <CgChevronDown
                 size={16}
                 className={clsx(
                   "h-4 w-4 text-black-500 stroke-white-50 stroke-[1.5px]",
-                  { "text-white-50": value?.value !== "" }
+                  { "text-white-50": value?.value !== "" },
                 )}
                 aria-hidden="true"
               />
@@ -87,7 +87,7 @@ export default function Dropdown<T extends DropdownOptionsI>({
                     <span
                       className={clsx(
                         "block truncate text-white-50",
-                        labelClass
+                        labelClass,
                       )}
                     >
                       {option.label}

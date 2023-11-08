@@ -17,7 +17,7 @@ const transformTokenData = (rawToken: RawTokenI) => ({
   totalSupply: rawToken.total_supply
     ? formatUnits(
         BigInt(rawToken.total_supply ?? "0"),
-        Number(rawToken.decimals)
+        Number(rawToken.decimals),
       ).toString()
     : undefined,
   type: rawToken.type,

@@ -143,7 +143,7 @@ function TokenHolderRow({
               thousandSeparator
               value={formatUnits(
                 BigInt(data.value ?? "0"),
-                Number(data.token.decimals ?? GWEI_DECIMAL)
+                Number(data.token.decimals ?? GWEI_DECIMAL),
               )}
               className="text-white-50 break-all"
               suffix={data.token.symbol ? ` ${data.token.symbol}` : ""}

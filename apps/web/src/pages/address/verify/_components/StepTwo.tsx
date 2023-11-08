@@ -137,7 +137,7 @@ export default function StepTwo({
                   <textarea
                     data-testid="code"
                     className={clsx(
-                      "w-full focus:outline-none h-[168px] transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-dark-100 border-[0.5px] border-dark-200 text-white-50 py-[18px] px-4 resize-y placeholder-black-500"
+                      "w-full focus:outline-none h-[168px] transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-dark-100 border-[0.5px] border-dark-200 text-white-50 py-[18px] px-4 resize-y placeholder-black-500",
                     )}
                     placeholder=""
                     onChange={(e) => setSourceCode(e.target.value)}
@@ -201,7 +201,7 @@ export default function StepTwo({
                           <textarea
                             data-testid="constructor-argument"
                             className={clsx(
-                              "w-full focus:outline-none h-[112px] transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-dark-100 border-[0.5px] border-dark-200 text-white-50 py-[18px] px-4 resize-y placeholder-black-500"
+                              "w-full focus:outline-none h-[112px] transition-opacity rounded-md font-space-mono tracking-[-0.04em] break-all bg-dark-100 border-[0.5px] border-dark-200 text-white-50 py-[18px] px-4 resize-y placeholder-black-500",
                             )}
                             placeholder=""
                             onChange={(e) => setConstructorArgs(e.target.value)}

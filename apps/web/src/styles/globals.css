@@ -80,7 +80,8 @@ body {
 
   /* To style button/container without using :before and :after to have color transition */
   .brand-bg-gradient-1 {
-    background: linear-gradient(#000000, #000000) padding-box,
+    background:
+      linear-gradient(#000000, #000000) padding-box,
       linear-gradient(
           103.45deg,
           #ff12af 22.86%,
@@ -91,7 +92,8 @@ body {
   }
 
   .brand-bg-gradient-2 {
-    background: linear-gradient(#000000, #000000) padding-box,
+    background:
+      linear-gradient(#000000, #000000) padding-box,
       linear-gradient(103.45deg, #42f9c2 3.99%, #082fd4 105.23%) border-box;
   }
 
@@ -121,7 +123,8 @@ body {
   }
 
   .black-gradient-1-shadow {
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2),
+    box-shadow:
+      0px 3px 6px rgba(0, 0, 0, 0.2),
       0px 5px 20px -1px rgba(0, 0, 0, 0.2);
   }
 

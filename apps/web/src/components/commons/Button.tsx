@@ -89,8 +89,8 @@ function ButtonElement({
       type="button"
       className={`flex items-center justify-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 active:brand-bg-gradient-2 hover:border-transparent
                   ${transitionStyle} ${btnPadding} ${customStyle ?? ""} ${
-        disabled ? "opacity-50" : "opacity-100"
-      }`}
+                    disabled ? "opacity-50" : "opacity-100"
+                  }`}
       disabled={disabled}
       onClick={handleButtonClick}
     >

@@ -73,7 +73,7 @@ export default function TokenTransfersList({
               hash: item.tx_hash,
               amount: formatUnits(
                 BigInt(item.total.value ?? "0"),
-                Number(item.total.decimals ?? GWEI_DECIMAL)
+                Number(item.total.decimals ?? GWEI_DECIMAL),
               ),
               symbol: item.token.symbol ?? "",
               timeInSec: getTimeAgo(item.timestamp),

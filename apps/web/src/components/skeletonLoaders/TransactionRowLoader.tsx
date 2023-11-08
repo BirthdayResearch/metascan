@@ -25,7 +25,7 @@ export default function TransactionRowLoader() {
             className={clsx(
               "col-start-1 col-end-7 ml-10 lg:ml-0",
               "lg:col-start-4 lg:col-end-8",
-              "xl:col-start-5 xl:col-end-10"
+              "xl:col-start-5 xl:col-end-10",
             )}
           >
             {/* First row */}

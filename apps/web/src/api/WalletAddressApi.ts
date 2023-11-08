@@ -10,7 +10,7 @@ import { NetworkConnection } from "@contexts/Environment";
 export default {
   getDetail: async (
     network: NetworkConnection,
-    aid: string
+    aid: string,
   ): Promise<WalletAddressInfoI> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${WALLET_ADDRESS_URL}/${aid}`);
@@ -18,7 +18,7 @@ export default {
   },
   getCounters: async (
     network: NetworkConnection,
-    aid: string
+    aid: string,
   ): Promise<WalletAddressCounterI> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(`${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/counters`);
@@ -26,21 +26,21 @@ export default {
   },
   getAllTokens: async (
     network: NetworkConnection,
-    aid: string
+    aid: string,
   ): Promise<TokenItemI[]> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(
-      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`
+      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`,
     );
     return wrapResponse<TokenItemI[]>(res);
   },
   getAllAddressTokens: async (
     network: NetworkConnection,
-    aid: string
+    aid: string,
   ): Promise<WalletAddressTokenBalanceI[]> => {
     const baseUrl = getBaseUrl(network);
     const res = await fetch(
-      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`
+      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`,
     );
     return wrapResponse<WalletAddressTokenBalanceI[]>(res);
   },

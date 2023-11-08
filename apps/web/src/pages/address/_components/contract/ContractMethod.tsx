@@ -51,7 +51,7 @@ export default function ContractMethod({
           className={clsx(
             "flex items-center text-lg text-white-50 -tracking-wide",
             "hover:font-semibold hover:text-green-800",
-            { "font-semibold": open }
+            { "font-semibold": open },
           )}
         >
           {open ? (

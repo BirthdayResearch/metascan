@@ -103,7 +103,7 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
 
   const onChangeDebounceHandler = useMemo(
     () => debounce((event) => changeHandler(event.target.value), 500),
-    []
+    [],
   );
 
   const transitionClass = "transition duration-300 ease-in";
@@ -113,13 +113,13 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
       <div
         className={clsx(
           "flex w-full items-center justify-self-center mx-auto my-6 md:my-10 lg:my-6",
-          containerClass
+          containerClass,
         )}
       >
         <div
           className={clsx(
             "relative group flex w-full rounded-lg p-[1px] bg-black-500 focus-within:bg-lightBlue black-gradient-1-shadow backdrop-blur-[6px]",
-            transitionClass
+            transitionClass,
           )}
           data-testid="search-bar-container"
           ref={reference}
@@ -128,7 +128,7 @@ export function SearchBar({ containerClass }: SearchBarProps): JSX.Element {
             <div
               className={clsx(
                 "absolute opacity-0 inset-0 rounded-lg transition brand-gradient-1 group-hover:opacity-100",
-                transitionClass
+                transitionClass,
               )}
             />
           )}

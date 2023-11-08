@@ -43,8 +43,8 @@ export default function ReadWriteContract({
     ) {
       const readMethods = data.filter((method) =>
         [StateMutability.Pure, StateMutability.View].includes(
-          method.stateMutability
-        )
+          method.stateMutability,
+        ),
       );
 
       setMethods(readMethods ?? []);

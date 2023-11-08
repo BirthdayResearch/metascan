@@ -98,7 +98,7 @@ export default function Tokens({
 }
 
 export async function getServerSideProps(
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ): Promise<GetServerSidePropsResult<{ data: PageProps; isLoading?: boolean }>> {
   const { network, ...params } = context.query;
   // Avoid fetching if some params are not valid
@@ -120,7 +120,7 @@ export async function getServerSideProps(
           params?.is_name_null as string,
           params?.items_count as string,
           params?.market_cap as string,
-          params?.name as string
+          params?.name as string,
         );
     const data = {
       tokens: txs.items,

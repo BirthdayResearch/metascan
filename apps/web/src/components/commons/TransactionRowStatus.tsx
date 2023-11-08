@@ -25,7 +25,7 @@ export default function TransactionRowStatus({
         data-testid="transaction-status"
         className={clsx(
           "-tracking-[0.01em] ",
-          "text-xs md:text-base font-semibold md:-tracking-[0.02em]"
+          "text-xs md:text-base font-semibold md:-tracking-[0.02em]",
         )}
       >
         {status}

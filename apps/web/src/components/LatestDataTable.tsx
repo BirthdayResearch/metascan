@@ -71,7 +71,7 @@ export default function LatestDataTable({
                       <div
                         className={clsx(
                           "w-[calc(100% - 16px)] h-7 md:h-5 border-b border-black-600",
-                          { hidden: data.length === index + 1 }
+                          { hidden: data.length === index + 1 },
                         )}
                       />
                     </div>

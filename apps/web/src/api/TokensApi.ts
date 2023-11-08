@@ -14,7 +14,7 @@ export default {
     isNameNull?: string,
     itemsCount?: string,
     marketCap?: string,
-    name?: string
+    name?: string,
   ): Promise<RawTokenWithPaginationProps> => {
     const baseUrl = getBaseUrl(network);
     const params = filterParams([

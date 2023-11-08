@@ -25,7 +25,7 @@ function StatisticCard({ title, body, footer, testId }: StatsCardProps) {
         <div
           className={clsx(
             "text-transparent bg-clip-text font-medium text-xs tracking-wider uppercase max-w-[60px]",
-            footer.includes("-") ? "brand-gradient-1" : "brand-gradient-2"
+            footer.includes("-") ? "brand-gradient-1" : "brand-gradient-2",
           )}
         >
           {footer}

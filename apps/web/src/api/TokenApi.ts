@@ -1,21 +1,21 @@
 import { NetworkConnection } from "@contexts/Environment";
-import { TOKENS_URL, getBaseUrl, wrapResponse } from ".";
+import { TOKENS_URL, getRpcUrl, wrapResponse } from ".";
 
 export default {
   getToken: async (
     network: NetworkConnection,
     tokenId: string,
   ): Promise<TokenProps> => {
-    const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}/${TOKENS_URL}/${tokenId}`);
+    const rpcUrl = getRpcUrl(network);
+    const res = await fetch(`${rpcUrl}/${TOKENS_URL}/${tokenId}`);
     return wrapResponse<TokenProps>(res);
   },
   getTokenCounters: async (
     network: NetworkConnection,
     tokenId: string,
   ): Promise<TokenCountersProps> => {
-    const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}/${TOKENS_URL}/${tokenId}/counters`);
+    const rpcUrl = getRpcUrl(network);
+    const res = await fetch(`${rpcUrl}/${TOKENS_URL}/${tokenId}/counters`);
     return wrapResponse<TokenCountersProps>(res);
   },
 };

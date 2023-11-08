@@ -3,7 +3,7 @@ import {
   TRANSACTIONS_URL,
   V1_TRANSACTION_URL,
   filterParams,
-  getBaseUrl,
+  getRpcUrl,
   wrapResponse,
 } from "./index";
 import {
@@ -20,13 +20,13 @@ export default {
     itemsCount?: string,
     index?: string,
   ): Promise<RawTxnWithPaginationProps> => {
-    const baseUrl = getBaseUrl(network);
+    const rpcUrl = getRpcUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
       { key: "items_count", value: itemsCount },
       { key: "index", value: index },
     ]);
-    const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}${params}`);
+    const res = await fetch(`${rpcUrl}/${TRANSACTIONS_URL}${params}`);
 
     return wrapResponse<RawTxnWithPaginationProps>(res);
   },
@@ -34,13 +34,13 @@ export default {
     network: NetworkConnection,
     txnHash: string,
   ): Promise<RawTransactionI> => {
-    const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}/${TRANSACTIONS_URL}/${txnHash}`);
+    const rpcUrl = getRpcUrl(network);
+    const res = await fetch(`${rpcUrl}/${TRANSACTIONS_URL}/${txnHash}`);
     const transaction = await wrapResponse<RawTransactionI>(res);
 
     // Missing confirmation workaround
     if (transaction.confirmations === 0) {
-      const resV1 = await fetch(`${baseUrl}/${V1_TRANSACTION_URL}${txnHash}`);
+      const resV1 = await fetch(`${rpcUrl}/${V1_TRANSACTION_URL}${txnHash}`);
       const tx = (await resV1.json()) as RawTransactionV1;
       transaction.confirmations = tx.result?.confirmations ?? 0;
     }

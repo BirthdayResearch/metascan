@@ -1,7 +1,7 @@
 import { NetworkConnection } from "@contexts/Environment";
 import {
   filterParams,
-  getBaseUrl,
+  getRpcUrl,
   MAIN_BLOCKS_URL,
   wrapResponse,
 } from "./index";
@@ -13,13 +13,13 @@ export default {
     blockNumber?: string,
     itemsCount?: string,
   ): Promise<BlockWithPaginationProps> => {
-    const baseUrl = getBaseUrl(network);
+    const rpcUrl = getRpcUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
       { key: "items_count", value: itemsCount },
       { key: "type", value: "block" },
     ]);
-    const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}${params}`);
+    const res = await fetch(`${rpcUrl}/${MAIN_BLOCKS_URL}${params}`);
 
     return wrapResponse<BlockWithPaginationProps>(res);
   },
@@ -27,8 +27,8 @@ export default {
     network: NetworkConnection,
     blockId: string,
   ): Promise<BlockProps> => {
-    const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}`);
+    const rpcUrl = getRpcUrl(network);
+    const res = await fetch(`${rpcUrl}/${MAIN_BLOCKS_URL}/${blockId}`);
     const block = (await res.json()) as BlockProps;
     if (!res.ok && !block.hash) {
       throw new Error(`Failed to fetch data: ${res.status}`);
@@ -42,14 +42,14 @@ export default {
     itemsCount?: string,
     index?: string,
   ): Promise<RawTxnWithPaginationProps> => {
-    const baseUrl = getBaseUrl(network);
+    const rpcUrl = getRpcUrl(network);
     const params = filterParams([
       { key: "block_number", value: blockNumber },
       { key: "items_count", value: itemsCount },
       { key: "index", value: index },
     ]);
     const res = await fetch(
-      `${baseUrl}/${MAIN_BLOCKS_URL}/${blockId}/transactions${params}`,
+      `${rpcUrl}/${MAIN_BLOCKS_URL}/${blockId}/transactions${params}`,
     );
     return wrapResponse<RawTxnWithPaginationProps>(res);
   },

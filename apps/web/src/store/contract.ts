@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { SMART_CONTRACT_URL, getBaseUrl } from "@api/index";
+import { SMART_CONTRACT_URL, getRpcUrl } from "@api/index";
 import {
   ContractMethodType,
   SmartContractMethod,
@@ -72,7 +72,7 @@ export const contractApi = createApi({
       { network: NetworkConnection; addressHash: string }
     >({
       query: ({ network, addressHash }) => ({
-        url: `${getBaseUrl(network)}/${SMART_CONTRACT_URL}/${addressHash}`,
+        url: `${getRpcUrl(network)}/${SMART_CONTRACT_URL}/${addressHash}`,
         method: "GET",
       }),
     }),
@@ -92,7 +92,7 @@ export const contractMethodsApi = createApi({
       }
     >({
       query: ({ network, addressHash, type }) => ({
-        url: `${getBaseUrl(
+        url: `${getRpcUrl(
           network,
         )}/${SMART_CONTRACT_URL}/${addressHash}/methods-${type}?is_custom_abi=false`,
         method: "GET",
@@ -110,7 +110,7 @@ export const contractVerificationApi = createApi({
       { network: NetworkConnection }
     >({
       query: ({ network }) => ({
-        url: `${getBaseUrl(network)}/${SMART_CONTRACT_URL}/verification/config`,
+        url: `${getRpcUrl(network)}/${SMART_CONTRACT_URL}/verification/config`,
         method: "GET",
       }),
     }),

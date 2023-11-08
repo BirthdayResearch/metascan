@@ -2,7 +2,7 @@ import {
   SMART_CONTRACT_URL,
   VERIFY_SMART_CONTRACT_URL,
   filterParams,
-  getBaseUrl,
+  getRpcUrl,
   wrapResponse,
 } from "@api/index";
 import {
@@ -18,12 +18,12 @@ export default {
     smartContractId?: string,
     itemsCount?: string,
   ): Promise<SmartContractWithPaginationProps> => {
-    const baseUrl = getBaseUrl(network);
+    const rpcUrl = getRpcUrl(network);
     const params = filterParams([
       { key: "smart_contract_id", value: smartContractId },
       { key: "items_count", value: itemsCount },
     ]);
-    const res = await fetch(`${baseUrl}/${SMART_CONTRACT_URL}${params}`);
+    const res = await fetch(`${rpcUrl}/${SMART_CONTRACT_URL}${params}`);
     return wrapResponse<SmartContractWithPaginationProps>(res);
   },
   verifySmartContract: async (
@@ -31,10 +31,10 @@ export default {
     data,
     type: CompilerType,
   ): Promise<any> => {
-    const baseUrl = getBaseUrl(network);
+    const rpcUrl = getRpcUrl(network);
     const action =
       type === CompilerType.Vyper ? "verify_vyper_contract" : "verify";
-    const res = await fetch(`${baseUrl}/api?module=contract&action=${action}`, {
+    const res = await fetch(`${rpcUrl}/api?module=contract&action=${action}`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -47,9 +47,9 @@ export default {
     network: NetworkConnection,
     data,
   ): Promise<any> => {
-    const baseUrl = getBaseUrl(network);
+    const rpcUrl = getRpcUrl(network);
     const res = await fetch(
-      `${baseUrl}/api?module=contract&action=verifysourcecode`,
+      `${rpcUrl}/api?module=contract&action=verifysourcecode`,
       {
         method: "POST",
         body: data,
@@ -61,17 +61,17 @@ export default {
     network: NetworkConnection,
     data,
   ): Promise<any> => {
-    const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}/${VERIFY_SMART_CONTRACT_URL}`, {
+    const rpcUrl = getRpcUrl(network);
+    const res = await fetch(`${rpcUrl}/${VERIFY_SMART_CONTRACT_URL}`, {
       method: "POST",
       body: data,
     });
     return res;
   },
   checkVerifyStatus: async (network: NetworkConnection, guid): Promise<any> => {
-    const baseUrl = getBaseUrl(network);
+    const rpcUrl = getRpcUrl(network);
     const res = await fetch(
-      `${baseUrl}/api?module=contract&action=checkverifystatus&guid=${guid}`,
+      `${rpcUrl}/api?module=contract&action=checkverifystatus&guid=${guid}`,
       {
         method: "GET",
       },

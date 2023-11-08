@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getBaseUrl } from "@api/index";
+import { getRpcUrl } from "@api/index";
 import { NetworkConnection } from "@contexts/Environment";
 
 export enum SearchResultType {
@@ -50,7 +50,7 @@ export const searchApi = createApi({
       { network: NetworkConnection; queryString: string }
     >({
       query: ({ network, queryString }) => ({
-        url: `${getBaseUrl(network)}/api/v2/search?q=${queryString}`,
+        url: `${getRpcUrl(network)}/api/v2/search?q=${queryString}`,
         method: "GET",
       }),
     }),

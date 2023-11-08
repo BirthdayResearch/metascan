@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { NetworkConnection } from "@contexts/Environment";
-import { WALLET_ADDRESS_URL, filterParams, getBaseUrl } from "@api/index";
+import { WALLET_ADDRESS_URL, filterParams, getRpcUrl } from "@api/index";
 import { AddressProps, RawTxnWithPaginationProps } from "@api/types";
 
 export interface Log {
@@ -45,7 +45,7 @@ export const addressApi = createApi({
           { key: "index", value: index },
         ]);
         return {
-          url: `${getBaseUrl(
+          url: `${getRpcUrl(
             network,
           )}/${WALLET_ADDRESS_URL}/${addressHash}/transactions${params}`,
           method: "GET",
@@ -69,7 +69,7 @@ export const addressApi = createApi({
           { key: "index", value: index },
         ]);
         return {
-          url: `${getBaseUrl(
+          url: `${getRpcUrl(
             network,
           )}/${WALLET_ADDRESS_URL}/${addressHash}/logs${params}`,
           method: "GET",

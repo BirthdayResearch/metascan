@@ -9,7 +9,7 @@ import {
 } from "shared/transactionDataHelper";
 import { RowData } from "@components/types";
 import {
-  getBaseUrl,
+  getRpcUrl,
   MAIN_LATEST_BLOCK_URL,
   MAIN_LATEST_TRANSACTION_URL,
   wrapResponse,
@@ -20,8 +20,8 @@ const MAX_ROW = 5;
 
 export default {
   getLatestBlocks: async (network: NetworkConnection): Promise<RowData[]> => {
-    const baseUrl = getBaseUrl(network);
-    const resBlock = await fetch(`${baseUrl}/${MAIN_LATEST_BLOCK_URL}`);
+    const rpcUrl = getRpcUrl(network);
+    const resBlock = await fetch(`${rpcUrl}/${MAIN_LATEST_BLOCK_URL}`);
     const responseBlockData = await wrapResponse<BlockProps[]>(resBlock);
     const blockRows = Math.min(responseBlockData.length, MAX_ROW);
 
@@ -43,8 +43,8 @@ export default {
   getLatestTransactions: async (
     network: NetworkConnection,
   ): Promise<RowData[]> => {
-    const baseUrl = getBaseUrl(network);
-    const resTxn = await fetch(`${baseUrl}/${MAIN_LATEST_TRANSACTION_URL}`);
+    const rpcUrl = getRpcUrl(network);
+    const resTxn = await fetch(`${rpcUrl}/${MAIN_LATEST_TRANSACTION_URL}`);
     const responseTxnData = await wrapResponse<RawTransactionI[]>(resTxn);
     const txnRows = Math.min(responseTxnData.length, MAX_ROW);
 

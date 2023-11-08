@@ -38,3 +38,7 @@ next-env.d.ts
 
 # nyc test coverage
 .nyc_output
+
+# turborepo
+*.tgz
+.turbo

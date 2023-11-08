@@ -23,7 +23,7 @@ export class FaucetController {
     const key = `FAUCET_${address}_${network}`;
     const isCached = await this.cacheManager.get(key);
     if (isCached) {
-      throw new HttpException('Transfer already done, pleas try again later.', 403);
+      throw new HttpException('Transfer already done, please try again later.', 403);
     }
     const amountToSend: string = this.configService.getOrThrow('faucetAmountPerRequest'); // Amount to send in DFI
     const ttl = +this.configService.getOrThrow('throttleTimePerAddress')

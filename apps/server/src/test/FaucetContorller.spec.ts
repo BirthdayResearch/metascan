@@ -92,7 +92,7 @@ describe('FaucetController (e2e)', () => {
       .expect(403);
 
     // Check the error message in the response body
-    expect(response.body.message).toBe('Transfer already done, pleas try again later.');
+    expect(response.body.message).toBe('Transfer already done, please try again later.');
 
     // Check if the cacheManager get method was called with the correct key
     expect(cacheManager.get).toHaveBeenCalledWith(mockedKey);

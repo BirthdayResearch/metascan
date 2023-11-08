@@ -7,8 +7,8 @@ async function bootstrap() {
   const PORT = process.env.PORT || 3001;
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   app.listen(PORT).then(() => {
-    // eslint-disable-next-line no-console 
-    console.log(`Started server on port ${PORT}`)
+    // eslint-disable-next-line no-console
+    console.log(`Started server on port ${PORT}`);
   });
 }
 void bootstrap();

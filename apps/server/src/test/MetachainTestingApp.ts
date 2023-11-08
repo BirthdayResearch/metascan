@@ -13,8 +13,7 @@ export class MetachainTestingApp {
     const dynamicModule = TestingModuleApp.register(config);
     return Test.createTestingModule({
       imports: [dynamicModule],
-    })
-    .compile();
+    }).compile();
   }
 
   async createNestApp(config: BuildTestConfigParams): Promise<NestFastifyApplication> {

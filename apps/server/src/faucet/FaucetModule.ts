@@ -5,9 +5,7 @@ import { FaucetController } from './FaucetController';
 import { FaucetService } from './FaucetService';
 
 @Module({
-  imports: [
-    CacheModule.register(),
-  ],
+  imports: [CacheModule.register()],
   controllers: [FaucetController],
   providers: [FaucetService],
 })

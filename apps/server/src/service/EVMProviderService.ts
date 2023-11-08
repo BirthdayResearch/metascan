@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EnvironmentNetwork } from "@waveshq/walletkit-core";
+import { EnvironmentNetwork } from '@waveshq/walletkit-core';
 import axios from 'axios';
 import { ethers, JsonRpcProvider } from 'ethers';
 
@@ -39,16 +39,16 @@ export class EVMProviderService {
     // TODO: Add proper ethereum RPC URLs for each network
     switch (network) {
       case EnvironmentNetwork.LocalPlayground:
-        return "http://localhost:19551";
+        return 'http://localhost:19551';
       case EnvironmentNetwork.RemotePlayground:
       case EnvironmentNetwork.DevNet:
       case EnvironmentNetwork.Changi:
-        return "http://34.34.156.49:20551"; // TODO: add final eth rpc url for changi, devnet and remote playground
+        return 'http://34.34.156.49:20551'; // TODO: add final eth rpc url for changi, devnet and remote playground
       case EnvironmentNetwork.MainNet:
-        return "https://changi.dfi.team"; // TODO: add final eth rpc url for mainnet, with proper domain name
+        return 'https://changi.dfi.team'; // TODO: add final eth rpc url for mainnet, with proper domain name
       case EnvironmentNetwork.TestNet:
       default:
-        return "https://eth.testnet.ocean.jellyfishsdk.com";
+        return 'https://eth.testnet.ocean.jellyfishsdk.com';
     }
   }
 }

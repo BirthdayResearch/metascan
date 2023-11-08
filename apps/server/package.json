@@ -8,12 +8,12 @@
   "main": "index.js",
   "scripts": {
     "build": "nest build",
+    "dev": "NODE_ENV=dev nest start --watch",
     "lint": "eslint .",
     "playground:start": "docker-compose rm -fsv && docker-compose up",
     "prettier": "npx prettier --write .",
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
-    "dev": "NODE_ENV=dev nest start --watch",
     "start:prod": "node dist/main",
     "test": "jest",
     "test:cov": "jest --coverage",

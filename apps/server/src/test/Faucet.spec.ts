@@ -27,19 +27,19 @@ describe('Faucet (e2e)', () => {
   let app: NestFastifyApplication;
   let defichainContainer: StartedDeFiChainStubContainer;
   let testing: MetachainTestingApp;
-  let evmRpcUrl: string
+  let evmRpcUrl: string;
   let dvmAddress;
-  let provider: JsonRpcProvider
-  const amount = '1'
-  const evmAddress = "0x9f1FF3f9A4F99f39Ec7F799F90e54bfC88B43FFA"
-  const evmPrivateKey = "0x814233c91d926169e9a6817db4de4f325cee91639ff6cfce74029ec9e568d2ad"
+  let provider: JsonRpcProvider;
+  const amount = '1';
+  const evmAddress = '0x9f1FF3f9A4F99f39Ec7F799F90e54bfC88B43FFA';
+  const evmPrivateKey = '0x814233c91d926169e9a6817db4de4f325cee91639ff6cfce74029ec9e568d2ad';
   beforeAll(async () => {
     defichainContainer = await new DeFiChainStubContainer().start();
     evmRpcUrl = await defichainContainer.getEvmURL();
     dvmAddress = await defichainContainer.defid.rpc.getNewAddress('legacy', 'legacy');
 
     testing = new MetachainTestingApp();
-    app = await testing.createNestApp({ 
+    app = await testing.createNestApp({
       faucetAmountPerRequest: amount,
       throttleTimePerAddress: '20',
       privateKey: evmPrivateKey,
@@ -72,15 +72,14 @@ describe('Faucet (e2e)', () => {
     app = undefined;
   });
 
-
   it('/faucet/:address (GET) should send DFI to address', async () => {
     // mock getEthRpcUrl method
     EVMProviderService.prototype.getEthRpcUrl = jest.fn().mockReturnValue(evmRpcUrl);
     const address = await defichainContainer.defid.rpc.getNewAddress('eth', 'eth');
     const response = await request(app.getHttpServer())
-          .get(`/faucet/${address}?network=${EnvironmentNetwork.LocalPlayground}`)
-          .expect(200)
-    await waitForTxnToConfirm(provider, response.body.hash)
+      .get(`/faucet/${address}?network=${EnvironmentNetwork.LocalPlayground}`)
+      .expect(200);
+    await waitForTxnToConfirm(provider, response.body.hash);
     const balance = await provider.getBalance(address);
     expect(parseEther(amount).toString()).toStrictEqual(balance.toString());
   });

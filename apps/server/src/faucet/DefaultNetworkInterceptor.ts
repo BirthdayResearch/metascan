@@ -1,5 +1,5 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
-import { EnvironmentNetwork, getEnvironment } from "@waveshq/walletkit-core";
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import { EnvironmentNetwork, getEnvironment } from '@waveshq/walletkit-core';
 
 @Injectable()
 export class DefaultNetworkInterceptor implements NestInterceptor {
@@ -8,7 +8,7 @@ export class DefaultNetworkInterceptor implements NestInterceptor {
     const { network } = request.query;
     const { networks } = getEnvironment(process.env.NODE_ENV);
 
-    if (!network || !networks.includes(network) ) {
+    if (!network || !networks.includes(network)) {
       request.query.network = EnvironmentNetwork.MainNet; // Set your default network here
     }
 

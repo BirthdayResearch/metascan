@@ -39,9 +39,7 @@ jobs:
           install: false
           record: true
           parallel: true
-          build: pnpm run cypress:build
-          start: pnpm run start
-          wait-on: "http://localhost:3000"
+          start: pnpm dev
           browser: chrome
           spec: cypress/e2e/**
           tag: ${{ github.event_name }}

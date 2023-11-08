@@ -42,4 +42,4 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-      - run: npx --no-install prettier --check "src/**/*.{js,jsx,ts,tsx}"
+      - run: npx --no-install prettier --check "apps/**/*.{js,jsx,ts,tsx}"

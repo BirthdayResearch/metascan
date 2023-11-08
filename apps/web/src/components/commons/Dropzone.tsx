@@ -6,6 +6,7 @@ function FileRow({ name, onClear }: { name: string; onClear: () => void }) {
   return (
     <button
       type="button"
+      aria-label="File drop zone"
       className="px-4 py-1 w-full bg-black-200 rounded-[10px] w-full"
       onClick={(e) => e.stopPropagation()}
     >
@@ -19,7 +20,7 @@ function FileRow({ name, onClear }: { name: string; onClear: () => void }) {
           </div>
           <div className="text-sm text-white-50">Files uploaded</div>
         </div>
-        <button type="button" onClick={onClear}>
+        <button type="button" onClick={onClear} aria-label="clear">
           <MdClear size={24} className="text-white-50" />
         </button>
       </div>

@@ -27,6 +27,7 @@ export default function ContractMethodTextInput({
           <>
             <button
               type="button"
+              aria-label="Contract Input"
               className="bg-gray-800 rounded p-1 hover:opacity-70 border-[0.5px] border-transparent focus:border-white-900"
               onClick={() => setIsOpen(true)}
               id="add-zero"

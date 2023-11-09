@@ -39,12 +39,11 @@ jobs:
           install: false
           record: true
           parallel: true
-          build: pnpm run cypress:build
-          start: pnpm run start
-          wait-on: "http://localhost:3000"
+          start: pnpm dev
           browser: chrome
           spec: cypress/e2e/**
           tag: ${{ github.event_name }}
+          working-directory: ./apps/web
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

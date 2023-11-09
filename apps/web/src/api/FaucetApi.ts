@@ -1,36 +1,38 @@
 import { NetworkConnection } from "@contexts/Environment";
 import { getBaseUrl } from "@api/index";
-import {  filterParams, wrapResponse } from "./index";
-
-export interface RawTokenWithPaginationProps {
-    items: any[];
-}
 
 export default {
     sendFundsToUser: async (
         network: NetworkConnection,
         contractAddressHash?: string,
-    ): Promise<RawTokenWithPaginationProps> => {
-        const baseUrl = getBaseUrl();
-
-        const params = filterParams([
-            { key: "network", value: network },
-        ]);
-        const res =  await fetch (`${baseUrl}faucet/${contractAddressHash}?network=${network}`);
-        const json = await res.json()
-        return wrapResponse<RawTokenWithPaginationProps>(res);
-    },
+    ): Promise<FaucetTransactionResponse> => {
+            const baseUrl = getBaseUrl();
+            const res =  await fetch (`${baseUrl}faucet/${contractAddressHash}?network=${network}`);
+            return await res.json();
+    }
 };
 
-export interface TokenNextPageParamsProps {
-    contract_address_hash?: string;
-    holder_count?: string;
-    is_name_null?: string;
-    items_count: string;
-    market_cap?: string;
-    name?: string;
+export interface FaucetTransactionResponse {
+    message?: string;
+    blockHash?: string;
+    blockNumber?: string;
+    chainId?: string;
+    data?: string;
+    from?: string;
+    gasLimit?: string;
+    gasPrice?: string;
+    hash?: string;
+    maxFeePerGas?: string;
+    maxPriorityFeePerGas?: string;
+    nonce?: string;
+    to?: string;
+    type?: string;
+    value?: string;
+    signature?: {
+        networkV?: string
+        r?: string;
+        s?: string;
+        v?: string;
+    }
 }
 
-export interface TokenQueryParamsProps extends TokenNextPageParamsProps {
-    page_number?: string;
-}

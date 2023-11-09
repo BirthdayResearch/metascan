@@ -34,9 +34,7 @@ export const getRpcUrl = (network: NetworkConnection) => {
   return process.env.NEXT_PUBLIC_RPC_URL_CHANGI;
 };
 
-export const getBaseUrl = () => {
-  return process.env.NEXT_PUBLIC_SERVER_URL;
-};
+export const getBaseUrl = () => process.env.NEXT_PUBLIC_SERVER_URL;
 
 export function filterParams(params: { key: string; value }[]): string {
   let queryParams = "";

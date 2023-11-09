@@ -10,7 +10,7 @@ export default {
     const res = await fetch(
       `${baseUrl}faucet/${contractAddressHash}?network=${network}`,
     );
-    return await res.json();
+    return res.json();
   },
 };
 

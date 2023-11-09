@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { useNetwork } from "@contexts/NetworkContext";
 import { NetworkConnection } from "@contexts/Environment";
 import { useRouter } from "next/router";
+import FaucetApi, { FaucetTransactionResponse } from "@api/FaucetApi";
 import SectionTitle from "../../layouts/components/SectionTitle";
 import WalletAddressTextInput from "../../layouts/components/WalletAddressTextInput";
-import FaucetApi from "@api/FaucetApi";
-import { FaucetTransactionResponse } from "@api/FaucetApi";
+
 import SectionDesc from "../../layouts/components/SectionDesc";
 
 // hide this page if not on testnet

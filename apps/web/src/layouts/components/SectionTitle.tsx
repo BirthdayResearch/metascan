@@ -10,7 +10,7 @@ export default function SectionTitle({
       <span
         className={clsx(
           "font-semibold text-white-50 text-[32px] leading-10 -tracking-[0.01em]",
-          "md:text-5xl md:leading-[56px] md:-tracking-[0.02em]"
+          "md:text-5xl md:leading-[56px] md:-tracking-[0.02em]",
         )}
       >
         {title}

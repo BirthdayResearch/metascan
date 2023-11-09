@@ -34,14 +34,14 @@ export default function WalletAddressTextInput({
         invalidAddressInput
           ? "focus-within:bg-red-500"
           : "focus-within:bg-lightBlue",
-        transitionClass
+        transitionClass,
       )}
     >
       {!isFocused && (
         <div
           className={clsx(
             "absolute opacity-0 inset-0 rounded-lg transition brand-gradient-1 group-hover:opacity-100",
-            transitionClass
+            transitionClass,
           )}
         />
       )}
@@ -53,7 +53,7 @@ export default function WalletAddressTextInput({
             onBlur={() => setIsFocused(false)}
             placeholder="0xxxxxxx"
             className={clsx(
-              "h-full w-full focus:outline-none bg-transparent caret-lightBlue placeholder-white-700 placeholder-opacity-50 text-white-50 text-xl tracking-[0.01em]"
+              "h-full w-full focus:outline-none bg-transparent caret-lightBlue placeholder-white-700 placeholder-opacity-50 text-white-50 text-xl tracking-[0.01em]",
             )}
             data-testid="wallet_address_input"
             onChange={changeHandler}

@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import SectionTitle from "../../layouts/components/SectionTitle";
 import WalletAddressTextInput from "../../layouts/components/WalletAddressTextInput";
 import FaucetApi from "@api/FaucetApi";
-import {FaucetTransactionResponse} from "@api/FaucetApi";
+import { FaucetTransactionResponse } from "@api/FaucetApi";
 import SectionDesc from "../../layouts/components/SectionDesc";
 
 // hide this page if not on testnet
@@ -26,14 +26,15 @@ export default function Faucet() {
     setIsCaptchaSuccess(true);
   }
   async function handleSendFunds() {
-    try{
-      const res = await FaucetApi.sendFundsToUser(NetworkConnection.TestNet, "0xFB9DCeCBb49fA49cc2692A6A4A160fd6071b85b2" );
-setData(res);
-
+    try {
+      const res = await FaucetApi.sendFundsToUser(
+        NetworkConnection.TestNet,
+        "0xFB9DCeCBb49fA49cc2692A6A4A160fd6071b85b2",
+      );
+      setData(res);
     } catch (error) {
       setData(undefined);
     }
-
   }
 
   useEffect(() => {
@@ -65,20 +66,20 @@ setData(res);
               label="Send Tokens"
               customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={!isCaptchaSuccessful || !validEvmAddress}
-              onClick={() => {handleSendFunds()}}
+              onClick={() => {
+                handleSendFunds();
+              }}
             />
           </div>
         </div>
       </GradientCardContainer>
-        {data?.hash &&
-            <section>
-              <SectionDesc title="Transaction success!"/>
-              <SectionDesc title={data.hash}/>
-            </section>
-        }
-      {data?.message &&
-          <SectionDesc title={data?.message}/>
-      }
+      {data?.hash && (
+        <section>
+          <SectionDesc title="Transaction success!" />
+          <SectionDesc title={data.hash} />
+        </section>
+      )}
+      {data?.message && <SectionDesc title={data?.message} />}
     </Container>
   );
 }

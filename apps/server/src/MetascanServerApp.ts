@@ -1,0 +1,59 @@
+import { NestFactory } from '@nestjs/core';
+import {  NestFastifyApplication } from '@nestjs/platform-fastify';
+
+import { AppModule} from "./app.module";
+
+/**
+ * App which starts the default Metascan Server Application
+ */
+export class MetascanServerApp<App extends NestFastifyApplication = NestFastifyApplication>  {
+    protected app?: App
+
+    constructor(protected readonly module: any) {}
+
+    async createNestApp(): Promise<App>{
+        const app =await NestFactory.create(AppModule);
+        await this.configureApp(app);
+        // @ts-ignore
+        return app;
+    }
+
+    async configureApp(app): Promise<void> {
+        app.enableCors({
+            allowedHeaders: 'no-cors',
+            methods: ['GET', 'PUT', 'POST', 'DELETE'],
+            maxAge: 60 * 24 * 7,
+        });
+    }
+
+    /**
+     * Run any additional initialisation steps before starting the server.
+     * If there are additional steps, can be overriden by any extending classes
+     */
+    async init() {
+        this.app = await this.createNestApp() ;
+        return this.app.init();
+    }
+
+    /**
+     * Start listening on APP_PORT with APP_HOSTNAME, the default being 0.0.0.0:5741
+     */
+    async start(): Promise<App> {
+        const app = await this.init();
+
+        const PORT = process.env.PORT || 3001;
+        await app.listen(PORT).then(() => {
+            // eslint-disable-next-line no-console
+            console.log(`Started server on port ${PORT}`);
+        });
+        return app;
+    }
+
+    /**
+     * Stop NestJs and un-assign this.app
+     */
+    async stop(): Promise<void> {
+        await this.app?.close();
+        this.app = undefined;
+    }
+}

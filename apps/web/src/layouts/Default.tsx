@@ -11,6 +11,7 @@ import { IconGradient } from "@components/icons/IconGradient";
 import Footer from "@components/Footer";
 import Header from "./components/Header";
 import MainContainer from "./components/MainContainer";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const title = "MetaScan";
 export const appName = "meta.defiscan.live";
@@ -43,6 +44,12 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
   useEffect(() => {
     setMounted(true);
   }, []);
+  const [queryClient] = useState(
+      () =>
+          new QueryClient({
+            defaultOptions: { queries: { refetchOnWindowFocus: false } },
+          }),
+  );
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -92,6 +99,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
           <ConnectKitProvider mode="dark" options={{ initialChainId: 0 }}>
             <StoreProvider>
               <NetworkProvider>
+                <QueryClientProvider client={queryClient}>
                 <Header />
                 <IconGradient />
                 <MainContainer>{children}</MainContainer>
@@ -110,6 +118,7 @@ export function Default({ children }: PropsWithChildren): JSX.Element {
                     className="fill w-full h-screen absolute z-[-2] mix-blend-screen bottom-0 left-0 bg-no-repeat bg-cover bg-bottom lg:bg-[url('/background/footer.png')]  md:bg-[url('/background/footer-tablet.png')] bg-[url('/background/footer-mobile.png')]"
                   />
                 </div>
+                </QueryClientProvider>
               </NetworkProvider>
             </StoreProvider>
           </ConnectKitProvider>

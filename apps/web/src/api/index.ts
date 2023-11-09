@@ -21,9 +21,9 @@ export const HEALTH_URL = "api/v1/health";
 export const V1_TRANSACTION_URL =
   "api?module=transaction&action=gettxinfo&txhash=";
 
-export const getBaseUrl = (network: NetworkConnection) => {
-  const defautlEnv = getEnvironment().networks[0];
-  const currentNetwork = network ?? defautlEnv;
+export const getRpcUrl = (network: NetworkConnection) => {
+  const defaultEnv = getEnvironment().networks[0];
+  const currentNetwork = network ?? defaultEnv;
   if (currentNetwork === NetworkConnection.MainNet) {
     return process.env.NEXT_PUBLIC_RPC_URL_MAINNET;
   }
@@ -32,6 +32,10 @@ export const getBaseUrl = (network: NetworkConnection) => {
   }
 
   return process.env.NEXT_PUBLIC_RPC_URL_CHANGI;
+};
+
+export const getBaseUrl = () => {
+  return process.env.NEXT_PUBLIC_SERVER_URL;
 };
 
 export function filterParams(params: { key: string; value }[]): string {

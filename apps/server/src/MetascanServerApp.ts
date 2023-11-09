@@ -35,9 +35,6 @@ export class MetascanServerApp<App extends NestFastifyApplication = NestFastifyA
         return this.app.init();
     }
 
-    /**
-     * Start listening on APP_PORT with APP_HOSTNAME, the default being 0.0.0.0:5741
-     */
     async start(): Promise<App> {
         const app = await this.init();
 

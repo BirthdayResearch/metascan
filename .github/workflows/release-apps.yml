@@ -1,0 +1,84 @@
+name: Release Apps
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - "apps/web/**"
+      - "packages/**"
+
+permissions:
+  id-token: write
+  contents: read
+  packages: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  aws_ecr:
+    name: Publish AWS ECR
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: metascan-api
+            environment: AWS ECR
+            # acc: 738942439028 -- TODO add correct acc
+    environment: ${{ matrix.environment }}
+    steps:
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
+
+      - uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838 # v1.7.0
+        with:
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::${{ matrix.acc }}:role/GITHUB_OIDC_DEFICHAIN_OPS_METASCAN_ECR_PRIVATE
+          role-duration-seconds: 900
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@fc3959cb4cf5a821ab7a5a636ea4f1e855b05180 # v1.6.2
+        with:
+          registry-type: private
+
+      - name: Resolve ECR Tags
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6.4.1
+        id: ecr-tags
+        with:
+          script: return require('./.github/scripts/release-ecr-tags.js')({ context })
+          result-encoding: string
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ matrix.acc }}.dkr.ecr.eu-west-1.amazonaws.com
+          IMAGE_TAG: private-bridge-api:${{ steps.ecr-tags.outputs.result }}
+        run: |
+          docker build --file apps/server/Dockerfile -t $ECR_REGISTRY/$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$IMAGE_TAG
+
+# TODO Check why failing permissions
+#  report:
+#    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
+#    name: Report
+#    runs-on: ubuntu-latest
+#    needs: [ghcr, aws_ecr]
+#    steps:
+#      - uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c # v3.3.0
+#
+#      - name: Create Report
+#        uses: actions/github-script@98814c53be79b1d30f795b907e553d8679345975 # v6.4.0
+#        id: report_message
+#        with:
+#          script: return require('./.github/scripts/release-report.js')({ context })
+#          result-encoding: string
+#
+#      - name: Post Report
+#        uses: marocchino/sticky-pull-request-comment@3d60a5b2dae89d44e0c6ddc69dd7536aec2071cd # v2.5.0
+#        with:
+#          header: release
+#          message: ${{ steps.report_message.outputs.result }}

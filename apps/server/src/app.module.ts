@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { appConfig, ENV_VALIDATION_SCHEMA } from './AppConfig';
 import { FaucetModule } from './faucet/FaucetModule';
+import { HealthModule } from './health/HealthModule';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { FaucetModule } from './faucet/FaucetModule';
       },
     ]),
     FaucetModule,
+    HealthModule
   ],
   controllers: [AppController],
   providers: [

@@ -21,9 +21,5 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true
   },
-  "cSpell.words": [
-    "birthdaycloud",
-    "fastify",
-    "Middie"
-  ]
+  "cSpell.words": ["birthdaycloud", "fastify", "Middie"]
 }

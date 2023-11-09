@@ -23,7 +23,7 @@ import { HealthModule } from './health/HealthModule';
       },
     ]),
     FaucetModule,
-    HealthModule
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [

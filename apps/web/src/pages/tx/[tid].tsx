@@ -32,7 +32,7 @@ export default function Transaction({
   const gasPrice = { value: txDetails.gasPrice, symbol: GWEI_SYMBOL };
   const gasUsedPercentage = new BigNumber(txDetails.gasUsed)
     .dividedBy(txDetails.gasLimit)
-    .multipliedBy(100)
+    .multipliedBy(100);
   const timeDuration = getDuration(Number(txDetails.timeInSec));
   const timeInUTC = formatDateToUTC(txDetails.timestamp);
 
@@ -225,7 +225,9 @@ export default function Transaction({
             gasPrice={gasPrice}
             gasLimit={txDetails.gasLimit}
             gasUsed={txDetails.gasUsed}
-            gasUsedPercentage={gasUsedPercentage.isNaN() ? "0" : gasUsedPercentage.toFixed(2)}
+            gasUsedPercentage={
+              gasUsedPercentage.isNaN() ? "0" : gasUsedPercentage.toFixed(2)
+            }
             nonce={txDetails.nonce}
             from={txDetails.from}
             to={txDetails.to}

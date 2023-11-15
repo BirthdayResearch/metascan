@@ -11,9 +11,9 @@ export const metachain = {
     symbol: "DFI",
   },
   rpcUrls: {
-    // TODO: Replace RPC URLs
-    public: { http: ["http://35.187.53.161:20551"] },
-    default: { http: ["http://35.187.53.161:20551"] },
+    // TODO(lyka): Replace RPC URLs
+    public: { http: ["http://35.187.53.161:8551"] },
+    default: { http: ["http://35.187.53.161:8551"] },
   },
   blockExplorers: {
     default: { name: "MetaScan", url: "https://meta.defiscan.live" },

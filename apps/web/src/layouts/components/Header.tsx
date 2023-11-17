@@ -57,6 +57,8 @@ export default function Header(): JSX.Element {
   const router = useRouter();
   const currentPath = getTopLevelRoute(router.asPath);
 
+  const { connection } = useNetwork();
+
   useEffect(() => {
     function routeChangeStart(): void {
       setMenu(false);
@@ -69,6 +71,14 @@ export default function Header(): JSX.Element {
 
   return (
     <header data-testid="header-container">
+      {connection === NetworkConnection.TestNet && (
+        <div
+          className="text-gray-900 bg-orange-100 rounded p-3 text-center text-sm"
+          data-testid="warning_banner"
+        >
+          You are currently in the TestNet network
+        </div>
+      )}
       <Container className="p-4 md:py-6 md:px-10 lg:px-[120px]">
         <div className="flex items-center justify-between">
           <Link href={{ pathname: "/" }} passHref>

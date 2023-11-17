@@ -2,7 +2,12 @@ import { AppModule } from './app.module';
 import { MetascanServerApp } from './MetascanServerApp';
 
 async function bootstrap() {
-  const app = new MetascanServerApp(AppModule);
-  await app.start();
+  const app = await NestFactory.create(AppModule);
+  const PORT = process.env.PORT || 5741;
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+  app.listen(PORT).then(() => {
+    // eslint-disable-next-line no-console
+    console.log(`Started server on port ${PORT}`);
+  });
 }
 void bootstrap();

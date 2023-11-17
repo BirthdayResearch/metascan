@@ -41,7 +41,7 @@ export default function ContractMethodForm({
   const [userInput, setUserInput] = useState<KeyValue>(defaultInputValues);
   const [dfiValue, setDfiValue] = useState("");
   const [readResult, setReadResult] = useState<SmartContractOutputWithValue[]>(
-    [],
+    []
   );
   const [writeResult, setWriteResult] = useState<string>();
   const [error, setError] = useState<string>();

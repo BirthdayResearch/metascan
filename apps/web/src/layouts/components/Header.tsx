@@ -10,6 +10,8 @@ import {
   HeaderNetworkMenu,
   HeaderNetworkMenuMobile,
 } from "./HeaderNetworkMenu";
+import { useNetwork } from "@contexts/NetworkContext";
+import { NetworkConnection } from "@contexts/Environment";
 
 const MenuItems = [
   {
@@ -47,6 +49,8 @@ export default function Header(): JSX.Element {
   const router = useRouter();
   const currentPath = getTopLevelRoute(router.asPath);
 
+  const { connection } = useNetwork();
+
   useEffect(() => {
     function routeChangeStart(): void {
       setMenu(false);
@@ -59,6 +63,14 @@ export default function Header(): JSX.Element {
 
   return (
     <header data-testid="header-container">
+      {connection === NetworkConnection.TestNet && (
+        <div
+          className="text-gray-900 bg-orange-100 rounded p-3 text-center text-sm"
+          data-testid="warning_banner"
+        >
+          You are currently in the TestNet network
+        </div>
+      )}
       <Container className="p-4 md:py-6 md:px-10 lg:px-[120px]">
         <div className="flex items-center justify-between">
           <Link href={{ pathname: "/" }} passHref>
@@ -124,7 +136,7 @@ function MobileNavbar({
       <div
         className={clsx(
           "h-full fixed top-0 right-0 z-10 w-full bg-black-900/20 backdrop-blur-[28px]",
-          { block: isOpen, hidden: !isOpen },
+          { block: isOpen, hidden: !isOpen }
         )}
         onClick={onClose}
         onKeyDown={onClose}
@@ -135,7 +147,7 @@ function MobileNavbar({
       <div
         className={clsx(
           "h-full fixed top-0 right-0 z-10 bg-black-900 backdrop-blur-[28px] transition-[width] duration-300 overflow-y-auto",
-          { "w-full md:w-[360px]": isOpen, "w-0": !isOpen },
+          { "w-full md:w-[360px]": isOpen, "w-0": !isOpen }
         )}
       >
         <div className="flex items-center justify-between p-4">
@@ -195,7 +207,7 @@ function HeaderLink({
           "before:cta-border before:bg-white-50 before:opacity-100",
           "after:cta-border after:brand-gradient-1 after:opacity-0",
           "hover:before:opacity-0 hover:after:opacity-100",
-          { "before:opacity-0 after:opacity-100": isActive },
+          { "before:opacity-0 after:opacity-100": isActive }
         )}
         data-testid={testId}
       >
@@ -205,7 +217,7 @@ function HeaderLink({
             "font-medium brand-gradient-1 group-hover:text-transparent bg-clip-text transition-all ease-in duration-100",
             {
               "text-transparent": isActive,
-            },
+            }
           )}
         >
           {label}

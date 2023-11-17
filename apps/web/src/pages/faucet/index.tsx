@@ -19,6 +19,7 @@ export default function Faucet() {
 
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
   const [validEvmAddress, setValidEvmAddress] = useState<boolean>(false);
+  const [walletAddress, setWalletAddress] = useState("");
 
   const [data, setData] = useState<FaucetTransactionResponse>();
 
@@ -29,7 +30,7 @@ export default function Faucet() {
     try {
       const res = await FaucetApi.sendFundsToUser(
         NetworkConnection.TestNet,
-        "0xFB9DCeCBb49fA49cc2692A6A4A160fd6071b85b2",
+        walletAddress,
       );
       setData(res);
     } catch (error) {
@@ -52,6 +53,8 @@ export default function Faucet() {
             <h1 className="font-bold text-2xl text-white-50">Wallet Address</h1>
           </div>
           <WalletAddressTextInput
+            walletAddress={walletAddress}
+            setWalletAddress={setWalletAddress}
             validEvmAddress={validEvmAddress}
             setValidEvmAddress={setValidEvmAddress}
           />

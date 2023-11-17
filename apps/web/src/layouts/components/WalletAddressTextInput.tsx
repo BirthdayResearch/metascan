@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import clsx from "clsx";
 import { AddressType, getAddressType } from "@waveshq/walletkit-core";
 import { IoCloseCircleSharp } from "react-icons/io5";
@@ -6,15 +6,18 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 export default function WalletAddressTextInput({
   validEvmAddress,
   setValidEvmAddress,
+  walletAddress,
+  setWalletAddress,
 }: {
   validEvmAddress: boolean;
   setValidEvmAddress: (val: boolean) => void;
+  walletAddress: string;
+  setWalletAddress: (val: string) => void;
 }): JSX.Element {
   const transitionClass = "transition duration-300 ease-in";
 
   const inputRef = useRef<HTMLInputElement | null>(null); // Create a ref for the input element
 
-  const [walletAddress, setWalletAddress] = useState("");
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const addressType = getAddressType(walletAddress, "testnet");
 

@@ -9,6 +9,8 @@ import { getTopLevelRoute } from "shared/urlHelper";
 import useMenuNavigationHelper, {
   MenuItem,
 } from "@hooks/useMenuNavigationHelper";
+import { useNetwork } from "@contexts/NetworkContext";
+import { NetworkConnection } from "@contexts/Environment";
 import {
   HeaderNetworkMenu,
   HeaderNetworkMenuMobile,

@@ -22,16 +22,12 @@ export default function Faucet() {
   const [walletAddress, setWalletAddress] = useState("");
 
   const [data, setData] = useState<FaucetTransactionResponse>();
-
   function onCaptchaChange() {
     setIsCaptchaSuccess(true);
   }
   async function handleSendFunds() {
     try {
-      const res = await FaucetApi.sendFundsToUser(
-        NetworkConnection.TestNet,
-        walletAddress,
-      );
+      const res = await FaucetApi.sendFundsToUser(connection, walletAddress);
       setData(res);
     } catch (error) {
       setData(undefined);

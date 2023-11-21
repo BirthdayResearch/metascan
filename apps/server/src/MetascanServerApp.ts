@@ -20,14 +20,13 @@ export class MetascanServerApp<App extends NestFastifyApplication = NestFastifyA
 
   async configureApp(app): Promise<void> {
     app.enableCors({
-      allowedHeaders: 'no-cors',
+      allowedHeaders: '*',
       methods: ['GET', 'PUT', 'POST', 'DELETE'],
       maxAge: 60 * 24 * 7,
       origin:
           process.env.NODE_ENV === 'production'
               ? [
-                'https://quantumbridge.app',
-                'https://admin.quantumbridge.app',
+                'https://meta.defiscan.live/',
                 /https:\/\/([^.]*.\.)*defimetascan\.app/, // allow all subdomains of quantumbridge
                 /https:\/\/([^.]*.)--defimetascan\.netlify\.app/, // allow all netlify preview deployments
                 /https?:\/\/localhost(:\d+)?/, // allow localhost connection

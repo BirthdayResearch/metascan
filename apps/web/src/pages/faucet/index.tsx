@@ -7,11 +7,28 @@ import { useNetwork } from "@contexts/NetworkContext";
 import { NetworkConnection } from "@contexts/Environment";
 import { useRouter } from "next/router";
 import FaucetApi, { FaucetTransactionResponse } from "@api/FaucetApi";
+import { FadeLoader } from "react-spinners";
 import SectionTitle from "../../layouts/components/SectionTitle";
 import WalletAddressTextInput from "../../layouts/components/WalletAddressTextInput";
 
 import SectionDesc from "../../layouts/components/SectionDesc";
 
+
+function Loader() {
+  return (
+      <section className="flex items-center justify-center h-[150px]">
+        <FadeLoader
+            loading
+            color="#FFFFFF"
+            aria-label="spinner"
+            data-testid="spinner"
+            height={9}
+            width={3.5}
+            margin={-8}
+        />
+      </section>
+  );
+}
 // hide this page if not on testnet
 export default function Faucet() {
   const { connection } = useNetwork();
@@ -20,17 +37,20 @@ export default function Faucet() {
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
   const [validEvmAddress, setValidEvmAddress] = useState<boolean>(false);
   const [walletAddress, setWalletAddress] = useState("");
-
+const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState<FaucetTransactionResponse>();
   function onCaptchaChange() {
     setIsCaptchaSuccess(true);
   }
   async function handleSendFunds() {
     try {
+      setIsLoading(true)
       const res = await FaucetApi.sendFundsToUser(connection, walletAddress);
       setData(res);
     } catch (error) {
       setData(undefined);
+    }finally {
+    setIsLoading(false)
     }
   }
 
@@ -64,7 +84,7 @@ export default function Faucet() {
               testId="send_tokens_btn"
               label="Send Tokens"
               customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!isCaptchaSuccessful || !validEvmAddress}
+              disabled={!isCaptchaSuccessful || !validEvmAddress || isLoading}
               onClick={() => {
                 handleSendFunds();
               }}
@@ -72,12 +92,13 @@ export default function Faucet() {
           </div>
         </div>
       </GradientCardContainer>
-      {data?.hash && (
-        <section>
-          <SectionDesc title="Transaction success!" />
-          <SectionDesc title={data.hash} />
-        </section>
-      )}
+      {
+          isLoading ? (<Loader/>) : (data?.hash &&(<section>
+            <SectionDesc title="Transaction success!" />
+            <SectionDesc title={data.hash} href={`https://meta.defiscan.live/tx/${data.hash}`}/>
+          </section>))
+
+      }
       {data?.message && <SectionDesc title={data?.message} />}
     </Container>
   );

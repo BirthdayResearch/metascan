@@ -16,7 +16,7 @@ import SectionDesc from "../../layouts/components/SectionDesc";
 
 function Loader() {
   return (
-      <section className="flex items-center justify-center h-[150px]">
+      <section className="flex items-center justify-center h-[20px] mt-8 ml-4">
         <FadeLoader
             loading
             color="#FFFFFF"
@@ -93,11 +93,15 @@ const [isLoading, setIsLoading] = useState(false)
         </div>
       </GradientCardContainer>
       {
-        isLoading ? (<section><SectionDesc title="Sending funds..." /><Loader/></section>
+        isLoading ? (
+            <section className="">
+              <Loader/>
+              <SectionDesc title="Sending funds..." />
+            </section>
             ) : (data?.hash &&(<section>
-            <SectionDesc title="Transaction success!" />
-          <SectionDesc title="Transaction may take awhile to show up on Meta scan"/>
-            <SectionDesc title={`Transaction Hash: ${data.hash}`}/>
+            <SectionDesc title="Transaction success!" customStyle="mb-0"/>
+          <SectionDesc title="Transaction may take awhile to show up on Meta scan" customStyle="my-0" customTextStyle="font-normal text-xs"/>
+          <SectionDesc title={data.hash} customTextStyle="font-normal text-xs" customStyle="my-0"/>
           </section>))
 
       }

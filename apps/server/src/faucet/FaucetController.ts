@@ -1,9 +1,10 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Controller, Get, HttpException, Inject, Param, Query, UseInterceptors } from '@nestjs/common';
+import { Controller, HttpException, Inject, Param,  Post, Query, UseGuards, UseInterceptors} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentNetwork } from '@waveshq/walletkit-core';
 import { TransactionResponse } from 'ethers';
 
+import {RecaptchaGuard} from "../recaptcha/RecaptchaGuard";
 import { AddressValidationInterceptor } from './AddressValidationInterceptor';
 import { DefaultNetworkInterceptor } from './DefaultNetworkInterceptor';
 import { FaucetService } from './FaucetService';
@@ -16,7 +17,8 @@ export class FaucetController {
     private configService: ConfigService,
   ) {}
 
-  @Get(':address')
+  @Post(':address')
+  @UseGuards(RecaptchaGuard)
   @UseInterceptors(AddressValidationInterceptor, DefaultNetworkInterceptor)
   async sendFunds(
     @Param('address') address: string,

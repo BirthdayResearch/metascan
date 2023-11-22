@@ -8,7 +8,6 @@ import { NetworkConnection } from "@contexts/Environment";
 import { useRouter } from "next/router";
 import FaucetApi, { FaucetTransactionResponse } from "@api/FaucetApi";
 import { FadeLoader } from "react-spinners";
-import { getRpcUrl, TRANSACTIONS_URL } from "@api/index";
 import SectionTitle from "../../layouts/components/SectionTitle";
 import WalletAddressTextInput from "../../layouts/components/WalletAddressTextInput";
 
@@ -39,7 +38,6 @@ export default function Faucet() {
   const [validEvmAddress, setValidEvmAddress] = useState<boolean>(false);
   const [walletAddress, setWalletAddress] = useState("");
 const [isLoading, setIsLoading] = useState(false)
-  const [isTxnPending, setIsTxnPending] = useState(false)
   const [data, setData] = useState<FaucetTransactionResponse>();
   function onCaptchaChange() {
     setIsCaptchaSuccess(true);
@@ -61,27 +59,6 @@ const [isLoading, setIsLoading] = useState(false)
       router.push(`/404?network=${connection}`);
     }
   }, [connection]);
-
-  async function checkTransactionStatus(network, tid){
-    try{
-      const rpcUrl = getRpcUrl(network);
-      setIsTxnPending(true)
-       await fetch(`${rpcUrl}/${TRANSACTIONS_URL}/${tid}`);
-
-    }catch(e){
-      console.log("ERROR")
-    }finally {
-      setIsTxnPending(false)
-    }
-
-
-  }
-  useEffect(() => {
-    if( data?.hash) {
-      checkTransactionStatus(NetworkConnection.TestNet, data?.hash)
-    }
-
-  }, [data]);
 
   return (
     <Container className="px-1 md:px-0 mt-12">
@@ -116,11 +93,11 @@ const [isLoading, setIsLoading] = useState(false)
         </div>
       </GradientCardContainer>
       {
-        isLoading ? (<section>Sending funds...<Loader/></section>
+        isLoading ? (<section><SectionDesc title="Sending funds..." /><Loader/></section>
             ) : (data?.hash &&(<section>
             <SectionDesc title="Transaction success!" />
-            <SectionDesc title={data.hash} href={`https://meta.defiscan.live/tx/${data.hash}`}/>
-          <SectionDesc title={isTxnPending? "Pending..." : "View on Metascan"} href={isTxnPending?`https://meta.defiscan.live/tx/${data.hash}`: undefined}/>
+          <SectionDesc title="Transaction may take awhile to show up on Meta scan"/>
+            <SectionDesc title={`Transaction Hash: ${data.hash}`}/>
           </section>))
 
       }

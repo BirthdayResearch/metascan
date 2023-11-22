@@ -2,7 +2,7 @@ import Container from "@components/commons/Container";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
 import Button from "@components/commons/Button";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNetwork } from "@contexts/NetworkContext";
 import { NetworkConnection } from "@contexts/Environment";
 import { useRouter } from "next/router";
@@ -16,6 +16,7 @@ import SectionDesc from "../../layouts/components/SectionDesc";
 export default function Faucet() {
   const { connection } = useNetwork();
   const router = useRouter();
+  const recaptcha = React.useRef<ReCAPTCHA>(null);
 
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
   const [validEvmAddress, setValidEvmAddress] = useState<boolean>(false);
@@ -23,14 +24,23 @@ export default function Faucet() {
 
   const [data, setData] = useState<FaucetTransactionResponse>();
   function onCaptchaChange() {
-    setIsCaptchaSuccess(true);
+    if (recaptcha.current !== null) {
+      setIsCaptchaSuccess(true);
+    }
   }
-  async function handleSendFunds() {
+
+  async function handleSendFunds(recaptchaVal: string) {
     try {
-      const res = await FaucetApi.sendFundsToUser(connection, walletAddress);
+      const res = await FaucetApi.sendFundsToUser(
+        connection,
+        recaptchaVal,
+        walletAddress,
+      );
       setData(res);
     } catch (error) {
       setData(undefined);
+    } finally {
+      setIsCaptchaSuccess(false);
     }
   }
 
@@ -56,7 +66,8 @@ export default function Faucet() {
           />
           <div className="py-6 flex gap-x-4 flex-row justify-end">
             <ReCAPTCHA
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+              ref={recaptcha}
+              sitekey={process.env.NEXT_PUBLIC_SITE_KEY || ""}
               onChange={() => onCaptchaChange()}
               className="text-center items-center"
             />
@@ -66,7 +77,12 @@ export default function Faucet() {
               customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={!isCaptchaSuccessful || !validEvmAddress}
               onClick={() => {
-                handleSendFunds();
+                if (
+                  recaptcha.current !== null &&
+                  recaptcha.current.getValue() !== null
+                ) {
+                  handleSendFunds(recaptcha.current.getValue()!);
+                }
               }}
             />
           </div>

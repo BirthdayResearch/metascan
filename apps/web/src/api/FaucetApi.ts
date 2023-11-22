@@ -4,11 +4,21 @@ import { getBaseUrl } from "@api/index";
 export default {
   sendFundsToUser: async (
     network: NetworkConnection,
-    contractAddressHash?: string,
+    recaptchaValue: string,
+    contractAddressHash: string,
   ): Promise<FaucetTransactionResponse> => {
     const baseUrl = getBaseUrl();
     const res = await fetch(
       `${baseUrl}faucet/${contractAddressHash}?network=${network}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          recaptchaValue,
+        }),
+      },
     );
     return res.json();
   },

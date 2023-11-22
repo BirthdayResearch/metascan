@@ -24,14 +24,14 @@ export class MetascanServerApp<App extends NestFastifyApplication = NestFastifyA
       methods: ['GET', 'PUT', 'POST', 'DELETE'],
       maxAge: 60 * 24 * 7,
       origin:
-          process.env.NODE_ENV === 'production'
-              ? [
-                'https://meta.defiscan.live/',
-                /https:\/\/([^.]*.\.)*defimetascan\.app/, // allow all subdomains of quantumbridge
-                /https:\/\/([^.]*.)--defimetascan\.netlify\.app/, // allow all netlify preview deployments
-                /https?:\/\/localhost(:\d+)?/, // allow localhost connection
-              ]
-              : '*',
+        process.env.NODE_ENV === 'production'
+          ? [
+              'https://meta.defiscan.live/',
+              /https:\/\/([^.]*.\.)*defimetascan\.app/, // allow all subdomains of quantumbridge
+              /https:\/\/([^.]*.)--defimetascan\.netlify\.app/, // allow all netlify preview deployments
+              /https?:\/\/localhost(:\d+)?/, // allow localhost connection
+            ]
+          : '*',
     });
   }
 

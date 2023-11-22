@@ -40,6 +40,13 @@ const Link = forwardRef<HTMLAnchorElement, PropsWithChildren<LinkProps>>(
         passHref
         {...props}
         ref={ref}
+        as={{
+          pathname,
+          query: {
+            ...query,
+            ...networkQuery,
+          }
+        }}
         href={{
           pathname,
           query: {

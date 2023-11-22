@@ -110,6 +110,7 @@ export async function getServerSideProps(
     // Pass data to the page via props
     return { props: { data } };
   } catch (e) {
+    console.log({ e })
     return { notFound: true };
   }
 }

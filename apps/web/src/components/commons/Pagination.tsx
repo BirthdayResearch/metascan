@@ -59,6 +59,7 @@ export default function Pagination<T>({
       },
       next: nextPageParams,
     };
+    console.log({ currentPageNumber })
 
     if (nextPageParamsFromApi === undefined || nextPageParamsFromApi === null) {
       return [pageButton.previous, pageButton.current];
@@ -81,6 +82,7 @@ export default function Pagination<T>({
   }, [source]);
 
   useEffect(() => {
+    console.log(router.query)
     if (
       !previousPagesParams.some(
         (page) => page?.page_number === (router.query.page_number as string),
@@ -99,6 +101,7 @@ export default function Pagination<T>({
   }, [router.query]);
 
   useEffect(() => {
+    console.log({ previousPagesParams }, router.query.page_number)
     // bug: clicking on the arrow button will cause the page to go back to page 1
     // If pageNumber > 1 and previousPagesParams (local state) is cleared, go back to page 1
     if (
@@ -106,7 +109,7 @@ export default function Pagination<T>({
       previousPagesParams.length === 0
     ) {
       setPreviousPagesParams([]);
-      router.push(pathName);
+      // router.push(pathName);
     }
   }, [router.query]);
 

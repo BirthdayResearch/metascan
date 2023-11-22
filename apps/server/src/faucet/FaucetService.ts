@@ -12,19 +12,12 @@ export class FaucetService {
 
   private readonly privateKey: string;
 
-  constructor(
-    private configService: ConfigService,
-  ) {
+  constructor(private configService: ConfigService) {
     this.logger = new Logger(FaucetService.name);
     this.privateKey = this.configService.getOrThrow('privateKey');
   }
 
-  async sendFundsToUser(
-    address: string,
-    amount: string,
-    network: EnvironmentNetwork,
-  ): Promise<TransactionResponse> {
-
+  async sendFundsToUser(address: string, amount: string, network: EnvironmentNetwork): Promise<TransactionResponse> {
     // Send funds to user if recaptcha validation is successful
     const evmProviderService = new EVMProviderService(network);
     const wallet = new ethers.Wallet(this.privateKey, evmProviderService.provider);

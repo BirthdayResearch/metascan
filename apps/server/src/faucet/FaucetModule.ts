@@ -1,8 +1,8 @@
-import {HttpModule} from "@nestjs/axios";
+import { HttpModule } from '@nestjs/axios';
 import { CacheModule } from '@nestjs/cache-manager';
 import { Module } from '@nestjs/common';
 
-import {RecaptchaGuard} from "../recaptcha/RecaptchaGuard";
+import { RecaptchaGuard } from '../recaptcha/RecaptchaGuard';
 import { FaucetController } from './FaucetController';
 import { FaucetService } from './FaucetService';
 

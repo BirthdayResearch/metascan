@@ -11,9 +11,8 @@ export const metachain = {
     symbol: "DFI",
   },
   rpcUrls: {
-    // TODO: Replace RPC URLs
-    public: { http: ["http://35.187.53.161:20551"] },
-    default: { http: ["http://35.187.53.161:20551"] },
+    public: { http: ["https://eth.mainnet.ocean.jellyfishsdk.com"] },
+    default: { http: ["https://eth.mainnet.ocean.jellyfishsdk.com"] },
   },
   blockExplorers: {
     default: { name: "MetaScan", url: "https://meta.defiscan.live" },
@@ -31,9 +30,8 @@ export const metachainTestNet = {
     symbol: "DFI",
   },
   rpcUrls: {
-    // TODO: Replace RPC URLs
-    public: { http: ["http://34.38.30.102:18551"] },
-    default: { http: ["http://34.38.30.102:18551"] },
+    public: { http: ["https://eth.testnet.ocean.jellyfishsdk.com"] },
+    default: { http: ["https://eth.testnet.ocean.jellyfishsdk.com"] },
   },
   blockExplorers: {
     default: {

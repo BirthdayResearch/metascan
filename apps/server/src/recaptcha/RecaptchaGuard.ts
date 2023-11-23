@@ -15,7 +15,7 @@ export class RecaptchaGuard {
     return this.validateRecaptcha(request);
   }
 
-  async validateRecaptcha(request: Request): Promise<boolean> {
+  private async validateRecaptcha(request: Request): Promise<boolean> {
     const response = request.body.recaptchaValue;
 
     if (!response) {

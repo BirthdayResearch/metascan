@@ -34,6 +34,7 @@ export default function Faucet() {
   const [walletAddress, setWalletAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<FaucetTransactionResponse>();
+  const [buttonDisabled, setButtonDisabled] = useState(false)
   function onCaptchaChange() {
     if (recaptcha.current !== null) {
       setIsCaptchaSuccess(true);
@@ -63,7 +64,13 @@ export default function Faucet() {
     }
   }, [connection]);
 
-  return (
+  useEffect(() => {
+  setButtonDisabled(!isCaptchaSuccessful || !validEvmAddress || isLoading)
+    if (data?.message || data?.hash){
+      setButtonDisabled(false)
+    }
+  }, [isCaptchaSuccessful, validEvmAddress, isLoading, data]);
+return (
     <Container className="px-1 md:px-0 mt-12">
       <SectionTitle title="DeFiChain Testnet Faucet" />
       <h1 className="text-center mb-6 font-bold text-2xl text-white-50">
@@ -99,9 +106,7 @@ export default function Faucet() {
                   testId="send_tokens_btn"
                   label="Send Testnet DFI"
                   customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8 disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={
-                    !isCaptchaSuccessful || !validEvmAddress || isLoading
-                  }
+                  disabled={buttonDisabled}
                   onClick={() => {
                     if (
                       recaptcha.current !== null &&

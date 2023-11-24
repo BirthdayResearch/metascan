@@ -1,5 +1,6 @@
 import { NetworkConnection } from "@contexts/Environment";
 import { getBaseUrl } from "@api/index";
+import { TransactionResponse } from "ethers";
 
 export default {
   sendFundsToUser: async (
@@ -24,27 +25,6 @@ export default {
   },
 };
 
-export interface FaucetTransactionResponse {
-  message?: string;
-  blockHash?: string;
-  blockNumber?: string;
-  chainId?: string;
-  data?: string;
-  from?: string;
-  gasLimit?: string;
-  gasPrice?: string;
-  hash?: string;
-  maxFeePerGas?: string;
-  maxPriorityFeePerGas?: string;
-  nonce?: string;
-  to?: string;
-  type?: string;
-  value?: string;
-  signature?: {
-    networkV?: string;
-    r?: string;
-    s?: string;
-    v?: string;
-  };
+export interface FaucetTransactionResponse extends TransactionResponse{
   statusCode?: number
 }

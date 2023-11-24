@@ -67,6 +67,9 @@ export default function Faucet() {
   return (
     <Container className="px-1 md:px-0 mt-12">
       <SectionTitle title="DeFiChain Testnet Faucet" />
+      <h1 className="text-center mb-6 font-bold text-2xl text-white-50">
+        This faucet gives 100 testnet DFI per request
+      </h1>
       <GradientCardContainer>
         <section>
           <div data-testid="blocks-list" className="p-5 md:p-10">

@@ -11,6 +11,7 @@ interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   customStyle?: string;
+  variant?: "solid" | "outline";
 }
 
 const getButtonPadding = (size: ButtonSize): string => {
@@ -27,6 +28,7 @@ const getButtonPadding = (size: ButtonSize): string => {
 
 export default function Button({
   size = "medium",
+  variant = "solid",
   label,
   href,
   testId,
@@ -44,6 +46,7 @@ export default function Button({
           onClick={onClick}
           customStyle={customStyle}
           disabled={disabled}
+          variant={variant}
         />
       </Link>
     );
@@ -57,6 +60,7 @@ export default function Button({
       onClick={onClick}
       customStyle={customStyle}
       disabled={disabled}
+      variant={variant}
     />
   );
 }
@@ -68,6 +72,7 @@ function ButtonElement({
   onClick,
   disabled = false,
   customStyle,
+  variant,
 }: {
   label: string;
   testId: string;
@@ -75,6 +80,7 @@ function ButtonElement({
   onClick?: () => void;
   disabled?: boolean;
   customStyle?: string;
+  variant?: "solid" | "outline";
 }) {
   const btnPadding = getButtonPadding(size);
 
@@ -89,15 +95,27 @@ function ButtonElement({
     <button
       data-testid={`${testId}-button`}
       type="button"
-      className={`flex items-center justify-center rounded-[28px] group border border-white-50 brand-bg-gradient-1 active:brand-bg-gradient-2 hover:border-transparent
-                  ${transitionStyle} ${btnPadding} ${customStyle ?? ""} ${
-                    disabled ? "opacity-50" : "opacity-100"
-                  }`}
+      className={clsx(
+        "flex items-center justify-center rounded-[28px] group border",
+        transitionStyle,
+        btnPadding,
+        customStyle,
+        { "opacity-50": disabled },
+        { "opacity-100": !disabled },
+        {
+          "bg-white-50 text-black-900 hover:border-transparent":
+            variant === "solid",
+        },
+        {
+          "text-white-50 border-white-50 brand-bg-gradient-1 active:brand-bg-gradient-2 hover:border-transparent":
+            variant === "outline",
+        },
+      )}
       disabled={disabled}
       onClick={handleButtonClick}
     >
       <span
-        className={`text-white-50 font-medium tracking-[0.02em] brand-gradient-1 group-active:brand-gradient-2 bg-clip-text group-hover:text-transparent ${transitionStyle} `}
+        className={`font-medium tracking-[0.02em] brand-gradient-1 group-active:brand-gradient-2 bg-clip-text group-hover:text-transparent ${transitionStyle} `}
       >
         {label}
       </span>

@@ -11,7 +11,7 @@ export default {
   ): Promise<FaucetTransactionResponse> => {
     const baseUrl = getBaseUrl();
     const res = await axios(
-      `${baseUrl}faucet/${contractAddressHash}?network=${network}`,
+      `${baseUrl}/faucet/${contractAddressHash}?network=${network}`,
       {
         method: "POST",
         headers: {

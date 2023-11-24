@@ -1,28 +1,40 @@
 import Container from "@components/commons/Container";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
-import Button from "@components/commons/Button";
 import ReCAPTCHA from "react-google-recaptcha";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNetwork } from "@contexts/NetworkContext";
 import { NetworkConnection } from "@contexts/Environment";
-import { useRouter } from "next/router";
 import FaucetApi, { FaucetTransactionResponse } from "@api/FaucetApi";
+import { RiLoader2Fill } from "react-icons/ri";
+import { ActionButton } from "pages/address/verify/_components/StepOne";
+import Page404 from "pages/404";
 import SectionTitle from "../../layouts/components/SectionTitle";
 import WalletAddressTextInput from "../../layouts/components/WalletAddressTextInput";
-
 import SectionDesc from "../../layouts/components/SectionDesc";
 
-// hide this page if not on testnet
+function Loader() {
+  return (
+    <div className="flex items-center justify-center h-[24px]">
+      <RiLoader2Fill
+        className="text-white-50 animate-spin"
+        data-testid="spinner"
+        size={24}
+      />
+    </div>
+  );
+}
+
 export default function Faucet() {
   const { connection } = useNetwork();
-  const router = useRouter();
   const recaptcha = React.useRef<ReCAPTCHA>(null);
 
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
   const [validEvmAddress, setValidEvmAddress] = useState<boolean>(false);
   const [walletAddress, setWalletAddress] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<FaucetTransactionResponse>();
+  const [errorMsg, setErrorMsg] = useState<string>();
+
   function onCaptchaChange() {
     if (recaptcha.current !== null) {
       setIsCaptchaSuccess(true);
@@ -31,70 +43,111 @@ export default function Faucet() {
 
   async function handleSendFunds(recaptchaVal: string) {
     try {
+      setIsLoading(true);
       const res = await FaucetApi.sendFundsToUser(
         connection,
         recaptchaVal,
         walletAddress,
       );
       setData(res);
+      if(res.statusCode !== 200) {
+        setErrorMsg("Error occurred, please try again later")
+      }
     } catch (error) {
       setData(undefined);
     } finally {
+      recaptcha.current?.reset();
+      setIsLoading(false);
       setIsCaptchaSuccess(false);
     }
   }
 
-  useEffect(() => {
-    if (connection !== NetworkConnection.TestNet) {
-      router.push(`/404?network=${connection}`);
-    }
-  }, [connection]);
+  const isDisabled = isLoading || !isCaptchaSuccessful || !validEvmAddress
+  if (connection !== NetworkConnection.TestNet) {
+    return <Page404 />
+  }
 
   return (
     <Container className="px-1 md:px-0 mt-12">
-      <SectionTitle title="Testnet Faucet" />
+      <SectionTitle title="DeFiChain Testnet Faucet" />
+      <div className="text-center mb-4 font-bold text-xl text-white-50">
+        This faucet gives 100 testnet DFI per request
+      </div>
       <GradientCardContainer>
-        <div data-testid="blocks-list" className="p-5 md:p-10">
-          <div className="flex flex-col md:flex-row py-6 md:py-4 justify-between md:items-center relative">
-            <h1 className="font-bold text-2xl text-white-50">Wallet Address</h1>
+        <div>
+          <div data-testid="blocks-list" className="p-5 md:p-10">
+            <div className="flex flex-col py-2 items-start relative">
+              <div className="font-bold text-xl text-white-50">
+                Testnet DFI Address
+              </div>
+              <SectionDesc
+                title="Enter a Testnet DFI address to receive funds."
+                customStyle="mt-0"
+              />
+            </div>
+            <div className="space-y-6">
+              <WalletAddressTextInput
+                walletAddress={walletAddress}
+                setWalletAddress={setWalletAddress}
+                validEvmAddress={validEvmAddress}
+                setValidEvmAddress={setValidEvmAddress}
+              />
+              <ReCAPTCHA
+                ref={recaptcha}
+                sitekey={process.env.NEXT_PUBLIC_SITE_KEY || ""}
+                onChange={() => onCaptchaChange()}
+                onExpired={() => setIsCaptchaSuccess(false)}
+                className="flex justify-center"
+                theme="dark"
+              />
+              <div className="flex justify-center">
+                <ActionButton
+                  label="Send Testnet DFI"
+                  testId="send_tokens_btn"
+                  onClick={() => {
+                    if (
+                      recaptcha.current !== null &&
+                      recaptcha.current.getValue() !== null
+                    ) {
+                      handleSendFunds(recaptcha.current.getValue()!);
+                    }
+                  }}
+                  labelStyle="font-medium text-sm"
+                  disabled={isDisabled}
+                  customStyle="px-5"
+                />
+              </div>
+            </div>
+            {errorMsg && <SectionDesc title={errorMsg} />}
           </div>
-          <WalletAddressTextInput
-            walletAddress={walletAddress}
-            setWalletAddress={setWalletAddress}
-            validEvmAddress={validEvmAddress}
-            setValidEvmAddress={setValidEvmAddress}
-          />
-          <div className="py-6 flex gap-x-4 flex-row justify-end">
-            <ReCAPTCHA
-              ref={recaptcha}
-              sitekey={process.env.NEXT_PUBLIC_SITE_KEY || ""}
-              onChange={() => onCaptchaChange()}
-              className="text-center items-center"
-            />
-            <Button
-              testId="send_tokens_btn"
-              label="Send Tokens"
-              customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!isCaptchaSuccessful || !validEvmAddress}
-              onClick={() => {
-                if (
-                  recaptcha.current !== null &&
-                  recaptcha.current.getValue() !== null
-                ) {
-                  handleSendFunds(recaptcha.current.getValue()!);
-                }
-              }}
-            />
-          </div>
+          {isLoading ? (
+            <div>
+              <Loader />
+              <SectionDesc title="Sending funds..." customStyle="!my-0 pb-4" />
+            </div>
+          ) : (
+            data?.hash && (
+              <div>
+                <SectionDesc
+                  title="Your transaction has been sent!"
+                  customStyle="mb-0"
+                />
+                <SectionDesc
+                  title="You should receive your DFI shortly."
+                  customStyle="!my-0"
+                  customTextStyle="font-normal text-xs"
+                />
+                <SectionDesc title="Transaction Hash" customStyle="mb-0" />
+                <SectionDesc
+                  title={data.hash}
+                  customTextStyle="font-normal text-xs"
+                  customStyle="!my-0 pb-4"
+                />
+              </div>
+            )
+          )}
         </div>
       </GradientCardContainer>
-      {data?.hash && (
-        <section>
-          <SectionDesc title="Transaction success!" />
-          <SectionDesc title={data.hash} />
-        </section>
-      )}
-      {data?.message && <SectionDesc title={data?.message} />}
     </Container>
   );
 }

@@ -46,4 +46,5 @@ export interface FaucetTransactionResponse {
     s?: string;
     v?: string;
   };
+  statusCode?: number
 }

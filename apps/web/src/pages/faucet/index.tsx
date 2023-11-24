@@ -7,23 +7,19 @@ import { useNetwork } from "@contexts/NetworkContext";
 import { NetworkConnection } from "@contexts/Environment";
 import { useRouter } from "next/router";
 import FaucetApi, { FaucetTransactionResponse } from "@api/FaucetApi";
-import { FadeLoader } from "react-spinners";
+import { RiLoader2Fill } from "react-icons/ri";
 import SectionTitle from "../../layouts/components/SectionTitle";
 import WalletAddressTextInput from "../../layouts/components/WalletAddressTextInput";
-
 import SectionDesc from "../../layouts/components/SectionDesc";
 
 function Loader() {
   return (
-    <section className="flex items-center justify-center h-[20px] mt-8 ml-4">
-      <FadeLoader
-        loading
+    <section className="flex items-center justify-center loading-icon">
+      <RiLoader2Fill
         color="#FFFFFF"
-        aria-label="spinner"
         data-testid="spinner"
-        height={9}
-        width={3.5}
-        margin={-8}
+        height={24}
+        width={24}
       />
     </section>
   );
@@ -37,7 +33,7 @@ export default function Faucet() {
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
   const [validEvmAddress, setValidEvmAddress] = useState<boolean>(false);
   const [walletAddress, setWalletAddress] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<FaucetTransactionResponse>();
   function onCaptchaChange() {
     if (recaptcha.current !== null) {

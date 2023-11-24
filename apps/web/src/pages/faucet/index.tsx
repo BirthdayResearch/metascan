@@ -104,6 +104,7 @@ return (
                 sitekey={process.env.NEXT_PUBLIC_SITE_KEY || ""}
                 onChange={() => onCaptchaChange()}
                 className="flex justify-center"
+                theme="dark"
               />
               <div className="flex justify-center">
                 <Button

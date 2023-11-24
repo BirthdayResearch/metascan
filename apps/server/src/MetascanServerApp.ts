@@ -21,7 +21,7 @@ export class MetascanServerApp<App extends NestFastifyApplication = NestFastifyA
   async configureApp(app): Promise<void> {
     app.enableCors({
       allowedHeaders: '*',
-      methods: ['GET', 'PUT', 'POST', 'DELETE'],
+      methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
       maxAge: 60 * 24 * 7,
       origin:
         process.env.NODE_ENV === 'production'

@@ -118,7 +118,7 @@ export default function Faucet() {
             {data?.message && <SectionDesc title={data?.message} />}
           </div>
           {isLoading ? (
-            <section className="">
+            <section>
               <Loader />
               <SectionDesc title="Sending funds..." customStyle="!my-0 pb-4" />
             </section>

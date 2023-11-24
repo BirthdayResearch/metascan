@@ -35,7 +35,7 @@ export default function Faucet() {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<FaucetTransactionResponse>();
   const [errorMsg, setErrorMsg] = useState<string>();
-  console.log({ data })
+  console.log({ data });
   function onCaptchaChange() {
     if (recaptcha.current !== null) {
       setIsCaptchaSuccess(true);
@@ -46,7 +46,7 @@ export default function Faucet() {
     try {
       setIsLoading(true);
       setErrorMsg("");
-      setData(undefined)
+      setData(undefined);
       const res = await FaucetApi.sendFundsToUser(
         connection,
         recaptchaVal,
@@ -54,7 +54,10 @@ export default function Faucet() {
       );
       setData(res);
     } catch (error) {
-      setErrorMsg(error?.response?.data?.message ?? "Error occurred, please try again later")
+      setErrorMsg(
+        error?.response?.data?.message ??
+          "Error occurred, please try again later",
+      );
     } finally {
       recaptcha.current?.reset();
       setIsLoading(false);
@@ -62,9 +65,9 @@ export default function Faucet() {
     }
   }
 
-  const isDisabled = isLoading || !isCaptchaSuccessful || !validEvmAddress
+  const isDisabled = isLoading || !isCaptchaSuccessful || !validEvmAddress;
   if (connection !== NetworkConnection.TestNet) {
-    return <Page404 />
+    return <Page404 />;
   }
 
   return (
@@ -114,17 +117,23 @@ export default function Faucet() {
                 />
               </div>
             </div>
-            {errorMsg && <SectionDesc title={errorMsg} customTextStyle="!text-red-500" />}
+            {errorMsg && (
+              <SectionDesc title={errorMsg} customTextStyle="!text-red-500" />
+            )}
             {isLoading ? (
               <div className="mt-4">
                 <Loader />
-                <SectionDesc title="Sending funds..." customStyle="!my-0 pb-4" />
+                <SectionDesc
+                  title="Sending funds..."
+                  customStyle="!my-0 pb-4"
+                />
               </div>
             ) : (
               data?.hash && (
                 <div className="items-center mt-4">
                   <div className="text-white-50 -tracking-[0.01em] text-center">
-                    Your transaction has been sent. You should receive your DFI shortly.
+                    Your transaction has been sent. You should receive your DFI
+                    shortly.
                   </div>
                   <div className="flex flex-row justify-center mt-2">
                     <div className="text-white-50 -tracking-[0.01em] mr-1">

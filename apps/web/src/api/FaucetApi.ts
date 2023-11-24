@@ -1,7 +1,7 @@
 import { NetworkConnection } from "@contexts/Environment";
 import { getBaseUrl } from "@api/index";
 import { TransactionResponse } from "ethers";
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   sendFundsToUser: async (
@@ -26,6 +26,6 @@ export default {
   },
 };
 
-export interface FaucetTransactionResponse extends TransactionResponse{
-  statusCode?: number
+export interface FaucetTransactionResponse extends TransactionResponse {
+  statusCode?: number;
 }

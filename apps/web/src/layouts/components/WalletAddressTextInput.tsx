@@ -77,11 +77,11 @@ export default function WalletAddressTextInput({
           )}
         </div>
       </div>
-      <div className="text-red-500 py-4">
-        {invalidAddressInput && (
-          <div>Please input a valid Testnet DFI Address.</div>
-        )}
-      </div>
+      {invalidAddressInput && (
+        <div className="text-red-500 pt-2 text-sm">
+          Please input a valid Testnet DFI Address.
+        </div>
+      )}
     </div>
   );
 }

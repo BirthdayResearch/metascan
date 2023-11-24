@@ -1,13 +1,13 @@
 import Container from "@components/commons/Container";
 import GradientCardContainer from "@components/commons/GradientCardContainer";
-import Button from "@components/commons/Button";
 import ReCAPTCHA from "react-google-recaptcha";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNetwork } from "@contexts/NetworkContext";
 import { NetworkConnection } from "@contexts/Environment";
-import { useRouter } from "next/router";
 import FaucetApi, { FaucetTransactionResponse } from "@api/FaucetApi";
 import { RiLoader2Fill } from "react-icons/ri";
+import { ActionButton } from "pages/address/verify/_components/StepOne";
+import Page404 from "pages/404";
 import SectionTitle from "../../layouts/components/SectionTitle";
 import WalletAddressTextInput from "../../layouts/components/WalletAddressTextInput";
 import SectionDesc from "../../layouts/components/SectionDesc";
@@ -23,10 +23,9 @@ function Loader() {
     </div>
   );
 }
-// hide this page if not on testnet
+
 export default function Faucet() {
   const { connection } = useNetwork();
-  const router = useRouter();
   const recaptcha = React.useRef<ReCAPTCHA>(null);
 
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
@@ -35,7 +34,7 @@ export default function Faucet() {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<FaucetTransactionResponse>();
   const [errorMsg, setErrorMsg] = useState<string>();
-  const [buttonDisabled, setButtonDisabled] = useState(false)
+
   function onCaptchaChange() {
     if (recaptcha.current !== null) {
       setIsCaptchaSuccess(true);
@@ -57,42 +56,36 @@ export default function Faucet() {
     } catch (error) {
       setData(undefined);
     } finally {
+      recaptcha.current?.reset();
       setIsLoading(false);
       setIsCaptchaSuccess(false);
     }
   }
 
-  useEffect(() => {
-    if (connection !== NetworkConnection.TestNet) {
-      router.push(`/404?network=${connection}`);
-    }
-  }, [connection]);
+  const isDisabled = isLoading || !isCaptchaSuccessful || !validEvmAddress
+  if (connection !== NetworkConnection.TestNet) {
+    return <Page404 />
+  }
 
-  useEffect(() => {
-  setButtonDisabled(!isCaptchaSuccessful || !validEvmAddress || isLoading)
-    if (data?.message || data?.hash){
-      setButtonDisabled(false)
-    }
-  }, [isCaptchaSuccessful, validEvmAddress, isLoading, data]);
-return (
+  return (
     <Container className="px-1 md:px-0 mt-12">
       <SectionTitle title="DeFiChain Testnet Faucet" />
-      <h1 className="text-center mb-6 font-bold text-2xl text-white-50">
+      <div className="text-center mb-4 font-bold text-xl text-white-50">
         This faucet gives 100 testnet DFI per request
-      </h1>
+      </div>
       <GradientCardContainer>
         <div>
           <div data-testid="blocks-list" className="p-5 md:p-10">
-            <div className="flex flex-col py-6 md:py-4 items-start relative">
-              <h1 className="font-bold text-2xl text-white-50">
+            <div className="flex flex-col py-2 items-start relative">
+              <div className="font-bold text-xl text-white-50">
                 Testnet DFI Address
-              </h1>
+              </div>
               <SectionDesc
                 title="Enter a Testnet DFI address to receive funds."
                 customStyle="mt-0"
               />
             </div>
-            <div className="space-y-4">
+            <div className="space-y-6">
               <WalletAddressTextInput
                 walletAddress={walletAddress}
                 setWalletAddress={setWalletAddress}
@@ -103,15 +96,14 @@ return (
                 ref={recaptcha}
                 sitekey={process.env.NEXT_PUBLIC_SITE_KEY || ""}
                 onChange={() => onCaptchaChange()}
+                onExpired={() => setIsCaptchaSuccess(false)}
                 className="flex justify-center"
                 theme="dark"
               />
               <div className="flex justify-center">
-                <Button
-                  testId="send_tokens_btn"
+                <ActionButton
                   label="Send Testnet DFI"
-                  customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8 disabled:opacity-50 disabled:cursor-not-allowed"
-                  disabled={buttonDisabled}
+                  testId="send_tokens_btn"
                   onClick={() => {
                     if (
                       recaptcha.current !== null &&
@@ -120,10 +112,12 @@ return (
                       handleSendFunds(recaptcha.current.getValue()!);
                     }
                   }}
+                  labelStyle="font-medium text-sm"
+                  disabled={isDisabled}
+                  customStyle="px-5"
                 />
               </div>
             </div>
-
             {errorMsg && <SectionDesc title={errorMsg} />}
           </div>
           {isLoading ? (

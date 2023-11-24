@@ -14,13 +14,13 @@ import SectionDesc from "../../layouts/components/SectionDesc";
 
 function Loader() {
   return (
-    <section className="flex items-center justify-center animate-spin h-[24px]">
+    <div className="flex items-center justify-center animate-spin h-[24px]">
       <RiLoader2Fill
         className="text-white-50"
         data-testid="spinner"
         size={24}
       />
-    </section>
+    </div>
   );
 }
 // hide this page if not on testnet
@@ -70,7 +70,7 @@ export default function Faucet() {
         This faucet gives 100 testnet DFI per request
       </h1>
       <GradientCardContainer>
-        <section>
+        <div>
           <div data-testid="blocks-list" className="p-5 md:p-10">
             <div className="flex flex-col py-6 md:py-4 items-start relative">
               <h1 className="font-bold text-2xl text-white-50">
@@ -117,13 +117,13 @@ export default function Faucet() {
             {data?.message && <SectionDesc title={data?.message} />}
           </div>
           {isLoading ? (
-            <section>
+            <div>
               <Loader />
               <SectionDesc title="Sending funds..." customStyle="!my-0 pb-4" />
-            </section>
+            </div>
           ) : (
             data?.hash && (
-              <section>
+              <div>
                 <SectionDesc
                   title="Your transaction has been sent!"
                   customStyle="mb-0"
@@ -139,10 +139,10 @@ export default function Faucet() {
                   customTextStyle="font-normal text-xs"
                   customStyle="!my-0 pb-4"
                 />
-              </section>
+              </div>
             )
           )}
-        </section>
+        </div>
       </GradientCardContainer>
     </Container>
   );

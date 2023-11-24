@@ -14,13 +14,8 @@ import SectionDesc from "../../layouts/components/SectionDesc";
 
 function Loader() {
   return (
-    <section className="flex items-center justify-center loading-icon">
-      <RiLoader2Fill
-        color="#FFFFFF"
-        data-testid="spinner"
-        height={24}
-        width={24}
-      />
+    <section className="flex items-center justify-center animate-spin h-[24px]">
+      <RiLoader2Fill color="#FFFFFF" data-testid="spinner" size={24} />
     </section>
   );
 }
@@ -33,7 +28,7 @@ export default function Faucet() {
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
   const [validEvmAddress, setValidEvmAddress] = useState<boolean>(false);
   const [walletAddress, setWalletAddress] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<FaucetTransactionResponse>();
   function onCaptchaChange() {
     if (recaptcha.current !== null) {

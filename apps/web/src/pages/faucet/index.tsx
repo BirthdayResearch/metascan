@@ -8,6 +8,7 @@ import FaucetApi, { FaucetTransactionResponse } from "@api/FaucetApi";
 import { RiLoader2Fill } from "react-icons/ri";
 import { ActionButton } from "pages/address/verify/_components/StepOne";
 import Page404 from "pages/404";
+import LinkText from "@components/commons/LinkText";
 import SectionTitle from "../../layouts/components/SectionTitle";
 import WalletAddressTextInput from "../../layouts/components/WalletAddressTextInput";
 import SectionDesc from "../../layouts/components/SectionDesc";
@@ -34,7 +35,7 @@ export default function Faucet() {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<FaucetTransactionResponse>();
   const [errorMsg, setErrorMsg] = useState<string>();
-
+  console.log({ data })
   function onCaptchaChange() {
     if (recaptcha.current !== null) {
       setIsCaptchaSuccess(true);
@@ -44,17 +45,16 @@ export default function Faucet() {
   async function handleSendFunds(recaptchaVal: string) {
     try {
       setIsLoading(true);
+      setErrorMsg("");
+      setData(undefined)
       const res = await FaucetApi.sendFundsToUser(
         connection,
         recaptchaVal,
         walletAddress,
       );
       setData(res);
-      if(res.statusCode !== 200) {
-        setErrorMsg("Error occurred, please try again later")
-      }
     } catch (error) {
-      setData(undefined);
+      setErrorMsg(error?.response?.data?.message ?? "Error occurred, please try again later")
     } finally {
       recaptcha.current?.reset();
       setIsLoading(false);
@@ -75,7 +75,7 @@ export default function Faucet() {
       </div>
       <GradientCardContainer>
         <div>
-          <div data-testid="blocks-list" className="p-5 md:p-10">
+          <div data-testid="blocks-list" className="p-5">
             <div className="flex flex-col py-2 items-start relative">
               <div className="py-2 text-white-50 text-xl">
                 Enter a Testnet DFI address to receive funds.
@@ -115,33 +115,31 @@ export default function Faucet() {
               </div>
             </div>
             {errorMsg && <SectionDesc title={errorMsg} customTextStyle="!text-red-500" />}
-          </div>
-          {isLoading ? (
-            <div>
-              <Loader />
-              <SectionDesc title="Sending funds..." customStyle="!my-0 pb-4" />
-            </div>
-          ) : (
-            data?.hash && (
-              <div>
-                <SectionDesc
-                  title="Your transaction has been sent!"
-                  customStyle="mb-0"
-                />
-                <SectionDesc
-                  title="You should receive your DFI shortly."
-                  customStyle="!my-0"
-                  customTextStyle="font-normal text-xs"
-                />
-                <SectionDesc title="Transaction Hash" customStyle="mb-0" />
-                <SectionDesc
-                  title={data.hash}
-                  customTextStyle="font-normal text-xs"
-                  customStyle="!my-0 pb-4"
-                />
+            {isLoading ? (
+              <div className="mt-4">
+                <Loader />
+                <SectionDesc title="Sending funds..." customStyle="!my-0 pb-4" />
               </div>
-            )
-          )}
+            ) : (
+              data?.hash && (
+                <div className="items-center mt-4">
+                  <div className="text-white-50 -tracking-[0.01em] text-center">
+                    Your transaction has been sent. You should receive your DFI shortly.
+                  </div>
+                  <div className="flex flex-row justify-center mt-2">
+                    <div className="text-white-50 -tracking-[0.01em] mr-1">
+                      Transaction Hash:
+                    </div>
+                    <LinkText
+                      label={data.hash}
+                      href={`/txn/${data.hash}`}
+                      customStyle="text-base font-semibold tracking-[0.032em]"
+                    />
+                  </div>
+                </div>
+              )
+            )}
+          </div>
         </div>
       </GradientCardContainer>
     </Container>

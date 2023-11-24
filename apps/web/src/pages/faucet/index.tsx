@@ -136,7 +136,7 @@ export default function Faucet() {
                 />
                 <SectionDesc title="Transaction Hash" customStyle="mb-0" />
                 <SectionDesc
-                  title={`${data.hash}`}
+                  title={data.hash}
                   customTextStyle="font-normal text-xs"
                   customStyle="!my-0 pb-4"
                 />

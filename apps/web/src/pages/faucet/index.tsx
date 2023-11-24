@@ -34,6 +34,7 @@ export default function Faucet() {
   const [walletAddress, setWalletAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<FaucetTransactionResponse>();
+  const [errorMsg, setErrorMsg] = useState<string>();
   const [buttonDisabled, setButtonDisabled] = useState(false)
   function onCaptchaChange() {
     if (recaptcha.current !== null) {
@@ -50,6 +51,9 @@ export default function Faucet() {
         walletAddress,
       );
       setData(res);
+      if(res.statusCode !== 200) {
+        setErrorMsg("Error occurred, please try again later")
+      }
     } catch (error) {
       setData(undefined);
     } finally {
@@ -119,7 +123,7 @@ return (
               </div>
             </div>
 
-            {data?.message && <SectionDesc title={data?.message} />}
+            {errorMsg && <SectionDesc title={errorMsg} />}
           </div>
           {isLoading ? (
             <div>

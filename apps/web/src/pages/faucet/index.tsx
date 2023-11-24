@@ -15,7 +15,11 @@ import SectionDesc from "../../layouts/components/SectionDesc";
 function Loader() {
   return (
     <section className="flex items-center justify-center animate-spin h-[24px]">
-      <RiLoader2Fill color="#FFFFFF" data-testid="spinner" size={24} />
+      <RiLoader2Fill
+        className="text-white-50"
+        data-testid="spinner"
+        size={24}
+      />
     </section>
   );
 }

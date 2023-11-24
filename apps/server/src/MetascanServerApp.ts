@@ -26,7 +26,7 @@ export class MetascanServerApp<App extends NestFastifyApplication = NestFastifyA
       origin:
         process.env.NODE_ENV === 'production'
           ? [
-              'https://meta.defiscan.live/',
+              'https://meta.defiscan.live',
               /https:\/\/([^.]*.\.)*defimetascan\.app/, // allow all subdomains of defimetascan
               /https:\/\/([^.]*.)--defimetascan\.netlify\.app/, // allow all netlify preview deployments
               /https?:\/\/localhost(:\d+)?/, // allow localhost connection

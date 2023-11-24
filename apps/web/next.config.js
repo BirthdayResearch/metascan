@@ -15,7 +15,7 @@ const securityHeaders = [
       };` +
       `style-src 'self' fonts.googleapis.com 'unsafe-inline';` +
       `font-src fonts.gstatic.com;` +
-      `connect-src 'self' *.ocean.jellyfishsdk.com changi.dfi.team yiautp9xyt.ap-southeast-1.awsapprunner.comfaucet ${
+      `connect-src 'self' *.ocean.jellyfishsdk.com changi.dfi.team yiautp9xyt.ap-southeast-1.awsapprunner.com ${
         process.env.NODE_ENV === "development"
           ? `localhost:* 127.0.0.1:* ws://localhost:3000/_next/webpack-hmr base-goerli.blockscout.com eth-goerli.blockscout.com yiautp9xyt.ap-southeast-1.awsapprunner.com`
           : ""

@@ -4,7 +4,7 @@ import {
   TOKENS_URL,
   WALLET_ADDRESS_URL,
   filterParams,
-  getBaseUrl,
+  getRpcUrl,
 } from "@api/index";
 import { TokenProps } from "@api/TokenApi";
 import {
@@ -84,7 +84,7 @@ export const tokenApi = createApi({
             ])
           : "";
         return {
-          url: `${getBaseUrl(
+          url: `${getRpcUrl(
             network,
           )}/${WALLET_ADDRESS_URL}/${addressHash}/tokens${params}`,
           method: "GET",
@@ -106,7 +106,7 @@ export const tokenApi = createApi({
           { key: "value", value },
         ]);
         return {
-          url: `${getBaseUrl(
+          url: `${getRpcUrl(
             network,
           )}/${TOKENS_URL}/${tokenId}/holders${params}`,
           method: "GET",
@@ -128,7 +128,7 @@ export const tokenApi = createApi({
           { key: "index", value: index },
         ]);
         return {
-          url: `${getBaseUrl(
+          url: `${getRpcUrl(
             network,
           )}/${TOKENS_URL}/${tokenId}/transfers${params}`,
           method: "GET",

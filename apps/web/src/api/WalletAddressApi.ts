@@ -1,4 +1,4 @@
-import { WALLET_ADDRESS_URL, getBaseUrl, wrapResponse } from "@api/index";
+import { WALLET_ADDRESS_URL, getRpcUrl, wrapResponse } from "@api/index";
 import {
   TokenItemI,
   WalletAddressCounterI,
@@ -12,25 +12,25 @@ export default {
     network: NetworkConnection,
     aid: string,
   ): Promise<WalletAddressInfoI> => {
-    const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}/${WALLET_ADDRESS_URL}/${aid}`);
+    const rpcUrl = getRpcUrl(network);
+    const res = await fetch(`${rpcUrl}/${WALLET_ADDRESS_URL}/${aid}`);
     return wrapResponse<WalletAddressInfoI>(res);
   },
   getCounters: async (
     network: NetworkConnection,
     aid: string,
   ): Promise<WalletAddressCounterI> => {
-    const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/counters`);
+    const rpcUrl = getRpcUrl(network);
+    const res = await fetch(`${rpcUrl}/${WALLET_ADDRESS_URL}/${aid}/counters`);
     return wrapResponse<WalletAddressCounterI>(res);
   },
   getAllTokens: async (
     network: NetworkConnection,
     aid: string,
   ): Promise<TokenItemI[]> => {
-    const baseUrl = getBaseUrl(network);
+    const rpcUrl = getRpcUrl(network);
     const res = await fetch(
-      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`,
+      `${rpcUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`,
     );
     return wrapResponse<TokenItemI[]>(res);
   },
@@ -38,9 +38,9 @@ export default {
     network: NetworkConnection,
     aid: string,
   ): Promise<WalletAddressTokenBalanceI[]> => {
-    const baseUrl = getBaseUrl(network);
+    const rpcUrl = getRpcUrl(network);
     const res = await fetch(
-      `${baseUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`,
+      `${rpcUrl}/${WALLET_ADDRESS_URL}/${aid}/token-balances`,
     );
     return wrapResponse<WalletAddressTokenBalanceI[]>(res);
   },

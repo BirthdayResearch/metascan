@@ -15,7 +15,6 @@
     "write": "turbo run write"
   },
   "dependencies": {
-    "@waveshq/standard-defichain-jellyfishsdk": "^1.9.3"
   },
   "devDependencies": {
     "@stickyjs/turbo": "^1.3.4",

@@ -1,5 +1,5 @@
 import { NetworkConnection } from "@contexts/Environment";
-import { TOKENS_URL, filterParams, getBaseUrl, wrapResponse } from "./index";
+import { TOKENS_URL, filterParams, getRpcUrl, wrapResponse } from "./index";
 
 export interface RawTokenWithPaginationProps {
   items: any[];
@@ -16,7 +16,7 @@ export default {
     marketCap?: string,
     name?: string,
   ): Promise<RawTokenWithPaginationProps> => {
-    const baseUrl = getBaseUrl(network);
+    const rpcUrl = getRpcUrl(network);
     const params = filterParams([
       { key: "contract_address_hash", value: contractAddressHash },
       { key: "holder_count", value: holderCount },
@@ -25,7 +25,7 @@ export default {
       { key: "market_cap", value: marketCap },
       { key: "name", value: name },
     ]);
-    const res = await fetch(`${baseUrl}/${TOKENS_URL}${params}`);
+    const res = await fetch(`${rpcUrl}/${TOKENS_URL}${params}`);
 
     return wrapResponse<RawTokenWithPaginationProps>(res);
   },

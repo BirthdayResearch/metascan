@@ -1,10 +1,10 @@
 import { NetworkConnection } from "@contexts/Environment";
-import { HEALTH_URL, getBaseUrl, wrapResponse } from "./index";
+import { HEALTH_URL, getRpcUrl, wrapResponse } from "./index";
 
 export default {
   getHealth: async (network: NetworkConnection): Promise<HealthI> => {
-    const baseUrl = getBaseUrl(network);
-    const res = await fetch(`${baseUrl}/${HEALTH_URL}`);
+    const rpcUrl = getRpcUrl(network);
+    const res = await fetch(`${rpcUrl}/${HEALTH_URL}`);
     return wrapResponse<HealthI>(res);
   },
 };

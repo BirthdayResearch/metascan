@@ -1,9 +1,9 @@
 import { SmartContractOutputWithValue } from "@api/types";
-import { utils } from "ethers";
+import { toUtf8String } from "ethers";
 
 const formatOutputValue = (output: SmartContractOutputWithValue): string => {
   if (output.type === "bytes32") {
-    return utils.toUtf8String(output.value);
+    return toUtf8String(output.value);
   }
   if (typeof output.value === "bigint") {
     return BigInt(output.value).toString();

@@ -18,6 +18,7 @@ export class FaucetService {
   }
 
   async sendFundsToUser(address: string, amount: string, network: EnvironmentNetwork): Promise<TransactionResponse> {
+    // Send funds to user if recaptcha validation is successful
     const evmProviderService = new EVMProviderService(network);
     const wallet = new ethers.Wallet(this.privateKey, evmProviderService.provider);
     const nonce = await evmProviderService.provider.getTransactionCount(wallet.address);

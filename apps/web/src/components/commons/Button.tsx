@@ -43,6 +43,7 @@ export default function Button({
           testId={testId}
           onClick={onClick}
           customStyle={customStyle}
+          disabled={disabled}
         />
       </Link>
     );
@@ -55,6 +56,7 @@ export default function Button({
       testId={testId}
       onClick={onClick}
       customStyle={customStyle}
+      disabled={disabled}
     />
   );
 }

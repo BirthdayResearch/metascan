@@ -3,9 +3,12 @@ import Link from "@components/commons/Link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Container from "@components/commons/Container";
-import { FiXCircle, FiMenu } from "react-icons/fi";
+import { FiMenu, FiXCircle } from "react-icons/fi";
 import Image from "next/image";
 import { getTopLevelRoute } from "shared/urlHelper";
+import useMenuNavigationHelper, {
+  MenuItem,
+} from "@hooks/useMenuNavigationHelper";
 import { useNetwork } from "@contexts/NetworkContext";
 import { NetworkConnection } from "@contexts/Environment";
 import {
@@ -13,7 +16,7 @@ import {
   HeaderNetworkMenuMobile,
 } from "./HeaderNetworkMenu";
 
-const MenuItems = [
+export const MenuItems: MenuItem[] = [
   {
     label: "Blocks",
     pathname: "/blocks",
@@ -42,6 +45,13 @@ const MenuItems = [
     childPaths: ["/token"],
     imagePath: "/menu/Tokens.svg",
   },
+  // {
+  //   label: "Faucet",
+  //   pathname: "/faucet",
+  //   testId: "Desktop.HeaderLink.Faucet",
+  //   childPaths: ["/faucet"],
+  //   imagePath: "/menu/Transactions.svg",
+  // },
 ];
 
 export default function Header(): JSX.Element {
@@ -108,9 +118,11 @@ export default function Header(): JSX.Element {
 }
 
 function DesktopNavbar({ currentPath }: { currentPath: string }): JSX.Element {
+  const filteredMenuItems = useMenuNavigationHelper({ menu: MenuItems });
+
   return (
     <div className="bg-white-50 rounded-3xl">
-      {MenuItems.map((item) => (
+      {filteredMenuItems.map((item) => (
         <HeaderLink
           label={item.label}
           pathname={item.pathname}
@@ -131,6 +143,8 @@ function MobileNavbar({
   isOpen: boolean;
   onClose: () => void;
 }): JSX.Element {
+  const filteredMenuItems = useMenuNavigationHelper({ menu: MenuItems });
+
   return (
     <>
       <div
@@ -168,7 +182,7 @@ function MobileNavbar({
           />
         </div>
         <div className="mt-4">
-          {MenuItems.map((item) => (
+          {filteredMenuItems.map((item) => (
             <HeaderMobileLink
               label={item.label}
               imagePath={item.imagePath}

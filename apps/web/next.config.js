@@ -4,20 +4,20 @@ const securityHeaders = [
     value:
       `default-src 'none';` +
       `base-uri 'self';` +
-      `child-src 'self' app.netlify.com;` +
+      `child-src 'self' app.netlify.com https://www.google.com;` +
       `form-action 'none';` +
       `frame-ancestors 'none';` +
       `img-src 'self' images.prismic.io data:;` +
       `media-src 'self';` +
       `object-src 'none';` +
-      `script-src 'self' app.netlify.com netlify-cdp-loader.netlify.app ${
+      `script-src 'self' app.netlify.com netlify-cdp-loader.netlify.app https://www.google.com/recaptcha/ https://www.gstatic.com ${
         process.env.NODE_ENV === "development" ? `'unsafe-eval'` : ""
       };` +
       `style-src 'self' fonts.googleapis.com 'unsafe-inline';` +
       `font-src fonts.gstatic.com;` +
       `connect-src 'self' *.ocean.jellyfishsdk.com changi.dfi.team ${
         process.env.NODE_ENV === "development"
-          ? `ws://localhost:3000/_next/webpack-hmr base-goerli.blockscout.com eth-goerli.blockscout.com`
+          ? `localhost:* 127.0.0.1:* ws://localhost:3000/_next/webpack-hmr base-goerli.blockscout.com eth-goerli.blockscout.com`
           : ""
       };`,
   },

@@ -32,7 +32,7 @@ export default function Faucet() {
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
   const [validEvmAddress, setValidEvmAddress] = useState<boolean>(false);
   const [walletAddress, setWalletAddress] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<FaucetTransactionResponse>();
   function onCaptchaChange() {
     if (recaptcha.current !== null) {

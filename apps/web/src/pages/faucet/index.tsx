@@ -13,20 +13,19 @@ import WalletAddressTextInput from "../../layouts/components/WalletAddressTextIn
 
 import SectionDesc from "../../layouts/components/SectionDesc";
 
-
 function Loader() {
   return (
-      <section className="flex items-center justify-center h-[20px] mt-8 ml-4">
-        <FadeLoader
-            loading
-            color="#FFFFFF"
-            aria-label="spinner"
-            data-testid="spinner"
-            height={9}
-            width={3.5}
-            margin={-8}
-        />
-      </section>
+    <section className="flex items-center justify-center h-[20px] mt-8 ml-4">
+      <FadeLoader
+        loading
+        color="#FFFFFF"
+        aria-label="spinner"
+        data-testid="spinner"
+        height={9}
+        width={3.5}
+        margin={-8}
+      />
+    </section>
   );
 }
 // hide this page if not on testnet
@@ -38,7 +37,7 @@ export default function Faucet() {
   const [isCaptchaSuccessful, setIsCaptchaSuccess] = useState(false);
   const [validEvmAddress, setValidEvmAddress] = useState<boolean>(false);
   const [walletAddress, setWalletAddress] = useState("");
-const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<FaucetTransactionResponse>();
   function onCaptchaChange() {
     if (recaptcha.current !== null) {
@@ -48,7 +47,7 @@ const [isLoading, setIsLoading] = useState(false)
 
   async function handleSendFunds(recaptchaVal: string) {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const res = await FaucetApi.sendFundsToUser(
         connection,
         recaptchaVal,
@@ -57,9 +56,9 @@ const [isLoading, setIsLoading] = useState(false)
       setData(res);
     } catch (error) {
       setData(undefined);
-    }finally {
-    setIsLoading(false)
-        setIsCaptchaSuccess(false);
+    } finally {
+      setIsLoading(false);
+      setIsCaptchaSuccess(false);
     }
   }
 
@@ -71,56 +70,82 @@ const [isLoading, setIsLoading] = useState(false)
 
   return (
     <Container className="px-1 md:px-0 mt-12">
-      <SectionTitle title="Testnet Faucet" />
+      <SectionTitle title="DeFiChain Testnet Faucet" />
       <GradientCardContainer>
-        <div data-testid="blocks-list" className="p-5 md:p-10">
-          <div className="flex flex-col md:flex-row py-6 md:py-4 justify-between md:items-center relative">
-            <h1 className="font-bold text-2xl text-white-50">Wallet Address</h1>
-          </div>
-          <WalletAddressTextInput
-            walletAddress={walletAddress}
-            setWalletAddress={setWalletAddress}
-            validEvmAddress={validEvmAddress}
-            setValidEvmAddress={setValidEvmAddress}
-          />
-          <div className="py-6 flex gap-x-4 flex-row justify-end">
-            <ReCAPTCHA
-              ref={recaptcha}
-              sitekey={process.env.NEXT_PUBLIC_SITE_KEY || ""}
-              onChange={() => onCaptchaChange()}
-              className="text-center items-center"
-            />
-            <Button
-              testId="send_tokens_btn"
-              label="Send Tokens"
-              customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!isCaptchaSuccessful || !validEvmAddress || isLoading}
-              onClick={() => {
-                if (
-                  recaptcha.current !== null &&
-                  recaptcha.current.getValue() !== null
-                ) {
-                  handleSendFunds(recaptcha.current.getValue()!);
-                }
-              }}
-            />
-          </div>
-        </div>
-      </GradientCardContainer>
-      {
-        isLoading ? (
-            <section className="">
-              <Loader/>
-              <SectionDesc title="Sending funds..." />
-            </section>
-            ) : (data?.hash &&(<section>
-            <SectionDesc title="Transaction success!" customStyle="mb-0"/>
-          <SectionDesc title="Transaction may take awhile to show up on Meta scan" customStyle="my-0" customTextStyle="font-normal text-xs"/>
-          <SectionDesc title={data.hash} customTextStyle="font-normal text-xs" customStyle="my-0"/>
-          </section>))
+        <section>
+          <div data-testid="blocks-list" className="p-5 md:p-10">
+            <div className="flex flex-col py-6 md:py-4 items-start relative">
+              <h1 className="font-bold text-2xl text-white-50">
+                Testnet DFI Address
+              </h1>
+              <SectionDesc
+                title="Enter a Testnet DFI address to receive funds."
+                customStyle="mt-0"
+              />
+            </div>
+            <div className="space-y-4">
+              <WalletAddressTextInput
+                walletAddress={walletAddress}
+                setWalletAddress={setWalletAddress}
+                validEvmAddress={validEvmAddress}
+                setValidEvmAddress={setValidEvmAddress}
+              />
+              <ReCAPTCHA
+                ref={recaptcha}
+                sitekey={process.env.NEXT_PUBLIC_SITE_KEY || ""}
+                onChange={() => onCaptchaChange()}
+                className="flex justify-center"
+              />
+              <div className="flex justify-center">
+                <Button
+                  testId="send_tokens_btn"
+                  label="Send Testnet DFI"
+                  customStyle="font-medium text-sm md:text-base !py-2 !px-4 md:!py-3 md:!px-8 disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={
+                    !isCaptchaSuccessful || !validEvmAddress || isLoading
+                  }
+                  onClick={() => {
+                    if (
+                      recaptcha.current !== null &&
+                      recaptcha.current.getValue() !== null
+                    ) {
+                      handleSendFunds(recaptcha.current.getValue()!);
+                    }
+                  }}
+                />
+              </div>
+            </div>
 
-      }
-      {data?.message && <SectionDesc title={data?.message} />}
+            {data?.message && <SectionDesc title={data?.message} />}
+          </div>
+          {isLoading ? (
+            <section className="">
+              <Loader />
+              <SectionDesc title="Sending funds..." customStyle="!my-0 pb-4" />
+            </section>
+          ) : (
+            data?.hash && (
+              <section>
+                <SectionDesc
+                  title="Your transaction has been sent!"
+                  customStyle="mb-0"
+                />
+                <SectionDesc
+                  title="You should receive your DFI shortly."
+                  customStyle="!my-0"
+                  customTextStyle="font-normal text-xs"
+                />
+                <SectionDesc title="Transaction Hash" customStyle="mb-0" />
+                <SectionDesc
+                  title={`${data.hash}`}
+                  customTextStyle="font-normal text-xs"
+                  customStyle="!my-0 pb-4"
+                />
+              </section>
+            )
+          )}
+        </section>
+      </GradientCardContainer>
     </Container>
   );
 }

@@ -35,7 +35,7 @@ export default function Faucet() {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<FaucetTransactionResponse>();
   const [errorMsg, setErrorMsg] = useState<string>();
-  console.log({ data });
+
   function onCaptchaChange() {
     if (recaptcha.current !== null) {
       setIsCaptchaSuccess(true);

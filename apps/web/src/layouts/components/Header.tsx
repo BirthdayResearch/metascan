@@ -45,13 +45,13 @@ export const MenuItems: MenuItem[] = [
     childPaths: ["/token"],
     imagePath: "/menu/Tokens.svg",
   },
-  {
-    label: "Faucet",
-    pathname: "/faucet",
-    testId: "Desktop.HeaderLink.Faucet",
-    childPaths: ["/faucet"],
-    imagePath: "/menu/Transactions.svg",
-  },
+  // {
+  //   label: "Faucet",
+  //   pathname: "/faucet",
+  //   testId: "Desktop.HeaderLink.Faucet",
+  //   childPaths: ["/faucet"],
+  //   imagePath: "/menu/Transactions.svg",
+  // },
 ];
 
 export default function Header(): JSX.Element {

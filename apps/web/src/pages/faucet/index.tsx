@@ -77,13 +77,9 @@ export default function Faucet() {
         <div>
           <div data-testid="blocks-list" className="p-5 md:p-10">
             <div className="flex flex-col py-2 items-start relative">
-              <div className="font-bold text-xl text-white-50">
-                Testnet DFI Address
+              <div className="py-2 text-white-50 text-xl">
+                Enter a Testnet DFI address to receive funds.
               </div>
-              <SectionDesc
-                title="Enter a Testnet DFI address to receive funds."
-                customStyle="mt-0"
-              />
             </div>
             <div className="space-y-6">
               <WalletAddressTextInput
@@ -118,7 +114,7 @@ export default function Faucet() {
                 />
               </div>
             </div>
-            {errorMsg && <SectionDesc title={errorMsg} />}
+            {errorMsg && <SectionDesc title={errorMsg} customTextStyle="!text-red-500" />}
           </div>
           {isLoading ? (
             <div>

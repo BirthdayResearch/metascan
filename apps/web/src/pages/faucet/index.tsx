@@ -141,7 +141,7 @@ export default function Faucet() {
                     </div>
                     <LinkText
                       label={data.hash}
-                      href={`/txn/${data.hash}`}
+                      href={`/tx/${data.hash}`}
                       customStyle="text-base font-semibold tracking-[0.032em]"
                     />
                   </div>

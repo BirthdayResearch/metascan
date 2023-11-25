@@ -12,23 +12,38 @@ export class FaucetService {
 
   private readonly privateKey: string;
 
+  private readonly retry = 10;
+
   constructor(private configService: ConfigService) {
     this.logger = new Logger(FaucetService.name);
     this.privateKey = this.configService.getOrThrow('privateKey');
   }
 
+  async transferFund(address, amount, network, retryCount = 1): Promise<TransactionResponse> {
+    try {
+      const evmProviderService = new EVMProviderService(network);
+      const wallet = new ethers.Wallet(this.privateKey, evmProviderService.provider);
+      const nonce = await evmProviderService.provider.getTransactionCount(wallet.address);
+      const tx = {
+        to: address,
+        value: parseEther(amount),
+        nonce,
+      };
+      return await wallet.sendTransaction(tx);
+    } catch (e) {
+      if (e.code === 'SERVER_ERROR' && retryCount < this.retry) {
+        this.logger.error(
+          `Getting SERVER_ERROR retrying: ${retryCount} for ${amount} DFI ${network} to address ${address}`,
+        );
+        return await this.transferFund(address, amount, network, retryCount + 1);
+      }
+      throw new Error(e);
+    }
+  }
+
   async sendFundsToUser(address: string, amount: string, network: EnvironmentNetwork): Promise<TransactionResponse> {
-    // Send funds to user if recaptcha validation is successful
-    const evmProviderService = new EVMProviderService(network);
-    const wallet = new ethers.Wallet(this.privateKey, evmProviderService.provider);
-    const nonce = await evmProviderService.provider.getTransactionCount(wallet.address);
-    const tx = {
-      to: address,
-      value: parseEther(amount),
-      nonce,
-    };
     this.logger.log(`Initiating transfer of ${amount} DFI ${network} to address ${address}`);
-    const response = await wallet.sendTransaction(tx);
+    const response = await this.transferFund(address, amount, network);
     this.logger.log(
       `Transfer done to address ${address} of amount ${amount} DFI ${network} with txn hash ${
         response.hash

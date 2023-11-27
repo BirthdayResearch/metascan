@@ -97,7 +97,7 @@ export default function Faucet() {
                 onChange={() => onCaptchaChange()}
                 onExpired={() => setIsCaptchaSuccess(false)}
                 className="flex justify-center"
-                theme="dark"
+                // theme="dark"
               />
               <div className="flex justify-center">
                 <ActionButton

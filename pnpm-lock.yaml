@@ -275,8 +275,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       '@netlify/plugin-nextjs':
-        specifier: ^4.41.2
-        version: 4.41.2
+        specifier: ^4.41.3
+        version: 4.41.3
       '@tailwindcss/line-clamp':
         specifier: ^0.4.4
         version: 0.4.4(tailwindcss@3.3.5)
@@ -3569,8 +3569,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@netlify/plugin-nextjs@4.41.2:
-    resolution: {integrity: sha512-+XByVkr9sRszq7xnsZ52EGi5xeTdAtj5PRxvP//xVywlGAi1jYintizdd6PCbI6Ty0Kegwgb0O6FgRKceyUIwA==}
+  /@netlify/plugin-nextjs@4.41.3:
+    resolution: {integrity: sha512-l8TB61u7A1ZF22QpoyZtresSUsHOJGP9DatECnqlNab3lG8id1kz9Pso+nZVOznWOm98o7w51k2+TIf52x+DBQ==}
     engines: {node: '>=12.0.0'}
     dependencies:
       '@netlify/blobs': 2.2.0

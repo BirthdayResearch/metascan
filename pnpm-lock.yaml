@@ -275,8 +275,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0
       '@netlify/plugin-nextjs':
-        specifier: ^4.41.2
-        version: 4.41.2
+        specifier: ^4.41.3
+        version: 4.41.3
       '@tailwindcss/line-clamp':
         specifier: ^0.4.4
         version: 0.4.4(tailwindcss@3.3.5)
@@ -4042,8 +4042,8 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@netlify/plugin-nextjs@4.41.2:
-    resolution: {integrity: sha512-+XByVkr9sRszq7xnsZ52EGi5xeTdAtj5PRxvP//xVywlGAi1jYintizdd6PCbI6Ty0Kegwgb0O6FgRKceyUIwA==}
+  /@netlify/plugin-nextjs@4.41.3:
+    resolution: {integrity: sha512-l8TB61u7A1ZF22QpoyZtresSUsHOJGP9DatECnqlNab3lG8id1kz9Pso+nZVOznWOm98o7w51k2+TIf52x+DBQ==}
     engines: {node: '>=12.0.0'}
     dependencies:
       '@netlify/blobs': 2.2.0
@@ -4055,7 +4055,7 @@ packages:
       chokidar: 3.5.3
       destr: 1.2.2
       execa: 5.1.1
-      follow-redirects: 1.15.3
+      follow-redirects: 1.15.5
       fs-extra: 10.1.0
       globby: 11.1.0
       merge-stream: 2.0.0
@@ -4067,7 +4067,7 @@ packages:
       pathe: 0.3.9
       pretty-bytes: 5.6.0
       regexp-tree: 0.1.27
-      semver: 7.5.4
+      semver: 7.6.0
       slash: 3.0.0
       tiny-glob: 0.2.9
     transitivePeerDependencies:
@@ -10658,6 +10658,7 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
 
   /follow-redirects@1.15.5:
     resolution: {integrity: sha512-vSFWUON1B+yAw1VN4xMfxgn5fTUiaOzAJCKBwIIgT/+7CuGy9+r+5gITvP62j3RmaD5Ph65UaERdOSRGUzZtgw==}
@@ -10667,7 +10668,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: false
 
   /for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -11063,7 +11063,7 @@ packages:
       array-union: 2.1.0
       dir-glob: 3.0.1
       fast-glob: 3.3.2
-      ignore: 5.2.4
+      ignore: 5.3.1
       merge2: 1.4.1
       slash: 3.0.0
     dev: true

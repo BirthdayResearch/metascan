@@ -15,6 +15,7 @@ export default {
     itemsCount?: string,
     marketCap?: string,
     name?: string,
+    fiat_value?: string,
   ): Promise<RawTokenWithPaginationProps> => {
     const rpcUrl = getRpcUrl(network);
     const params = filterParams([
@@ -24,6 +25,7 @@ export default {
       { key: "items_count", value: itemsCount },
       { key: "market_cap", value: marketCap },
       { key: "name", value: name },
+      { key: "fiat_value", value: fiat_value },
     ]);
     const res = await fetch(`${rpcUrl}/${TOKENS_URL}${params}`);
 
@@ -38,6 +40,7 @@ export interface TokenNextPageParamsProps {
   items_count: string;
   market_cap?: string;
   name?: string;
+  fiat_value?: string;
 }
 
 export interface TokenQueryParamsProps extends TokenNextPageParamsProps {

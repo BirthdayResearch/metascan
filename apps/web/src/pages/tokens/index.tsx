@@ -43,6 +43,7 @@ function TokenPagination({
               is_name_null: nextPageParams.is_name_null,
               market_cap: nextPageParams.market_cap ?? "null",
               name: nextPageParams.name,
+              fiat_value: nextPageParams.fiat_value ?? "null",
             }
           : undefined
       }
@@ -107,7 +108,8 @@ export async function getServerSideProps(
     !isNumeric(params?.holder_count as string) ||
     !isAlphanumeric(params?.is_name_null as string) ||
     !isNumeric(params?.items_count as string) ||
-    !isAlphanumeric(params?.market_cap as string);
+    !isAlphanumeric(params?.market_cap as string) ||
+    !isAlphanumeric(params?.fiat_value as string);
 
   try {
     // Fetch data from external API
@@ -121,6 +123,7 @@ export async function getServerSideProps(
           params?.items_count as string,
           params?.market_cap as string,
           params?.name as string,
+          params?.fiat_value as string,
         );
     const data = {
       tokens: txs.items,

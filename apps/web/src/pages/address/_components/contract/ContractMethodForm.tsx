@@ -143,7 +143,7 @@ export default function ContractMethodForm({
         )}
       </div>
       {/* Read result */}
-      {type === ContractMethodType.Read && readResult?.length > 0 && (
+      {(type === ContractMethodType.Read || type === ContractMethodType.ReadProxy) && readResult?.length > 0 && (
         <ContractMethodResult outputs={readResult} />
       )}
       {error && <div className="text-red-700 italic -mt-4">{error}</div>}

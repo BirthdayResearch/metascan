@@ -1,9 +1,64 @@
 import { SmartContractOutputWithValue } from "@api/types";
-import { toUtf8String } from "ethers";
+// import { toUtf8String } from "ethers";
 
+interface TupleStructure {
+  [key: string]: any;
+}
+
+const parseTuple = (output: SmartContractOutputWithValue): string => {
+  const tupleData = output.value;
+  let parsedTuple = '';
+  // Check if the tupleData is an array
+  if (Array.isArray(tupleData)) {
+    // Parse tuple data as an array
+    const tupleStructure: any[] = [];
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < tupleData.length; i++) {
+      const value = tupleData[i];
+
+      // Recursively parse if the value is an array or an object (nested tuple)
+      if (Array.isArray(value)) {
+        tupleStructure.push(parseTuple({ type: 'tuple', value }));
+      } else if (typeof value === 'object' && value !== null) {
+        tupleStructure.push(parseTuple({ type: 'tuple', value }));
+      } else {
+        tupleStructure.push(formatOutputValue({ type: typeof value, value }));
+      }
+    }
+
+    parsedTuple = JSON.stringify(tupleStructure);
+  } else if (typeof tupleData === 'object' && tupleData !== null) {
+    // Parse tuple data as an object
+    const tupleStructure: TupleStructure = {};
+
+    const tupleKeys = Object.keys(tupleData)
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < tupleKeys.length; i++) {
+      const key = tupleKeys[i]
+      if (Object.prototype.hasOwnProperty.call(tupleData, key)) {
+        const value = tupleData[key];
+
+        // Recursively parse if the value is an array or an object (nested tuple)
+        if (Array.isArray(value)) {
+          tupleStructure[key] = parseTuple({ type: 'tuple', value });
+        } else if (typeof value === 'object' && value !== null) {
+          tupleStructure[key] = parseTuple({ type: 'tuple', value });
+        } else {
+          tupleStructure[key] = formatOutputValue({ type: typeof value, value });
+        }
+      }
+    }
+    parsedTuple = JSON.stringify(tupleStructure);
+  }
+
+  return parsedTuple;
+};
 const formatOutputValue = (output: SmartContractOutputWithValue): string => {
-  if (output.type === "bytes32") {
-    return toUtf8String(output.value);
+  // if (output.type === "bytes32") {
+  //   return toUtf8String(output.value);
+  // }
+  if (output.type === "tuple") {
+    return parseTuple(output)
   }
   if (typeof output.value === "bigint") {
     return BigInt(output.value).toString();

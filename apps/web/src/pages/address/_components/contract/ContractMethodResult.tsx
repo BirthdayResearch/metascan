@@ -11,9 +11,8 @@ const parseTuple = (output: SmartContractOutputWithValue): string => {
   // Check if the tupleData is an array
   if (Array.isArray(tupleData)) {
     // Parse tuple data as an array
-    const tupleStructure: any[] = [];
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < tupleData.length; i++) {
+    const tupleStructure: any = [];
+    for (let i = 0; i < tupleData.length; i += 1) {
       const value = tupleData[i];
 
       // Recursively parse if the value is an array or an object (nested tuple)
@@ -32,8 +31,7 @@ const parseTuple = (output: SmartContractOutputWithValue): string => {
     const tupleStructure: TupleStructure = {};
 
     const tupleKeys = Object.keys(tupleData)
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < tupleKeys.length; i++) {
+    for (let i = 0; i < tupleKeys.length; i += 1) {
       const key = tupleKeys[i]
       if (Object.prototype.hasOwnProperty.call(tupleData, key)) {
         const value = tupleData[key];

@@ -297,7 +297,7 @@ export interface SmartContractInputOutput {
 
 export interface SmartContractOutputWithValue {
   type: string;
-  value: string;
+  value: any;
 }
 
 export interface SmartContractMethod {

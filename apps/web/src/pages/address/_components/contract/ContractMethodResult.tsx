@@ -20,6 +20,7 @@ const parseTuple = (output: SmartContractOutputWithValue): string => {
       } else if (typeof value === 'object' && value !== null) {
         tupleStructure.push(parseTuple({ type: 'tuple', value }));
       } else {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         tupleStructure.push(formatOutputValue({ type: typeof value, value }));
       }
     }
@@ -41,6 +42,7 @@ const parseTuple = (output: SmartContractOutputWithValue): string => {
         } else if (typeof value === 'object' && value !== null) {
           tupleStructure[key] = parseTuple({ type: 'tuple', value });
         } else {
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
           tupleStructure[key] = formatOutputValue({ type: typeof value, value });
         }
       }

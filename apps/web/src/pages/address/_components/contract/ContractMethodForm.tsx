@@ -37,6 +37,7 @@ export default function ContractMethodForm({
   const contractId = router.query.aid as string;
   const { isConnected } = useAccount();
 
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const defaultInputValues = getDefaultValues(method.inputs ?? []);
   const [userInput, setUserInput] = useState<KeyValue>(defaultInputValues);
   const [dfiValue, setDfiValue] = useState("");

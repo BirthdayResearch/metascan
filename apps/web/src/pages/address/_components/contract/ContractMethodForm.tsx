@@ -37,6 +37,7 @@ export default function ContractMethodForm({
   const contractId = router.query.aid as string;
   const { isConnected } = useAccount();
 
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const defaultInputValues = getDefaultValues(method.inputs ?? []);
   const [userInput, setUserInput] = useState<KeyValue>(defaultInputValues);
   const [dfiValue, setDfiValue] = useState("");
@@ -143,9 +144,9 @@ export default function ContractMethodForm({
         )}
       </div>
       {/* Read result */}
-      {type === ContractMethodType.Read && readResult?.length > 0 && (
-        <ContractMethodResult outputs={readResult} />
-      )}
+      {(type === ContractMethodType.Read ||
+        type === ContractMethodType.ReadProxy) &&
+        readResult?.length > 0 && <ContractMethodResult outputs={readResult} />}
       {error && <div className="text-red-700 italic -mt-4">{error}</div>}
     </div>
   );

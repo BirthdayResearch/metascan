@@ -85,7 +85,9 @@ export default function ContractMethod({
             />
           )}
           {method.error && (
-            <div className="text-red-700 italic mt-4">{method.error}</div>
+            <div className="text-red-700 italic mt-4 break-all">
+              {method.error}
+            </div>
           )}
         </div>
       )}

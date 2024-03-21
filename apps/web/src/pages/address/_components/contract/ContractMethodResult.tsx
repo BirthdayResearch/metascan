@@ -1,5 +1,4 @@
 import { SmartContractOutputWithValue } from "@api/types";
-// import { toUtf8String } from "ethers";
 
 interface TupleStructure {
   [key: string]: any;

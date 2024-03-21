@@ -1,60 +1,44 @@
 import { SmartContractOutputWithValue } from "@api/types";
 
-interface TupleStructure {
-  [key: string]: any;
-}
+const parseNestedValue = (value: any): any => {
+  if (Array.isArray(value) || (typeof value === "object" && value !== null)) {
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    return parseTuple({ type: "tuple", value });
+  }
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  return formatOutputValue({ type: typeof value, value });
+};
 
 const parseTuple = (output: SmartContractOutputWithValue): string => {
   const tupleData = output.value;
   let parsedTuple = "";
-  // Check if the tupleData is an array
+  let tupleStructure: any;
+
   if (Array.isArray(tupleData)) {
-    // Parse tuple data as an array
-    const tupleStructure: any = [];
+    tupleStructure = [];
+
     for (let i = 0; i < tupleData.length; i += 1) {
       const value = tupleData[i];
-
-      // Recursively parse if the value is an array or an object (nested tuple)
-      if (Array.isArray(value)) {
-        tupleStructure.push(parseTuple({ type: "tuple", value }));
-      } else if (typeof value === "object" && value !== null) {
-        tupleStructure.push(parseTuple({ type: "tuple", value }));
-      } else {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        tupleStructure.push(formatOutputValue({ type: typeof value, value }));
-      }
+      tupleStructure.push(parseNestedValue(value));
     }
-
-    parsedTuple = JSON.stringify(tupleStructure);
   } else if (typeof tupleData === "object" && tupleData !== null) {
-    // Parse tuple data as an object
-    const tupleStructure: TupleStructure = {};
-
+    tupleStructure = {};
     const tupleKeys = Object.keys(tupleData);
+
     for (let i = 0; i < tupleKeys.length; i += 1) {
       const key = tupleKeys[i];
+
       if (Object.prototype.hasOwnProperty.call(tupleData, key)) {
         const value = tupleData[key];
-
-        // Recursively parse if the value is an array or an object (nested tuple)
-        if (Array.isArray(value)) {
-          tupleStructure[key] = parseTuple({ type: "tuple", value });
-        } else if (typeof value === "object" && value !== null) {
-          tupleStructure[key] = parseTuple({ type: "tuple", value });
-        } else {
-          // eslint-disable-next-line @typescript-eslint/no-use-before-define
-          tupleStructure[key] = formatOutputValue({
-            type: typeof value,
-            value,
-          });
-        }
+        tupleStructure[key] = parseNestedValue(value);
       }
     }
-    parsedTuple = JSON.stringify(tupleStructure);
   }
 
+  parsedTuple = JSON.stringify(tupleStructure);
   return parsedTuple;
 };
+
 const formatOutputValue = (output: SmartContractOutputWithValue): string => {
   // if (output.type === "bytes32") {
   //   return toUtf8String(output.value);

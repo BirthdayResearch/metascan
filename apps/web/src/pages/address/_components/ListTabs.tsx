@@ -17,6 +17,7 @@ const getTabsByAddressType = (addressType: AddressType) => {
         { title: AddressContractTabsTitle.Transactions },
         { title: AddressContractTabsTitle.Logs },
         { title: AddressContractTabsTitle.Contract },
+        { title: AddressContractTabsTitle.Tokens },
       ];
     case AddressType.Contract:
       return [
@@ -31,7 +32,10 @@ const getTabsByAddressType = (addressType: AddressType) => {
       ];
     case AddressType.Wallet:
     default:
-      return [{ title: AddressContractTabsTitle.Transactions }];
+      return [
+        { title: AddressContractTabsTitle.Transactions },
+        { title: AddressContractTabsTitle.Tokens },
+      ];
   }
 };
 

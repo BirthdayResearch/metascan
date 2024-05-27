@@ -1,9 +1,9 @@
-import {useEffect, useState} from "react";
-import {useRouter} from "next/router";
-import {useAccount} from "wagmi";
-import {readContract, writeContract} from "@wagmi/core";
-import {parseEther} from "viem";
-import {ConnectKitButton} from "connectkit";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useAccount } from "wagmi";
+import { readContract, writeContract } from "@wagmi/core";
+import { parseEther } from "viem";
+import { ConnectKitButton } from "connectkit";
 import {
   ContractMethodType,
   SmartContractInputOutput,
@@ -11,8 +11,8 @@ import {
   SmartContractOutputWithValue,
   StateMutability,
 } from "@api/types";
-import {DFI_TOKEN_SYMBOL} from "shared/constants";
-import {useNetwork} from "@contexts/NetworkContext";
+import { DFI_TOKEN_SYMBOL } from "shared/constants";
+import { useNetwork } from "@contexts/NetworkContext";
 import ContractMethodTextInput from "./ContractMethodTextInput";
 import ContractMethodResult from "./ContractMethodResult";
 import SubmitButton from "./SubmitButton";
@@ -65,21 +65,25 @@ export default function ContractMethodForm({
   }, [resetForm]);
 
   // To handle user input values based on the type of method input
-  function convertUserInputs(input: KeyValue, inputTypes: SmartContractInputOutput[] | []){
+  function convertUserInputs(
+    input: KeyValue,
+    inputTypes: SmartContractInputOutput[] | [],
+  ) {
     return Object.entries(input).map(([, value], i) => {
       const inputType = inputTypes[i].type;
       if (inputType === "bool") {
         return value === "true";
-      } if (inputType === "uint256") {
+      }
+      if (inputType === "uint256") {
         return parseEther(value);
       }
       return value;
-    })
+    });
   }
 
   const handleSubmit = async () => {
     try {
-      const convertedValue = convertUserInputs(userInput, method.inputs)
+      const convertedValue = convertUserInputs(userInput, method.inputs);
       setIsLoading(true);
       const config = {
         address: contractId as `0x${string}`,
@@ -151,13 +155,15 @@ export default function ContractMethodForm({
           )}
         </ConnectKitButton.Custom>
         {/* Write result is always hash */}
-         {writeResult && (
+        {writeResult && (
           <SubmitButton
             testId={`${method.name}-${type}-result-button`}
             label="View your transaction"
-            onClick={() => window.open(`/tx/${writeResult}?network=${connection}`, "_blank")}
+            onClick={() =>
+              window.open(`/tx/${writeResult}?network=${connection}`, "_blank")
+            }
           />
-         )}
+        )}
       </div>
       {/* Read result */}
       {(type === ContractMethodType.Read ||

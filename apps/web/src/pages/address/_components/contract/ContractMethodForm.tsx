@@ -69,8 +69,19 @@ export default function ContractMethodForm({
         address: contractId as `0x${string}`,
         abi: [method],
         functionName: method.name,
-        args: method.inputs?.length > 0 ? [...Object.values(userInput)] : [],
-        ...(dfiValue && { value: parseEther(`${Number(dfiValue)}`) }),
+        args: method.inputs?.length > 0 ? [...Object.values(userInput)].map(value => {
+
+          // Parse the value to boolean if it is 'true' or 'false'
+          switch (value) {
+            case "true":
+              return true;
+            case "false":
+                return false;
+            default:
+            return value;
+          }
+        }) : [],
+        ...(dfiValue && { value: parseEther(`${Number(dfiValue)}`) }), // to specify the amount of Ether to send with the contract function call, if any
       };
       if (isWriteOrWriteProxy) {
         // Write/WriteProxy

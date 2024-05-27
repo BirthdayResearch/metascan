@@ -12,6 +12,7 @@ import {
   StateMutability,
 } from "@api/types";
 import { DFI_TOKEN_SYMBOL } from "shared/constants";
+import { useNetwork } from "@contexts/NetworkContext";
 import ContractMethodTextInput from "./ContractMethodTextInput";
 import ContractMethodResult from "./ContractMethodResult";
 import SubmitButton from "./SubmitButton";
@@ -36,6 +37,7 @@ export default function ContractMethodForm({
   const router = useRouter();
   const contractId = router.query.aid as string;
   const { isConnected } = useAccount();
+  const { connection } = useNetwork();
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const defaultInputValues = getDefaultValues(method.inputs ?? []);
@@ -146,13 +148,13 @@ export default function ContractMethodForm({
           )}
         </ConnectKitButton.Custom>
         {/* Write result is always hash */}
-        {writeResult && (
+         {writeResult && (
           <SubmitButton
             testId={`${method.name}-${type}-result-button`}
             label="View your transaction"
-            onClick={() => window.open(`/tx/${writeResult}`, "_blank")}
+            onClick={() => window.open(`/tx/${writeResult}?network=${connection}`, "_blank")}
           />
-        )}
+         )}
       </div>
       {/* Read result */}
       {(type === ContractMethodType.Read ||

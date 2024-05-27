@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { useAccount } from "wagmi";
-import { readContract, writeContract } from "@wagmi/core";
-import { parseEther } from "viem";
-import { ConnectKitButton } from "connectkit";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
+import {useAccount} from "wagmi";
+import {readContract, writeContract} from "@wagmi/core";
+import {parseEther} from "viem";
+import {ConnectKitButton} from "connectkit";
 import {
   ContractMethodType,
   SmartContractInputOutput,
@@ -11,8 +11,8 @@ import {
   SmartContractOutputWithValue,
   StateMutability,
 } from "@api/types";
-import { DFI_TOKEN_SYMBOL } from "shared/constants";
-import { useNetwork } from "@contexts/NetworkContext";
+import {DFI_TOKEN_SYMBOL} from "shared/constants";
+import {useNetwork} from "@contexts/NetworkContext";
 import ContractMethodTextInput from "./ContractMethodTextInput";
 import ContractMethodResult from "./ContractMethodResult";
 import SubmitButton from "./SubmitButton";
@@ -64,25 +64,28 @@ export default function ContractMethodForm({
     }
   }, [resetForm]);
 
+  // To handle user input values based on the type of method input
+  function convertUserInputs(input: KeyValue, inputTypes: SmartContractInputOutput[] | []){
+    return Object.entries(input).map(([, value], i) => {
+      const inputType = inputTypes[i].type;
+      if (inputType === "bool") {
+        return value === "true";
+      } if (inputType === "uint256") {
+        return parseEther(value);
+      }
+      return value;
+    })
+  }
+
   const handleSubmit = async () => {
     try {
+      const convertedValue = convertUserInputs(userInput, method.inputs)
       setIsLoading(true);
       const config = {
         address: contractId as `0x${string}`,
         abi: [method],
         functionName: method.name,
-        args: method.inputs?.length > 0 ? [...Object.values(userInput)].map(value => {
-
-          // Parse the value to boolean if it is 'true' or 'false'
-          switch (value) {
-            case "true":
-              return true;
-            case "false":
-                return false;
-            default:
-            return value;
-          }
-        }) : [],
+        args: method.inputs?.length > 0 ? convertedValue : [],
         ...(dfiValue && { value: parseEther(`${Number(dfiValue)}`) }), // to specify the amount of Ether to send with the contract function call, if any
       };
       if (isWriteOrWriteProxy) {
@@ -113,7 +116,7 @@ export default function ContractMethodForm({
   const hasCompletedInput = method.inputs?.length === fieldsWithValue.length;
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 bg-black-500">
       {isWriteOrWriteProxy && isPayable && (
         // `value` is not part of method `inputs`, only display this additional input field when method is payable
         <ContractMethodTextInput
@@ -169,7 +172,7 @@ export default function ContractMethodForm({
  * Returns object with key-value pair based on the `inputs` length,
  * wherein key is the index from array, initialized with empty string
  *
- * Eg: [{name:"amout", type:"uint256"}, {name:"to", type:"address"}] -> { '0': "", '1': "" }
+ * Eg: [{name:"amount", type:"uint256"}, {name:"to", type:"address"}] -> { '0': "", '1': "" }
  * @param inputs SmartContractInputOutput[]
  * @returns
  */

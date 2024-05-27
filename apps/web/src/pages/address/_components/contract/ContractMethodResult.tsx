@@ -49,8 +49,7 @@ const formatOutputValue = (output: SmartContractOutputWithValue): string => {
   if (typeof output.value === "bigint") {
     return BigInt(output.value).toString();
   }
-
-  return output.value;
+  return output.value.toString();
 };
 
 export default function ContractMethodResult({

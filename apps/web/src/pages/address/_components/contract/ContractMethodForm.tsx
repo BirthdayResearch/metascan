@@ -116,7 +116,7 @@ export default function ContractMethodForm({
   const hasCompletedInput = method.inputs?.length === fieldsWithValue.length;
 
   return (
-    <div className="flex flex-col gap-6 bg-black-500">
+    <div className="flex flex-col gap-6">
       {isWriteOrWriteProxy && isPayable && (
         // `value` is not part of method `inputs`, only display this additional input field when method is payable
         <ContractMethodTextInput

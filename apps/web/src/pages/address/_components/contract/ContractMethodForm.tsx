@@ -80,7 +80,7 @@ export default function ContractMethodForm({
             // parse the string into an array
             return parsedValue;
           }
-        } catch(e) {
+        } catch (e) {
           // Intentionally empty - ignore JSON parsing errors
         }
       }

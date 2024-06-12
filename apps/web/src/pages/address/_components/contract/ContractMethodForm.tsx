@@ -71,6 +71,13 @@ export default function ContractMethodForm({
   ) {
     return Object.entries(input).map(([, value], i) => {
       const inputType = inputTypes[i].type;
+
+      // Check if input type is an array of uint256 values
+      if (inputType.endsWith("[]")) {
+        // parse the string into an array
+        return JSON.parse(value);
+      }
+
       if (inputType === "bool") {
         return value === "true";
       }

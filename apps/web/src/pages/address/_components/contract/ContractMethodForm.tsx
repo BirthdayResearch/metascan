@@ -72,18 +72,21 @@ export default function ContractMethodForm({
     return Object.entries(input).map(([, value], i) => {
       const inputType = inputTypes[i].type;
 
-      const parsedValue = JSON.parse(value);
-
-      // Check if inputType matches '[]' from uint256[] and checks if user input matches type
-      if (inputType === "uint256[]" && Array.isArray(parsedValue)) {
-        // parse the string into an array
-        return parsedValue;
+      // Check if inputType matches is an array
+      if (inputType.includes("[]")) {
+        try {
+          const parsedValue = JSON.parse(value);
+          if (Array.isArray(parsedValue)) {
+            // parse the string into an array
+            return parsedValue;
+          }
+        } catch(e) {
+          // Intentionally empty - ignore JSON parsing errors
+        }
       }
-
       if (inputType === "bool") {
         return value === "true";
       }
-
       return value;
     });
   }

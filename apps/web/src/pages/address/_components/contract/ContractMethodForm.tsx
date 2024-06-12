@@ -72,18 +72,18 @@ export default function ContractMethodForm({
     return Object.entries(input).map(([, value], i) => {
       const inputType = inputTypes[i].type;
 
-      // Check if input type is an array of uint256 values
-      if (inputType.endsWith("[]")) {
+      const parsedValue = JSON.parse(value);
+
+      // Check if inputType matches '[]' from uint256[] and checks if user input matches type
+      if (inputType === "uint256[]" && Array.isArray(parsedValue)) {
         // parse the string into an array
-        return JSON.parse(value);
+        return parsedValue;
       }
 
       if (inputType === "bool") {
         return value === "true";
       }
-      if (inputType === "uint256") {
-        return parseEther(value);
-      }
+
       return value;
     });
   }
@@ -108,9 +108,16 @@ export default function ContractMethodForm({
         const data = (await readContract(config)) ?? [];
         const results = method.outputs?.map((output, index) => {
           const value = typeof data === "object" ? data[index] : data;
+          // serialize bigint to display in human readable format
+            if (output.type.endsWith("[]")) {
+                return {
+                type: output.type,
+                value: value.toString(),
+                };
+            }
           return {
             type: output.type,
-            value,
+            value
           };
         });
         setReadResult(results);

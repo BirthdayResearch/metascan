@@ -109,15 +109,15 @@ export default function ContractMethodForm({
         const results = method.outputs?.map((output, index) => {
           const value = typeof data === "object" ? data[index] : data;
           // serialize bigint to display in human readable format
-            if (output.type.endsWith("[]")) {
-                return {
-                type: output.type,
-                value: value.toString(),
-                };
-            }
+          if (output.type.endsWith("[]")) {
+            return {
+              type: output.type,
+              value: value.toString(),
+            };
+          }
           return {
             type: output.type,
-            value
+            value,
           };
         });
         setReadResult(results);

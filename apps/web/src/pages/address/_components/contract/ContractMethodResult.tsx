@@ -52,7 +52,11 @@ const formatOutputValue = (output: SmartContractOutputWithValue): string => {
   if (typeof output.value === "boolean") {
     return JSON.stringify(output.value);
   }
-
+  if (typeof output.value === "object") {
+    return JSON.stringify(output.value, (_, value) =>
+      typeof value === "bigint" ? value.toString() : value,
+    );
+  }
   // for outputs like uint256[], int256[], etc
   return output.value;
 };

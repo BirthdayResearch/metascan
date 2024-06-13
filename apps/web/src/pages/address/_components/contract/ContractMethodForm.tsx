@@ -12,6 +12,7 @@ import {
   StateMutability,
 } from "@api/types";
 import { DFI_TOKEN_SYMBOL } from "shared/constants";
+import { useNetwork } from "@contexts/NetworkContext";
 import ContractMethodTextInput from "./ContractMethodTextInput";
 import ContractMethodResult from "./ContractMethodResult";
 import SubmitButton from "./SubmitButton";
@@ -36,6 +37,7 @@ export default function ContractMethodForm({
   const router = useRouter();
   const contractId = router.query.aid as string;
   const { isConnected } = useAccount();
+  const { connection } = useNetwork();
 
   // eslint-disable-next-line @typescript-eslint/no-use-before-define
   const defaultInputValues = getDefaultValues(method.inputs ?? []);
@@ -62,15 +64,43 @@ export default function ContractMethodForm({
     }
   }, [resetForm]);
 
+  // To handle user input values based on the type of method input
+  function convertUserInputs(
+    input: KeyValue,
+    inputTypes: SmartContractInputOutput[] | [],
+  ) {
+    return Object.entries(input).map(([, value], i) => {
+      const inputType = inputTypes[i].type;
+
+      // Check if inputType matches is an array
+      if (inputType.includes("[]")) {
+        try {
+          const parsedValue = JSON.parse(value);
+          if (Array.isArray(parsedValue)) {
+            // parse the string into an array
+            return parsedValue;
+          }
+        } catch (e) {
+          // Intentionally empty - ignore JSON parsing errors
+        }
+      }
+      if (inputType === "bool") {
+        return value === "true";
+      }
+      return value;
+    });
+  }
+
   const handleSubmit = async () => {
     try {
+      const convertedValue = convertUserInputs(userInput, method.inputs);
       setIsLoading(true);
       const config = {
         address: contractId as `0x${string}`,
         abi: [method],
         functionName: method.name,
-        args: method.inputs?.length > 0 ? [...Object.values(userInput)] : [],
-        ...(dfiValue && { value: parseEther(`${Number(dfiValue)}`) }),
+        args: method.inputs?.length > 0 ? convertedValue : [],
+        ...(dfiValue && { value: parseEther(`${Number(dfiValue)}`) }), // to specify the amount of Ether to send with the contract function call, if any
       };
       if (isWriteOrWriteProxy) {
         // Write/WriteProxy
@@ -80,7 +110,10 @@ export default function ContractMethodForm({
         // Read/ReadProxy
         const data = (await readContract(config)) ?? [];
         const results = method.outputs?.map((output, index) => {
-          const value = typeof data === "object" ? data[index] : data;
+          const value =
+            typeof data === "object" && !Array.isArray(data)
+              ? data[index]
+              : data;
           return {
             type: output.type,
             value,
@@ -139,7 +172,9 @@ export default function ContractMethodForm({
           <SubmitButton
             testId={`${method.name}-${type}-result-button`}
             label="View your transaction"
-            onClick={() => window.open(`/tx/${writeResult}`, "_blank")}
+            onClick={() =>
+              window.open(`/tx/${writeResult}?network=${connection}`, "_blank")
+            }
           />
         )}
       </div>
@@ -156,7 +191,7 @@ export default function ContractMethodForm({
  * Returns object with key-value pair based on the `inputs` length,
  * wherein key is the index from array, initialized with empty string
  *
- * Eg: [{name:"amout", type:"uint256"}, {name:"to", type:"address"}] -> { '0': "", '1': "" }
+ * Eg: [{name:"amount", type:"uint256"}, {name:"to", type:"address"}] -> { '0': "", '1': "" }
  * @param inputs SmartContractInputOutput[]
  * @returns
  */

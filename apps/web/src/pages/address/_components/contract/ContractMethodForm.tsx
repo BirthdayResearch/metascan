@@ -106,12 +106,14 @@ export default function ContractMethodForm({
         // Write/WriteProxy
         const { hash } = await writeContract(config);
         setWriteResult(hash);
-
       } else {
         // Read/ReadProxy
         const data = (await readContract(config)) ?? [];
         const results = method.outputs?.map((output, index) => {
-          const value = (typeof data === "object" && !Array.isArray(data)) ? data[index] : data;
+          const value =
+            typeof data === "object" && !Array.isArray(data)
+              ? data[index]
+              : data;
           return {
             type: output.type,
             value,

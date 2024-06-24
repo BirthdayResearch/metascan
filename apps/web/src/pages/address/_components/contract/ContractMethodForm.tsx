@@ -100,7 +100,7 @@ export default function ContractMethodForm({
         abi: [method],
         functionName: method.name,
         args: method.inputs?.length > 0 ? convertedValue : [],
-        ...(dfiValue && { value: parseEther(`${Number(dfiValue)}`) }), // to specify the amount of Ether to send with the contract function call, if any
+        ...(dfiValue && { value: parseEther(dfiValue) }), // to specify the amount of Ether to send with the contract function call, if any
       };
       if (isWriteOrWriteProxy) {
         // Write/WriteProxy
